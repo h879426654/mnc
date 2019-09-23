@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC
+ "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.basics.sys.entity.SysOperLog">
+ <cache type="com.basics.support.mybatis.CacheAdapter"/>
+ <delete id="delete" parameterType="com.basics.sys.entity.SysOperLog">
+  <![CDATA[ DELETE FROM sys_oper_log WHERE  OPER_ID = #{id} ]]>
+ </delete>
+ <insert id="insert" parameterType="com.basics.sys.entity.SysOperLog">
+  <![CDATA[  INSERT INTO sys_oper_log (]]>
+  <trim prefix="" suffixOverrides=",">
+   <if test="id!=null">OPER_ID,</if>
+   <if test="operMethod!=null">OPER_METHOD,</if>
+   <if test="loginName!=null">LOGIN_NAME,</if>
+   <if test="operIp!=null">OPER_IP,</if>
+   <if test="operParam!=null">OPER_PARAM,</if>
+   <if test="operStatus!=null">OPER_STATUS,</if>
+   <if test="errorMsg!=null">ERROR_MSG,</if>
+   <if test="operTime!=null">OPER_TIME,</if>
+  </trim>
+  <![CDATA[)VALUES(]]>
+  <trim prefix="" suffixOverrides=",">
+   <if test="id!=null">#{id},</if>
+   <if test="operMethod!=null">#{operMethod},</if>
+   <if test="loginName!=null">#{loginName},</if>
+   <if test="operIp!=null">#{operIp},</if>
+   <if test="operParam!=null">#{operParam},</if>
+   <if test="operStatus!=null">#{operStatus},</if>
+   <if test="errorMsg!=null">#{errorMsg},</if>
+   <if test="operTime!=null">#{operTime},</if>
+  </trim>
+  <![CDATA[)]]>
+ </insert>
+ <update id="update" parameterType="com.basics.sys.entity.SysOperLog">
+  <![CDATA[ UPDATE sys_oper_log ]]>
+  <trim prefix="SET" suffixOverrides=",">
+  <if test="id!=null">OPER_ID = #{id},</if>
+  <if test="operMethod!=null">OPER_METHOD = #{operMethod},</if>
+  <if test="loginName!=null">LOGIN_NAME = #{loginName},</if>
+  <if test="operIp!=null">OPER_IP = #{operIp},</if>
+  <if test="operParam!=null">OPER_PARAM = #{operParam},</if>
+  <if test="operStatus!=null">OPER_STATUS = #{operStatus},</if>
+  <if test="errorMsg!=null">ERROR_MSG = #{errorMsg},</if>
+  <if test="operTime!=null">OPER_TIME = #{operTime},</if>
+  </trim>
+  <![CDATA[ WHERE  OPER_ID = #{id}   ]]>
+ </update>
+ <sql id="condition">
+  <trim prefix="WHERE" prefixOverrides="AND |OR">
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(id)">
+   <![CDATA[ AND sysOperLog.OPER_ID = #{id}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(operMethod)">
+   <![CDATA[ AND sysOperLog.OPER_METHOD = #{operMethod}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(loginName)">
+   <![CDATA[ AND sysOperLog.LOGIN_NAME = #{loginName}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(operIp)">
+   <![CDATA[ AND sysOperLog.OPER_IP = #{operIp}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(operParam)">
+   <![CDATA[ AND sysOperLog.OPER_PARAM = #{operParam}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(operStatus)">
+   <![CDATA[ AND sysOperLog.OPER_STATUS = #{operStatus}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(errorMsg)">
+   <![CDATA[ AND sysOperLog.ERROR_MSG = #{errorMsg}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(operTime)">
+   <![CDATA[ AND sysOperLog.OPER_TIME = #{operTime}    ]]>
+  </if>
+  </trim>
+ </sql>
+ <select id="query" parameterType="map" resultType="com.basics.sys.entity.SysOperLog">
+  <![CDATA[
+  SELECT
+  sysOperLog.OPER_ID "id",
+  sysOperLog.OPER_METHOD "operMethod",
+  sysOperLog.LOGIN_NAME "loginName",
+  sysOperLog.OPER_IP "operIp",
+  sysOperLog.OPER_PARAM "operParam",
+  sysOperLog.OPER_STATUS "operStatus",
+  sysOperLog.ERROR_MSG "errorMsg",
+  sysOperLog.OPER_TIME "operTime"
+  FROM sys_oper_log sysOperLog
+  ]]>
+  <include refid="condition" />
+  <choose>
+   <when test="@org.apache.commons.lang.StringUtils@isNotEmpty(orderBy)"> ORDER BY ${orderBy}
+   </when>
+   <otherwise>
+    <!-- //TODO:ADD DEFAULT ORDER COLUMN OR DONOTHING! -->
+   </otherwise>
+  </choose>
+ </select>
+ <select id="count" parameterType="map" resultType="long">
+  <![CDATA[ SELECT COUNT(1) FROM sys_oper_log sysOperLog]]>
+  <include refid="condition" />
+ </select>
+ <sql id="conditionDeleteAll">
+  <trim prefix="WHERE" prefixOverrides="AND |OR">
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(id)">
+   <![CDATA[ AND OPER_ID = #{id} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(operMethod)">
+   <![CDATA[ AND OPER_METHOD = #{operMethod} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(loginName)">
+   <![CDATA[ AND LOGIN_NAME = #{loginName} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(operIp)">
+   <![CDATA[ AND OPER_IP = #{operIp} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(operParam)">
+   <![CDATA[ AND OPER_PARAM = #{operParam} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(operStatus)">
+   <![CDATA[ AND OPER_STATUS = #{operStatus} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(errorMsg)">
+   <![CDATA[ AND ERROR_MSG = #{errorMsg} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(operTime)">
+   <![CDATA[ AND OPER_TIME = #{operTime} ]]>
+  </if>
+  </trim>
+ </sql>
+ <delete id="deleteAll" parameterType="map">
+  <![CDATA[DELETE FROM sys_oper_log]]>
+  <include refid="conditionDeleteAll" />
+ </delete>
+</mapper>

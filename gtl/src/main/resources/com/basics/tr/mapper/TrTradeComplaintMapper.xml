@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC
+ "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.basics.tr.entity.TrTradeComplaint">
+ <cache type="com.basics.support.mybatis.CacheAdapter"/>
+ <delete id="delete" parameterType="com.basics.tr.entity.TrTradeComplaint">
+  <![CDATA[ DELETE FROM tr_trade_complaint WHERE  COMPLAINT_ID = #{id} ]]>
+ </delete>
+ <insert id="insert" parameterType="com.basics.tr.entity.TrTradeComplaint">
+  <![CDATA[  INSERT INTO tr_trade_complaint (]]>
+  <trim prefix="" suffixOverrides=",">
+   <if test="id!=null">COMPLAINT_ID,</if>
+   <if test="tradeId!=null">TRADE_ID,</if>
+   <if test="tradeType!=null">TRADE_TYPE,</if>
+   <if test="customerId!=null">CUSTOMER_ID,</if>
+   <if test="complaintContext!=null">COMPLAINT_CONTEXT,</if>
+   <if test="complaintStatus!=null">COMPLAINT_STATUS,</if>
+   <if test="complaintRemark!=null">COMPLAINT_REMARK,</if>
+   <if test="versionNum!=null">VERSION_NUM,</if>
+   <if test="flagDel!=null">FLAG_DEL,</if>
+   <if test="createTime!=null">CREATE_TIME,</if>
+   <if test="createUser!=null">CREATE_USER,</if>
+   <if test="modifyUser!=null">MODIFY_USER,</if>
+   <if test="modifyTime!=null">MODIFY_TIME,</if>
+  </trim>
+  <![CDATA[)VALUES(]]>
+  <trim prefix="" suffixOverrides=",">
+   <if test="id!=null">#{id},</if>
+   <if test="tradeId!=null">#{tradeId},</if>
+   <if test="tradeType!=null">#{tradeType},</if>
+   <if test="customerId!=null">#{customerId},</if>
+   <if test="complaintContext!=null">#{complaintContext},</if>
+   <if test="complaintStatus!=null">#{complaintStatus},</if>
+   <if test="complaintRemark!=null">#{complaintRemark},</if>
+   <if test="versionNum!=null">#{versionNum},</if>
+   <if test="flagDel!=null">#{flagDel},</if>
+   <if test="createTime!=null">#{createTime},</if>
+   <if test="createUser!=null">#{createUser},</if>
+   <if test="modifyUser!=null">#{modifyUser},</if>
+   <if test="modifyTime!=null">#{modifyTime},</if>
+  </trim>
+  <![CDATA[)]]>
+ </insert>
+ <update id="update" parameterType="com.basics.tr.entity.TrTradeComplaint">
+  <![CDATA[ UPDATE tr_trade_complaint ]]>
+  <trim prefix="SET" suffixOverrides=",">
+  <if test="id!=null">COMPLAINT_ID = #{id},</if>
+  <if test="tradeId!=null">TRADE_ID = #{tradeId},</if>
+  <if test="tradeType!=null">TRADE_TYPE = #{tradeType},</if>
+  <if test="customerId!=null">CUSTOMER_ID = #{customerId},</if>
+  <if test="complaintContext!=null">COMPLAINT_CONTEXT = #{complaintContext},</if>
+  <if test="complaintStatus!=null">COMPLAINT_STATUS = #{complaintStatus},</if>
+  <if test="complaintRemark!=null">COMPLAINT_REMARK = #{complaintRemark},</if>
+  <if test="versionNum!=null">VERSION_NUM = #{versionNum},</if>
+  <if test="flagDel!=null">FLAG_DEL = #{flagDel},</if>
+  <if test="createTime!=null">CREATE_TIME = #{createTime},</if>
+  <if test="createUser!=null">CREATE_USER = #{createUser},</if>
+  <if test="modifyUser!=null">MODIFY_USER = #{modifyUser},</if>
+  <if test="modifyTime!=null">MODIFY_TIME = #{modifyTime},</if>
+  </trim>
+  <![CDATA[ WHERE  COMPLAINT_ID = #{id}   ]]>
+ </update>
+ <sql id="condition">
+  <trim prefix="WHERE" prefixOverrides="AND |OR">
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(id)">
+   <![CDATA[ AND trTradeComplaint.COMPLAINT_ID = #{id}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(tradeId)">
+   <![CDATA[ AND trTradeComplaint.TRADE_ID = #{tradeId}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(tradeType)">
+   <![CDATA[ AND trTradeComplaint.TRADE_TYPE = #{tradeType}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(customerId)">
+   <![CDATA[ AND trTradeComplaint.CUSTOMER_ID = #{customerId}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(complaintContext)">
+   <![CDATA[ AND trTradeComplaint.COMPLAINT_CONTEXT = #{complaintContext}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(complaintStatus)">
+   <![CDATA[ AND trTradeComplaint.COMPLAINT_STATUS = #{complaintStatus}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(complaintRemark)">
+   <![CDATA[ AND trTradeComplaint.COMPLAINT_REMARK = #{complaintRemark}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(versionNum)">
+   <![CDATA[ AND trTradeComplaint.VERSION_NUM = #{versionNum}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(flagDel)">
+   <![CDATA[ AND trTradeComplaint.FLAG_DEL = #{flagDel}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(createTime)">
+   <![CDATA[ AND trTradeComplaint.CREATE_TIME = #{createTime}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(createUser)">
+   <![CDATA[ AND trTradeComplaint.CREATE_USER = #{createUser}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(modifyUser)">
+   <![CDATA[ AND trTradeComplaint.MODIFY_USER = #{modifyUser}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(modifyTime)">
+   <![CDATA[ AND trTradeComplaint.MODIFY_TIME = #{modifyTime}    ]]>
+  </if>
+  </trim>
+ </sql>
+ <select id="query" parameterType="map" resultType="com.basics.tr.entity.TrTradeComplaint">
+  <![CDATA[
+  SELECT
+  trTradeComplaint.COMPLAINT_ID "id",
+  trTradeComplaint.TRADE_ID "tradeId",
+  trTradeComplaint.TRADE_TYPE "tradeType",
+  trTradeComplaint.CUSTOMER_ID "customerId",
+  trTradeComplaint.COMPLAINT_CONTEXT "complaintContext",
+  trTradeComplaint.COMPLAINT_STATUS "complaintStatus",
+  trTradeComplaint.COMPLAINT_REMARK "complaintRemark",
+  trTradeComplaint.VERSION_NUM "versionNum",
+  trTradeComplaint.FLAG_DEL "flagDel",
+  trTradeComplaint.CREATE_TIME "createTime",
+  trTradeComplaint.CREATE_USER "createUser",
+  trTradeComplaint.MODIFY_USER "modifyUser",
+  trTradeComplaint.MODIFY_TIME "modifyTime"
+  FROM tr_trade_complaint trTradeComplaint
+  ]]>
+  <include refid="condition" />
+  <choose>
+   <when test="@org.apache.commons.lang.StringUtils@isNotEmpty(orderBy)"> ORDER BY ${orderBy}
+   </when>
+   <otherwise>
+    <!-- //TODO:ADD DEFAULT ORDER COLUMN OR DONOTHING! -->
+   </otherwise>
+  </choose>
+ </select>
+ <select id="count" parameterType="map" resultType="long">
+  <![CDATA[ SELECT COUNT(1) FROM tr_trade_complaint trTradeComplaint]]>
+  <include refid="condition" />
+ </select>
+ <sql id="conditionDeleteAll">
+  <trim prefix="WHERE" prefixOverrides="AND |OR">
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(id)">
+   <![CDATA[ AND COMPLAINT_ID = #{id} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(tradeId)">
+   <![CDATA[ AND TRADE_ID = #{tradeId} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(tradeType)">
+   <![CDATA[ AND TRADE_TYPE = #{tradeType} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(customerId)">
+   <![CDATA[ AND CUSTOMER_ID = #{customerId} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(complaintContext)">
+   <![CDATA[ AND COMPLAINT_CONTEXT = #{complaintContext} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(complaintStatus)">
+   <![CDATA[ AND COMPLAINT_STATUS = #{complaintStatus} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(complaintRemark)">
+   <![CDATA[ AND COMPLAINT_REMARK = #{complaintRemark} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(versionNum)">
+   <![CDATA[ AND VERSION_NUM = #{versionNum} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(flagDel)">
+   <![CDATA[ AND FLAG_DEL = #{flagDel} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(createTime)">
+   <![CDATA[ AND CREATE_TIME = #{createTime} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(createUser)">
+   <![CDATA[ AND CREATE_USER = #{createUser} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(modifyUser)">
+   <![CDATA[ AND MODIFY_USER = #{modifyUser} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(modifyTime)">
+   <![CDATA[ AND MODIFY_TIME = #{modifyTime} ]]>
+  </if>
+  </trim>
+ </sql>
+ <delete id="deleteAll" parameterType="map">
+  <![CDATA[DELETE FROM tr_trade_complaint]]>
+  <include refid="conditionDeleteAll" />
+ </delete>
+</mapper>

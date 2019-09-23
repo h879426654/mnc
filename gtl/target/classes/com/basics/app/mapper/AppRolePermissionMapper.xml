@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC 
+    "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.basics.app.entity.AppRolePermission">
+ <cache type="com.basics.support.mybatis.CacheAdapter" />
+ <delete id="delete" parameterType="com.basics.app.entity.AppRolePermission">
+<![CDATA[ DELETE FROM app_role_permission WHERE  ROLE_ID = #{roleId}  AND   PERMISSION_ID = #{permissionId}   ]]>
+ </delete>
+ <insert id="insert" parameterType="com.basics.app.entity.AppRolePermission">
+<![CDATA[  INSERT INTO app_role_permission (]]>
+  <trim prefix="" suffixOverrides=",">
+   <if test="roleId!=null">ROLE_ID,</if>
+   <if test="permissionId!=null">PERMISSION_ID,</if>
+  </trim>
+<![CDATA[)VALUES(]]>
+  <trim prefix="" suffixOverrides=",">
+   <if test="roleId!=null">#{roleId},</if>
+   <if test="permissionId!=null">#{permissionId},</if>
+  </trim>
+<![CDATA[)]]>
+ </insert>
+ <update id="update" parameterType="com.basics.app.entity.AppRolePermission">  
+<![CDATA[ UPDATE app_role_permission ]]>
+  <trim prefix="SET" suffixOverrides=",">
+   <if test="roleId!=null">ROLE_ID = #{roleId},</if>
+   <if test="permissionId!=null">PERMISSION_ID = #{permissionId},</if>
+  </trim>
+<![CDATA[ WHERE  ROLE_ID = #{roleId}  AND   PERMISSION_ID = #{permissionId}   ]]>
+ </update>
+ <sql id="condition">
+  <trim prefix="WHERE" prefixOverrides="AND |OR">
+   <if test="roleId!=null"> AND appRolePermission.ROLE_ID = #{roleId}
+   </if>
+   <if test="permissionId!=null"> AND appRolePermission.PERMISSION_ID = #{permissionId}
+   </if>
+  </trim>
+ </sql>
+ <select id="query" parameterType="map" resultType="com.basics.app.entity.AppRolePermission">
+<![CDATA[
+SELECT
+appRolePermission.ROLE_ID "roleId" ,
+appRolePermission.PERMISSION_ID "permissionId" 
+FROM app_role_permission appRolePermission
+    ]]>
+  <include refid="condition" />
+  <choose>
+   <when test="@org.apache.commons.lang.StringUtils@isNotEmpty(orderBy)"> ORDER BY ${orderBy}
+   </when>
+   <otherwise>
+    <!-- //TODO:ADD DEFAULT ORDER COLUMN OR DONOTHING! -->
+   </otherwise>
+  </choose>
+ </select>
+ <select id="count" parameterType="map" resultType="long">
+ <![CDATA[ SELECT COUNT(1) FROM app_role_permission appRolePermission]]>
+  <include refid="condition" />
+ </select>
+ <sql id="conditionDeleteAll">
+  <trim prefix="WHERE" prefixOverrides="AND |OR">
+   <if test="roleId!=null"> AND ROLE_ID = #{roleId}
+   </if>
+   <if test="permissionId!=null"> AND PERMISSION_ID = #{permissionId}
+   </if>
+  </trim>
+ </sql>
+ <delete id="deleteAll" parameterType="map">
+<![CDATA[DELETE FROM app_role_permission]]>
+  <include refid="conditionDeleteAll" />
+ </delete>
+</mapper>

@@ -1,0 +1,265 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC
+ "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.basics.cu.entity.CuCustomerAccount">
+ <cache type="com.basics.support.mybatis.CacheAdapter"/>
+ <delete id="delete" parameterType="com.basics.cu.entity.CuCustomerAccount">
+  <![CDATA[ DELETE FROM cu_customer_account WHERE  CUSTOMER_ID = #{id} ]]>
+ </delete>
+ <insert id="insert" parameterType="com.basics.cu.entity.CuCustomerAccount">
+  <![CDATA[  INSERT INTO cu_customer_account (]]>
+  <trim prefix="" suffixOverrides=",">
+   <if test="id!=null">CUSTOMER_ID,</if>
+   <if test="useMoney!=null">USE_MONEY,</if>
+   <if test="lockMoney!=null">LOCK_MONEY,</if>
+   <if test="totalMoney!=null">TOTAL_MONEY,</if>
+   <if test="customerIntegral!=null">CUSTOMER_INTEGRAL,</if>
+   <if test="useCoin!=null">USE_COIN,</if>
+   <if test="lockCoin!=null">LOCK_COIN,</if>
+   <if test="totalCoin!=null">TOTAL_COIN,</if>
+   <if test="tradeCoin!=null">TRADE_COIN,</if>
+   <if test="customerPayPass!=null">CUSTOMER_PAY_PASS,</if>
+   <if test="customerPurse!=null">CUSTOMER_PURSE,</if>
+   <if test="rateNum!=null">RATE_NUM,</if>
+   <if test="versionNum!=null">VERSION_NUM,</if>
+   <if test="flagDel!=null">FLAG_DEL,</if>
+   <if test="createTime!=null">CREATE_TIME,</if>
+   <if test="createUser!=null">CREATE_USER,</if>
+   <if test="modifyUser!=null">MODIFY_USER,</if>
+   <if test="modifyTime!=null">MODIFY_TIME,</if>
+  </trim>
+  <![CDATA[)VALUES(]]>
+  <trim prefix="" suffixOverrides=",">
+   <if test="id!=null">#{id},</if>
+   <if test="useMoney!=null">#{useMoney},</if>
+   <if test="lockMoney!=null">#{lockMoney},</if>
+   <if test="totalMoney!=null">#{totalMoney},</if>
+   <if test="customerIntegral!=null">#{customerIntegral},</if>
+   <if test="useCoin!=null">#{useCoin},</if>
+   <if test="lockCoin!=null">#{lockCoin},</if>
+   <if test="totalCoin!=null">#{totalCoin},</if>
+   <if test="tradeCoin!=null">#{tradeCoin},</if>
+   <if test="customerPayPass!=null">#{customerPayPass},</if>
+   <if test="customerPurse!=null">#{customerPurse},</if>
+   <if test="rateNum!=null">#{rateNum},</if>
+   <if test="versionNum!=null">#{versionNum},</if>
+   <if test="flagDel!=null">#{flagDel},</if>
+   <if test="createTime!=null">#{createTime},</if>
+   <if test="createUser!=null">#{createUser},</if>
+   <if test="modifyUser!=null">#{modifyUser},</if>
+   <if test="modifyTime!=null">#{modifyTime},</if>
+  </trim>
+  <![CDATA[)]]>
+ </insert>
+ <update id="update" parameterType="com.basics.cu.entity.CuCustomerAccount">
+  <![CDATA[ UPDATE cu_customer_account ]]>
+  <trim prefix="SET" suffixOverrides=",">
+  <if test="id!=null">CUSTOMER_ID = #{id},</if>
+  <if test="useMoney!=null">USE_MONEY = #{useMoney},</if>
+  <if test="lockMoney!=null">LOCK_MONEY = #{lockMoney},</if>
+  <if test="totalMoney!=null">TOTAL_MONEY = #{totalMoney},</if>
+  <if test="customerIntegral!=null">CUSTOMER_INTEGRAL = #{customerIntegral},</if>
+  <if test="useCoin!=null">USE_COIN = #{useCoin},</if>
+  <if test="lockCoin!=null">LOCK_COIN = #{lockCoin},</if>
+  <if test="totalCoin!=null">TOTAL_COIN = #{totalCoin},</if>
+  <if test="tradeCoin!=null">TRADE_COIN = #{tradeCoin},</if>
+  <if test="customerPayPass!=null">CUSTOMER_PAY_PASS = #{customerPayPass},</if>
+  <if test="customerPurse!=null">CUSTOMER_PURSE = #{customerPurse},</if>
+  <if test="rateNum!=null">RATE_NUM = #{rateNum},</if>
+  <if test="versionNum!=null">VERSION_NUM = #{versionNum},</if>
+  <if test="flagDel!=null">FLAG_DEL = #{flagDel},</if>
+  <if test="createTime!=null">CREATE_TIME = #{createTime},</if>
+  <if test="createUser!=null">CREATE_USER = #{createUser},</if>
+  <if test="modifyUser!=null">MODIFY_USER = #{modifyUser},</if>
+  <if test="modifyTime!=null">MODIFY_TIME = #{modifyTime},</if>
+  </trim>
+  <![CDATA[ WHERE  CUSTOMER_ID = #{id}   ]]>
+ </update>
+ <sql id="condition">
+  <trim prefix="WHERE" prefixOverrides="AND |OR">
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(id)">
+   <![CDATA[ AND cuCustomerAccount.CUSTOMER_ID = #{id}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(useMoney)">
+   <![CDATA[ AND cuCustomerAccount.USE_MONEY = #{useMoney}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(lockMoney)">
+   <![CDATA[ AND cuCustomerAccount.LOCK_MONEY = #{lockMoney}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(totalMoney)">
+   <![CDATA[ AND cuCustomerAccount.TOTAL_MONEY = #{totalMoney}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(customerIntegral)">
+   <![CDATA[ AND cuCustomerAccount.CUSTOMER_INTEGRAL = #{customerIntegral}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(useCoin)">
+   <![CDATA[ AND cuCustomerAccount.USE_COIN = #{useCoin}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(lockCoin)">
+   <![CDATA[ AND cuCustomerAccount.LOCK_COIN = #{lockCoin}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(totalCoin)">
+   <![CDATA[ AND cuCustomerAccount.TOTAL_COIN = #{totalCoin}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(tradeCoin)">
+   <![CDATA[ AND cuCustomerAccount.TRADE_COIN = #{tradeCoin}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(customerPayPass)">
+   <![CDATA[ AND cuCustomerAccount.CUSTOMER_PAY_PASS = #{customerPayPass}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(customerPurse)">
+   <![CDATA[ AND cuCustomerAccount.CUSTOMER_PURSE = #{customerPurse}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(rateNum)">
+   <![CDATA[ AND cuCustomerAccount.RATE_NUM = #{rateNum}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(versionNum)">
+   <![CDATA[ AND cuCustomerAccount.VERSION_NUM = #{versionNum}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(flagDel)">
+   <![CDATA[ AND cuCustomerAccount.FLAG_DEL = #{flagDel}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(createTime)">
+   <![CDATA[ AND cuCustomerAccount.CREATE_TIME = #{createTime}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(createUser)">
+   <![CDATA[ AND cuCustomerAccount.CREATE_USER = #{createUser}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(modifyUser)">
+   <![CDATA[ AND cuCustomerAccount.MODIFY_USER = #{modifyUser}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(modifyTime)">
+   <![CDATA[ AND cuCustomerAccount.MODIFY_TIME = #{modifyTime}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(GTCustomerIntegral)">
+   <![CDATA[ AND cuCustomerAccount.CUSTOMER_INTEGRAL > #{GTCustomerIntegral}    ]]>
+  </if>
+  </trim>
+ </sql>
+ <select id="query" parameterType="map" resultType="com.basics.cu.entity.CuCustomerAccount">
+  <![CDATA[
+  SELECT
+  cuCustomerAccount.CUSTOMER_ID "id",
+  cuCustomerAccount.USE_MONEY "useMoney",
+  cuCustomerAccount.LOCK_MONEY "lockMoney",
+  cuCustomerAccount.TOTAL_MONEY "totalMoney",
+  cuCustomerAccount.CUSTOMER_INTEGRAL "customerIntegral",
+  cuCustomerAccount.USE_COIN "useCoin",
+  cuCustomerAccount.LOCK_COIN "lockCoin",
+  cuCustomerAccount.TOTAL_COIN "totalCoin",
+  cuCustomerAccount.TRADE_COIN "tradeCoin",
+  cuCustomerAccount.CUSTOMER_PAY_PASS "customerPayPass",
+  cuCustomerAccount.CUSTOMER_PURSE "customerPurse",
+  cuCustomerAccount.RATE_NUM "rateNum",
+  cuCustomerAccount.VERSION_NUM "versionNum",
+  cuCustomerAccount.FLAG_DEL "flagDel",
+  cuCustomerAccount.CREATE_TIME "createTime",
+  cuCustomerAccount.CREATE_USER "createUser",
+  cuCustomerAccount.MODIFY_USER "modifyUser",
+  cuCustomerAccount.MODIFY_TIME "modifyTime"
+  FROM cu_customer_account cuCustomerAccount
+  ]]>
+  <include refid="condition" />
+  <choose>
+   <when test="@org.apache.commons.lang.StringUtils@isNotEmpty(orderBy)"> ORDER BY ${orderBy}
+   </when>
+   <otherwise>
+    <!-- //TODO:ADD DEFAULT ORDER COLUMN OR DONOTHING! -->
+   </otherwise>
+  </choose>
+ </select>
+ <select id="count" parameterType="map" resultType="long">
+  <![CDATA[ SELECT COUNT(1) FROM cu_customer_account cuCustomerAccount]]>
+  <include refid="condition" />
+ </select>
+ <sql id="conditionDeleteAll">
+  <trim prefix="WHERE" prefixOverrides="AND |OR">
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(id)">
+   <![CDATA[ AND CUSTOMER_ID = #{id} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(useMoney)">
+   <![CDATA[ AND USE_MONEY = #{useMoney} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(lockMoney)">
+   <![CDATA[ AND LOCK_MONEY = #{lockMoney} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(totalMoney)">
+   <![CDATA[ AND TOTAL_MONEY = #{totalMoney} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(customerIntegral)">
+   <![CDATA[ AND CUSTOMER_INTEGRAL = #{customerIntegral} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(useCoin)">
+   <![CDATA[ AND USE_COIN = #{useCoin} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(lockCoin)">
+   <![CDATA[ AND LOCK_COIN = #{lockCoin} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(totalCoin)">
+   <![CDATA[ AND TOTAL_COIN = #{totalCoin} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(tradeCoin)">
+   <![CDATA[ AND TRADE_COIN = #{tradeCoin}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(customerPayPass)">
+   <![CDATA[ AND CUSTOMER_PAY_PASS = #{customerPayPass} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(customerPurse)">
+   <![CDATA[ AND CUSTOMER_PURSE = #{customerPurse} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(versionNum)">
+   <![CDATA[ AND VERSION_NUM = #{versionNum} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(flagDel)">
+   <![CDATA[ AND FLAG_DEL = #{flagDel} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(createTime)">
+   <![CDATA[ AND CREATE_TIME = #{createTime} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(createUser)">
+   <![CDATA[ AND CREATE_USER = #{createUser} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(modifyUser)">
+   <![CDATA[ AND MODIFY_USER = #{modifyUser} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(modifyTime)">
+   <![CDATA[ AND MODIFY_TIME = #{modifyTime} ]]>
+  </if>
+  </trim>
+ </sql>
+ <delete id="deleteAll" parameterType="map">
+  <![CDATA[DELETE FROM cu_customer_account]]>
+  <include refid="conditionDeleteAll" />
+ </delete>
+ 
+ <select id="queryReleaseList" parameterType="map" resultType="com.basics.cu.entity.CuCustomerAccount">
+  <![CDATA[
+	SELECT
+		cuCustomerAccount.CUSTOMER_ID "id",
+		cuCustomerAccount.USE_MONEY "useMoney",
+		cuCustomerAccount.LOCK_MONEY "lockMoney",
+		cuCustomerAccount.TOTAL_MONEY "totalMoney",
+		cuCustomerAccount.CUSTOMER_INTEGRAL "customerIntegral",
+		cuCustomerAccount.USE_COIN "useCoin",
+		cuCustomerAccount.LOCK_COIN "lockCoin",
+		cuCustomerAccount.TOTAL_COIN "totalCoin",
+		cuCustomerAccount.TRADE_COIN "tradeCoin",
+		cuCustomerAccount.CUSTOMER_PAY_PASS "customerPayPass",
+		cuCustomerAccount.CUSTOMER_PURSE "customerPurse",
+		cuCustomerAccount.RATE_NUM "rateNum",
+		cci.REGISTER_TIME "createTime"
+	FROM
+		cu_customer_account cuCustomerAccount
+	INNER JOIN cu_customer_info cci ON cci.CUSTOMER_ID = cuCustomerAccount.CUSTOMER_ID
+  ]]>
+  <include refid="condition" />
+  <choose>
+   <when test="@org.apache.commons.lang.StringUtils@isNotEmpty(orderBy)"> ORDER BY ${orderBy}
+   </when>
+   <otherwise>
+    <!-- //TODO:ADD DEFAULT ORDER COLUMN OR DONOTHING! -->
+   </otherwise>
+  </choose>
+ </select>
+</mapper>

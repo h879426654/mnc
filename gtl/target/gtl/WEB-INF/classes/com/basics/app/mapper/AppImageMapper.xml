@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC
+"-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.basics.app.entity.AppImage">
+ <cache type="com.basics.support.mybatis.CacheAdapter"/>
+ <delete id="delete" parameterType="com.basics.app.entity.AppImage">
+<![CDATA[
+  DELETE FROM app_image
+  WHERE IMAGE_ID = #{id}
+  ]]>
+ </delete>
+ <insert id="insert" parameterType="com.basics.app.entity.AppImage">
+  <![CDATA[  INSERT INTO app_image (]]>
+  <trim prefix="" suffixOverrides=",">
+   <if test="id!=null">IMAGE_ID,</if>
+   <if test="ownerClass!=null">IMAGE_OWNER_CLASS,</if>
+   <if test="ownerId!=null">IMAGE_OWNER_ID,</if>
+   <if test="url!=null">IMAGE_URL,</if>
+   <if test="thumbnailUrl!=null">IMAGE_THUMBNAIL_URL,</if>
+   <if test="size!=null">IMAGE_SIZE,</if>
+   <if test="order!=null">IMAGE_ORDER,</if>
+   <if test="name!=null">IMAGE_NAME,</if>
+  </trim>
+  <![CDATA[)VALUES(]]>
+  <trim prefix="" suffixOverrides=",">
+   <if test="id!=null">#{id},</if>
+   <if test="ownerClass!=null">#{ownerClass},</if>
+   <if test="ownerId!=null">#{ownerId},</if>
+   <if test="url!=null">#{url},</if>
+   <if test="thumbnailUrl!=null">#{thumbnailUrl},</if>
+   <if test="size!=null">#{size},</if>
+   <if test="order!=null">#{order},</if>
+   <if test="name!=null">#{name},</if>
+  </trim>
+  <![CDATA[)]]>
+ </insert>
+ <update id="update" parameterType="com.basics.app.entity.AppImage">
+  <![CDATA[ UPDATE app_image ]]>
+  <trim prefix="SET" suffixOverrides=",">
+   <if test="ownerClass!=null">IMAGE_OWNER_CLASS = #{ownerClass},</if>
+   <if test="ownerId!=null">IMAGE_OWNER_ID = #{ownerId},</if>
+   <if test="url!=null">IMAGE_URL = #{url},</if>
+   <if test="thumbnailUrl!=null">IMAGE_THUMBNAIL_URL = #{thumbnailUrl},</if>
+   <if test="size!=null">IMAGE_SIZE = #{size},</if>
+   <if test="order!=null">IMAGE_ORDER = #{order},</if>
+   <if test="name!=null">IMAGE_NAME = #{name},</if>
+  </trim>
+  <![CDATA[ WHERE  IMAGE_ID = #{id}   ]]>
+ </update>
+ <sql id="condition">
+  <trim prefix="WHERE" prefixOverrides="AND |OR">
+   <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(id)">AND appImage.IMAGE_ID = #{id}
+   </if>
+   <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(ownerClass)">AND appImage.IMAGE_OWNER_CLASS = #{ownerClass}
+   </if>
+   <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(ownerId)">AND appImage.IMAGE_OWNER_ID = #{ownerId}
+   </if>
+   <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(url)">AND appImage.IMAGE_URL = #{url}
+   </if>
+   <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(thumbnailUrl)">AND appImage.IMAGE_THUMBNAIL_URL = #{thumbnailUrl}
+   </if>
+   <if test="size!=null">AND appImage.IMAGE_SIZE = #{size}
+   </if>
+   <if test="order!=null">AND appImage.IMAGE_ORDER = #{order}
+   </if>
+   <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(name)">AND appImage.IMAGE_NAME = #{name}
+   </if>
+  </trim>
+ </sql>
+ <select id="query" parameterType="map" resultType="com.basics.app.entity.AppImage">
+  <![CDATA[
+SELECT
+appImage.IMAGE_ID "id" ,
+appImage.IMAGE_OWNER_CLASS "ownerClass" ,
+appImage.IMAGE_OWNER_ID "ownerId" ,
+appImage.IMAGE_URL "url" ,
+appImage.IMAGE_THUMBNAIL_URL "thumbnailUrl" ,
+appImage.IMAGE_SIZE "size" ,
+appImage.IMAGE_ORDER "order" ,
+appImage.IMAGE_NAME "name" 
+FROM app_image appImage
+    ]]>
+  <include refid="condition"/>
+  <choose>
+   <when test="@org.apache.commons.lang.StringUtils@isNotEmpty(orderBy)">ORDER BY ${orderBy}
+   </when>
+   <otherwise>
+    <!-- //TODO:ADD DEFAULT ORDER COLUMN OR DONOTHING! -->
+    ORDER BY appImage.IMAGE_OWNER_ID,appImage.IMAGE_ORDER
+   </otherwise>
+  </choose>
+ </select>
+ <select id="count" parameterType="map" resultType="long">
+  <![CDATA[ SELECT COUNT(1) FROM app_image appImage]]>
+  <include refid="condition"/>
+ </select>
+ <sql id="conditionDeleteAll">
+  <trim prefix="WHERE" prefixOverrides="AND |OR">
+   <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(id)">AND IMAGE_ID = #{id}
+   </if>
+   <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(ownerClass)">AND IMAGE_OWNER_CLASS = #{ownerClass}
+   </if>
+   <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(ownerId)">AND IMAGE_OWNER_ID = #{ownerId}
+   </if>
+   <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(url)">AND IMAGE_URL = #{url}
+   </if>
+   <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(thumbnailUrl)">AND IMAGE_THUMBNAIL_URL = #{thumbnailUrl}
+   </if>
+   <if test="size!=null">AND IMAGE_SIZE = #{size}
+   </if>
+   <if test="order!=null">AND IMAGE_ORDER = #{order}
+   </if>
+   <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(name)">AND IMAGE_NAME = #{name}
+   </if>
+  </trim>
+ </sql>
+ <delete id="deleteAll" parameterType="map">
+  <![CDATA[DELETE FROM app_image]]>
+  <include refid="conditionDeleteAll"/>
+ </delete>
+ <insert id="multiInsert" parameterType="map">
+  <![CDATA[
+  INSERT INTO app_image(IMAGE_ID,IMAGE_OWNER_CLASS,IMAGE_OWNER_ID,IMAGE_URL,IMAGE_THUMBNAIL_URL,IMAGE_SIZE,IMAGE_ORDER,IMAGE_NAME) VALUES
+ ]]>
+   <foreach collection="images" item="image">
+    <![CDATA[
+    (
+    #{image.id},
+    #{image.ownerClass},
+    #{image.ownerId},
+    #{image.url},
+    #{image.thumbnailUrl},
+    #{image.size},
+    #{image.order},
+    #{image.name}
+    )
+    ]]>
+   </foreach>
+ </insert>
+ 
+ <select id="selectUrlByPara" parameterType="map" resultType="java.lang.String">
+  SELECT IMAGE_URL FROM app_image WHERE IMAGE_OWNER_CLASS=#{ownerClass} AND IMAGE_OWNER_ID=#{ownerId}
+ </select>
+</mapper>

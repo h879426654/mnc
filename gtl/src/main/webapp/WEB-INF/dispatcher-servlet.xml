@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="
+	   http://www.springframework.org/schema/beans 
+	   http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+       http://www.springframework.org/schema/context 
+       http://www.springframework.org/schema/context/spring-context-3.2.xsd
+       http://www.springframework.org/schema/aop 
+       http://www.springframework.org/schema/aop/spring-aop-3.2.xsd
+       http://www.springframework.org/schema/tx 
+	   http://www.springframework.org/schema/tx/spring-tx-3.2.xsd
+       http://www.springframework.org/schema/mvc 
+       http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd"
+	default-lazy-init="true">
+	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="viewClass" value="org.springframework.web.servlet.view.JstlView" />
+		<property name="prefix" value="/WEB-INF/views/" />
+		<property name="suffix" value=".jsp" />
+	</bean>
+	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<!-- 15M=15*1024*1024(B)=15728640 bytes -->
+		<property name="maxUploadSize" value="15728640" />
+	</bean>
+	<mvc:annotation-driven validator="validatorFactoryBean" conversion-service="conversionService2">
+		<mvc:message-converters register-defaults="true">
+			<bean class="org.springframework.http.converter.StringHttpMessageConverter">
+				<constructor-arg value="UTF-8" />
+			</bean>
+			<bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+				<property name="objectMapper" ref="objectMapper" />
+			</bean>
+		</mvc:message-converters>
+	</mvc:annotation-driven>
+	<bean id="localeResolver" class="org.springframework.web.servlet.i18n.CookieLocaleResolver">
+		<property name="cookieMaxAge" value="604800" />
+		<property name="defaultLocale" value="zh_CN" />
+		<property name="cookieName" value="language"></property>
+	</bean>
+	<bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+		<property name="basename" value="classpath:validateMessageSource" />
+		<property name="defaultEncoding" value="UTF-8" />
+		<property name="cacheSeconds" value="120" />
+		<property name="useCodeAsDefaultMessage" value="false" />
+	</bean>
+	<!--hibernatevalidator -->
+	<bean id="validatorFactoryBean" class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean">
+		<property name="providerClass" value="org.hibernate.validator.HibernateValidator" />
+		<property name="validationMessageSource" ref="messageSource" />
+	</bean>
+	<!--类型转换 -->
+	<bean id="conversionService2" class="org.springframework.context.support.ConversionServiceFactoryBean">
+		<property name="converters">
+			<bean class="com.basics.support.converters.DateConverter">
+				<property name="parttens">
+					<list>
+						<value>yyyy-MM-dd HH:mm:ss</value>
+						<value>yyyy/MM/dd HH:mm:ss</value>
+						<value>yyyy年MM月dd日 HH:mm:ss</value>
+					</list>
+				</property>
+			</bean>
+		</property>
+	</bean>
+	<!--支持在控制器类上增加注解来控制权限 -->
+	<mvc:interceptors>
+		<!--防止表单数据重复提交 -->
+		<mvc:interceptor>
+			<mvc:mapping path="/**" />
+			<bean class="com.basics.support.SameUrlDataInterceptor" />
+		</mvc:interceptor>
+
+		<bean class="com.basics.app.shiro.ShiroInterceptor" />
+		<bean id="localeChangeInterceptor" class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor">
+			<property name="paramName" value="lang" />
+		</bean>
+	</mvc:interceptors>
+
+	<bean class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
+		<property name="exceptionMappings">
+			<props>
+				<prop key="org.apache.shiro.authz.AuthorizationException">error/403</prop>
+			</props>
+		</property>
+	</bean>
+	<context:component-scan base-package="com.basics" use-default-filters="false">
+		<context:include-filter type="annotation" expression="org.springframework.stereotype.Controller" />
+	</context:component-scan>
+	<import resource="classpath:com/basics/app/spring/spring-profile.xml" />
+
+	<!--*************** 支持aop **************** -->
+	<aop:aspectj-autoproxy proxy-target-class="true" />
+</beans>

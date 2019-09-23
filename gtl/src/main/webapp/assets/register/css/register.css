@@ -1,0 +1,99 @@
+/*默认样式*/
+* { margin: 0; padding: 0; font-family: 'microsoft yahei', "黑体", Verdana, Arial, Helvetica, sans-serif; }
+body { line-height: normal !important; }
+ul li { list-style: none; }
+a { text-decoration: none; }
+img { border: 0; }
+i{display: inline-block;}
+/*注册*/
+html,body{
+	height: 100%;
+	position: relative;
+}
+.register-bg{
+	position: relative;
+	width:100%;
+	height: 100%;
+	background: url(../img/register-bg.png);
+	background-size:cover;
+}
+.header{
+	position: relative;
+	width: 100%;
+	height: 1.08rem;
+	line-height: 1.08rem;
+	text-align: center;
+	color: #fff;
+	font-size: 0.36rem;
+}
+.i-back{
+	position: absolute;
+	background: url(../img/backregister.png);
+	background-size:cover ;
+	width: 0.17rem;
+	height: 0.32rem;
+	vertical-align: middle;
+	left: 0.22rem;
+	top:0.35rem;
+}
+.register-form{
+	background: #fff;
+	margin:0 0.22rem;
+	border-radius: 8px;
+	height: 7rem;
+	padding:0.68rem 0.2rem 0.88rem 0.49rem;
+	font-size: 0.26rem;
+}
+.form-div{
+	padding-bottom: 0.35rem;
+	border-bottom:1px solid #eee ;
+	margin-bottom: 0.35rem;
+}
+.form-div span{
+	display: inline-block;
+	width: 1.04rem;
+}
+.form-div label{
+	color:#333;
+}
+.form-div input{
+	color: #3F3F3F ;
+	border:none;
+	text-indent: 2em;
+	font-size: 0.26rem;
+}
+.btn-code{
+	width: 1.43rem;
+	height: 0.48rem;
+	line-height: 0.48rem;
+	background:#FF4155;
+	color:#fff;
+	font-size: 0.2rem;
+	border-radius:0.1rem;
+	border:none;
+	float: right;
+	margin-right: 0.29rem;
+}
+.code-input input{
+	width:3.38rem ;
+}
+.btn-submit{
+	width: 6.7rem;
+	height:0.9rem;
+	line-height: 0.9rem;
+	background:#FF4155;
+	color:#fff;
+	font-size: 0.36rem;
+	border-radius: 0.1rem;
+	border:none;
+	margin-left:-0.32rem;
+	margin-top: 0.88rem;
+}
+@media (max-width:700px ) {
+	.form-div span{
+		width: 1.15rem;
+	}
+	.form-div input{
+		text-indent: 0.8em;
+	}
+}

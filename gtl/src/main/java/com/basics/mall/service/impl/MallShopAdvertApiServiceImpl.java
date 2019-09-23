@@ -1,0 +1,652 @@
+package com.basics.mall.service.impl;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang.StringUtils;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
+
+import com.alibaba.fastjson.JSONObject;
+import com.basics.app.entity.AppImage;
+import com.basics.common.BaseApiService;
+import com.basics.common.Constant;
+import com.basics.common.DataItemResponse;
+import com.basics.common.DataPageComonResponse;
+import com.basics.common.DataPageListResponse;
+import com.basics.common.DataResponse;
+import com.basics.common.TokenIdRequest;
+import com.basics.common.TokenRequest;
+import com.basics.cu.entity.CuCustomerInfo;
+import com.basics.cu.entity.CuCustomerLogin;
+import com.basics.mall.controller.request.PushShopAdvert2Request;
+import com.basics.mall.controller.request.PushShopAdvertRequest;
+import com.basics.mall.controller.request.SelectShopAdvertRequest;
+import com.basics.mall.controller.response.OwnShopAdvertResponse;
+import com.basics.mall.controller.response.ShopAdvertInfoResponse;
+import com.basics.mall.entity.MallShopAdvert;
+import com.basics.mall.entity.MallShopClassify;
+import com.basics.mall.service.MallShopAdvertApiService;
+import com.basics.support.CommonSupport;
+import com.basics.support.GuidUtils;
+import com.basics.support.MD5Util;
+import com.basics.support.PaginationSupport;
+import com.basics.support.QueryFilterBuilder;
+import com.basics.sys.entity.SysRule;
+
+import javax.servlet.http.HttpServletRequest;
+
+@Service
+@Transactional
+public class MallShopAdvertApiServiceImpl extends BaseApiService implements MallShopAdvertApiService {
+	
+	/**
+	 * 判断是否发布商圈
+	 */
+	@Override
+	public DataItemResponse<JSONObject> doCheckShopAdvert(TokenRequest request, HttpServletRequest req) {
+		DataItemResponse<JSONObject> response = new DataItemResponse<>();
+		JSONObject data = new JSONObject();
+		// 判断token是否存在
+		CuCustomerLogin user = checkToken(request.getToken());
+		if (null == user) {
+			response.onHandleFail(getMessage(req, "impl.doModifyLoginPass.token.invalid"));
+			response.setStatus(2);
+			return response;
+		}
+		if (!checkCustomerStatus(user)) {
+			response.onHandleFail(getMessage(req, "impl.doLogin.user.freeze"));
+			return response;
+		}
+		
+		MallShopAdvert advert = mallShopAdvertDao.queryOne(new QueryFilterBuilder().put("customerId", user.getId()).build());
+		if(null != advert) {
+			data.put("status", advert.getApplyStatus());
+			data.put("context", advert.getApplyContext());
+		} else {
+			data.put("status", Constant.STATE_NO);
+			data.put("context", "");
+		}
+		response.setItem(data);
+		response.onHandleSuccess();
+		return response;
+	}
+	
+	
+	/**
+	 * 获得商圈分类
+	 */
+	@Override
+	public DataItemResponse<List<MallShopClassify>> doGetShopClassify(TokenRequest request, HttpServletRequest req) {
+		DataItemResponse<List<MallShopClassify>> response = new DataItemResponse<>();
+		// 判断token是否存在
+		CuCustomerLogin user = checkToken(request.getToken());
+		if (null == user) {
+			response.onHandleFail(getMessage(req, "impl.doModifyLoginPass.token.invalid"));
+			response.setStatus(2);
+			return response;
+		}
+		if (!checkCustomerStatus(user)) {
+			response.onHandleFail(getMessage(req, "impl.doLogin.user.freeze"));
+			return response;
+		}
+		CuCustomerInfo info = cuCustomerInfoDao.get(user.getId());
+		List<MallShopClassify> data = mallShopClassifyDao.query(new QueryFilterBuilder().put("countryId", info.getCountryId()).orderBy("mallShopClassify.CLASSIFY_SORT ASC").build());
+		if(CollectionUtils.isNotEmpty(data)){
+			response.setItem(data);
+		}
+		response.onHandleSuccess();
+		return response;
+	}
+
+	/**
+	 * 发布商圈信息
+	 */
+	@Override
+	public DataResponse doPushShopAdvert(PushShopAdvertRequest request, HttpServletRequest req) {
+		DataResponse response = new DataResponse();
+		// 判断token是否存在
+		CuCustomerLogin user = checkToken(request.getToken());
+		if (null == user) {
+			response.onHandleFail(getMessage(req, "impl.doModifyLoginPass.token.invalid"));
+			response.setStatus(2);
+			return response;
+		}
+		if (!checkCustomerStatus(user)) {
+			response.onHandleFail(getMessage(req, "impl.doLogin.user.freeze"));
+			return response;
+		}
+		CuCustomerInfo info = cuCustomerInfoDao.get(user.getId());
+		
+		MallShopAdvert advert = mallShopAdvertDao.queryOne(new QueryFilterBuilder().put("customerId", user.getId()).build());
+		if(null != advert) {
+			if(Constant.APPLY_STATUS_3 != advert.getApplyStatus()) {
+                response.onHandleFail(getMessage(req, "mallShopAdvertApiServiceImpl.doPushShopAdvert.advert.agent"));
+				return response;
+			}
+			mallShopAdvertDao.delete(advert);
+		} 
+		advert = new MallShopAdvert();
+		advert.setId(user.getId());
+		advert.setCustomerId(user.getId());
+		advert.setAdvertName(request.getAdvertName());
+		advert.setAdvertContext(request.getAdvertContext());
+		advert.setAdvertClassifyId(request.getAdvertClassifyId());
+		advert.setAdvertPhone(request.getAdvertPhone());
+		advert.setAdvertAddress(request.getAdvertAddress());
+		advert.setAdvertLongitude(request.getAdvertLongitude());
+		advert.setAdvertLatitude(request.getAdvertLatitude());
+		advert.setAddressProvince(request.getAddressProvince());
+		advert.setAddressCity(request.getAddressCity());
+		advert.setAddressArea(request.getAddressArea());
+		advert.setCountryId(info.getCountryId());
+		advert.setApplyStatus(Constant.APPLY_STATUS_1);
+		advert.setCreateTime(new Date());
+		
+		String path = "advert/";
+		String fileName = "";
+		if (null != request.getAdvertImage() && !request.getAdvertImage().isEmpty()) {
+			fileName = request.getAdvertImage().getOriginalFilename();
+			path += GuidUtils.generateSimpleGuid() + MD5Util.random(6) + fileName.substring(fileName.lastIndexOf("."));
+			try {
+				this.baseFileStoreService.write(path, request.getAdvertImage().getInputStream());
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			String url = this.baseFileStoreService.getInternetUrl(path);
+			advert.setAdvertImage(url);
+		} 
+		
+		if(null == request.getLicence() || request.getLicence().isEmpty()) {
+			SysRule rule = sysRuleDao.queryOne(new QueryFilterBuilder().build());
+			CommonSupport.checkNotNull(rule, "系统配置不能为空");
+			if(Constant.STATE_YES == rule.getNeedUploadLicence()) {
+                response.onHandleFail(getMessage(req, "mallShopAdvertApiServiceImpl.doPushShopAdvert.licence.empty"));
+				return response;
+			}
+		} else {
+			fileName = request.getLicence().getOriginalFilename();
+			path += GuidUtils.generateSimpleGuid() + MD5Util.random(6) + fileName.substring(fileName.lastIndexOf("."));
+			try {
+				this.baseFileStoreService.write(path, request.getLicence().getInputStream());
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			String url = this.baseFileStoreService.getInternetUrl(path);
+			advert.setShopLicence(url);
+		}
+		
+		if (null != request.getShopVideo() && !request.getShopVideo().isEmpty()) {
+			fileName = request.getShopVideo().getOriginalFilename();
+			path += GuidUtils.generateSimpleGuid() + MD5Util.random(6) + fileName.substring(fileName.lastIndexOf("."));
+			try {
+				this.baseFileStoreService.write(path, request.getShopVideo().getInputStream());
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			String url = this.baseFileStoreService.getInternetUrl(path);
+			advert.setShopVideo(url);
+		}
+		
+		if(CollectionUtils.isNotEmpty(request.getImages())) {
+			int sort = 1;
+			for (MultipartFile file : request.getImages()) {
+				AppImage appImage = null;
+				if (!file.isEmpty()) {
+					path = "advert/";
+					fileName = file.getOriginalFilename();
+					path += GuidUtils.generateSimpleGuid() + MD5Util.random(6) + fileName.substring(fileName.lastIndexOf("."));
+					try {
+						this.baseFileStoreService.write(path, file.getInputStream());
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+					String url = this.baseFileStoreService.getInternetUrl(path);
+					appImage = new AppImage();
+					appImage.setOwnerId(advert.getId());
+					appImage.setOwnerClass("MallShopAdvert");
+					appImage.setUrl(url);
+					appImage.setOrder(sort++);
+					appImageDao.save(appImage);
+				}
+			}
+		}
+		
+		mallShopAdvertDao.save(advert);
+		response.onHandleSuccess();
+		return response;
+	}
+	
+	/**
+	 * 发布商圈信息2
+	 */
+	@Override
+	public DataResponse doPushShopAdvert2(PushShopAdvert2Request request, HttpServletRequest req) {
+		DataResponse response = new DataResponse();
+		// 判断token是否存在
+		CuCustomerLogin user = checkToken(request.getToken());
+		if (null == user) {
+			response.onHandleFail(getMessage(req, "impl.doModifyLoginPass.token.invalid"));
+			response.setStatus(2);
+			return response;
+		}
+		if (!checkCustomerStatus(user)) {
+			response.onHandleFail(getMessage(req, "impl.doLogin.user.freeze"));
+			return response;
+		}
+		CuCustomerInfo info = cuCustomerInfoDao.get(user.getId());
+		
+		MallShopAdvert advert = mallShopAdvertDao.queryOne(new QueryFilterBuilder().put("customerId", user.getId()).build());
+		if(null != advert) {
+			if(Constant.APPLY_STATUS_3 != advert.getApplyStatus()) {
+                response.onHandleFail(getMessage(req, "mallShopAdvertApiServiceImpl.doPushShopAdvert.licence.empty"));
+				return response;
+			}
+			mallShopAdvertDao.delete(advert);
+		} 
+		advert = new MallShopAdvert();
+		advert.setId(user.getId());
+		advert.setCustomerId(user.getId());
+		advert.setAdvertName(request.getAdvertName());
+		advert.setAdvertContext(request.getAdvertContext());
+		advert.setAdvertClassifyId(request.getAdvertClassifyId());
+		advert.setAdvertPhone(request.getAdvertPhone());
+		advert.setAdvertAddress(request.getAdvertAddress());
+		advert.setAdvertLongitude(request.getAdvertLongitude());
+		advert.setAdvertLatitude(request.getAdvertLatitude());
+		advert.setAddressProvince(request.getAddressProvince());
+		advert.setAddressCity(request.getAddressCity());
+		advert.setAddressArea(request.getAddressArea());
+		advert.setCountryId(info.getCountryId());
+		advert.setApplyStatus(Constant.APPLY_STATUS_1);
+		advert.setCreateTime(new Date());
+		
+		advert.setAdvertImage(request.getAdvertImage());
+		
+		if(StringUtils.isEmpty(request.getLicence())) {
+			SysRule rule = sysRuleDao.queryOne(new QueryFilterBuilder().build());
+			CommonSupport.checkNotNull(rule, "系统配置不能为空");
+			if(Constant.STATE_YES == rule.getNeedUploadLicence()) {
+                response.onHandleFail(getMessage(req, "mallShopAdvertApiServiceImpl.doPushShopAdvert.licence.empty"));
+				return response;
+			}
+		} else {
+			advert.setShopLicence(request.getLicence());
+		}
+		
+		if (StringUtils.isNotEmpty(request.getShopVideo())) {
+			advert.setShopVideo(request.getShopVideo());
+		}
+		
+		if(StringUtils.isNotEmpty(request.getImages())) {
+			String[] imgs = request.getImages().split(",");
+			int sort = 1;
+			for (String url : imgs) {
+				AppImage appImage = new AppImage();
+				appImage.setOwnerId(advert.getId());
+				appImage.setOwnerClass("MallShopAdvert");
+				appImage.setUrl(url);
+				appImage.setOrder(sort++);
+				appImageDao.save(appImage);
+			}
+		}
+		mallShopAdvertDao.save(advert);
+		response.onHandleSuccess();
+		return response;
+	}
+	
+	/**
+	 * 编辑商家信息
+	 */
+	@Override
+	public DataResponse doUpdateShopAdvert(PushShopAdvertRequest request, HttpServletRequest req) {
+		DataResponse response = new DataResponse();
+		// 判断token是否存在
+		CuCustomerLogin user = checkToken(request.getToken());
+		if (null == user) {
+			response.onHandleFail(getMessage(req, "impl.doModifyLoginPass.token.invalid"));
+			response.setStatus(2);
+			return response;
+		}
+		if (!checkCustomerStatus(user)) {
+			response.onHandleFail(getMessage(req, "impl.doLogin.user.freeze"));
+			return response;
+		}
+		MallShopAdvert advert = mallShopAdvertDao.queryOne(new QueryFilterBuilder().put("customerId", user.getId()).put("applyStatus", Constant.APPLY_STATUS_2).build());
+		if (null == advert) {
+            response.onHandleFail(getMessage(req, "mallShopAdvertApiServiceImpl.doUpdateShopAdvert.info.error"));
+			return response;
+		}
+		
+		advert.setAdvertName(request.getAdvertName());
+		advert.setAdvertContext(request.getAdvertContext());
+		
+		String path = "advert/";
+		String fileName = "";
+		if (null != request.getAdvertImage() && !request.getAdvertImage().isEmpty()) {
+			fileName = request.getAdvertImage().getOriginalFilename();
+			path += GuidUtils.generateSimpleGuid() + MD5Util.random(6) + fileName.substring(fileName.lastIndexOf("."));
+			try {
+				this.baseFileStoreService.write(path, request.getAdvertImage().getInputStream());
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			String url = this.baseFileStoreService.getInternetUrl(path);
+			advert.setAdvertImage(url);
+		} else {
+			advert.setAdvertImage(null);
+		}
+		
+		if(null == request.getLicence() || request.getLicence().isEmpty()) {
+			SysRule rule = sysRuleDao.queryOne(new QueryFilterBuilder().build());
+			CommonSupport.checkNotNull(rule, "系统配置不能为空");
+			if(Constant.STATE_YES == rule.getNeedUploadLicence()) {
+                response.onHandleFail(getMessage(req, "mallShopAdvertApiServiceImpl.doPushShopAdvert.licence.empty"));
+				return response;
+			}
+			advert.setShopLicence(null);
+		} else {
+			fileName = request.getLicence().getOriginalFilename();
+			path += GuidUtils.generateSimpleGuid() + MD5Util.random(6) + fileName.substring(fileName.lastIndexOf("."));
+			try {
+				this.baseFileStoreService.write(path, request.getLicence().getInputStream());
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			String url = this.baseFileStoreService.getInternetUrl(path);
+			advert.setShopLicence(url);
+		}
+		
+		if (null != request.getShopVideo() && !request.getShopVideo().isEmpty()) {
+			fileName = request.getShopVideo().getOriginalFilename();
+			path += GuidUtils.generateSimpleGuid() + MD5Util.random(6) + fileName.substring(fileName.lastIndexOf("."));
+			try {
+				this.baseFileStoreService.write(path, request.getShopVideo().getInputStream());
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			String url = this.baseFileStoreService.getInternetUrl(path);
+			advert.setShopVideo(url);
+		} else {
+			advert.setShopVideo(null);
+		}
+		advert.setAdvertClassifyId(request.getAdvertClassifyId());
+		advert.setAdvertPhone(request.getAdvertPhone());
+		advert.setAdvertAddress(request.getAdvertAddress());
+		advert.setAdvertLongitude(request.getAdvertLongitude());
+		advert.setAdvertLatitude(request.getAdvertLatitude());
+		advert.setAddressProvince(request.getAddressProvince());
+		advert.setAddressCity(request.getAddressCity());
+		advert.setAddressArea(request.getAddressArea());
+		if(CollectionUtils.isNotEmpty(request.getImages())) {
+			Map<String, Object> map = new HashMap<String, Object>();
+			map.put("ownerId", advert.getId());
+			map.put("ownerClass", "MallShopAdvert");
+			appImageDao.deleteAll(map);
+			int sort = 1;
+			for (MultipartFile file : request.getImages()) {
+				AppImage appImage = null;
+				if (!file.isEmpty()) {
+					path = "advert/";
+					fileName = file.getOriginalFilename();
+					path += GuidUtils.generateSimpleGuid() + MD5Util.random(6) + fileName.substring(fileName.lastIndexOf("."));
+					try {
+						this.baseFileStoreService.write(path, file.getInputStream());
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+					String url = this.baseFileStoreService.getInternetUrl(path);
+					appImage = new AppImage();
+					appImage.setOwnerId(advert.getId());
+					appImage.setOwnerClass("MallShopAdvert");
+					appImage.setUrl(url);
+					appImage.setOrder(sort++);
+					appImageDao.save(appImage);
+				}
+			}
+		}
+		
+		mallShopAdvertDao.updateExtend(advert, "updateAdvert");
+		response.onHandleSuccess();
+		return response;
+		
+		
+		
+	}
+	
+	/**
+	 * 编辑商家信息2
+	 */
+	@Override
+	public DataResponse doUpdateShopAdvert2(PushShopAdvert2Request request, HttpServletRequest req) {
+		DataResponse response = new DataResponse();
+		// 判断token是否存在
+		CuCustomerLogin user = checkToken(request.getToken());
+		if (null == user) {
+			response.onHandleFail(getMessage(req, "impl.doModifyLoginPass.token.invalid"));
+			response.setStatus(2);
+			return response;
+		}
+		if (!checkCustomerStatus(user)) {
+			response.onHandleFail(getMessage(req, "impl.doLogin.user.freeze"));
+			return response;
+		}
+		MallShopAdvert advert = mallShopAdvertDao.queryOne(new QueryFilterBuilder().put("customerId", user.getId()).put("applyStatus", Constant.APPLY_STATUS_2).build());
+		if (null == advert) {
+            response.onHandleFail(getMessage(req, "mallShopAdvertApiServiceImpl.doUpdateShopAdvert.info.error"));
+			return response;
+		}
+		
+		advert.setAdvertName(request.getAdvertName());
+		advert.setAdvertContext(request.getAdvertContext());
+		
+		advert.setAdvertImage(request.getAdvertImage());
+		
+		if(StringUtils.isEmpty(request.getLicence())) {
+			SysRule rule = sysRuleDao.queryOne(new QueryFilterBuilder().build());
+			CommonSupport.checkNotNull(rule, "系统配置不能为空");
+			if(Constant.STATE_YES == rule.getNeedUploadLicence()) {
+                response.onHandleFail(getMessage(req, "mallShopAdvertApiServiceImpl.doPushShopAdvert.licence.empty"));
+				return response;
+			}
+		} else {
+			advert.setShopLicence(request.getLicence());
+		}
+		
+		if (StringUtils.isNotEmpty(request.getShopVideo())) {
+			advert.setShopVideo(request.getShopVideo());
+		}
+		
+		
+		advert.setAdvertClassifyId(request.getAdvertClassifyId());
+		advert.setAdvertPhone(request.getAdvertPhone());
+		advert.setAdvertAddress(request.getAdvertAddress());
+		advert.setAdvertLongitude(request.getAdvertLongitude());
+		advert.setAdvertLatitude(request.getAdvertLatitude());
+		advert.setAddressProvince(request.getAddressProvince());
+		advert.setAddressCity(request.getAddressCity());
+		advert.setAddressArea(request.getAddressArea());
+		
+		if(StringUtils.isNotBlank(request.getImages())) {
+			Map<String, Object> map = new HashMap<String, Object>();
+			map.put("ownerId", advert.getId());
+			map.put("ownerClass", "MallShopAdvert");
+			appImageDao.deleteAll(map);
+			String[] imgs = request.getImages().split(",");
+			int sort = 1;
+			for (String url : imgs) {
+				AppImage appImage = new AppImage();
+				appImage.setOwnerId(advert.getId());
+				appImage.setOwnerClass("MallShopAdvert");
+				appImage.setUrl(url);
+				appImage.setOrder(sort++);
+				appImageDao.save(appImage);
+			}
+		}
+		
+		mallShopAdvertDao.updateExtend(advert, "updateAdvert");
+		response.onHandleSuccess();
+		return response;
+		
+		
+		
+	}
+	
+	/**
+	 * 删除商圈信息
+	 */
+	@Override
+	public DataResponse doDelShopAdvert(TokenIdRequest request, HttpServletRequest req) {
+		DataResponse response = new DataResponse();
+		// 判断token是否存在
+		CuCustomerLogin user = checkToken(request.getToken());
+		if (null == user) {
+			response.onHandleFail(getMessage(req, "impl.doModifyLoginPass.token.invalid"));
+			response.setStatus(2);
+			return response;
+		}
+		if (!checkCustomerStatus(user)) {
+			response.onHandleFail(getMessage(req, "impl.doLogin.user.freeze"));
+			return response;
+		}
+		MallShopAdvert advert = mallShopAdvertDao.queryOne(new QueryFilterBuilder().put("id", request.getId()).put("customerId", user.getId()).build());
+		if (null == advert) {
+            response.onHandleFail(getMessage(req, "mallShopAdvertApiServiceImpl.doUpdateShopAdvert.nonexistent"));
+			return response;
+		}
+		Map<String, Object> paramMap = new HashMap<>();
+		paramMap.put("ownerId", advert.getId());
+		paramMap.put("ownerClass", "MallShopAdvert");
+		appImageDao.deleteAll(paramMap);
+		mallShopAdvertDao.delete(advert);
+		response.onHandleSuccess();
+		return response;
+	}
+	
+	/**
+	 * 商家信息列表查询
+	 */
+	@Override
+	public DataPageComonResponse<MallShopAdvert> doPushShopAdvert(SelectShopAdvertRequest request, HttpServletRequest req) {
+		DataPageComonResponse<MallShopAdvert> response = new DataPageComonResponse<>();
+		// 判断token是否存在
+		CuCustomerLogin user = checkToken(request.getToken());
+		if (null == user) {
+			response.onHandleFail(getMessage(req, "impl.doModifyLoginPass.token.invalid"));
+			response.setStatus(2);
+			return response;
+		}
+		if (!checkCustomerStatus(user)) {
+			response.onHandleFail(getMessage(req, "impl.doLogin.user.freeze"));
+			return response;
+		}
+		Map<String, Object> params = new HashMap<>();
+		/*if(StringUtils.isNotBlank(request.getAdCode())) {
+			List<AppArea> list = appAreaDao.queryExtend(new QueryFilterBuilder().put("id", request.getAdCode()).build(), "queryParentAreaByCode");
+			if(CollectionUtils.isNotEmpty(list)){
+				params.put("addressCity", list.get(0).getId());
+			}
+		}*/
+		if (StringUtils.isNotBlank(request.getAdvertClassifyId())) {
+			params.put("advertClassifyId", request.getAdvertClassifyId());
+		}
+		if (StringUtils.isNotBlank(request.getAdvertName())) {
+			params.put("likeAdvertName", request.getAdvertName());
+		}
+		CuCustomerInfo info = cuCustomerInfoDao.get(user.getId());
+		params.put("countryId", info.getCountryId());
+		params.put("applyStatus", Constant.APPLY_STATUS_2);
+		params.put("flagDel", Constant.STATE_NO);
+		PaginationSupport paginationSupport = mallShopAdvertDao.queryPagination(params, request.getPageNo(), request.getPageSize());
+		if (null != paginationSupport && CollectionUtils.isNotEmpty(paginationSupport.getItems())) {
+			DataPageListResponse<MallShopAdvert> data = new DataPageListResponse<>();
+			data.setItems(paginationSupport.getItems());
+			data.setPageCount(paginationSupport.getPageCount());
+			data.setTotalCount(paginationSupport.getTotalCount());
+			response.setData(data);
+		}
+		response.onHandleSuccess();
+		return response;
+	}
+	
+	/**
+	 * 商圈详情
+	 */
+	@Override
+	public DataItemResponse<ShopAdvertInfoResponse> doSelectShopAdvertInfo(TokenIdRequest request, HttpServletRequest req) {
+		DataItemResponse<ShopAdvertInfoResponse> response = new DataItemResponse<>();
+		// 判断token是否存在
+		CuCustomerLogin user = checkToken(request.getToken());
+		if (null == user) {
+			response.onHandleFail(getMessage(req, "impl.doModifyLoginPass.token.invalid"));
+			response.setStatus(2);
+			return response;
+		}
+		if (!checkCustomerStatus(user)) {
+			response.onHandleFail(getMessage(req, "impl.doLogin.user.freeze"));
+			return response;
+		}
+		Map<String, Object> params = new HashMap<>();
+		params.put("id", request.getId());
+		ShopAdvertInfoResponse data = mallShopAdvertDao.getExtend(params, "queryShopAdvertInfo");
+		if (null != data) {
+			response.setItem(data);
+			List<AppImage> appImages = appImageDao.listImgsByClassAndId("MallShopAdvert", data.getId());
+			if (CollectionUtils.isNotEmpty(appImages)) {
+				List<String> imgUrs = new ArrayList<>();
+				imgUrs.add(data.getAdvertImage());
+				for (AppImage appImage : appImages) {
+					imgUrs.add(appImage.getUrl());
+				}
+				data.setImages(imgUrs);
+			}
+		}
+		response.onHandleSuccess();
+		return response;
+	}
+	
+	/**
+	 * 查询自己商圈
+	 */
+	@Override
+	public DataItemResponse<OwnShopAdvertResponse> doOwnShopAdvert(TokenRequest request, HttpServletRequest req) {
+		DataItemResponse<OwnShopAdvertResponse> response = new DataItemResponse<>();
+		OwnShopAdvertResponse data = new OwnShopAdvertResponse();
+		// 判断token是否存在
+		CuCustomerLogin user = checkToken(request.getToken());
+		if (null == user) {
+			response.onHandleFail(getMessage(req, "impl.doModifyLoginPass.token.invalid"));
+			response.setStatus(2);
+			return response;
+		}
+		if (!checkCustomerStatus(user)) {
+			response.onHandleFail(getMessage(req, "impl.doLogin.user.freeze"));
+			return response;
+		}
+		
+		MallShopAdvert advert = mallShopAdvertDao.queryOne(new QueryFilterBuilder().put("customerId", user.getId()).put("applyStatus", Constant.APPLY_STATUS_2).build());
+		if(null == advert) {
+            response.onHandleFail(getMessage(req, "mallShopAdvertApiServiceImpl.doUpdateShopAdvert.notRelease"));
+			return response;
+		}
+		data.setMallShopAdvert(advert);
+		List<AppImage> appImages = appImageDao.listImgsByClassAndId("MallShopAdvert", advert.getId());
+		if (CollectionUtils.isNotEmpty(appImages)) {
+			List<String> imgUrs = new ArrayList<>();
+			for (AppImage appImage : appImages) {
+				imgUrs.add(appImage.getUrl());
+			}
+			data.setImgs(imgUrs);
+		}
+		response.setItem(data);
+		response.onHandleSuccess();
+		return response;
+	}
+
+}

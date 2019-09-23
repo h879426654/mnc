@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC
+ "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.basics.sys.entity.SysTurntable">
+ <cache type="com.basics.support.mybatis.CacheAdapter"/>
+ <delete id="delete" parameterType="com.basics.sys.entity.SysTurntable">
+  <![CDATA[ DELETE FROM sys_turntable WHERE  TURNTABLE_ID = #{id} ]]>
+ </delete>
+ <insert id="insert" parameterType="com.basics.sys.entity.SysTurntable">
+  <![CDATA[  INSERT INTO sys_turntable (]]>
+  <trim prefix="" suffixOverrides=",">
+   <if test="id!=null">TURNTABLE_ID,</if>
+   <if test="rewardType!=null">REWARD_TYPE,</if>
+   <if test="rewardNum!=null">REWARD_NUM,</if>
+   <if test="rewardRate!=null">REWARD_RATE,</if>
+   <if test="rewardSort!=null">REWARD_SORT,</if>
+   <if test="versionNum!=null">VERSION_NUM,</if>
+   <if test="flagDel!=null">FLAG_DEL,</if>
+   <if test="createTime!=null">CREATE_TIME,</if>
+   <if test="createUser!=null">CREATE_USER,</if>
+   <if test="modifyUser!=null">MODIFY_USER,</if>
+   <if test="modifyTime!=null">MODIFY_TIME,</if>
+  </trim>
+  <![CDATA[)VALUES(]]>
+  <trim prefix="" suffixOverrides=",">
+   <if test="id!=null">#{id},</if>
+   <if test="rewardType!=null">#{rewardType},</if>
+   <if test="rewardNum!=null">#{rewardNum},</if>
+   <if test="rewardRate!=null">#{rewardRate},</if>
+   <if test="rewardSort!=null">#{rewardSort},</if>
+   <if test="versionNum!=null">#{versionNum},</if>
+   <if test="flagDel!=null">#{flagDel},</if>
+   <if test="createTime!=null">#{createTime},</if>
+   <if test="createUser!=null">#{createUser},</if>
+   <if test="modifyUser!=null">#{modifyUser},</if>
+   <if test="modifyTime!=null">#{modifyTime},</if>
+  </trim>
+  <![CDATA[)]]>
+ </insert>
+ <update id="update" parameterType="com.basics.sys.entity.SysTurntable">
+  <![CDATA[ UPDATE sys_turntable ]]>
+  <trim prefix="SET" suffixOverrides=",">
+  <if test="id!=null">TURNTABLE_ID = #{id},</if>
+  <if test="rewardType!=null">REWARD_TYPE = #{rewardType},</if>
+  <if test="rewardNum!=null">REWARD_NUM = #{rewardNum},</if>
+  <if test="rewardRate!=null">REWARD_RATE = #{rewardRate},</if>
+  <if test="rewardSort!=null">REWARD_SORT = #{rewardSort},</if>
+  <if test="versionNum!=null">VERSION_NUM = #{versionNum},</if>
+  <if test="flagDel!=null">FLAG_DEL = #{flagDel},</if>
+  <if test="createTime!=null">CREATE_TIME = #{createTime},</if>
+  <if test="createUser!=null">CREATE_USER = #{createUser},</if>
+  <if test="modifyUser!=null">MODIFY_USER = #{modifyUser},</if>
+  <if test="modifyTime!=null">MODIFY_TIME = #{modifyTime},</if>
+  </trim>
+  <![CDATA[ WHERE  TURNTABLE_ID = #{id}   ]]>
+ </update>
+ <sql id="condition">
+  <trim prefix="WHERE" prefixOverrides="AND |OR">
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(id)">
+   <![CDATA[ AND sysTurntable.TURNTABLE_ID = #{id}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(rewardType)">
+   <![CDATA[ AND sysTurntable.REWARD_TYPE = #{rewardType}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(rewardNum)">
+   <![CDATA[ AND sysTurntable.REWARD_NUM = #{rewardNum}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(rewardRate)">
+   <![CDATA[ AND sysTurntable.REWARD_RATE = #{rewardRate}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(rewardSort)">
+   <![CDATA[ AND sysTurntable.REWARD_SORT = #{rewardSort}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(versionNum)">
+   <![CDATA[ AND sysTurntable.VERSION_NUM = #{versionNum}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(flagDel)">
+   <![CDATA[ AND sysTurntable.FLAG_DEL = #{flagDel}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(createTime)">
+   <![CDATA[ AND sysTurntable.CREATE_TIME = #{createTime}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(createUser)">
+   <![CDATA[ AND sysTurntable.CREATE_USER = #{createUser}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(modifyUser)">
+   <![CDATA[ AND sysTurntable.MODIFY_USER = #{modifyUser}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(modifyTime)">
+   <![CDATA[ AND sysTurntable.MODIFY_TIME = #{modifyTime}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(rewardRateZero)">
+   <![CDATA[ AND sysTurntable.REWARD_RATE > #{rewardRateZero}    ]]>
+  </if>
+  </trim>
+ </sql>
+ <select id="query" parameterType="map" resultType="com.basics.sys.entity.SysTurntable">
+  <![CDATA[
+  SELECT
+  sysTurntable.TURNTABLE_ID "id",
+  sysTurntable.REWARD_TYPE "rewardType",
+  sysTurntable.REWARD_NUM "rewardNum",
+  sysTurntable.REWARD_RATE "rewardRate",
+  sysTurntable.REWARD_SORT "rewardSort",
+  sysTurntable.VERSION_NUM "versionNum",
+  sysTurntable.FLAG_DEL "flagDel",
+  sysTurntable.CREATE_TIME "createTime",
+  sysTurntable.CREATE_USER "createUser",
+  sysTurntable.MODIFY_USER "modifyUser",
+  sysTurntable.MODIFY_TIME "modifyTime",
+  appOption.OPTION_NAME "rewardTypeName"
+  FROM sys_turntable sysTurntable
+  LEFT OUTER JOIN app_option appOption ON appOption.OPTION_PARENT_ID = 'MONEY_TYPE' AND appOption.OPTION_CODE = sysTurntable.REWARD_TYPE
+  ]]>
+  <include refid="condition" />
+  <choose>
+   <when test="@org.apache.commons.lang.StringUtils@isNotEmpty(orderBy)"> ORDER BY ${orderBy}
+   </when>
+   <otherwise>
+    <!-- //TODO:ADD DEFAULT ORDER COLUMN OR DONOTHING! -->
+   </otherwise>
+  </choose>
+ </select>
+ <select id="count" parameterType="map" resultType="long">
+  <![CDATA[ SELECT COUNT(1) FROM sys_turntable sysTurntable]]>
+  <include refid="condition" />
+ </select>
+ <sql id="conditionDeleteAll">
+  <trim prefix="WHERE" prefixOverrides="AND |OR">
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(id)">
+   <![CDATA[ AND TURNTABLE_ID = #{id} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(rewardType)">
+   <![CDATA[ AND REWARD_TYPE = #{rewardType} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(rewardNum)">
+   <![CDATA[ AND REWARD_NUM = #{rewardNum} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(rewardRate)">
+   <![CDATA[ AND REWARD_RATE = #{rewardRate} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(rewardSort)">
+   <![CDATA[ AND REWARD_SORT = #{rewardSort} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(versionNum)">
+   <![CDATA[ AND VERSION_NUM = #{versionNum} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(flagDel)">
+   <![CDATA[ AND FLAG_DEL = #{flagDel} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(createTime)">
+   <![CDATA[ AND CREATE_TIME = #{createTime} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(createUser)">
+   <![CDATA[ AND CREATE_USER = #{createUser} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(modifyUser)">
+   <![CDATA[ AND MODIFY_USER = #{modifyUser} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(modifyTime)">
+   <![CDATA[ AND MODIFY_TIME = #{modifyTime} ]]>
+  </if>
+  </trim>
+ </sql>
+ <delete id="deleteAll" parameterType="map">
+  <![CDATA[DELETE FROM sys_turntable]]>
+  <include refid="conditionDeleteAll" />
+ </delete>
+</mapper>

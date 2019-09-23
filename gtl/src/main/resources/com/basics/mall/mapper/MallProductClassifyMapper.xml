@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC
+ "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.basics.mall.entity.MallProductClassify">
+ <cache type="com.basics.support.mybatis.CacheAdapter"/>
+ <delete id="delete" parameterType="com.basics.mall.entity.MallProductClassify">
+  <![CDATA[ DELETE FROM mall_product_classify WHERE  CLASSIFY_ID = #{id} ]]>
+ </delete>
+ <insert id="insert" parameterType="com.basics.mall.entity.MallProductClassify">
+  <![CDATA[  INSERT INTO mall_product_classify (]]>
+  <trim prefix="" suffixOverrides=",">
+   <if test="id!=null">CLASSIFY_ID,</if>
+   <if test="countryId!=null">COUNTRY_ID,</if>
+   <if test="classifyName!=null">CLASSIFY_NAME,</if>
+   <if test="classifyImg!=null">CLASSIFY_IMG,</if>
+   <if test="classifyParentId!=null">CLASSIFY_PARENT_ID,</if>
+   <if test="classifySort!=null">CLASSIFY_SORT,</if>
+   <if test="flagDel!=null">FLAG_DEL,</if>
+   <if test="createTime!=null">CREATE_TIME,</if>
+   <if test="createUser!=null">CREATE_USER,</if>
+   <if test="modifyUser!=null">MODIFY_USER,</if>
+   <if test="modifyDate!=null">MODIFY_DATE,</if>
+  </trim>
+  <![CDATA[)VALUES(]]>
+  <trim prefix="" suffixOverrides=",">
+   <if test="id!=null">#{id},</if>
+   <if test="countryId!=null">#{countryId},</if>
+   <if test="classifyName!=null">#{classifyName},</if>
+   <if test="classifyImg!=null">#{classifyImg},</if>
+   <if test="classifyParentId!=null">#{classifyParentId},</if>
+   <if test="classifySort!=null">#{classifySort},</if>
+   <if test="flagDel!=null">#{flagDel},</if>
+   <if test="createTime!=null">#{createTime},</if>
+   <if test="createUser!=null">#{createUser},</if>
+   <if test="modifyUser!=null">#{modifyUser},</if>
+   <if test="modifyDate!=null">#{modifyDate},</if>
+  </trim>
+  <![CDATA[)]]>
+ </insert>
+ <update id="update" parameterType="com.basics.mall.entity.MallProductClassify">
+  <![CDATA[ UPDATE mall_product_classify ]]>
+  <trim prefix="SET" suffixOverrides=",">
+  <if test="id!=null">CLASSIFY_ID = #{id},</if>
+  <if test="countryId!=null">COUNTRY_ID = #{countryId},</if>
+  <if test="classifyName!=null">CLASSIFY_NAME = #{classifyName},</if>
+  <if test="classifyImg!=null">CLASSIFY_IMG = #{classifyImg},</if>
+  <if test="classifyParentId!=null">CLASSIFY_PARENT_ID = #{classifyParentId},</if>
+  <if test="classifySort!=null">CLASSIFY_SORT = #{classifySort},</if>
+  <if test="flagDel!=null">FLAG_DEL = #{flagDel},</if>
+  <if test="createTime!=null">CREATE_TIME = #{createTime},</if>
+  <if test="createUser!=null">CREATE_USER = #{createUser},</if>
+  <if test="modifyUser!=null">MODIFY_USER = #{modifyUser},</if>
+  <if test="modifyDate!=null">MODIFY_DATE = #{modifyDate},</if>
+  </trim>
+  <![CDATA[ WHERE  CLASSIFY_ID = #{id}   ]]>
+ </update>
+ <sql id="condition">
+  <trim prefix="WHERE" prefixOverrides="AND |OR">
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(id)">
+   <![CDATA[ AND mallProductClassify.CLASSIFY_ID = #{id}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(countryId)">
+   <![CDATA[ AND mallProductClassify.COUNTRY_ID = #{countryId}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(classifyName)">
+   <![CDATA[ AND mallProductClassify.CLASSIFY_NAME = #{classifyName}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(classifyImg)">
+   <![CDATA[ AND mallProductClassify.CLASSIFY_IMG = #{classifyImg}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(classifyParentId)">
+   <![CDATA[ AND mallProductClassify.CLASSIFY_PARENT_ID = #{classifyParentId}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(classifySort)">
+   <![CDATA[ AND mallProductClassify.CLASSIFY_SORT = #{classifySort}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(flagDel)">
+   <![CDATA[ AND mallProductClassify.FLAG_DEL = #{flagDel}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(createTime)">
+   <![CDATA[ AND mallProductClassify.CREATE_TIME = #{createTime}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(createUser)">
+   <![CDATA[ AND mallProductClassify.CREATE_USER = #{createUser}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(modifyUser)">
+   <![CDATA[ AND mallProductClassify.MODIFY_USER = #{modifyUser}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(modifyDate)">
+   <![CDATA[ AND mallProductClassify.MODIFY_DATE = #{modifyDate}    ]]>
+  </if>
+   <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(productFirstClassify)">
+    <![CDATA[ AND mallProductClassify.CLASSIFY_PARENT_ID = #{productFirstClassify}    ]]>
+   </if>
+   <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(q)">
+    <![CDATA[ AND (
+			mallProductClassify.CLASSIFY_NAME LIKE CONCAT('%',#{q}, '%')
+	) ]]>
+   </if>
+  </trim>
+ </sql>
+ <select id="query" parameterType="map" resultType="com.basics.mall.entity.MallProductClassify">
+  <![CDATA[
+  SELECT
+  mallProductClassify.CLASSIFY_ID "id",
+  mallProductClassify.COUNTRY_ID "countryId",
+  mallProductClassify.CLASSIFY_NAME "classifyName",
+  mallProductClassify.CLASSIFY_IMG "classifyImg",
+  mallProductClassify.CLASSIFY_PARENT_ID "classifyParentId",
+  mallProductClassify.CLASSIFY_SORT "classifySort",
+  mallProductClassify.FLAG_DEL "flagDel",
+  mallProductClassify.CREATE_TIME "createTime",
+  mallProductClassify.CREATE_USER "createUser",
+  mallProductClassify.MODIFY_USER "modifyUser",
+  mallProductClassify.MODIFY_DATE "modifyDate",
+  parentClassify.CLASSIFY_NAME "classifyParentname",
+  country.COUNTRY_NAME "countryName"
+  FROM mall_product_classify mallProductClassify
+  LEFT OUTER JOIN mall_product_classify parentClassify  ON  parentClassify.CLASSIFY_ID = mallProductClassify.CLASSIFY_PARENT_ID
+  LEFT OUTER JOIN sys_country country ON country.COUNTRY_ID = mallProductClassify.COUNTRY_ID
+  ]]>
+  <include refid="condition" />
+  <choose>
+   <when test="@org.apache.commons.lang.StringUtils@isNotEmpty(orderBy)"> ORDER BY ${orderBy}
+   </when>
+   <otherwise>
+    <!-- //TODO:ADD DEFAULT ORDER COLUMN OR DONOTHING! -->
+   </otherwise>
+  </choose>
+ </select>
+ <select id="count" parameterType="map" resultType="long">
+  <![CDATA[ 
+  SELECT
+	COUNT(1)
+FROM
+	mall_product_classify mallProductClassify
+LEFT JOIN (
+	SELECT
+		a.CLASSIFY_ID "id",
+		a.CLASSIFY_NAME "classifyParentname"
+	FROM
+		mall_product_classify a
+) a ON a.id = mallProductClassify.CLASSIFY_PARENT_ID
+  ]]>
+  <include refid="condition" />
+ </select>
+ <sql id="conditionDeleteAll">
+  <trim prefix="WHERE" prefixOverrides="AND |OR">
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(id)">
+   <![CDATA[ AND CLASSIFY_ID = #{id} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(countryId)">
+   <![CDATA[ AND COUNTRY_ID = #{countryId} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(classifyName)">
+   <![CDATA[ AND CLASSIFY_NAME = #{classifyName} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(classifyImg)">
+   <![CDATA[ AND CLASSIFY_IMG = #{classifyImg} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(classifyParentId)">
+   <![CDATA[ AND CLASSIFY_PARENT_ID = #{classifyParentId} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(classifySort)">
+   <![CDATA[ AND CLASSIFY_SORT = #{classifySort} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(flagDel)">
+   <![CDATA[ AND FLAG_DEL = #{flagDel} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(createTime)">
+   <![CDATA[ AND CREATE_TIME = #{createTime} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(createUser)">
+   <![CDATA[ AND CREATE_USER = #{createUser} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(modifyUser)">
+   <![CDATA[ AND MODIFY_USER = #{modifyUser} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(modifyDate)">
+   <![CDATA[ AND MODIFY_DATE = #{modifyDate} ]]>
+  </if>
+  </trim>
+ </sql>
+ <delete id="deleteAll" parameterType="map">
+  <![CDATA[DELETE FROM mall_product_classify]]>
+  <include refid="conditionDeleteAll" />
+ </delete>
+</mapper>

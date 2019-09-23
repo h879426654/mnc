@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+ xmlns:p="http://www.springframework.org/schema/p"
+ xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+ <!--1
+  We use the combination of <context:annotation-config/> and RedisHttpSessionConfiguration because Spring Session does not yet provide XML Namespace
+  support (see gh-104). This creates a Spring Bean with the name of springSessionRepositoryFilter that implements Filter. The filter is what
+  is
+  in charge of replacing the HttpSession implementation to be backed by Spring Session. In this instance Spring Session is backed by Redis.
+ -->
+ <context:annotation-config />
+  <bean class="org.springframework.session.data.redis.config.annotation.web.http.RedisHttpSessionConfiguration" /> 
+ <!--2
+  We create a RedisConnectionFactory that connects Spring Session to the Redis Server. We configure the connection to connect to localhost on
+  the default port (6379) For more information on configuring Spring Data Redis
+ -->
+ <!-- 项目已经配置了RedisConnectionFactory,注释掉-->
+  <!-- <bean class="org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory" /> -->
+ 
+</beans>

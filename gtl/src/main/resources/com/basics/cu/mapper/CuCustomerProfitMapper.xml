@@ -1,0 +1,299 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC
+ "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.basics.cu.entity.CuCustomerProfit">
+ <cache type="com.basics.support.mybatis.CacheAdapter"/>
+ <delete id="delete" parameterType="com.basics.cu.entity.CuCustomerProfit">
+  <![CDATA[ DELETE FROM cu_customer_profit WHERE  PROFIT_ID = #{id} ]]>
+ </delete>
+ <insert id="insert" parameterType="com.basics.cu.entity.CuCustomerProfit">
+  <![CDATA[  INSERT INTO cu_customer_profit (]]>
+  <trim prefix="" suffixOverrides=",">
+   <if test="id!=null">PROFIT_ID,</if>
+   <if test="customerId!=null">CUSTOMER_ID,</if>
+   <if test="profitNum!=null">PROFIT_NUM,</if>
+   <if test="profitType!=null">PROFIT_TYPE,</if>
+   <if test="profitStatus!=null">PROFIT_STATUS,</if>
+   <if test="profitHavedTime!=null">PROFIT_HAVED_TIME,</if>
+   <if test="profitSource!=null">PROFIT_SOURCE,</if>
+   <if test="profitRemark!=null">PROFIT_REMARK,</if>
+   <if test="versionNum!=null">VERSION_NUM,</if>
+   <if test="flagDel!=null">FLAG_DEL,</if>
+   <if test="createTime!=null">CREATE_TIME,</if>
+   <if test="createUser!=null">CREATE_USER,</if>
+   <if test="modifyUser!=null">MODIFY_USER,</if>
+   <if test="modifyTime!=null">MODIFY_TIME,</if>
+  </trim>
+  <![CDATA[)VALUES(]]>
+  <trim prefix="" suffixOverrides=",">
+   <if test="id!=null">#{id},</if>
+   <if test="customerId!=null">#{customerId},</if>
+   <if test="profitNum!=null">#{profitNum},</if>
+   <if test="profitType!=null">#{profitType},</if>
+   <if test="profitStatus!=null">#{profitStatus},</if>
+   <if test="profitHavedTime!=null">#{profitHavedTime},</if>
+   <if test="profitSource!=null">#{profitSource},</if>
+   <if test="profitRemark!=null">#{profitRemark},</if>
+   <if test="versionNum!=null">#{versionNum},</if>
+   <if test="flagDel!=null">#{flagDel},</if>
+   <if test="createTime!=null">#{createTime},</if>
+   <if test="createUser!=null">#{createUser},</if>
+   <if test="modifyUser!=null">#{modifyUser},</if>
+   <if test="modifyTime!=null">#{modifyTime},</if>
+  </trim>
+  <![CDATA[)]]>
+ </insert>
+ <update id="update" parameterType="com.basics.cu.entity.CuCustomerProfit">
+  <![CDATA[ UPDATE cu_customer_profit ]]>
+  <trim prefix="SET" suffixOverrides=",">
+  <if test="id!=null">PROFIT_ID = #{id},</if>
+  <if test="customerId!=null">CUSTOMER_ID = #{customerId},</if>
+  <if test="profitNum!=null">PROFIT_NUM = #{profitNum},</if>
+  <if test="profitType!=null">PROFIT_TYPE = #{profitType},</if>
+  <if test="profitStatus!=null">PROFIT_STATUS = #{profitStatus},</if>
+  <if test="profitHavedTime!=null">PROFIT_HAVED_TIME = #{profitHavedTime},</if>
+  <if test="profitSource!=null">PROFIT_SOURCE = #{profitSource},</if>
+  <if test="profitRemark!=null">PROFIT_REMARK = #{profitRemark},</if>
+  <if test="versionNum!=null">VERSION_NUM = #{versionNum},</if>
+  <if test="flagDel!=null">FLAG_DEL = #{flagDel},</if>
+  <if test="createTime!=null">CREATE_TIME = #{createTime},</if>
+  <if test="createUser!=null">CREATE_USER = #{createUser},</if>
+  <if test="modifyUser!=null">MODIFY_USER = #{modifyUser},</if>
+  <if test="modifyTime!=null">MODIFY_TIME = #{modifyTime},</if>
+  </trim>
+  <![CDATA[ WHERE  PROFIT_ID = #{id}   ]]>
+ </update>
+ <sql id="condition">
+  <trim prefix="WHERE" prefixOverrides="AND |OR">
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(id)">
+   <![CDATA[ AND cuCustomerProfit.PROFIT_ID = #{id}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(customerId)">
+   <![CDATA[ AND cuCustomerProfit.CUSTOMER_ID = #{customerId}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(profitNum)">
+   <![CDATA[ AND cuCustomerProfit.PROFIT_NUM = #{profitNum}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(profitType)">
+   <![CDATA[ AND cuCustomerProfit.PROFIT_TYPE = #{profitType}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(profitStatus)">
+   <![CDATA[ AND cuCustomerProfit.PROFIT_STATUS = #{profitStatus}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(profitHavedTime)">
+   <![CDATA[ AND cuCustomerProfit.PROFIT_HAVED_TIME = #{profitHavedTime}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(profitSource)">
+   <![CDATA[ AND cuCustomerProfit.PROFIT_SOURCE = #{profitSource}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(profitRemark)">
+   <![CDATA[ AND cuCustomerProfit.PROFIT_REMARK = #{profitRemark}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(versionNum)">
+   <![CDATA[ AND cuCustomerProfit.VERSION_NUM = #{versionNum}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(flagDel)">
+   <![CDATA[ AND cuCustomerProfit.FLAG_DEL = #{flagDel}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(createTime)">
+   <![CDATA[ AND cuCustomerProfit.CREATE_TIME = #{createTime}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(createUser)">
+   <![CDATA[ AND cuCustomerProfit.CREATE_USER = #{createUser}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(modifyUser)">
+   <![CDATA[ AND cuCustomerProfit.MODIFY_USER = #{modifyUser}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(modifyTime)">
+   <![CDATA[ AND cuCustomerProfit.MODIFY_TIME = #{modifyTime}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(nowDate)">
+   <![CDATA[ AND DATE_FORMAT(cuCustomerProfit.PROFIT_HAVED_TIME,'%Y-%m-%d') = DATE_FORMAT(#{nowDate},'%Y-%m-%d')    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(GTProfitNum)">
+   <![CDATA[ AND cuCustomerProfit.PROFIT_NUM >= #{GTProfitNum}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(q)">
+   <![CDATA[ AND cuCustomerProfit.CUSTOMER_ID = (SELECT CUSTOMER_ID FROM cu_customer_info WHERE CUSTOMER_PHONE = #{q})    ]]>
+  </if>
+  </trim>
+ </sql>
+ <select id="query" parameterType="map" resultType="com.basics.cu.entity.CuCustomerProfit">
+  <![CDATA[
+  SELECT
+  cuCustomerProfit.PROFIT_ID "id",
+  cuCustomerProfit.CUSTOMER_ID "customerId",
+  cuCustomerProfit.PROFIT_NUM "profitNum",
+  cuCustomerProfit.PROFIT_TYPE "profitType",
+  cuCustomerProfit.PROFIT_STATUS "profitStatus",
+  cuCustomerProfit.PROFIT_HAVED_TIME "profitHavedTime",
+  cuCustomerProfit.PROFIT_SOURCE "profitSource",
+  cuCustomerProfit.PROFIT_REMARK "profitRemark",
+  cuCustomerProfit.VERSION_NUM "versionNum",
+  cuCustomerProfit.FLAG_DEL "flagDel",
+  cuCustomerProfit.CREATE_TIME "createTime",
+  cuCustomerProfit.CREATE_USER "createUser",
+  cuCustomerProfit.MODIFY_USER "modifyUser",
+  cuCustomerProfit.MODIFY_TIME "modifyTime"
+  FROM cu_customer_profit cuCustomerProfit
+  ]]>
+  <include refid="condition" />
+  <choose>
+   <when test="@org.apache.commons.lang.StringUtils@isNotEmpty(orderBy)"> ORDER BY ${orderBy}
+   </when>
+   <otherwise>
+    <!-- //TODO:ADD DEFAULT ORDER COLUMN OR DONOTHING! -->
+   </otherwise>
+  </choose>
+ </select>
+ <select id="count" parameterType="map" resultType="long">
+  <![CDATA[ SELECT COUNT(1) FROM cu_customer_profit cuCustomerProfit]]>
+  <include refid="condition" />
+ </select>
+ <sql id="conditionDeleteAll">
+  <trim prefix="WHERE" prefixOverrides="AND |OR">
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(id)">
+   <![CDATA[ AND PROFIT_ID = #{id} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(customerId)">
+   <![CDATA[ AND CUSTOMER_ID = #{customerId} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(profitNum)">
+   <![CDATA[ AND PROFIT_NUM = #{profitNum} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(profitType)">
+   <![CDATA[ AND PROFIT_TYPE = #{profitType} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(profitStatus)">
+   <![CDATA[ AND PROFIT_STATUS = #{profitStatus} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(profitHavedTime)">
+   <![CDATA[ AND PROFIT_HAVED_TIME = #{profitHavedTime} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(profitSource)">
+   <![CDATA[ AND PROFIT_SOURCE = #{profitSource} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(profitRemark)">
+   <![CDATA[ AND PROFIT_REMARK = #{profitRemark} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(versionNum)">
+   <![CDATA[ AND VERSION_NUM = #{versionNum} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(flagDel)">
+   <![CDATA[ AND FLAG_DEL = #{flagDel} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(createTime)">
+   <![CDATA[ AND CREATE_TIME = #{createTime} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(createUser)">
+   <![CDATA[ AND CREATE_USER = #{createUser} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(modifyUser)">
+   <![CDATA[ AND MODIFY_USER = #{modifyUser} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(modifyTime)">
+   <![CDATA[ AND MODIFY_TIME = #{modifyTime} ]]>
+  </if>
+  </trim>
+ </sql>
+ <delete id="deleteAll" parameterType="map">
+  <![CDATA[DELETE FROM cu_customer_profit]]>
+  <include refid="conditionDeleteAll" />
+ </delete>
+ 
+ <select id="queryProfitInfo" parameterType="map" resultType="com.basics.cu.entity.CuCustomerProfit">
+  <![CDATA[
+	SELECT
+		cuCustomerProfit.PROFIT_ID "id",
+		cuCustomerProfit.PROFIT_NUM "profitNum",
+		cuCustomerProfit.PROFIT_TYPE "profitType",
+		cuCustomerProfit.PROFIT_STATUS "profitStatus",
+		cuCustomerProfit.PROFIT_HAVED_TIME "profitHavedTime",
+		cuCustomerProfit.PROFIT_REMARK "profitRemark",
+		CASE
+	WHEN cuCustomerProfit.PROFIT_REMARK LIKE '团队%收益' THEN
+		(
+			SELECT
+				CONCAT(
+					cuCustoemerInfo.REAL_NAME,
+					':',
+					cuCustoemerInfo.CUSTOMER_PHONE
+				)
+			FROM
+				cu_customer_info cuCustoemerInfo
+			WHERE
+				cuCustomerProfit.PROFIT_SOURCE = cuCustoemerInfo.customer_id
+		)
+	WHEN cuCustomerProfit.PROFIT_REMARK = '帮余额转账' THEN
+		(
+			SELECT
+				CONCAT(
+					cuCustoemerInfo.REAL_NAME,
+					':',
+					cuCustoemerInfo.CUSTOMER_PHONE
+				)
+			FROM
+				tr_trade_convert trTradeConvert
+			INNER JOIN cu_customer_info cuCustoemerInfo ON cuCustoemerInfo.CUSTOMER_ID = trTradeConvert.CUSTOMER_ID
+			WHERE
+				TRADE_ID = cuCustomerProfit.PROFIT_SOURCE
+		)
+	WHEN cuCustomerProfit.PROFIT_REMARK = '余额转账' THEN
+		(
+			SELECT
+				CONCAT(
+					cuCustoemerInfo.REAL_NAME,
+					':',
+					cuCustoemerInfo.CUSTOMER_PHONE
+				)
+			FROM
+				tr_trade_convert trTradeConvert
+			INNER JOIN cu_customer_info cuCustoemerInfo ON cuCustoemerInfo.CUSTOMER_ID = trTradeConvert.CUSTOMER_BUY_ID
+			WHERE
+				TRADE_ID = cuCustomerProfit.PROFIT_SOURCE
+		)
+	END "targetName"
+	FROM
+		cu_customer_profit cuCustomerProfit
+  ]]>
+  <include refid="condition" />
+  <choose>
+   <when test="@org.apache.commons.lang.StringUtils@isNotEmpty(orderBy)"> ORDER BY ${orderBy}
+   </when>
+   <otherwise>
+    <!-- //TODO:ADD DEFAULT ORDER COLUMN OR DONOTHING! -->
+   </otherwise>
+  </choose>
+ </select>
+ 
+ <select id="queryCustomerProfitInfo" parameterType="map" resultType="com.basics.cu.entity.CuCustomerProfit">
+  <![CDATA[
+  SELECT
+  cuCustomerProfit.PROFIT_ID "id",
+  cuCustomerProfit.CUSTOMER_ID "customerId",
+  cuCustomerProfit.PROFIT_NUM "profitNum",
+  cuCustomerProfit.PROFIT_TYPE "profitType",
+  cuCustomerProfit.PROFIT_STATUS "profitStatus",
+  cuCustomerProfit.PROFIT_HAVED_TIME "profitHavedTime",
+  cuCustomerProfit.PROFIT_SOURCE "profitSource",
+  cuCustomerProfit.PROFIT_REMARK "profitRemark",
+  cuCustomerInfo.CUSTOMER_NAME "customerName",
+  cuCustomerInfo.CUSTOMER_PHONE "customerPhone",
+  source.CUSTOMER_NAME "sourceName",
+  source.CUSTOMER_PHONE "sourcePhone"
+  FROM cu_customer_profit cuCustomerProfit
+  LEFT OUTER JOIN cu_customer_info cuCustomerInfo ON cuCustomerInfo.CUSTOMER_ID = cuCustomerProfit.CUSTOMER_ID
+  LEFT OUTER JOIN cu_customer_info source ON source.CUSTOMER_ID = cuCustomerProfit.PROFIT_SOURCE
+  ]]>
+  <include refid="condition" />
+  <choose>
+   <when test="@org.apache.commons.lang.StringUtils@isNotEmpty(orderBy)"> ORDER BY ${orderBy}
+   </when>
+   <otherwise>
+    <!-- //TODO:ADD DEFAULT ORDER COLUMN OR DONOTHING! -->
+   </otherwise>
+  </choose>
+ </select>
+ 
+</mapper>
