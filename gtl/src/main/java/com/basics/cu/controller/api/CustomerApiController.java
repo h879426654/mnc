@@ -7,8 +7,13 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
-import com.basics.cu.entity.CuReatil1;
+import com.basics.cu.controller.request.*;
+import com.basics.cu.dao.CuCustomerCollectDao;
+import com.basics.cu.entity.*;
+import com.basics.cu.service.CuCustomerCollectService;
 import com.basics.cu.service.CuReatil1Service;
+import net.sf.json.JSONArray;
+import org.nutz.lang.random.R;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -28,15 +33,10 @@ import com.basics.common.TokenPageRequest;
 import com.basics.common.TokenRequest;
 import com.basics.common.TokenTypePageRequest;
 import com.basics.common.TokenTypeRequest;
-import com.basics.cu.controller.request.CustomerFeedbackRequest;
-import com.basics.cu.controller.request.ModifyCustomerInfoRequest;
 import com.basics.cu.controller.response.BaseImgResponse;
 import com.basics.cu.controller.response.CustomerInfoResponse;
 import com.basics.cu.controller.response.DirectCustomerResponse;
 import com.basics.cu.controller.response.IndexViewResponse;
-import com.basics.cu.entity.CuCustomerFeedback;
-import com.basics.cu.entity.CuCustomerInfo;
-import com.basics.cu.entity.CuCustomerMessage;
 import com.basics.cu.service.CustomerApiService;
 import com.basics.sys.entity.SysNotice;
 import com.basics.sys.entity.SysTurntableReward;
@@ -53,6 +53,10 @@ public class CustomerApiController implements ApplicationContextAware {
 
 	@Autowired
     private CuReatil1Service cuReatil1Service;
+
+	@Autowired
+	private CuCustomerCollectService cuCustomerCollectService;
+
 	@Override
 	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
 		this.applicationContext = applicationContext;
@@ -445,12 +449,124 @@ public class CustomerApiController implements ApplicationContextAware {
      */
 	@RequestMapping("searchReatil")
     public String searchReatil(@Valid String customerId) {
-        CuReatil1 cuReatil1 = cuReatil1Service.searchByCustomerId(customerId);
-        BigDecimal a = cuReatil1.getMoney();
-	    return null;
+        List<CuReatil1> cuReatil1s = cuReatil1Service.searchByCustomerId(customerId);
+		JSONArray json2 = JSONArray.fromObject(cuReatil1s);
+	    return json2.toString();
     }
-	
-	
-	
+
+	/**
+	 * 代理数据和收益
+	 * @param customerId
+	 * @return
+	 */
+	@RequestMapping("searchReatilandIncome")
+	public String searchReatilandIncome(@Valid String customerId) {
+		CuReatil1 cuReatil1 = cuReatil1Service.searchReatilandIncome(customerId);
+		JSONObject json = (JSONObject) JSONObject.toJSON(cuReatil1);
+		return json.toString();
+	}
+
+	/**
+	 * 收藏列表
+	 * @param phone
+	 * @param token
+	 * @return
+	 */
+	@RequestMapping("searchCollect")
+	public String searchCollect(@Valid String phone, String token) {
+		List<CuCustomerCollect> list = cuCustomerCollectService.searchCollect(phone, token);
+		JSONArray json = JSONArray.fromObject(list);
+		return json.toString();
+	}
+
+	/**
+	 * 添加收藏
+	 * @param collectRequest
+	 * @return
+	 */
+	@RequestMapping("insertCollect")
+	public String insertCollect(@Valid CollectRequest collectRequest) {
+		return cuCustomerCollectService.insertCollect(collectRequest);
+	}
+
+	/**
+	 * 取消收藏
+	 * @param id
+	 * @return
+	 */
+	@RequestMapping("updateCollect")
+	public String updateCollect(@Valid String id, String state) {
+		return cuCustomerCollectService.updateCollect(id, state);
+	}
+
+	/**
+	 * 我的页面数据
+	 * @param phone
+	 * @param token
+	 * @return
+	 */
+	@RequestMapping("searchMy")
+	public String searchMy(@Valid String phone, String token) {
+		return cuCustomerCollectService.searchMy(phone, token);
+	}
+
+	/**
+	 * 我的消费
+	 * @param phone
+	 * @return
+	 */
+	@RequestMapping("searchConConsume")
+	public String searchConConsume(@Valid String phone, String state, String token, String type) {
+		return cuCustomerCollectService.searchConConsume(phone, state, token, type);
+	}
+
+	/**
+	 * 添加的消费
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping("insertConConsume")
+	public String insertConConsume(@Valid ConsumeRequest request) {
+		return cuCustomerCollectService.insertConConsume(request);
+	}
+	/**
+	 * 更改的消费
+	 * @param id
+	 * @param state
+	 * @return
+	 */
+	@RequestMapping("udpateConConsume")
+	public String udpateConConsume(@Valid String id, String state) {
+		return cuCustomerCollectService.updateConConsume(id, state);
+	}
+	/**
+	 * 添加历史数据
+	 * @param historyRequest
+	 * @return
+	 */
+	@RequestMapping("insertHistory")
+	public String insertHistory(@Valid HistoryRequest historyRequest) {
+		return cuCustomerCollectService.insertHistory(historyRequest);
+	}
+	/**
+	 * 查看历史数据
+	 * @param phone
+	 * @param token
+	 * @return
+	 */
+	@RequestMapping("searchHistory")
+	public String searchHistory(@Valid String phone, String token) {
+		return cuCustomerCollectService.searchHistory(phone, token);
+	}
+	/**
+	 * 是否收藏
+	 * @param phone
+	 * @param token
+	 * @return
+	 */
+	@RequestMapping("searchIsCollect")
+	public String searchIsCollect(@Valid String phone, String token, String shopId) {
+		return cuCustomerCollectService.searchIsCollect(phone, token, shopId);
+	}
 
 }

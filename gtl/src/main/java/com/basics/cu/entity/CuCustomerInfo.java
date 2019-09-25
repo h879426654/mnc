@@ -1,5 +1,6 @@
 package com.basics.cu.entity;
 
+import java.math.BigDecimal;
 import java.util.Date;
 public class CuCustomerInfo extends CuCustomerInfoBase{
  /**
@@ -168,6 +169,14 @@ public class CuCustomerInfo extends CuCustomerInfoBase{
  */
  public CuCustomerInfo modifyTime(Date modifyTime){
   this.setModifyTime(modifyTime);
+  return this;
+ }
+ public CuCustomerInfo mncCoin(BigDecimal mncCoin){
+  this.setMncCoin(mncCoin);
+  return this;
+ }
+ public CuCustomerInfo mp(BigDecimal mp){
+  this.setMp(mp);
   return this;
  }
 }

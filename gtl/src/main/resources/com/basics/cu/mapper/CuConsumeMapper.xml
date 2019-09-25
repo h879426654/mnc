@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC
+ "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.basics.cu.entity.CuConsume">
+ <cache type="com.basics.support.mybatis.CacheAdapter"/>
+ <select id="query" resultType="com.basics.cu.entity.CuConsume"  flushCache="false" useCache="false">
+    select id,shop_id as shopId, customer_id as customerId, shop_name as shopName, money, phone, state, image from cu_consume
+     WHERE 1=1
+     <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(customerId)">
+         <![CDATA[ AND CUSTOMER_ID = #{customerId} ]]>
+     </if>
+     <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(state)">
+         <![CDATA[ AND state = #{state} ]]>
+     </if>
+     <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(shopId)">
+         <![CDATA[ AND shop_id = #{shopId} ]]>
+     </if>
+     <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(id)">
+         <![CDATA[ AND id = #{id} ]]>
+     </if>
+     order by create_time desc
+ </select>
+ <insert id="insert" parameterType="com.basics.cu.entity.CuConsume">
+     insert into cu_consume(shop_id, customer_id, shop_name, money, phone, image, create_time)
+     values (<if test="shopId!=null">#{shopId},</if>
+     <if test="customerId!=null">#{customerId},</if>
+     <if test="shopName!=null">#{shopName},</if>
+     <if test="money!=null">#{money},</if>
+     <if test="phone!=null">#{phone},</if>
+     <if test="image!=null">#{image},</if>
+     now())
+ </insert>
+
+    <update id="update" parameterType="com.basics.cu.entity.CuConsume">
+        <![CDATA[ UPDATE cu_consume ]]>
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="shopId!=null">SHOP_ID = #{shopId},</if>
+            <if test="customerId!=null">CUSTOMER_ID = #{customerId},</if>
+            <if test="shopName!=null">SHOP_NAME = #{shopName},</if>
+            <if test="money!=null">MONEY = #{money},</if>
+            <if test="phone!=null">PHONE = #{phone},</if>
+            <if test="state!=null">STATE = #{state},</if>
+            <if test="image!=null">IMAGE = #{image}</if>
+        </trim>
+        <![CDATA[ WHERE  id = #{id}   ]]>
+    </update>
+</mapper>

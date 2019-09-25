@@ -8,12 +8,8 @@ import javax.servlet.http.HttpServletRequest;
 import com.basics.common.DataItemResponse;
 import com.basics.common.DataResponse;
 import com.basics.common.TokenResponse;
-import com.basics.cu.controller.request.EmailRequest;
-import com.basics.cu.controller.request.LoginRequest;
-import com.basics.cu.controller.request.ModifyCustomerHeadRequest;
-import com.basics.cu.controller.request.ModifyPassRequest;
-import com.basics.cu.controller.request.RegisterUserRequest;
-import com.basics.cu.controller.request.SmsRequest;
+import com.basics.cu.controller.request.*;
+import com.basics.mall.entity.MallAdvertHot;
 import com.basics.sys.entity.SysCountry;
 import com.basics.sys.entity.SysVersion;
 
@@ -29,7 +25,7 @@ public interface CommonApiService {
 	DataItemResponse<TokenResponse> doLogin(LoginRequest request, HttpServletRequest req);
 
 	// 忘记密码
-	DataResponse doForgetPass(LoginRequest request, HttpServletRequest req);
+	DataResponse doForgetPass(ForGetPassRequest request, HttpServletRequest req);
 
 	// 修改登录密码
 	DataResponse doModifyLoginPass(ModifyPassRequest request, HttpServletRequest req);
@@ -61,4 +57,6 @@ public interface CommonApiService {
 	String judgeCode(String phone, String Code, String type, String orderPhone);
     //新手机号
 	String newPhone(String phone);
+
+	List<MallAdvertHot> getHot();
 }
