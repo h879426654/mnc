@@ -18,6 +18,7 @@ import org.apache.http.NameValuePair;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.entity.StringEntity;
@@ -42,9 +43,9 @@ public class HttpClientUtils {
 	private static final int DEFAULT_MAX_TOTAL_CONNECTION = 1024;
 	private static final int DEFAULT_MAX_PER_ROUTE = 50;
 	private static final String DEFAULT_ENCODING = "UTF-8"; // 默认的查询参数及返回结果的字符串编码
-	private static final int DEFAULT_CONNECTION_TIME_OUT = 6000; // 默认连接超时时间,
+	private static final int DEFAULT_CONNECTION_TIME_OUT = 10000; // 默认连接超时时间,
 																	// 60秒
-	private static final int DEFAULT_READ_TIME_OUT = 6000; // 默认响应超时时间, 60秒
+	private static final int DEFAULT_READ_TIME_OUT = 60000; // 默认响应超时时间, 60秒
 
 	static {
 		logger.info("初始化開始:");
@@ -137,7 +138,8 @@ public class HttpClientUtils {
 				response.close();
 			}
 		} catch (Exception e) {
-			throw new RuntimeException(e);
+			System.out.println(e.getMessage());
+//			throw new Exception(e);
 		}
 		return null;
 	}
@@ -281,7 +283,7 @@ public class HttpClientUtils {
 			logger.error("encode http get params error, params is " + params, e);
 			return "";
 		}
-		HttpPost httpGet = new HttpPost(requestUrl);
+		HttpGet httpGet = new HttpGet(requestUrl);
 		httpGet.setConfig(requestConfig);
 		responseString = doRequest(httpGet, encode);
 		return responseString;

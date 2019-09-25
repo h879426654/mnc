@@ -14,5 +14,8 @@ public class EveryMinuteDebugJob implements EveryMinuteJob {
 	public void doJob() {
 		LogUtils.performance.info("{} begin at {}", this.getClass().getName(), new Date());
 		LogUtils.performance.info("{} end at {}", this.getClass().getName(), new Date());
+		System.out.println("EveryMinuteDebugJob"+System.currentTimeMillis()/1000);
+
+
 	}
 }
