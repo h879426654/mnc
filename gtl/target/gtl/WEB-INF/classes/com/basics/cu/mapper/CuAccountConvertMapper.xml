@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC
+ "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.basics.cu.entity.CuAccountConvert">
+ <cache type="com.basics.support.mybatis.CacheAdapter"/>
+ <delete id="delete" parameterType="com.basics.cu.entity.CuAccountConvert">
+  <![CDATA[ DELETE FROM cu_account_convert WHERE  CONVERT_ID = #{id} ]]>
+ </delete>
+ <insert id="insert" parameterType="com.basics.cu.entity.CuAccountConvert">
+  <![CDATA[  INSERT INTO cu_account_convert (]]>
+  <trim prefix="" suffixOverrides=",">
+   <if test="id!=null">CONVERT_ID,</if>
+   <if test="customerId!=null">CUSTOMER_ID,</if>
+   <if test="convertType!=null">CONVERT_TYPE,</if>
+   <if test="convertMoney!=null">CONVERT_MONEY,</if>
+   <if test="convertNum!=null">CONVERT_NUM,</if>
+   <if test="sourceId!=null">SOURCE_ID,</if>
+   <if test="convertRemark!=null">CONVERT_REMARK,</if>
+   <if test="versionNum!=null">VERSION_NUM,</if>
+   <if test="flagDel!=null">FLAG_DEL,</if>
+   <if test="createTime!=null">CREATE_TIME,</if>
+   <if test="createUser!=null">CREATE_USER,</if>
+   <if test="modifyUser!=null">MODIFY_USER,</if>
+   <if test="modifyDate!=null">MODIFY_DATE,</if>
+  </trim>
+  <![CDATA[)VALUES(]]>
+  <trim prefix="" suffixOverrides=",">
+   <if test="id!=null">#{id},</if>
+   <if test="customerId!=null">#{customerId},</if>
+   <if test="convertType!=null">#{convertType},</if>
+   <if test="convertMoney!=null">#{convertMoney},</if>
+   <if test="convertNum!=null">#{convertNum},</if>
+   <if test="sourceId!=null">#{sourceId},</if>
+   <if test="convertRemark!=null">#{convertRemark},</if>
+   <if test="versionNum!=null">#{versionNum},</if>
+   <if test="flagDel!=null">#{flagDel},</if>
+   <if test="createTime!=null">#{createTime},</if>
+   <if test="createUser!=null">#{createUser},</if>
+   <if test="modifyUser!=null">#{modifyUser},</if>
+   <if test="modifyDate!=null">#{modifyDate},</if>
+  </trim>
+  <![CDATA[)]]>
+ </insert>
+ <update id="update" parameterType="com.basics.cu.entity.CuAccountConvert">
+  <![CDATA[ UPDATE cu_account_convert ]]>
+  <trim prefix="SET" suffixOverrides=",">
+  <if test="id!=null">CONVERT_ID = #{id},</if>
+  <if test="customerId!=null">CUSTOMER_ID = #{customerId},</if>
+  <if test="convertType!=null">CONVERT_TYPE = #{convertType},</if>
+  <if test="convertMoney!=null">CONVERT_MONEY = #{convertMoney},</if>
+  <if test="convertNum!=null">CONVERT_NUM = #{convertNum},</if>
+  <if test="sourceId!=null">SOURCE_ID = #{sourceId},</if>
+  <if test="convertRemark!=null">CONVERT_REMARK = #{convertRemark},</if>
+  <if test="versionNum!=null">VERSION_NUM = #{versionNum},</if>
+  <if test="flagDel!=null">FLAG_DEL = #{flagDel},</if>
+  <if test="createTime!=null">CREATE_TIME = #{createTime},</if>
+  <if test="createUser!=null">CREATE_USER = #{createUser},</if>
+  <if test="modifyUser!=null">MODIFY_USER = #{modifyUser},</if>
+  <if test="modifyDate!=null">MODIFY_DATE = #{modifyDate},</if>
+  </trim>
+  <![CDATA[ WHERE  CONVERT_ID = #{id}   ]]>
+ </update>
+ <sql id="condition">
+  <trim prefix="WHERE" prefixOverrides="AND |OR">
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(id)">
+   <![CDATA[ AND cuAccountConvert.CONVERT_ID = #{id}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(customerId)">
+   <![CDATA[ AND cuAccountConvert.CUSTOMER_ID = #{customerId}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(convertType)">
+   <![CDATA[ AND cuAccountConvert.CONVERT_TYPE = #{convertType}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(convertMoney)">
+   <![CDATA[ AND cuAccountConvert.CONVERT_MONEY = #{convertMoney}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(convertNum)">
+   <![CDATA[ AND cuAccountConvert.CONVERT_NUM = #{convertNum}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(sourceId)">
+   <![CDATA[ AND cuAccountConvert.SOURCE_ID = #{sourceId}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(convertRemark)">
+   <![CDATA[ AND cuAccountConvert.CONVERT_REMARK = #{convertRemark}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(versionNum)">
+   <![CDATA[ AND cuAccountConvert.VERSION_NUM = #{versionNum}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(flagDel)">
+   <![CDATA[ AND cuAccountConvert.FLAG_DEL = #{flagDel}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(createTime)">
+   <![CDATA[ AND cuAccountConvert.CREATE_TIME = #{createTime}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(createUser)">
+   <![CDATA[ AND cuAccountConvert.CREATE_USER = #{createUser}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(modifyUser)">
+   <![CDATA[ AND cuAccountConvert.MODIFY_USER = #{modifyUser}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(modifyDate)">
+   <![CDATA[ AND cuAccountConvert.MODIFY_DATE = #{modifyDate}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(convertTypeOneAndFice)">
+   <![CDATA[ AND (cuAccountConvert.CONVERT_TYPE = 1  OR  cuAccountConvert.CONVERT_TYPE = 5)]]>
+  </if>
+  </trim>
+ </sql>
+ <select id="query" parameterType="map" resultType="com.basics.cu.entity.CuAccountConvert">
+  <![CDATA[
+  SELECT
+  cuAccountConvert.CONVERT_ID "id",
+  cuAccountConvert.CUSTOMER_ID "customerId",
+  cuAccountConvert.CONVERT_TYPE "convertType",
+  cuAccountConvert.CONVERT_MONEY "convertMoney",
+  cuAccountConvert.CONVERT_NUM "convertNum",
+  cuAccountConvert.SOURCE_ID "sourceId",
+  CASE 
+	WHEN cuAccountConvert.CONVERT_TYPE=1 THEN ""
+	WHEN cuAccountConvert.CONVERT_TYPE=2 THEN ""
+	WHEN cuAccountConvert.CONVERT_TYPE=3 THEN (select cuCustomerInfo.customer_phone from cu_customer_info cuCustomerInfo WHERE cuCustomerInfo.customer_id = cuAccountConvert.SOURCE_ID)
+	END "customerPhone",
+  cuAccountConvert.CONVERT_REMARK "convertRemark",
+  cuAccountConvert.VERSION_NUM "versionNum",
+  cuAccountConvert.FLAG_DEL "flagDel",
+  cuAccountConvert.CREATE_TIME "createTime",
+  cuAccountConvert.CREATE_USER "createUser",
+  cuAccountConvert.MODIFY_USER "modifyUser",
+  cuAccountConvert.MODIFY_DATE "modifyDate"
+  FROM cu_account_convert cuAccountConvert
+  ]]>
+  <include refid="condition" />
+  <choose>
+   <when test="@org.apache.commons.lang.StringUtils@isNotEmpty(orderBy)"> ORDER BY ${orderBy}
+   </when>
+   <otherwise>
+    <!-- //TODO:ADD DEFAULT ORDER COLUMN OR DONOTHING! -->
+   </otherwise>
+  </choose>
+ </select>
+ <select id="count" parameterType="map" resultType="long">
+  <![CDATA[ SELECT COUNT(1) FROM cu_account_convert cuAccountConvert]]>
+  <include refid="condition" />
+ </select>
+ <sql id="conditionDeleteAll">
+  <trim prefix="WHERE" prefixOverrides="AND |OR">
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(id)">
+   <![CDATA[ AND CONVERT_ID = #{id} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(customerId)">
+   <![CDATA[ AND CUSTOMER_ID = #{customerId} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(convertType)">
+   <![CDATA[ AND CONVERT_TYPE = #{convertType} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(convertMoney)">
+   <![CDATA[ AND CONVERT_MONEY = #{convertMoney} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(convertNum)">
+   <![CDATA[ AND CONVERT_NUM = #{convertNum} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(sourceId)">
+   <![CDATA[ AND SOURCE_ID = #{sourceId} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(convertRemark)">
+   <![CDATA[ AND CONVERT_REMARK = #{convertRemark} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(versionNum)">
+   <![CDATA[ AND VERSION_NUM = #{versionNum} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(flagDel)">
+   <![CDATA[ AND FLAG_DEL = #{flagDel} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(createTime)">
+   <![CDATA[ AND CREATE_TIME = #{createTime} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(createUser)">
+   <![CDATA[ AND CREATE_USER = #{createUser} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(modifyUser)">
+   <![CDATA[ AND MODIFY_USER = #{modifyUser} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(modifyDate)">
+   <![CDATA[ AND MODIFY_DATE = #{modifyDate} ]]>
+  </if>
+  </trim>
+ </sql>
+ <delete id="deleteAll" parameterType="map">
+  <![CDATA[DELETE FROM cu_account_convert]]>
+  <include refid="conditionDeleteAll" />
+ </delete>
+
+
+ <select id="sumConvertNum" parameterType="map" resultType="java.math.BigDecimal">
+  <![CDATA[
+  SELECT
+  IFNULL(SUM(cuAccountConvert.CONVERT_NUM),0)
+  FROM cu_account_convert cuAccountConvert
+  ]]>
+  <include refid="condition" />
+  <choose>
+   <when test="@org.apache.commons.lang.StringUtils@isNotEmpty(orderBy)"> ORDER BY ${orderBy}
+   </when>
+   <otherwise>
+    <!-- //TODO:ADD DEFAULT ORDER COLUMN OR DONOTHING! -->
+   </otherwise>
+  </choose>
+ </select>
+
+</mapper>

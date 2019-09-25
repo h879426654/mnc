@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+ xsi:schemaLocation="
+  http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+  http://www.springframework.org/schema/context  http://www.springframework.org/schema/context/spring-context-3.2.xsd"
+ default-lazy-init="true">
+ <description>Shiro Configuration</description>
+ <!-- 安全认证过滤器 -->
+ <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
+  <property name="securityManager" ref="securityManager" />
+  <property name="loginUrl" value="/login.do" />
+  <property name="successUrl" value="/success.do" />
+  <property name="filters">
+   <map>
+    <entry key="authc" value-ref="formAuthenticationFilter" />
+    <entry key="logout" value-ref="logoutFilter" />
+   </map>
+  </property>
+  <property name="filterChainDefinitions">
+   <value>
+<![CDATA[
+/login.do = authc
+/logout.do = logout
+/backend/**=user
+/** = anon
+]]>
+   </value>
+  </property>
+ </bean>
+ <!-- 会话Cookie模板
+  maxAge=-1表示浏览器关闭时失效此Cookie
+  rememberMeCookie：即记住我的Cookie，保存时长30天
+ -->
+ <bean id="sessionIdCookie" class="org.apache.shiro.web.servlet.SimpleCookie">
+  <constructor-arg value="sid" />
+  <property name="httpOnly" value="true" />
+  <property name="maxAge" value="-1" />
+ </bean>
+ <bean id="rememberMeCookie" class="org.apache.shiro.web.servlet.SimpleCookie">
+  <constructor-arg value="${shiro.rememberMeParam}" />
+  <property name="httpOnly" value="true" />
+  <!-- 30天 -->
+  <property name="maxAge" value="2592000" />
+ </bean>
+ <bean id="rememberMeManager" class="org.apache.shiro.web.mgt.CookieRememberMeManager">
+  <property name="cookie" ref="rememberMeCookie" />
+ </bean>
+ <bean id="formAuthenticationFilter" class="com.basics.app.shiro.FormAuthenticationFilter">
+  <property name="rememberMeParam" value="${shiro.rememberMeParam}" />
+ </bean>
+ <bean id="logoutFilter" class="org.apache.shiro.web.filter.authc.LogoutFilter">
+  <property name="redirectUrl" value="/index.do" />
+ </bean>
+ <bean id="defaultUserAuthorizingRealm" class="com.basics.app.shiro.DefaultUserAuthorizingRealm">
+  <property name="urpService" ref="${shiro.urpService}" />
+ </bean>
+ <bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+  <property name="realm" ref="defaultUserAuthorizingRealm" />
+  <property name="cacheManager" ref="shiroCacheManager" />
+  <property name="rememberMeManager" ref="rememberMeManager" />
+ </bean>
+ <bean id="shiroCacheManager" class="org.apache.shiro.cache.MemoryConstrainedCacheManager" />
+
+ <bean class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor">
+  <property name="securityManager" ref="securityManager" />
+ </bean>
+ <!-- capthca -->
+ <bean id="captchaProducer" class="com.google.code.kaptcha.impl.DefaultKaptcha">
+  <property name="config">
+   <bean class="com.google.code.kaptcha.util.Config">
+    <constructor-arg>
+     <props>
+      <prop key="kaptcha.session.key">code</prop>
+      <!-- 验证码宽度 -->
+      <prop key="kaptcha.image.width">150</prop>
+      <!-- 验证码高度 -->
+      <prop key="kaptcha.image.height">40</prop>
+      <!-- 生成验证码内容范围 -->
+      <prop key="kaptcha.textproducer.char.string">2345678</prop>
+      <!-- 验证码个数 -->
+      <prop key="kaptcha.textproducer.char.length">4</prop>
+      <!-- 是否有边框 -->
+      <prop key="kaptcha.border">no</prop>
+      <!-- 边框颜色 -->
+      <prop key="kaptcha.border.color">10,10,10</prop>
+      <!-- 边框厚度 -->
+      <prop key="kaptcha.border.thickness">1</prop>
+      <!-- 验证码字体颜色 -->
+      <prop key="kaptcha.textproducer.font.color">white</prop>
+      <!-- 验证码字体大小 -->
+      <prop key="kaptcha.textproducer.font.size">35</prop>
+      <!-- 验证码所属字体样式 -->
+      <prop key="kaptcha.textproducer.font.names">BKamrnBd,宋体,楷体,微软雅黑,valley,Credit,Bell,nyala,Arial</prop>
+      <!-- 干扰线颜色 -->
+      <!-- <prop key="kaptcha.noise.color">blue</prop> -->
+      <!-- 验证码文本字符间距 -->
+      <prop key="kaptcha.textproducer.char.space">5</prop>
+      <prop key="kaptcha.obscurificator.impl">com.google.code.kaptcha.impl.ShadowGimpy</prop>
+      <!-- 去掉干扰线 -->
+      <prop key="kaptcha.noise.impl">com.google.code.kaptcha.impl.NoNoise</prop>
+      <prop key="kaptcha.background.clear.from">black</prop>
+      <prop key="kaptcha.background.clear.to">white</prop>
+     </props>
+    </constructor-arg>
+   </bean>
+  </property>
+ </bean>
+</beans>
