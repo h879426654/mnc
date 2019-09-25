@@ -93,6 +93,7 @@ public class BroswerController implements ApplicationContextAware {
 		return response;
 	}
 
+	// 获取记录
 	@RequestMapping("getTransationRecord")
 	public String getHistory(TokenIdRequest request, HttpServletRequest req) {
 		Map<String, String> params = new HashMap<>();

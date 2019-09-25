@@ -10,6 +10,7 @@ import java.util.Map;
 import javax.jms.Destination;
 import javax.servlet.http.HttpServletRequest;
 
+import com.basics.wallet.controller.dao.WalletReleaseDao;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -194,6 +195,10 @@ public class BaseApiService {
 	public OrOrderDetailsDao orOrderDetailsDao;
 	@Autowired
 	public OrOrderDao orOrderDao;
+
+//	@Autowired
+//	public WalletReleaseDao walletReleaseDao;
+
 	@Autowired
 	public AppUserDao appUserDao;
 	@Autowired

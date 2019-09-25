@@ -60,7 +60,7 @@
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/main/java/com/basics/wallet/controller" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
@@ -75,11 +75,14 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="com.basics.wallet.controller.dao" />
+      <recent name="com.basics.job" />
+      <recent name="com.basics.wallet.controller.request" />
       <recent name="com.basics.support.job" />
       <recent name="com.basics.broswer.controller.response" />
-      <recent name="com.basics.broswer.controller.api" />
-      <recent name="com.basics.cu.dao" />
-      <recent name="com.basics.cu.dao.MybatisDao" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\code\mnc1\gtl\src\main\java\com\basics\wallet\controller" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -95,6 +98,19 @@
     </option>
   </component>
   <component name="RunManager" selected="Tomcat Server.Tomcat 9.0.24">
+    <configuration name="test (1)" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="com.basics.wallet.controller.test" />
+      <module name="gtl" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.basics.wallet.controller.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="test" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="com.basics.broswer.controller.response.test" />
       <module name="gtl" />
@@ -182,9 +198,11 @@
     <list>
       <item itemvalue="Application.test" />
       <item itemvalue="Tomcat Server.Tomcat 9.0.24" />
+      <item itemvalue="Application.test (1)" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.test (1)" />
         <item itemvalue="Application.test" />
       </list>
     </recent_temporary>
@@ -206,6 +224,7 @@
       <workItem from="1569314568914" duration="14811000" />
       <workItem from="1569372216236" duration="14072000" />
       <workItem from="1569388197492" duration="718000" />
+      <workItem from="1569390263214" duration="13112000" />
     </task>
     <servers />
   </component>
@@ -415,7 +434,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/basics/broswer/controller/api/BroswerController.java</url>
-          <line>108</line>
+          <line>109</line>
           <option name="timeStamp" value="260" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
