@@ -3,7 +3,7 @@ package com.basics.cu.entity;
 import java.math.BigDecimal;
 import java.util.Date;
 
-public class CuReatil1 extends CuReatil1Base {
+public class CuReatil1 extends CuRetail1Base {
 	public CuReatil1 Id(String id) {
 		this.setId(id);
 		return this;

@@ -10,6 +10,9 @@ import java.util.Map;
 import javax.jms.Destination;
 import javax.servlet.http.HttpServletRequest;
 
+import com.basics.cu.dao.*;
+import com.basics.mall.dao.*;
+import com.basics.mall.entity.MallAdvertHot;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,20 +35,6 @@ import com.basics.app.dao.AppUserDao;
 import com.basics.app.dao.AppUserRoleDao;
 import com.basics.app.entity.AppCode;
 import com.basics.app.entity.AppToken;
-import com.basics.cu.dao.CuAccountConvertDao;
-import com.basics.cu.dao.CuCustomerAccountDao;
-import com.basics.cu.dao.CuCustomerAddressDao;
-import com.basics.cu.dao.CuCustomerCollectionDao;
-import com.basics.cu.dao.CuCustomerCountDao;
-import com.basics.cu.dao.CuCustomerFeedbackDao;
-import com.basics.cu.dao.CuCustomerInfoDao;
-import com.basics.cu.dao.CuCustomerLoginDao;
-import com.basics.cu.dao.CuCustomerMessageDao;
-import com.basics.cu.dao.CuCustomerProfitAdminDao;
-import com.basics.cu.dao.CuCustomerProfitDao;
-import com.basics.cu.dao.CuCustomerRefereeDao;
-import com.basics.cu.dao.CuCustomerSignDao;
-import com.basics.cu.dao.CuDrawRewardDao;
 import com.basics.cu.entity.CuAccountConvert;
 import com.basics.cu.entity.CuCustomerAccount;
 import com.basics.cu.entity.CuCustomerCount;
@@ -56,19 +45,6 @@ import com.basics.cu.entity.CuCustomerProfit;
 import com.basics.cu.entity.CuCustomerProfitAdmin;
 import com.basics.cu.entity.CuCustomerReferee;
 import com.basics.cu.vo.CustomerCountLevelVo;
-import com.basics.mall.dao.MallCustomerCarDao;
-import com.basics.mall.dao.MallIndexProductDao;
-import com.basics.mall.dao.MallIndexTypeDao;
-import com.basics.mall.dao.MallProductClassifyDao;
-import com.basics.mall.dao.MallProductCommentDao;
-import com.basics.mall.dao.MallProductDao;
-import com.basics.mall.dao.MallProductKindCombinationDao;
-import com.basics.mall.dao.MallProductKindContrastDao;
-import com.basics.mall.dao.MallProductKindDao;
-import com.basics.mall.dao.MallProductKindDetailDao;
-import com.basics.mall.dao.MallShopAdvertDao;
-import com.basics.mall.dao.MallShopClassifyDao;
-import com.basics.mall.dao.MallShopDao;
 import com.basics.mall.entity.MallShop;
 import com.basics.mall.entity.MallShopAdvert;
 import com.basics.or.dao.OrOrderDao;
@@ -248,7 +224,20 @@ public class BaseApiService {
 	public SysActivemqRequestDao sysActivemqRequestDao;
 	@Autowired
 	public SysActivemqResponseDao sysActivemqResponseDao;
-
+	@Autowired
+	public MallAdvertHotDao mallAdvertHotDao;
+	@Autowired
+	public CuReatil2Dao cuReatil2Dao;
+	@Autowired
+	public CuReatil3Dao cuReatil3Dao;
+	@Autowired
+	public CuCustomerCollectDao cuCustomerCollectDao;
+	@Autowired
+	public CuHttpUrlDao cuHttpUrlDao;
+	@Autowired
+	public CuConsumeDao cuConsumeDao;
+	@Autowired
+	public CuHistoryDao cuHistoryDao;
 	// 计算产量（根据毫秒秒）
 	public BigDecimal calculationRate(long date, BigDecimal yidldNum) {
 		return keepFiveNum(yidldNum.multiply(new BigDecimal(date)).divide(new BigDecimal(1000 * 60 * 60), 5, RoundingMode.FLOOR));
@@ -265,7 +254,7 @@ public class BaseApiService {
 
 	/**
 	 * 接口返回信息统一放在errorCode.properties里面统一配置
-	 * 
+	 *
 	 * @param codeString
 	 *            错误信息对应的Code值
 	 * @return
@@ -298,7 +287,7 @@ public class BaseApiService {
 
 	/**
 	 * 判断是否存在上下级关系
-	 * 
+	 *
 	 * @param refereeId
 	 * @param customerId
 	 * @return
@@ -351,7 +340,7 @@ public class BaseApiService {
 
 	/**
 	 * 更新团队人数
-	 * 
+	 *
 	 * @param refereeId
 	 *            推荐人id
 	 * @param num
@@ -557,7 +546,7 @@ public class BaseApiService {
 
 	/**
 	 * 上级获取奖励
-	 * 
+	 *
 	 * @param isMoneyToIntegral
 	 *            是否为余额转积分
 	 */
@@ -661,7 +650,7 @@ public class BaseApiService {
 
 	/**
 	 * 平级奖
-	 * 
+	 *
 	 * @param customerId
 	 * @param rate
 	 */
@@ -868,7 +857,7 @@ public class BaseApiService {
 
 	/**
 	 * 判断当前用户是否是一笔出售一笔求购
-	 * 
+	 *
 	 * @param customerId
 	 * @param tradeType
 	 * @param moneyType
@@ -911,7 +900,7 @@ public class BaseApiService {
 
 	/**
 	 * 对交易规则的校验
-	 * 
+	 *
 	 * @param rule
 	 *            系统规则
 	 * @param num
@@ -1177,7 +1166,7 @@ public class BaseApiService {
 
 	/**
 	 * 冻结用户
-	 * 
+	 *
 	 * @param customerId
 	 *            用户id
 	 * @param freezeMsg
@@ -1284,7 +1273,7 @@ public class BaseApiService {
 	}
 
 	/**
-	 * 
+	 *
 	 * @Title: createActiveMq @Description: 发送消息 @param @param customerId 会员ID @param @param type 类型 @param @param num 数量 @param @param sourceId 关联ID @param @param remark 参数 @return void 返回类型 @throws
 	 */
 	public void createActiveMq(String customerId, int activemqType, BigDecimal num, String sourceId, String remark, Object obj) {
@@ -1325,7 +1314,7 @@ public class BaseApiService {
 
 	/**
 	 * 添加用户消息
-	 * 
+	 *
 	 * @param customerId
 	 * @param sourceId
 	 * @param messageTitle
@@ -1348,7 +1337,7 @@ public class BaseApiService {
 
 	/**
 	 * 获取今日市值
-	 * 
+	 *
 	 * @return
 	 */
 	public SysMarketValue getMarketValueToday() {
@@ -1368,7 +1357,7 @@ public class BaseApiService {
 
 	/**
 	 * 删除用户及节点以下
-	 * 
+	 *
 	 * @param customerId
 	 */
 	public void deleteCustomers(String customerId) {
@@ -1386,7 +1375,7 @@ public class BaseApiService {
 
 	/**
 	 * 删除用户
-	 * 
+	 *
 	 * @param customerId
 	 */
 	public void deleteCustomer(String customerId, CuCustomerReferee referee) {
@@ -1428,7 +1417,7 @@ public class BaseApiService {
 
 	/**
 	 * 判断验证码
-	 * 
+	 *
 	 * @param phone
 	 * @param codeType
 	 * @param code
@@ -1474,7 +1463,7 @@ public class BaseApiService {
 
 	/**
 	 * 判断今日是否还可以出售
-	 * 
+	 *
 	 * @return
 	 */
 	public boolean judgeTradeTime(String customerId) {
@@ -1492,7 +1481,7 @@ public class BaseApiService {
 
 	/**
 	 * 判断是否可以买链
-	 * 
+	 *
 	 * @return
 	 */
 	public String judgeLimitCoin(String customerId, BigDecimal num) {
@@ -1514,3 +1503,4 @@ public class BaseApiService {
 	}
 
 }
+
