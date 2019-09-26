@@ -7,8 +7,8 @@ public class HistoryRequest extends DataRequest {
 	
 	private static final long serialVersionUID = 742680166365561238L;
 
-	@NotBlank(message = "用户id不能为空")
-	private String customerId;
+	@NotBlank(message = "token不能为空")
+	private String token;
 	@NotBlank(message = "商家id不能为空")
 	private String shopId;
 	@NotBlank(message = "商家名称不能为空")
@@ -22,12 +22,12 @@ public class HistoryRequest extends DataRequest {
 	@NotBlank(message = "纬度不能为空")
 	private String latitude;
 
-	public String getCustomerId() {
-		return customerId;
+	public String getToken() {
+		return token;
 	}
 
-	public void setCustomerId(String customerId) {
-		this.customerId = customerId;
+	public void setToken(String token) {
+		this.token = token;
 	}
 
 	public String getShopId() {

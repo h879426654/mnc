@@ -40,6 +40,7 @@ import com.basics.cu.controller.response.IndexViewResponse;
 import com.basics.cu.service.CustomerApiService;
 import com.basics.sys.entity.SysNotice;
 import com.basics.sys.entity.SysTurntableReward;
+import org.web3j.abi.datatypes.Int;
 
 @RestController
 @RequestMapping("/api/customer/")
@@ -468,13 +469,12 @@ public class CustomerApiController implements ApplicationContextAware {
 
 	/**
 	 * 收藏列表
-	 * @param phone
 	 * @param token
 	 * @return
 	 */
 	@RequestMapping("searchCollect")
-	public String searchCollect(@Valid String phone, String token) {
-		List<CuCustomerCollect> list = cuCustomerCollectService.searchCollect(phone, token);
+	public String searchCollect(@Valid String token, Integer page, Integer rows) {
+		List<CuCustomerCollect> list = cuCustomerCollectService.searchCollect(token, page, rows);
 		JSONArray json = JSONArray.fromObject(list);
 		return json.toString();
 	}
@@ -507,17 +507,19 @@ public class CustomerApiController implements ApplicationContextAware {
 	 */
 	@RequestMapping("searchMy")
 	public String searchMy(@Valid String phone, String token) {
-		return cuCustomerCollectService.searchMy(phone, token);
+		return cuCustomerCollectService.searchMy(token);
 	}
 
 	/**
 	 * 我的消费
-	 * @param phone
+	 * @param state
+	 * @param token
+	 * @param type
 	 * @return
 	 */
 	@RequestMapping("searchConConsume")
-	public String searchConConsume(@Valid String phone, String state, String token, String type) {
-		return cuCustomerCollectService.searchConConsume(phone, state, token, type);
+	public String searchConConsume(@Valid String state, String token, String type) {
+		return cuCustomerCollectService.searchConConsume(state, token, type);
 	}
 
 	/**
@@ -536,8 +538,8 @@ public class CustomerApiController implements ApplicationContextAware {
 	 * @return
 	 */
 	@RequestMapping("udpateConConsume")
-	public String udpateConConsume(@Valid String id, String state) {
-		return cuCustomerCollectService.updateConConsume(id, state);
+	public String udpateConConsume(@Valid String id, String state, String mp) {
+		return cuCustomerCollectService.updateConConsume(id, state, mp);
 	}
 	/**
 	 * 添加历史数据
@@ -550,23 +552,30 @@ public class CustomerApiController implements ApplicationContextAware {
 	}
 	/**
 	 * 查看历史数据
-	 * @param phone
 	 * @param token
 	 * @return
 	 */
 	@RequestMapping("searchHistory")
-	public String searchHistory(@Valid String phone, String token) {
-		return cuCustomerCollectService.searchHistory(phone, token);
+	public String searchHistory(@Valid String token) {
+		return cuCustomerCollectService.searchHistory(token);
 	}
 	/**
 	 * 是否收藏
-	 * @param phone
 	 * @param token
 	 * @return
 	 */
 	@RequestMapping("searchIsCollect")
-	public String searchIsCollect(@Valid String phone, String token, String shopId) {
-		return cuCustomerCollectService.searchIsCollect(phone, token, shopId);
+	public String searchIsCollect(@Valid String token, String shopId) {
+		return cuCustomerCollectService.searchIsCollect(token, shopId);
 	}
 
+	/**
+	 * 获取图片还有名称
+	 * @param shopId
+	 * @return
+	 */
+	@RequestMapping("getImageAndName")
+	public String getImageAndName(@Valid String shopId, String token) {
+		return cuCustomerCollectService.getImageAndName(shopId, token);
+	}
 }

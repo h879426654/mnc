@@ -40,4 +40,8 @@ public class CuHttpUrl extends CuHttpUrlBase {
 		this.setVermicelli(vermicelli);
 		return this;
 	}
+	public CuHttpUrl shopId(String shopId) {
+		this.setShopId(shopId);
+		return this;
+	}
 }

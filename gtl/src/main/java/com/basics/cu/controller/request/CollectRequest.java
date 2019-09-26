@@ -12,8 +12,6 @@ public class CollectRequest extends DataRequest {
 
 	@NotBlank(message = "商品名称不能为空")
 	private String shopName;
-
-	private String phone;
 	private String token;
 	private String state;
 
@@ -39,14 +37,6 @@ public class CollectRequest extends DataRequest {
 
 	public void setShopName(String shopName) {
 		this.shopName = shopName;
-	}
-
-	public String getPhone() {
-		return phone;
-	}
-
-	public void setPhone(String phone) {
-		this.phone = phone;
 	}
 
 	public String getToken() {

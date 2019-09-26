@@ -15,7 +15,7 @@ public class ConsumeRequest extends DataRequest {
 	@NotBlank(message = "商家名称不能为空")
 	private String shopName;
 
-	@NotBlank(message = "用户id不能为空")
+	@NotBlank(message = "customerId不能为空")
 	private String customerId;
 
 	@NotBlank(message = "记账金额不能为空")

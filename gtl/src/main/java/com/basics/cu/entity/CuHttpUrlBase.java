@@ -12,6 +12,15 @@ class CuHttpUrlBase extends BaseBean {
 	private BigDecimal mp;
 	private String httpList;
 	private Integer vermicelli;
+	private String shopId;
+
+	public String getShopId() {
+		return shopId;
+	}
+
+	public void setShopId(String shopId) {
+		this.shopId = shopId;
+	}
 
 	public Integer getVermicelli() {
 		return vermicelli;
