@@ -205,7 +205,7 @@
   </if>
   </trim>
  </sql>
- <select id="query" parameterType="map" resultType="com.basics.mall.entity.MallShopAdvert">
+ <select id="query" parameterType="map" resultType="com.basics.mall.entity.MallShopAdvert" useCache="false" flushCache="false">
   <![CDATA[
   SELECT
   mallShopAdvert.ADVERT_ID "id",
