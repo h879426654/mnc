@@ -261,7 +261,7 @@ public class CuCustomerCollectMybatisServiceImpl extends BaseApiService implemen
     private String returnMp(String id, String mp) {
         try {
             CuConsume cuConsume = cuConsumeDao.queryOne(new QueryFilterBuilder().put("id", id).build());
-            CuCustomerInfo cuCustomerInfo = cuCustomerInfoDao.queryOne(new QueryFilterBuilder().put("id", cuConsume.getId()).build());
+            CuCustomerInfo cuCustomerInfo = cuCustomerInfoDao.queryOne(new QueryFilterBuilder().put("id", cuConsume.getCustomerId()).build());
             cuCustomerInfo.setMp(cuCustomerInfo.getMp().add(new BigDecimal(mp)));
             cuCustomerInfoDao.update(cuCustomerInfo);
             return "成功";
