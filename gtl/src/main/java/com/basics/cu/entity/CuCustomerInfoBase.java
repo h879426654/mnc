@@ -1,5 +1,6 @@
 package com.basics.cu.entity;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 public class CuCustomerInfoBase extends BaseBean {
@@ -126,6 +127,26 @@ public class CuCustomerInfoBase extends BaseBean {
 	* 修改时间
 	*/
 	private Date modifyTime;
+
+	private BigDecimal mncCoin;
+
+	private BigDecimal mp;
+
+	public BigDecimal getMncCoin() {
+		return mncCoin;
+	}
+
+	public void setMncCoin(BigDecimal mncCoin) {
+		this.mncCoin = mncCoin;
+	}
+
+	public BigDecimal getMp() {
+		return mp;
+	}
+
+	public void setMp(BigDecimal mp) {
+		this.mp = mp;
+	}
 
 	public Integer getFlagTrade() {
 		return flagTrade;

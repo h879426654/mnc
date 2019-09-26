@@ -7,6 +7,10 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
+import com.basics.cu.controller.request.*;
+import com.basics.mall.dao.MallAdvertHotDao;
+import com.basics.mall.entity.MallAdvertHot;
+import net.sf.json.JSONArray;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -21,12 +25,6 @@ import org.springframework.web.multipart.MultipartFile;
 import com.basics.common.DataItemResponse;
 import com.basics.common.DataResponse;
 import com.basics.common.TokenResponse;
-import com.basics.cu.controller.request.EmailRequest;
-import com.basics.cu.controller.request.LoginRequest;
-import com.basics.cu.controller.request.ModifyCustomerHeadRequest;
-import com.basics.cu.controller.request.ModifyPassRequest;
-import com.basics.cu.controller.request.RegisterUserRequest;
-import com.basics.cu.controller.request.SmsRequest;
 import com.basics.cu.service.CommonApiService;
 import com.basics.support.FileStoreService;
 import com.basics.support.GuidUtils;
@@ -46,7 +44,6 @@ public class CommonApiController implements ApplicationContextAware {
 
 	@Autowired
 	private FileStoreService ftpFileStoreService;
-
 	@Override
 	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
 		this.applicationContext = applicationContext;
@@ -147,7 +144,7 @@ public class CommonApiController implements ApplicationContextAware {
 	 * 忘记密码
 	 */
 	@RequestMapping("forgetPass")
-	public DataResponse forgetPass(@Valid LoginRequest request, BindingResult result, HttpServletRequest req) {
+	public DataResponse forgetPass(@Valid ForGetPassRequest request, BindingResult result, HttpServletRequest req) {
 		DataResponse response = new DataResponse();
 		if (result.hasErrors()) {
 			response.onBindingError(result.getAllErrors());
@@ -466,4 +463,10 @@ public class CommonApiController implements ApplicationContextAware {
 		return response;
 	}
 
+	@RequestMapping(value = "getHot")
+	public JSONArray getHot() {
+		List<MallAdvertHot> list = commonApiService.getHot();
+		JSONArray json = JSONArray.fromObject(list);
+		return json;
+	}
 }

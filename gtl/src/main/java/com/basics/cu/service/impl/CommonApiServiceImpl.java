@@ -4,6 +4,12 @@ import java.util.*;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.basics.cu.controller.request.*;
+import com.basics.cu.entity.*;
+import com.basics.mall.dao.MallAdvertHotDao;
+import com.basics.mall.entity.MallAdvertHot;
+import com.basics.mall.entity.MallShopAdvert;
+import com.basics.support.*;
 import javassist.bytecode.stackmap.BasicBlock;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -19,24 +25,7 @@ import com.basics.common.Constant;
 import com.basics.common.DataItemResponse;
 import com.basics.common.DataResponse;
 import com.basics.common.TokenResponse;
-import com.basics.cu.controller.request.EmailRequest;
-import com.basics.cu.controller.request.LoginRequest;
-import com.basics.cu.controller.request.ModifyCustomerHeadRequest;
-import com.basics.cu.controller.request.ModifyPassRequest;
-import com.basics.cu.controller.request.RegisterUserRequest;
-import com.basics.cu.controller.request.SmsRequest;
-import com.basics.cu.entity.CuCustomerAccount;
-import com.basics.cu.entity.CuCustomerCount;
-import com.basics.cu.entity.CuCustomerInfo;
-import com.basics.cu.entity.CuCustomerLogin;
-import com.basics.cu.entity.CuCustomerReferee;
 import com.basics.cu.service.CommonApiService;
-import com.basics.support.CommonSupport;
-import com.basics.support.DateUtils;
-import com.basics.support.GuidUtils;
-import com.basics.support.MD5Util;
-import com.basics.support.PasswordEncoder;
-import com.basics.support.QueryFilterBuilder;
 import com.basics.support.email.EmailUtil;
 import com.basics.support.sms.SmsWhUtil;
 import com.basics.sys.entity.SysCountry;
@@ -348,28 +337,30 @@ public class CommonApiServiceImpl extends BaseApiService implements CommonApiSer
      * 忘记密码
      */
     @Override
-    public DataResponse doForgetPass(LoginRequest request, HttpServletRequest req) {
+    public DataResponse doForgetPass(ForGetPassRequest request, HttpServletRequest req) {
         DataResponse response = new DataResponse();
+        AppCode appCode = appCodeDao.queryOne(new QueryFilterBuilder().put("codeMobile", request.getPhone()).orderBy("code_create_time desc").limit(1).build());
+        Date codeDate = appCode.getCodeCreateTime();
+        Date date = new Date();
+        Date afterDate = new Date(codeDate.getTime()+300000);
         if (null == request.getCode()) {
-            response.onHandleFail(getMessage(req, "impl.doRegisterUser.sms.error"));
-        }
-
-        CuCustomerInfo info = cuCustomerInfoDao.queryOne(new QueryFilterBuilder().put("customerPhone", request.getPhone()).build());
-        // 验证码
-        String msg = checkSmsCode(request.getPhone(), Constant.SMS_TYPE_2, request.getCode(), info.getCountryId(), req);
-        if (StringUtils.isNotBlank(msg)) {
-            response.onHandleFail(msg);
+            response.onHandleFail("验证码不能为空");
+            return response;
+        } else if (!request.getPassword().equals(request.getRepeatPassword())) {
+            response.onHandleFail("两次输入的密码不相符");
+            return response;
+        } else if (!appCode.getCodeCode().equals(request.getCode())) {
+            response.onHandleFail("验证码错误");
+            return response;
+        } else if (afterDate.compareTo(date) < 0) {
+            response.onHandleFail("验证码失效");
             return response;
         }
-        CuCustomerLogin user = cuCustomerLoginDao.queryOne(new QueryFilterBuilder().put("customerPhone", request.getPhone()).build());
-        if (null == user) {
-            response.onHandleFail(getMessage(req, "impl.doLogin.user.nonexistent"));
-            return response;
-        }
+        CuCustomerLogin cuCustomerLogin = cuCustomerLoginDao.queryOne(new QueryFilterBuilder().put("customerPhone", request.getPhone()).build());
         String[] strarr = PasswordEncoder.getEncPasswordAndSalt(request.getPassword());
-        user.customerPassword(strarr[0]).passSalt(strarr[1]);
-        cuCustomerLoginDao.save(user);
-        response.onHandleSuccess();
+        cuCustomerLogin.customerPassword(strarr[0]).passSalt(strarr[1]);
+        int a = cuCustomerLoginDao.update(cuCustomerLogin);
+        response.setMsg("");
         return response;
     }
 
@@ -638,6 +629,20 @@ public class CommonApiServiceImpl extends BaseApiService implements CommonApiSer
         } catch (Exception e) {
             return "3";
         }
+    }
+
+    @Override
+    public List<MallAdvertHot> getHot() {
+        List<MallAdvertHot> list = mallAdvertHotDao.query(new QueryFilterBuilder().put("isHot",1).build());
+        for (MallAdvertHot mallAdvertHot : list) {
+            MallShopAdvert mallShopAdvert = mallShopAdvertDao.queryOne(new QueryFilterBuilder().put("id", mallAdvertHot.getAdvertId()).build());
+            mallAdvertHot.setAdvertAddress(mallShopAdvert.getAdvertAddress());
+            mallAdvertHot.setAdvertLatitude(mallShopAdvert.getAdvertLatitude());
+            mallAdvertHot.setAdvertLongitude(mallShopAdvert.getAdvertLongitude());
+            List<CuConsume> cuConsumes = cuConsumeDao.query(new QueryFilterBuilder().put("shopId", mallAdvertHot.getAdvertId()).build());
+            mallAdvertHot.setCount(String.valueOf(cuConsumes.size()));
+        }
+        return list;
     }
 
     private void saveAppDate(String phone, String code) throws Exception{

@@ -3,7 +3,7 @@ package com.basics.cu.entity;
 import java.math.BigDecimal;
 import java.util.Date;
 
-class CuRetail1Base extends BaseBean {
+class CuReatil1Base extends BaseBean {
 	private String id;
 	private String customerId;
 	private BigDecimal money;
