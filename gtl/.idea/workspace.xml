@@ -197,8 +197,8 @@
     </configuration>
     <list>
       <item itemvalue="Application.test" />
-      <item itemvalue="Tomcat Server.Tomcat 9.0.24" />
       <item itemvalue="Application.test (1)" />
+      <item itemvalue="Tomcat Server.Tomcat 9.0.24" />
     </list>
     <recent_temporary>
       <list>
@@ -224,7 +224,8 @@
       <workItem from="1569314568914" duration="14811000" />
       <workItem from="1569372216236" duration="14072000" />
       <workItem from="1569388197492" duration="718000" />
-      <workItem from="1569390263214" duration="13112000" />
+      <workItem from="1569390263214" duration="13243000" />
+      <workItem from="1569458574930" duration="312000" />
     </task>
     <servers />
   </component>
