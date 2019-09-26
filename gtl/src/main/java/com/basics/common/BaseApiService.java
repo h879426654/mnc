@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import com.basics.cu.dao.*;
 import com.basics.mall.dao.*;
 import com.basics.mall.entity.MallAdvertHot;
+import com.basics.wallet.controller.dao.WalletReleaseDao;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -172,6 +173,9 @@ public class BaseApiService {
 	public OrOrderDao orOrderDao;
 	@Autowired
 	public AppUserDao appUserDao;
+	@Autowired
+	public WalletReleaseDao walletReleaseDao;
+
 	@Autowired
 	protected PasswordEncoder passwordEncoder;
 
@@ -1289,6 +1293,7 @@ public class BaseApiService {
 		json.put("activemqId", activemqRequest.getId());
 		queueSender.sendMessage(queueDestination, json.toJSONString());
 	}
+
 
 	public void createSysActivemqResponse(String customerId, int activemqType, String activemqId, String activemqResponse) {
 		SysActivemqResponse response = new SysActivemqResponse();

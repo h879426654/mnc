@@ -277,6 +277,9 @@ public class Constant {
 	public static final int ACTIVEMQ_TYPE_40 = 40;// "后台交易链发放";
 	public static final int ACTIVEMQ_TYPE_41 = 41;// "后台交易链扣除";
 
+	public static final int ACTIVEMQ_TYPE_42 = 42;// "流通钱包释放";
+	public static final int ACTIVEMQ_TYPE_43 = 43;// "流通钱包释放";
+
 	/**
 	 * 默认推荐人
 	 */

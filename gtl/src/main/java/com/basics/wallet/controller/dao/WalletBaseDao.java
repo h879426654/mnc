@@ -5,10 +5,10 @@ import com.basics.support.GenericDao;
 
 public class WalletBaseDao extends BaseBean {
     private String userId;
-    private String moveWalletRecord;
-    private String superWalletRecord;
-    private String mTokenRecord;
-    private String scoreRecord;
+    private String moveNum;
+    private String superNum;
+    private String mTokenNum;
+    private String scoreNum;
 
     public String getUserId() {
         return userId;
@@ -18,35 +18,35 @@ public class WalletBaseDao extends BaseBean {
         this.userId = userId;
     }
 
-    public String getMoveWalletRecord() {
-        return moveWalletRecord;
+    public String getMoveNum() {
+        return moveNum;
     }
 
-    public void setMoveWalletRecord(String moveWalletRecord) {
-        this.moveWalletRecord = moveWalletRecord;
+    public void setMoveNum(String moveNum) {
+        this.moveNum = moveNum;
     }
 
-    public String getSuperWalletRecord() {
-        return superWalletRecord;
+    public String getSuperNum() {
+        return superNum;
     }
 
-    public void setSuperWalletRecord(String superWalletRecord) {
-        this.superWalletRecord = superWalletRecord;
+    public void setSuperNum(String superNum) {
+        this.superNum = superNum;
     }
 
-    public String getmTokenRecord() {
-        return mTokenRecord;
+    public String getmTokenNum() {
+        return mTokenNum;
     }
 
-    public void setmTokenRecord(String mTokenRecord) {
-        this.mTokenRecord = mTokenRecord;
+    public void setmTokenNum(String mTokenNum) {
+        this.mTokenNum = mTokenNum;
     }
 
-    public String getScoreRecord() {
-        return scoreRecord;
+    public String getScoreNum() {
+        return scoreNum;
     }
 
-    public void setScoreRecord(String scoreRecord) {
-        this.scoreRecord = scoreRecord;
+    public void setScoreNum(String scoreNum) {
+        this.scoreNum = scoreNum;
     }
 }

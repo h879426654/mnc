@@ -18,6 +18,20 @@
       <executable />
     </execution>
   </component>
+  <component name="DatabaseView">
+    <option name="SHOW_INTERMEDIATE" value="true" />
+    <option name="GROUP_DATA_SOURCES" value="true" />
+    <option name="GROUP_SCHEMA" value="true" />
+    <option name="GROUP_CONTENTS" value="false" />
+    <option name="SORT_POSITIONED" value="false" />
+    <option name="SHOW_EMPTY_GROUPS" value="false" />
+    <option name="AUTO_SCROLL_FROM_SOURCE" value="false" />
+    <option name="HIDDEN_KINDS">
+      <set />
+    </option>
+    <expand />
+    <select />
+  </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
@@ -75,11 +89,11 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="com.basics.wallet.controller.entity" />
+      <recent name="com.basics.wallet.controller.dao.myBatisDao" />
+      <recent name="com.basics.mall.dao.MybatisDao" />
       <recent name="com.basics.wallet.controller.dao" />
       <recent name="com.basics.job" />
-      <recent name="com.basics.wallet.controller.request" />
-      <recent name="com.basics.support.job" />
-      <recent name="com.basics.broswer.controller.response" />
     </key>
     <key name="CopyFile.RECENT_KEYS">
       <recent name="D:\code\mnc1\gtl\src\main\java\com\basics\wallet\controller" />
@@ -98,6 +112,19 @@
     </option>
   </component>
   <component name="RunManager" selected="Tomcat Server.Tomcat 9.0.24">
+    <configuration name="DefaultNameMapper" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="com.basics.support.DefaultNameMapper" />
+      <module name="gtl" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.basics.support.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="test (1)" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="com.basics.wallet.controller.test" />
       <module name="gtl" />
@@ -197,11 +224,13 @@
     </configuration>
     <list>
       <item itemvalue="Application.test" />
-      <item itemvalue="Tomcat Server.Tomcat 9.0.24" />
       <item itemvalue="Application.test (1)" />
+      <item itemvalue="Application.DefaultNameMapper" />
+      <item itemvalue="Tomcat Server.Tomcat 9.0.24" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.DefaultNameMapper" />
         <item itemvalue="Application.test (1)" />
         <item itemvalue="Application.test" />
       </list>
@@ -224,7 +253,9 @@
       <workItem from="1569314568914" duration="14811000" />
       <workItem from="1569372216236" duration="14072000" />
       <workItem from="1569388197492" duration="718000" />
-      <workItem from="1569390263214" duration="13112000" />
+      <workItem from="1569390263214" duration="13243000" />
+      <workItem from="1569458574930" duration="2026000" />
+      <workItem from="1569465916120" duration="11829000" />
     </task>
     <servers />
   </component>
@@ -254,82 +285,82 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/basics/cu/service/impl/CommonApiServiceImpl.java</url>
-          <line>254</line>
+          <line>243</line>
           <option name="timeStamp" value="208" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/basics/cu/service/impl/CommonApiServiceImpl.java</url>
-          <line>255</line>
+          <line>244</line>
           <option name="timeStamp" value="209" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/basics/cu/service/impl/CommonApiServiceImpl.java</url>
-          <line>256</line>
+          <line>245</line>
           <option name="timeStamp" value="210" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/basics/cu/service/impl/CommonApiServiceImpl.java</url>
-          <line>258</line>
+          <line>247</line>
           <option name="timeStamp" value="211" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/basics/cu/service/impl/CommonApiServiceImpl.java</url>
-          <line>261</line>
+          <line>250</line>
           <option name="timeStamp" value="212" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/basics/cu/service/impl/CommonApiServiceImpl.java</url>
-          <line>260</line>
+          <line>249</line>
           <option name="timeStamp" value="213" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/basics/cu/service/impl/CommonApiServiceImpl.java</url>
-          <line>262</line>
+          <line>251</line>
           <option name="timeStamp" value="214" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/basics/cu/controller/api/CommonApiController.java</url>
-          <line>113</line>
+          <line>110</line>
           <option name="timeStamp" value="218" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/basics/cu/controller/api/CommonApiController.java</url>
-          <line>119</line>
+          <line>116</line>
           <option name="timeStamp" value="219" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/basics/cu/controller/api/CommonApiController.java</url>
-          <line>115</line>
+          <line>112</line>
           <option name="timeStamp" value="220" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/basics/cu/service/impl/CommonApiServiceImpl.java</url>
-          <line>242</line>
+          <line>231</line>
           <option name="timeStamp" value="221" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/basics/cu/controller/api/CommonApiController.java</url>
-          <line>120</line>
+          <line>117</line>
           <option name="timeStamp" value="222" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/basics/cu/service/impl/CommonApiServiceImpl.java</url>
-          <line>243</line>
+          <line>232</line>
           <option name="timeStamp" value="223" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/basics/cu/service/impl/CommonApiServiceImpl.java</url>
-          <line>248</line>
+          <line>237</line>
           <option name="timeStamp" value="224" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/basics/cu/controller/api/CustomerApiController.java</url>
-          <line>448</line>
+          <line>452</line>
           <option name="timeStamp" value="227" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/basics/cu/controller/api/CustomerApiController.java</url>
-          <line>447</line>
+          <line>451</line>
           <option name="timeStamp" value="228" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
