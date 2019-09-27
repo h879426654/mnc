@@ -12,7 +12,7 @@ public class PushMallShopRequest extends TokenRequest {
 	private static final long serialVersionUID = 1522079525041728377L;
 	@NotBlank(message = "{pushMallShopRequest.shopName}")
 	private String shopName;
-//	@NotNull(message = "商铺logo不能为空")
+	//	@NotNull(message = "商铺logo不能为空")
 	private MultipartFile file;
 	@NotBlank(message = "{pushMallShopRequest.shopService}")
 	private String shopService;
@@ -22,13 +22,12 @@ public class PushMallShopRequest extends TokenRequest {
 	private String shopPass;
 	@NotBlank(message = "{mallCustomerAddressRequest.addressPhone}")
 	private String shopPhone;
-	
 	private MultipartFile licence;
-	
+
 	private List<MultipartFile> aptitudeFiles;
-	
+
 	private String shopLogo;
-	
+	private String shopLicence;
 	public List<MultipartFile> getAptitudeFiles() {
 		return aptitudeFiles;
 	}
@@ -100,6 +99,15 @@ public class PushMallShopRequest extends TokenRequest {
 	public void setLicence(MultipartFile licence) {
 		this.licence = licence;
 	}
+
+	public String getShopLicence() {
+		return shopLicence;
+	}
+
+	public void setShopLicence(String shopLicence) {
+		this.shopLicence = shopLicence;
+	}
+
 
 	
 	
