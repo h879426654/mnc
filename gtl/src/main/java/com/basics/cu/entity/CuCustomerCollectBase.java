@@ -14,6 +14,37 @@ class CuCustomerCollectBase extends BaseBean {
 	private String latitude;
 	private Date createTime;
 	private Integer count;
+	private String limit;
+	private int page;
+	private String rows;
+
+	@Override
+	public int getPage() {
+		return page;
+	}
+
+	@Override
+	public void setPage(int page) {
+		this.page = page;
+	}
+
+	@Override
+	public String getRows() {
+		return rows;
+	}
+
+	@Override
+	public void setRows(String rows) {
+		this.rows = rows;
+	}
+
+	public String getLimit() {
+		return limit;
+	}
+
+	public void setLimit(String limit) {
+		this.limit = limit;
+	}
 
 	public Integer getCount() {
 		return count;

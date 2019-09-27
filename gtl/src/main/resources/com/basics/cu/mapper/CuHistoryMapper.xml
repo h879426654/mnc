@@ -29,5 +29,7 @@
          <![CDATA[ and shop_id = #{shopId} ]]>
      </if>
  </update>
- 
+<delete id="delete" parameterType="com.basics.cu.entity.CuHistory">
+ <![CDATA[ DELETE FROM cu_history WHERE  id = #{id} ]]>
+</delete>
 </mapper>

@@ -9,24 +9,40 @@ class CuReatil1Base extends BaseBean {
 	private BigDecimal money;
 	private BigDecimal indirectMoney;
 	private Date createTime;
-	private Integer count2;
-	private Integer count3;
-	private String list2;
-	private String list3;
-	public Integer getCount2() {
-		return count2;
+	private String directList;
+	private String indirectList;
+	private Integer directCount;
+	private Integer indirectidCount;
+
+	public Integer getIndirectidCount() {
+		return indirectidCount;
 	}
 
-	public void setCount2(Integer count2) {
-		this.count2 = count2;
+	public void setIndirectidCount(Integer indirectidCount) {
+		this.indirectidCount = indirectidCount;
 	}
 
-	public Integer getCount3() {
-		return count3;
+	public Integer getDirectCount() {
+		return directCount;
 	}
 
-	public void setCount3(Integer count3) {
-		this.count3 = count3;
+	public void setDirectCount(Integer directCount) {
+		this.directCount = directCount;
+	}
+	public String getDirectList() {
+		return directList;
+	}
+
+	public void setDirectList(String directList) {
+		this.directList = directList;
+	}
+
+	public String getIndirectList() {
+		return indirectList;
+	}
+
+	public void setIndirectList(String indirectList) {
+		this.indirectList = indirectList;
 	}
 
 	public String getId() {
@@ -68,20 +84,5 @@ class CuReatil1Base extends BaseBean {
 	public void setCreateTime(Date createTime) {
 		this.createTime = createTime;
 	}
-
-	public String getList2() {
-		return list2;
-	}
-
-	public void setList2(String list2) {
-		this.list2 = list2;
-	}
-
-	public String getList3() {
-		return list3;
-	}
-
-	public void setList3(String list3) {
-		this.list3 = list3;
-	}
 }
+

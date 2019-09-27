@@ -8,16 +8,23 @@
         select id, SHOP_ID as shopId, SHOP_NAME as shopName, CUSTOMER_ID as customerId, STATE as state, CREATE_TIME as createTime
         from CU_CUSTOMER_COLLECT
         WHERE 1=1
+        <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(shopId)">
+            <![CDATA[ AND SHOP_ID = #{shopId} ]]>
+        </if>
         <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(customerId)">
             <![CDATA[ AND CUSTOMER_ID = #{customerId} ]]>
         </if>
         <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(state)">
             <![CDATA[ AND STATE = #{state} ]]>
         </if>
-        <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(shopId)">
-            <![CDATA[ AND SHOP_ID = #{shopId} ]]>
+        <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(id)">
+            <![CDATA[ AND ID = #{id} ]]>
         </if>
         order by create_time desc
+        <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(page)">
+            <![CDATA[limit #{page},#{rows}]]>
+        </if>
+
     </select>
  
     <insert id="insert" parameterType="com.basics.cu.entity.CuCustomerCollect">
@@ -25,14 +32,11 @@
     </insert>
 
     <update id = "update" parameterType="com.basics.cu.entity.CuCustomerCollect">
-        <![CDATA[ UPDATE CU_CUSTOMER_COLLECT ]]>
-        <trim prefix="SET" suffixOverrides=",">
-            <if test="id!=null">id = #{id},</if>
+        <![CDATA[ UPDATE CU_CUSTOMER_COLLECT  SET]]>
             <if test="shopId!=null">shop_id = #{shopId},</if>
             <if test="shopName!=null">shop_name = #{shopName},</if>
             <if test="customerId!=null">customer_id = #{customerId},</if>
             <if test="state!=null">state = #{state}</if>
-        </trim>
         <![CDATA[ WHERE  id = #{id}   ]]>
     </update>
 </mapper>

@@ -113,30 +113,30 @@ public class CustomerApiServiceImpl extends BaseApiService implements CustomerAp
 			return response;
 		}
 		CuCustomerInfo info = cuCustomerInfoDao.get(user.getId());
-		if (StringUtils.isBlank(info.getCustomerCard()) && StringUtils.isNotBlank(request.getCustomerCard())) {
-			if (request.getCustomerCard().length() == 15) {
-				if (!Pattern.compile(Constant.AUTH_15_REGX).matcher(request.getCustomerCard()).matches()) {
-					response.onHandleFail(getMessage(req, "customerApiServiceImpl.doModifyCustomerInfo.idCard.error"));
-					return response;
-				}
-			} else if (request.getCustomerCard().length() == 18) {
-				if (!Pattern.compile(Constant.AUTH_18_REGX).matcher(request.getCustomerCard()).matches()) {
-					response.onHandleFail(getMessage(req, "customerApiServiceImpl.doModifyCustomerInfo.idCard.error"));
-					return response;
-				}
-			} else {
-				response.onHandleFail(getMessage(req, "customerApiServiceImpl.doModifyCustomerInfo.idCard.error"));
-				return response;
-			}
-			info.setCustomerCard(request.getCustomerCard());
-		}
-		if (StringUtils.isBlank(info.getRealName())) {
-			info.setRealName(request.getRealName());
-		}
-		info.setCustomerAlipay(request.getCustomerAlipay());
-		info.setCustomerCard(request.getCustomerCard());
-		info.setBankCard(request.getBankCard());
-		info.setBankName(request.getBankName());
+		//if (StringUtils.isBlank(info.getCustomerCard()) && StringUtils.isNotBlank(request.getCustomerCard())) {
+		//if (request.getCustomerCard().length() == 15) {
+		//		if (!Pattern.compile(Constant.AUTH_15_REGX).matcher(request.getCustomerCard()).matches()) {
+		//			response.onHandleFail(getMessage(req, "customerApiServiceImpl.doModifyCustomerInfo.idCard.error"));
+		//			return response;
+		//		}
+		//	} else if (request.getCustomerCard().length() == 18) {
+		//		if (!Pattern.compile(Constant.AUTH_18_REGX).matcher(request.getCustomerCard()).matches()) {
+		//			response.onHandleFail(getMessage(req, "customerApiServiceImpl.doModifyCustomerInfo.idCard.error"));
+		//			return response;
+		//		}
+		//	} else {
+		//		response.onHandleFail(getMessage(req, "customerApiServiceImpl.doModifyCustomerInfo.idCard.error"));
+		//		return response;
+		//	}
+		//	info.setCustomerCard(request.getCustomerCard());
+		//}
+		//if (StringUtils.isBlank(info.getRealName())) {
+		//	info.setRealName(request.getRealName());
+		//}
+		//info.setCustomerAlipay(request.getCustomerAlipay());
+		//info.setCustomerCard(request.getCustomerCard());
+		//info.setBankCard(request.getBankCard());
+		//info.setBankName(request.getBankName());
 		info.setCustomerName(request.getCustomerName());
 		cuCustomerInfoDao.save(info);
 		response.onHandleSuccess();

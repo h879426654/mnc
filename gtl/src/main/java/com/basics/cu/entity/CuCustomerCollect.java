@@ -40,5 +40,19 @@ public class CuCustomerCollect extends CuCustomerCollectBase {
 		return this;
 	}
 
+	public CuCustomerCollect page(Integer page) {
+		this.setPage(page);
+		return this;
+	}
+
+	public CuCustomerCollect rows(String rows) {
+		this.setRows(rows);
+		return this;
+	}
+
+	public CuCustomerCollect limit(String limit) {
+		this.setLimit(limit);
+		return this;
+	}
 
 }

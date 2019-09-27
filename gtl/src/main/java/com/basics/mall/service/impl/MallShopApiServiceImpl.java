@@ -69,18 +69,18 @@ public class MallShopApiServiceImpl extends BaseApiService implements MallShopAp
 		CommonSupport.checkNotNull(rule, "系统配置不能为空");
 
 		if(Constant.STATE_YES == rule.getNeedUploadLicence()) {
-			if(null == request.getLicence() || request.getLicence().isEmpty()) {
+			if(null == request.getShopLicence() || request.getShopLicence().isEmpty()) {
 				response.onHandleFail(getMessage(req, "mallShopAdvertApiServiceImpl.doPushShopAdvert.licence.empty"));
 				return response;
 			}
 		}
 
 		MallShop shop = mallShopDao.queryOne(new QueryFilterBuilder().put("customerId", user.getId()).put("flagDel", Constant.STATE_NO).build());
-		if(null != shop && Constant.APPLY_STATUS_3 != shop.getApplyStatus()) {
-			response.onHandleFail(getMessage(req, "mallShopAdvertApiServiceImpl.doPushShopAdvert.advert.agent"));
-			return response;
-		}
-		
+//		if(null != shop && Constant.APPLY_STATUS_3 != shop.getApplyStatus()) {
+//			response.onHandleFail(getMessage(req, "mallShopAdvertApiServiceImpl.doPushShopAdvert.advert.agent"));
+//			return response;
+//		}
+
 		shop = mallShopDao.queryOne(new QueryFilterBuilder().put("shopName", request.getShopName()).put("LTapplyStatus", Constant.APPLY_STATUS_3).put("flagDel", Constant.STATE_NO).build());
 		if(null != shop){
 			response.onHandleFail(getMessage(req, "mallShopApiServiceImpl.doApplyMallShop.name.repeat"));
@@ -96,10 +96,10 @@ public class MallShopApiServiceImpl extends BaseApiService implements MallShopAp
 			response.onHandleFail(getMessage(req, "tradeCoinApiServiceImpl.doPushTradeInfo.mnc.insufficient"));
 			return response;
 		}
-		if (Constant.UN_ACTIVE_NUM > account.getCustomerIntegral().doubleValue()) {
-			response.onHandleFail(getMessage(req, "tradeMoneyApiServiceImpl.doPushTradeInfo.user.notActive"));
-			return response;
-		}
+//		if (Constant.UN_ACTIVE_NUM > account.getCustomerIntegral().doubleValue()) {
+//			response.onHandleFail(getMessage(req, "tradeMoneyApiServiceImpl.doPushTradeInfo.user.notActive"));
+//			return response;
+//		}
 		String path = "shop/";
 		String fileName = "";
 		if (null != request.getFile() && !request.getFile().isEmpty()) {
@@ -112,46 +112,46 @@ public class MallShopApiServiceImpl extends BaseApiService implements MallShopAp
 			}
 			String url = this.baseFileStoreService.getInternetUrl(path);
 			request.setShopLogo(url);
-		} 
-		
+		}
+
 		shop = new MallShop();
-		if (null != request.getLicence() && !request.getLicence().isEmpty()) {
-			fileName = request.getLicence().getOriginalFilename();
-			path += GuidUtils.generateSimpleGuid() + MD5Util.random(6) + fileName.substring(fileName.lastIndexOf("."));
-			try {
-				this.baseFileStoreService.write(path, request.getLicence().getInputStream());
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-			String url = this.baseFileStoreService.getInternetUrl(path);
-			shop.setShopLicence(url);
-		} 
+		if (null != request.getShopLicence() && !request.getShopLicence().isEmpty()) {
+			fileName = request.getShopLicence();
+//			path += GuidUtils.generateSimpleGuid() + MD5Util.random(6) + fileName.substring(fileName.lastIndexOf("."));
+//			try {
+//				this.baseFileStoreService.write(path, request.getLicence().getInputStream());
+//			} catch (IOException e) {
+//				e.printStackTrace();
+//			}
+//			String url = this.baseFileStoreService.getInternetUrl(path);
+			shop.setShopLicence(fileName);
+		}
 		BeanUtils.copyProperties(request, shop);
 		CuCustomerInfo info = cuCustomerInfoDao.get(user.getId());
 		shop.setCountryId(info.getCountryId());
 		shop.id(user.getId()).applyStatus(Constant.APPLY_STATUS_1).shopStatus(Constant.SHOP_STATUS_2).createTime(new Date()).shopPass(passwordEncoder.encode(request.getShopPass())).customerId(user.getId()).needMoney(rule.getNeedShopMoney()).shopAddress(request.getShopAddr());
-		if(CollectionUtils.isNotEmpty(request.getAptitudeFiles())) {
-			for ( MultipartFile file : request.getAptitudeFiles()) {
-				AppImage appImage = null;
-				if (!file.isEmpty()) {
-					path = "shop/";
-					fileName = file.getOriginalFilename();
-					path += GuidUtils.generateSimpleGuid() + MD5Util.random(6) + fileName.substring(fileName.lastIndexOf("."));
-					try {
-						this.baseFileStoreService.write(path, file.getInputStream());
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
-					String url = this.baseFileStoreService.getInternetUrl(path);
-					appImage = new AppImage();
-					appImage.setOwnerId(shop.getId());
-					appImage.setOwnerClass("MallShop");
-					appImage.setUrl(url);
-					appImageDao.save(appImage);
-				}
-			}
-		}
-		createActiveMq(user.getId(), Constant.ACTIVEMQ_TYPE_30, rule.getNeedShopMoney(), null, "商家申请", shop);
+//		if(CollectionUtils.isNotEmpty(request.getAptitudeFiles())) {
+//			for ( MultipartFile file : request.getAptitudeFiles()) {
+		AppImage appImage = null;
+//				if (!file.isEmpty()) {
+//					path = "shop/";
+//					//fileName = file.getOriginalFilename();
+//					path += GuidUtils.generateSimpleGuid() + MD5Util.random(6) + fileName.substring(fileName.lastIndexOf("."));
+//					try {
+//						this.baseFileStoreService.write(path, file.getInputStream());
+//					} catch (IOException e) {
+//						e.printStackTrace();
+//					}
+		String url = this.baseFileStoreService.getInternetUrl(path);
+		appImage = new AppImage();
+		appImage.setOwnerId(shop.getId());
+		appImage.setOwnerClass("MallShop");
+		appImage.setUrl(fileName);
+		appImageDao.save(appImage);
+//				}
+//			}
+//		}
+		//createActiveMq(user.getId(), Constant.ACTIVEMQ_TYPE_30, rule.getNeedShopMoney(), null, "商家申请", shop);
 		response.onHandleSuccess();
 		return response;
 	}
