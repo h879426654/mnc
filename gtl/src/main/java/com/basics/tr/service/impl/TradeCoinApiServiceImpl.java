@@ -55,6 +55,7 @@ import com.basics.tr.service.TradeCoinApiService;
 @Transactional
 public class TradeCoinApiServiceImpl extends BaseApiService implements TradeCoinApiService {
 
+
 	/**
 	 * 发布交易信息 业务需求 1. 一人只能有发一单 2. 出售方需要支付密码 3. 判断发布的金额,数量是否合法
 	 * 
@@ -141,10 +142,18 @@ public class TradeCoinApiServiceImpl extends BaseApiService implements TradeCoin
 					.tradeSerial(SerialnumberUtils.generateUsePrefix("MNC", true)).tradeStatus(Constant.TRADE_STATUS_1).createTime(now).applyStatus(Constant.APPLY_STATUS_2)
 					.countryId(info.getCountryId());
 			trTradeCoinDao.save(trade);
+
 			response.onHandleSuccess();
 			return response;
 		}
 
+	}
+
+	@Override
+	public int getName() {
+		Map<String, Object> map = new HashMap<>();
+		int a = trConvertDao.getExtend(map, "aaa");
+		return 0;
 	}
 
 	/**

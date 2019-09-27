@@ -26,6 +26,11 @@ public interface TradeCoinApiService {
 	DataResponse doPushTradeInfo(PushTradeRequest request, HttpServletRequest req);
 
 	/**
+	 *
+	 */
+	int getName();
+
+	/**
 	 * 交易大厅查询
 	 */
 	DataPageComonResponse<TradeResponse> doSelectTradeList(SelectTradeListRequest request, HttpServletRequest req);

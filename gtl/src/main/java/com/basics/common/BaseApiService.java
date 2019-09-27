@@ -12,8 +12,8 @@ import javax.servlet.http.HttpServletRequest;
 
 import com.basics.cu.dao.*;
 import com.basics.mall.dao.*;
-import com.basics.mall.entity.MallAdvertHot;
-import com.basics.wallet.controller.dao.WalletReleaseDao;
+import com.basics.wallet.dao.WalletEntityDao;
+import com.basics.wallet.entity.WalletEntity;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -174,7 +174,7 @@ public class BaseApiService {
 	@Autowired
 	public AppUserDao appUserDao;
 	@Autowired
-	public WalletReleaseDao walletReleaseDao;
+	public WalletEntityDao walletEntityDao;
 
 	@Autowired
 	protected PasswordEncoder passwordEncoder;
@@ -248,7 +248,7 @@ public class BaseApiService {
 	}
 
 	public static void main(String[] args) {
-		System.out.println(new BigDecimal("0.0154563").multiply(new BigDecimal(3453334)).divide(new BigDecimal(1000 * 60 * 60)).doubleValue());
+//		System.out.println(new BigDecimal("0.0154563").multiply(new BigDecimal(3453334)).divide(new BigDecimal(1000 * 60 * 60)).doubleValue());
 	}
 
 	// 保留5位小数，取下
@@ -1294,6 +1294,24 @@ public class BaseApiService {
 		queueSender.sendMessage(queueDestination, json.toJSONString());
 	}
 
+
+	public void createActiveMq2(String customerId, int activemqType, BigDecimal moveNum, BigDecimal tokenNum, BigDecimal scoreNum, BigDecimal superNum,String userId, Object obj) {
+		JSONObject json = new JSONObject();
+		json.put("customerId", customerId);
+		json.put("activemqType", activemqType);
+		json.put("sourceId", "121");
+		json.put("obj", JSONObject.toJSONString(obj));
+		WalletEntity activemqRequest = new WalletEntity();
+		activemqRequest.setMoveNum(moveNum);
+//		activemqRequest.setMoveNum(scoreNum);
+//		activemqRequest.setScoreNum(scoreNum);
+//		activemqRequest.setSuperNum(superNum);
+//		activemqRequest.setUserId(userId);
+
+		walletEntityDao.save(activemqRequest);
+		json.put("activemqId", activemqRequest.getUserId());
+		queueSender.sendMessage(queueDestination, json.toJSONString());
+	}
 
 	public void createSysActivemqResponse(String customerId, int activemqType, String activemqId, String activemqResponse) {
 		SysActivemqResponse response = new SysActivemqResponse();

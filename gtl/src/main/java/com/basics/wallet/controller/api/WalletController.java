@@ -16,10 +16,13 @@ import com.basics.mall.entity.MallProductClassify;
 import com.basics.mall.service.MallApiService;
 import com.basics.mall.vo.CommentInfoVo;
 import com.basics.support.auth.HttpClientUtils;
-import com.basics.wallet.controller.Web3JConfigure;
+import com.basics.tr.service.TradeCoinApiService;
+import com.basics.wallet.Web3JConfigure;
 import com.basics.wallet.controller.request.TokenBalanceRequest;
 import com.basics.wallet.controller.response.TransationResponse;
 import com.basics.wallet.controller.response.TxInfoResponse;
+import com.basics.wallet.controller.response.WalletResponse;
+import com.basics.wallet.service.WalletService;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import net.sf.json.JSONObject;
@@ -67,10 +70,11 @@ public class WalletController implements ApplicationContextAware {
 	@SuppressWarnings("unused")
 	private ApplicationContext applicationContext;
 
-
 	@Autowired
 	private CustomerApiService customerApiService;
 
+	@Autowired
+	private WalletService walletService;
 	@Override
 	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
 		this.applicationContext = applicationContext;
@@ -165,7 +169,6 @@ public class WalletController implements ApplicationContextAware {
 		return BigInteger.valueOf(Long.parseLong(number));
 	}
 
-
 	// 获取余额
 	@RequestMapping("getTokenBlance")
 	public String getTokenBlance(HttpServletRequest req) {//TokenBalanceRequest request,
@@ -181,21 +184,33 @@ public class WalletController implements ApplicationContextAware {
 	}
 
 	// 获取钱包对应的用户信息
+//	@RequestMapping("getWalletInfo")
+//	public DataItemResponse<CustomerInfoResponse> getwalletInfo(@Valid TokenRequest request, BindingResult result, HttpServletRequest req) {
+//		DataItemResponse<CustomerInfoResponse> response = new DataItemResponse<>();
+//		if (result.hasErrors()) {
+//			response.onBindingError(result.getAllErrors());
+//			return response;
+//		}
+//		try {
+//			response = customerApiService.selectCustomerInfo(request, req);
+//		} catch (Exception e) {
+//			response.onException(e);
+//		}
+//		return response;
+//	}
+
+	// 获取钱包对应的用户信息
 	@RequestMapping("getWalletInfo")
-	public DataItemResponse<CustomerInfoResponse> getwalletInfo(@Valid TokenRequest request, BindingResult result, HttpServletRequest req) {
-		DataItemResponse<CustomerInfoResponse> response = new DataItemResponse<>();
-		if (result.hasErrors()) {
-			response.onBindingError(result.getAllErrors());
-			return response;
-		}
-		try {
-			response = customerApiService.selectCustomerInfo(request, req);
-		} catch (Exception e) {
-			response.onException(e);
-		}
-		return response;
+	public WalletResponse getwalletInfo(HttpServletRequest req) {
+		TokenIdRequest tokenIdRequest = new TokenIdRequest();
+		tokenIdRequest.setId("1");
+		WalletResponse walletResponse=walletService.getWalletInfo(tokenIdRequest,null);
+		return walletResponse;
 	}
 
-
-
+	//测试
+	@RequestMapping("test")
+	public void getTest(){
+		walletService.getTest();
+	}
 }

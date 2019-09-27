@@ -57,6 +57,7 @@ public class TradeCoinApiController implements ApplicationContextAware {
 	@RequestMapping("pushTradeInfo")
 	public DataResponse pushTradeInfo(@Valid PushTradeRequest request, BindingResult result, HttpServletRequest req) {
 		DataResponse response = new DataResponse();
+
 		if (result.hasErrors()) {
 			response.onBindingError(result.getAllErrors());
 			return response;

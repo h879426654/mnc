@@ -1,8 +1,0 @@
-#查看linux tocat进程
- ps -ef |grep tomcat|grep -v grep |awk '{print $2}'
-#强制kill tomcat 进程
- ps -ef |grep tomcat|grep -v grep |awk '{print $2}'|xargs kill -9
-#启动tomcat
-/www/server/tomcat/bin/startup.sh
-
-

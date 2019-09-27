@@ -182,4 +182,8 @@
   <![CDATA[DELETE FROM tr_trade_complaint]]>
   <include refid="conditionDeleteAll" />
  </delete>
+
+ <select id="aaa" parameterType="map">
+  select count(*) from aaa
+ </select>
 </mapper>

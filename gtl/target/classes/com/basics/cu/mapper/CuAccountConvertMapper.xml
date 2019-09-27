@@ -208,4 +208,15 @@
   </choose>
  </select>
 
+ <select id="getTest" resultType="map">
+  <![CDATA[
+        select * from wallet_info
+        ]]>
+    </select>
+ <select id="getWalletInfo"  >
+  <![CDATA[
+        SELECT *
+        FROM wallet_info
+            ]]>
+    </select>
 </mapper>

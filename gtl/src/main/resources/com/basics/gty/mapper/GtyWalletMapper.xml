@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.basics.gty.entity.GtyWallet">
+ <cache type="com.basics.support.mybatis.CacheAdapter"/>
+
+ <select id="query" parameterType="map" resultType="com.basics.gty.entity.GtyWallet" flushCache="true" useCache="false">
+  SELECT
+  gtyWallet.USER_ID "userId",
+  gtyWallet.MNC_NUM "mncNum",
+  gtyWallet.MOVE_NUM "moveNum",
+  gtyWallet.SUPER_NUM "superNum",
+  gtyWallet.RECORD_NUM "recordNum",
+  gtyWallet.MTOKEN_NUM "mTokenNum",
+  gtyWallet.SCORE_NUM "scoreNum",
+  gtyWallet.RELEASED_SUPER_NUM "releasedSuperNum"
+  FROM wallet_info gtyWallet
+ </select>
+</mapper>
