@@ -1,10 +1,16 @@
 package com.basics.broswer.controller.api;
 
 import com.alibaba.fastjson.JSON;
+import com.basics.app.entity.AppToken;
 import com.basics.broswer.controller.response.BlockInfoResponse;
 import com.basics.broswer.controller.response.BlockNetResponse;
 import com.basics.common.*;
 import com.basics.cu.entity.CuCustomerAddress;
+import com.basics.cu.entity.CuCustomerInfo;
+import com.basics.cu.entity.CuCustomerLogin;
+import com.basics.cu.service.CuCustomerInfoService;
+import com.basics.gty.entity.GtyWallet;
+import com.basics.gty.service.GtyWalletService;
 import com.basics.mall.controller.request.*;
 import com.basics.mall.controller.response.MallProductDetailResponse;
 import com.basics.mall.controller.response.MallProductResponsePlus;
@@ -12,10 +18,14 @@ import com.basics.mall.controller.response.MyCollectionResponse;
 import com.basics.mall.entity.MallProductClassify;
 import com.basics.mall.service.MallApiService;
 import com.basics.mall.vo.CommentInfoVo;
+import com.basics.support.DateUtils;
+import com.basics.support.QueryFilter;
+import com.basics.support.QueryFilterBuilder;
 import com.basics.support.auth.HttpClientUtils;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import net.sf.json.JSONObject;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -29,6 +39,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.math.BigInteger;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -40,12 +51,13 @@ public class BroswerController implements ApplicationContextAware {
 	@SuppressWarnings("unused")
 	private ApplicationContext applicationContext;
 
+	@Autowired
+	private CuCustomerInfoService cuCustomerInfo;
 	@Override
 	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
 		this.applicationContext = applicationContext;
 
 	}
-
 	/**
 	 * 查询区块信息
 	 */
@@ -96,14 +108,27 @@ public class BroswerController implements ApplicationContextAware {
 
 		return response;
 	}
-
+	@Autowired
+	private GtyWalletService gtySer;
 	// 获取记录
 	@RequestMapping("getTransationRecord")
 	public String getHistory(TokenIdRequest request, HttpServletRequest req) {
+		if(StringUtils.isBlank(request.getId())){
+			DataResponse dataResponse = new DataResponse();
+			dataResponse.setMsg("id不能为空");
+			dataResponse.setStatus(1);
+			return dataResponse.toString();
+		}
+		QueryFilter filter = new QueryFilter();
+		Map<String, Object> map = new HashMap<>();
+		map.put("USER_ID", request.getId());
+		filter.setParams(map);
+		GtyWallet gtyWallet = gtySer.queryOne(filter);
+
 		Map<String, String> params = new HashMap<>();
 		params.put("module","account");
 		params.put("action","tokentx");
-		params.put("address","0xfaa0529e5d47ece85e093f5936bfd781de32060d");
+		params.put("address",gtyWallet.getWalletAddress());
 		params.put("contractaddress","0x2657bd0193a127c93152e043e29980bf16a1b446");
 		params.put("startblock","8000000");
 		params.put("endblock","8700000");
