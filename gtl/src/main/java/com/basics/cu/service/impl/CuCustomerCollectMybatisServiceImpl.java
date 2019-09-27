@@ -6,15 +6,14 @@ import com.basics.common.BaseApiService;
 import com.basics.cu.controller.request.CollectRequest;
 import com.basics.cu.controller.request.ConsumeRequest;
 import com.basics.cu.controller.request.HistoryRequest;
-import com.basics.cu.dao.CuConsumeDao;
 import com.basics.cu.entity.*;
 import com.basics.cu.service.CuCustomerCollectService;
 import com.basics.mall.entity.MallShopAdvert;
+import com.basics.support.PaginationSupport;
 import com.basics.support.QueryFilterBuilder;
 import net.sf.json.JSONArray;
 import org.springframework.stereotype.Service;
 import org.web3j.abi.datatypes.Int;
-import org.web3j.crypto.Hash;
 
 import java.math.BigDecimal;
 import java.util.HashMap;
@@ -229,7 +228,7 @@ public class CuCustomerCollectMybatisServiceImpl extends BaseApiService implemen
     public String searchIsCollect(String token, String shopId) {
         String customerId = this.getCuCustomerInfo(token);
         if (null != customerId) {
-            CuCustomerCollect cuCustomerCollect = cuCustomerCollectDao.queryOne(new QueryFilterBuilder().put("cusetomerId", customerId).put("shopId",shopId).put("state","1").build());
+            CuCustomerCollect cuCustomerCollect = cuCustomerCollectDao.queryOne(new QueryFilterBuilder().put("customerId", customerId).put("shopId",shopId).put("state","1").build());
             if (null != cuCustomerCollect) {
                 return "1";
             } else {
@@ -250,6 +249,54 @@ public class CuCustomerCollectMybatisServiceImpl extends BaseApiService implemen
             return json.toString();
         }
         return "";
+    }
+
+    @Override
+    public String insertDiscuss(String token, String shopId, String remark) {
+        String customerId = this.getCuCustomerInfo(token);
+        if (null != customerId) {
+            try {
+                CuDiscuss cuDiscuss = new CuDiscuss();
+                cuDiscuss.setCustomerId(customerId);
+                cuDiscuss.setShopId(shopId);
+                cuDiscuss.setRemark(remark);
+                cuDiscussDao.insert(cuDiscuss);
+                return "成功";
+            } catch (Exception e) {
+                return "失败";
+            }
+        }
+        return "token有误";
+    }
+
+    @Override
+    public String searchDiscuss(String shopId, Integer pageNum, Integer pageSize) {
+        try {
+            if (null == pageNum && null == pageSize) {
+                pageNum = 1;
+                pageSize = 10;
+            }
+            Map params = new HashMap();
+            params.put("shopId", shopId);
+            params.put("state", "0");
+            params.put("pagey", (pageNum-1)*10);
+            params.put("pages", pageSize);
+            CuDiscuss cD = new CuDiscuss();
+            List<CuDiscuss> cuDiscusses = cuDiscussDao.query(new QueryFilterBuilder().putAll(params).build());
+            for (CuDiscuss cuDiscuss : cuDiscusses) {
+                CuCustomerInfo cuCustomerInfo = cuCustomerInfoDao.queryOne(new QueryFilterBuilder().put("customerId", cuDiscuss.getCustomerId()).build());
+                cuDiscuss.setImage(cuCustomerInfo.getCustomerHead());
+                cuDiscuss.setName(cuCustomerInfo.getCustomerName());
+            }
+            JSONArray json = JSONArray.fromObject(cuDiscusses);
+            Long totalCount = cuDiscussDao.count(params);
+            cD.setTotal(totalCount);
+            cD.setList(json.toString());
+            JSONObject json1 = (JSONObject) JSONObject.toJSON(cD);
+            return json1.toString();
+        } catch (Exception e) {
+            return "查询异常";
+        }
     }
 
     /**

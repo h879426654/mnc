@@ -445,14 +445,12 @@ public class CustomerApiController implements ApplicationContextAware {
 
     /**
      * 查看下级分销
-     * @param customerId
+     * @param token
      * @return
      */
 	@RequestMapping("searchReatil")
-    public String searchReatil(@Valid String customerId) {
-        List<CuReatil1> cuReatil1s = cuReatil1Service.searchByCustomerId(customerId);
-		JSONArray json2 = JSONArray.fromObject(cuReatil1s);
-	    return json2.toString();
+    public DataResponse searchReatil(@Valid String token, Integer pageNum, Integer pageSize) {
+		return cuReatil1Service.searchReatil(token, pageNum, pageSize);
     }
 
 	/**
@@ -501,12 +499,11 @@ public class CustomerApiController implements ApplicationContextAware {
 
 	/**
 	 * 我的页面数据
-	 * @param phone
 	 * @param token
 	 * @return
 	 */
 	@RequestMapping("searchMy")
-	public String searchMy(@Valid String phone, String token) {
+	public String searchMy(@Valid String token) {
 		return cuCustomerCollectService.searchMy(token);
 	}
 
@@ -577,5 +574,26 @@ public class CustomerApiController implements ApplicationContextAware {
 	@RequestMapping("getImageAndName")
 	public String getImageAndName(@Valid String shopId, String token) {
 		return cuCustomerCollectService.getImageAndName(shopId, token);
+	}
+
+	/**
+	 * 评论
+	 * @param token
+	 * @param shopId
+	 * @return
+	 */
+	@RequestMapping("insertDiscuss")
+	public String insertDiscuss(@Valid String token, String shopId, String remark) {
+		return cuCustomerCollectService.insertDiscuss(token, shopId, remark);
+	}
+
+	/**
+	 * 查询评论
+	 * @param shopId
+	 * @return
+	 */
+	@RequestMapping("searchDiscuss")
+	public String searchDiscuss(@Valid String shopId, Integer pageNum, Integer pageSize) {
+		return cuCustomerCollectService.searchDiscuss(shopId, pageNum, pageSize);
 	}
 }

@@ -33,7 +33,6 @@
 
     <update id = "update" parameterType="com.basics.cu.entity.CuCustomerCollect">
         <![CDATA[ UPDATE CU_CUSTOMER_COLLECT  SET]]>
-            <if test="id!=null">id = #{id},</if>
             <if test="shopId!=null">shop_id = #{shopId},</if>
             <if test="shopName!=null">shop_name = #{shopName},</if>
             <if test="customerId!=null">customer_id = #{customerId},</if>

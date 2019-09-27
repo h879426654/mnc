@@ -30,4 +30,8 @@ public interface CuCustomerCollectService {
     String searchIsCollect(String token, String shopId);
 
     String getImageAndName(String shopId, String token);
+
+    String insertDiscuss(String token, String shopId, String remark);
+
+    String searchDiscuss(String shopId, Integer pageNum, Integer pageSize);
 }

@@ -177,6 +177,9 @@
   <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(q)">
    <![CDATA[ AND ( cuCustomerInfo.CUSTOMER_EMAIL LIKE CONCAT(CONCAT('%',#{q},'%')) OR cuCustomerInfo.CUSTOMER_PHONE LIKE CONCAT(CONCAT('%',#{q},'%')) OR cuCustomerInfo.CUSTOMER_NAME LIKE CONCAT(CONCAT('%',#{q},'%')) OR cuCustomerInfo.REAL_NAME LIKE CONCAT(CONCAT('%',#{q},'%')) )   ]]>
   </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(l)">
+   <![CDATA[ and customer_id in (${l}) ]]>
+  </if>
   </trim>
  </sql>
  <select id="query" parameterType="map" resultType="com.basics.cu.entity.CuCustomerInfo" useCache="false" flushCache="false">
@@ -362,5 +365,46 @@
    </otherwise>
   </choose>
  </select>
- 
+
+ <select id = "searchByCustomerId" resultType="com.basics.cu.controller.response.CustomerInfoResponse">
+  <![CDATA[
+  SELECT
+  cuCustomerInfo.CUSTOMER_ID "id",
+  cuCustomerInfo.COUNTRY_ID "countryId",
+  cuCustomerInfo.CUSTOMER_NUMBER "customerNumber",
+  cuCustomerInfo.MNC_COIN "mncCoin",
+  cuCustomerInfo.MP "mp",
+  cuCustomerInfo.CUSTOMER_NAME "customerName",
+  cuCustomerInfo.CUSTOMER_HEAD "customerHead",
+  cuCustomerInfo.CUSTOMER_PHONE "customerPhone",
+  cuCustomerInfo.CUSTOMER_ALIPAY "customerAlipay",
+  cuCustomerInfo.CUSTOMER_WECHAT "customerWechat",
+  cuCustomerInfo.CUSTOMER_EMAIL "customerEmail",
+  cuCustomerInfo.REAL_NAME "realName",
+  cuCustomerInfo.CUSTOMER_CARD "customerCard",
+  cuCustomerInfo.BANK_CARD "bankCard",
+  cuCustomerInfo.BANK_NAME "bankName",
+  cuCustomerInfo.FLAG_AUTH "flagAuth",
+  cuCustomerInfo.FLAG_TRADE "flagTrade",
+  cuCustomerInfo.FLAG_SPECIAL "flagSpecial",
+  cuCustomerInfo.CUSTOMER_STATUS "customerStatus",
+  cuCustomerInfo.CUSTOMER_FREEZE_CONTEXT "customerFreezeContext",
+  cuCustomerInfo.REGISTER_TIME "registerTime",
+  cuCustomerInfo.VERSION_NUM "versionNum",
+  cuCustomerInfo.FLAG_DEL "flagDel",
+  cuCustomerInfo.CREATE_TIME "createTime",
+  cuCustomerInfo.CREATE_USER "createUser",
+  cuCustomerInfo.MODIFY_USER "modifyUser",
+  cuCustomerInfo.MODIFY_TIME "modifyTime"
+  FROM cu_customer_info cuCustomerInfo
+  ]]>
+  <include refid="condition" />
+  <choose>
+   <when test="@org.apache.commons.lang.StringUtils@isNotEmpty(orderBy)"> ORDER BY ${orderBy}
+   </when>
+   <otherwise>
+    <!-- //TODO:ADD DEFAULT ORDER COLUMN OR DONOTHING! -->
+   </otherwise>
+  </choose>
+ </select>
 </mapper>
