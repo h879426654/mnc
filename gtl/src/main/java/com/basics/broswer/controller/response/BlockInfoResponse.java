@@ -12,6 +12,53 @@ public class BlockInfoResponse implements Serializable{
 
     private String totalAssets;
 
+    private String historyRecord;
+    private String coreVersion;
+    private String newestPrice;
+    private String newestVersion;
+    private String blockNUm;
+
+
+    public String getHistoryRecord() {
+        return historyRecord;
+    }
+
+    public void setHistoryRecord(String historyRecord) {
+        this.historyRecord = historyRecord;
+    }
+
+    public String getCoreVersion() {
+        return coreVersion;
+    }
+
+    public void setCoreVersion(String coreVersion) {
+        this.coreVersion = coreVersion;
+    }
+
+    public String getNewestPrice() {
+        return newestPrice;
+    }
+
+    public void setNewestPrice(String newestPrice) {
+        this.newestPrice = newestPrice;
+    }
+
+    public String getNewestVersion() {
+        return newestVersion;
+    }
+
+    public void setNewestVersion(String newestVersion) {
+        this.newestVersion = newestVersion;
+    }
+
+    public String getBlockNUm() {
+        return blockNUm;
+    }
+
+    public void setBlockNUm(String blockNUm) {
+        this.blockNUm = blockNUm;
+    }
+
     public String getTotalAssets() {
         return totalAssets;
     }
@@ -43,5 +90,7 @@ public class BlockInfoResponse implements Serializable{
     public void setLatestBlockTime(String latestBlockTime) {
         this.latestBlockTime = latestBlockTime;
     }
+
+
 
 }

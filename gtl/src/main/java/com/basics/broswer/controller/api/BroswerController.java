@@ -89,6 +89,10 @@ public class BroswerController implements ApplicationContextAware {
 		response.getData().setLatestBlockTime(a);
 		response.getData().setRefreshTime(current+"");
 		response.getData().setTotalAssets("320000000");
+		response.getData().setHistoryRecord("0x00312");
+		response.getData().setCoreVersion("0x002");
+		response.getData().setNewestPrice("40.3");
+		response.getData().setNewestVersion("113");
 
 		return response;
 	}
@@ -110,6 +114,5 @@ public class BroswerController implements ApplicationContextAware {
 		String pendingBlock=HttpClientUtils.invokeGet("https://api.etherscan.io/api",params);
 		return pendingBlock;
 	}
-
 
 }

@@ -34,7 +34,6 @@ import java.util.*;
 @Transactional
 public class WalletServiceImpl extends BaseApiService implements WalletService {
 
-
 	@Override
 	public WalletResponse getWalletInfo(TokenIdRequest request, HttpServletRequest req) {
 		WalletResponse walletResponse = new WalletResponse();

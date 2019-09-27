@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.basics.gty.entity.GtyWalletHistory">
+ <cache type="com.basics.support.mybatis.CacheAdapter"/>
+
+ <select id="query" parameterType="map" resultType="com.basics.gty.entity.GtyWalletHistory" flushCache="true" useCache="false">
+  SELECT
+   gtyWallet.ID "id",
+  gtyWallet.USER_ID "userId",
+  gtyWallet.RECORD_TYPE "recordType",
+  gtyWallet.RECORD_NUM "recordNum",
+  gtyWallet.RECORD_TO_ACCOUNT "toAccount",
+  FROM wallet_record gtyWallet
+ </select>
+
+
+ <insert id="insert" parameterType="com.basics.gty.entity.GtyWalletHistory">
+  <![CDATA[  INSERT INTO wallet_record (]]>
+  <trim prefix="" suffixOverrides=",">
+   <if test="userId!=null">USER_ID,</if>
+   <if test="recordType!=null">RECORD_TYPE,</if>
+   <if test="recordNum!=null">RECORD_NUM,</if>
+   <if test="toAccount!=null">RECORD_TO_ACCOUNT,</if>
+  </trim>
+  <![CDATA[)VALUES(]]>
+  <trim prefix="" suffixOverrides=",">
+   <if test="userId!=null">#{userId},</if>
+   <if test="recordType!=null">#{recordType},</if>
+   <if test="recordNum!=null">#{recordNum},</if>
+   <if test="toAccount!=null">#{toAccount},</if>
+  </trim>
+  <![CDATA[)]]>
+ </insert>
+
+</mapper>

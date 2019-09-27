@@ -4,9 +4,12 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.basics.common.BaseApiService;
 import com.basics.common.Constant;
+import com.basics.cu.controller.response.CustomerInfoResponse;
+import com.basics.gty.entity.GtyWallet;
 import com.basics.support.QueryFilter;
 import com.basics.support.QueryFilterBuilder;
 import com.basics.sys.entity.SysRule;
@@ -21,28 +24,83 @@ import com.basics.support.job.EveryMinuteJob;
 @Component
 public class EveryMinuteDebugJob extends BaseApiService implements EveryMinuteJob {
 
-	@Override
-	public void doJob() {
-		LogUtils.performance.info("{} begin at {}", this.getClass().getName(), new Date());
+    @Override
+    public void doJob() {
+        LogUtils.performance.info("{} begin at {}", this.getClass().getName(), new Date());
 
-		System.out.println("EveryMinuteDebugJob"+System.currentTimeMillis()/1000);
+        System.out.println("EveryMinuteDebugJob" + System.currentTimeMillis() / 1000);
 
-		SysRule rule = sysRuleDao.queryOne(new QueryFilterBuilder().build());
-		List<WalletEntity> records = walletEntityDao.query(new QueryFilterBuilder().put("orderStatus", Constant.ORDER_STATUS_3).build());
-		if (CollectionUtils.isNotEmpty(records)){
-			for (WalletEntity record : records){
+        List<GtyWallet> records = gtyWalletDao.query(new QueryFilterBuilder().build());
+        if (CollectionUtils.isNotEmpty(records)) {
+            for (GtyWallet record : records) {
 
-//				CuCustomerAccount account = cuCustomerAccountDao.get(order.getCustomerId());
-//				CommonSupport.checkNotNull(account, "用户account的错误");
-				if(!StringUtils.isNullOrEmpty(record.getUserId())) {
-//					createActiveMq(record.getUserId(), Constant.ACTIVEMQ_TYPE_42, BigDecimal.ONE, record.getId(), "流通钱包释放",null);
-					createActiveMq2("", Constant.ACTIVEMQ_TYPE_42, new BigDecimal(2), record.getMTokenNum(),
-							record.getScoreNum(),
-							record.getSuperNum(),
-							record.getUserId(),
-							null);
+                if (!StringUtils.isNullOrEmpty(record.getUserId())) {
 
-				}
+                    BigDecimal mToken = record.getmTokenNum();
+                    BigDecimal mSuperRelease = record.getSuperNum();
+                    BigDecimal mScoreRelease = record.getScoreNum();
+                    BigDecimal mMncRelease = record.getReleasedMnc();
+
+                    Map<String, Object> map = new HashMap<>();
+                    map.put("id", record.getUserId());
+                    CustomerInfoResponse data = cuCustomerInfoDao.getExtend(map, "queryCustomerInfo");
+
+                    //超级钱包（老版mnc）千分之五释放到 （服务器MNC ）
+                    if(mSuperRelease.compareTo(BigDecimal.ZERO)==0){
+						BigDecimal oldMnc = data.getUseCoin();// 老mNC
+						if(oldMnc.compareTo(BigDecimal.ZERO)==0){
+
+						}else{// 有老mnc
+							mSuperRelease = oldMnc;
+							mMncRelease = mMncRelease.add(mSuperRelease.multiply(new BigDecimal(5/1000)));
+							mSuperRelease=mSuperRelease.subtract(mSuperRelease.multiply(new BigDecimal(5/1000)));
+						}
+					}else{
+						mMncRelease = mMncRelease.add(mSuperRelease.multiply(new BigDecimal(5/1000)));
+						mSuperRelease=mSuperRelease.subtract(mSuperRelease.multiply(new BigDecimal(5/1000)));
+					}
+
+                    //  创业积分 千分之一（老MP+老MC的和）  释放到超级钱包
+					if(mScoreRelease.compareTo(BigDecimal.ZERO)==0){
+						BigDecimal mpMc = data.getCustomerIntegral().add(data.getUseMoney());
+						if(mpMc.compareTo(BigDecimal.ZERO)==0){
+
+						}else{
+							mSuperRelease = mSuperRelease.add(mpMc.multiply(new BigDecimal(1 / 1000)));
+							mScoreRelease=mScoreRelease.subtract(mpMc.multiply(new BigDecimal(1/1000)));
+						}
+
+					}else{
+						mSuperRelease = mSuperRelease.add(mScoreRelease.multiply(new BigDecimal(1 / 1000)));
+						mScoreRelease=mScoreRelease.subtract(mScoreRelease.multiply(new BigDecimal(1/1000)));
+					}
+
+					//  Mtoken（MP） 千分之一释放到MNC资产（新MNC）
+                    if (mToken.compareTo(BigDecimal.ZERO) == 0) {
+						BigDecimal oldMp = data.getCustomerIntegral();
+						if(oldMp.compareTo(BigDecimal.ZERO)==0){
+
+						}else{
+							mToken = oldMp;
+							mMncRelease=mMncRelease.add(mToken.multiply(new BigDecimal(1 / 1000)));
+							mToken = mToken.subtract(mToken.multiply(new BigDecimal(1 / 1000)));
+						}
+                    } else {
+                        mMncRelease.add(mToken.multiply(new BigDecimal(1 / 1000)));
+                        mToken = mToken.subtract(mToken.multiply(new BigDecimal(1 / 1000)));
+
+                    }
+
+                    GtyWallet gtyWallet = new GtyWallet();
+                    gtyWallet.setmTokenNum(mToken.setScale(5, BigDecimal.ROUND_HALF_UP));
+                    gtyWallet.setReleasedMnc(mMncRelease.setScale(5, BigDecimal.ROUND_HALF_UP));
+					gtyWallet.setScoreNum(mScoreRelease.setScale(5, BigDecimal.ROUND_HALF_UP));
+					gtyWallet.setSuperNum(mSuperRelease.setScale(5, BigDecimal.ROUND_HALF_UP));
+
+                    createActiveMq2(gtyWalletDao.get("USER_ID").toString(), Constant.ACTIVEMQ_TYPE_42, gtyWallet, null);
+                }
+
+
 //				if(!StringUtils.isNullOrEmpty(record.getmTokenNum())) {
 //					createActiveMq(record.getUserId(), Constant.ACTIVEMQ_TYPE_43, BigDecimal.ZERO, record.getId(), "MTOKEN释放",null);
 //				}
@@ -52,8 +110,8 @@ public class EveryMinuteDebugJob extends BaseApiService implements EveryMinuteJo
 //				if(!StringUtils.isNullOrEmpty(record.getMoveNum())) {
 //					createActiveMq(record.getUserId(), Constant.ACTIVEMQ_TYPE_42, BigDecimal.ZERO, record.getId(), "流通钱包释放",null);
 //				}
-			}
-		}
-		LogUtils.performance.info("{} end at {}", this.getClass().getName(), new Date());
-	}
+            }
+        }
+        LogUtils.performance.info("{} end at {}", this.getClass().getName(), new Date());
+    }
 }

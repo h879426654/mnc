@@ -1,4 +1,5 @@
 com\basics\cu\entity\CuCustomerMessageBase.class
+com\basics\gty\dao\MybatisDao\GtyWalletHistoryMybatisDao.class
 com\basics\cu\service\impl\CuCustomerAccountMybatisService.class
 com\basics\support\fileupload\KindEditorFileUploadResponse.class
 com\basics\app\entity\AppReward.class
@@ -225,6 +226,7 @@ com\basics\app\service\impl\AppOptionMybatisService.class
 com\basics\sys\service\SysRuleService.class
 com\basics\mall\dao\MybatisDao\MallShopAdvertMybatisDao.class
 com\basics\sys\dao\MybatisDao\SysTurntableMybatisDao.class
+com\basics\gty\entity\GtyWalletHistory.class
 com\basics\app\dao\AppAreaDao.class
 com\basics\app\service\impl\DefaultUserRolePermissionService.class
 com\basics\common\ResponseData.class
@@ -557,6 +559,7 @@ com\basics\sys\support\BackendControllerSupport.class
 com\basics\app\service\impl\AppTokenMybatisService.class
 com\basics\app\shiro\ShiroInterceptor.class
 com\basics\cu\dao\MybatisDao\CuCustomerCollectMybatisDao.class
+com\basics\gty\service\GtyWalletHistory2Service.class
 com\basics\app\entity\AppLogBase.class
 com\basics\support\Container.class
 com\basics\cu\entity\CuRetail1Base.class
@@ -696,6 +699,7 @@ com\basics\app\service\impl\AppImageMybatisService.class
 com\basics\sys\service\impl\SysOperLogMybatisService.class
 com\basics\tr\controller\request\CustomerProfitRequest.class
 com\basics\support\job\EveryHourJob.class
+com\basics\gty\dao\GtyWalletHistoryDao.class
 com\basics\mall\controller\response\MallOrderProductDetailsResponse.class
 com\basics\app\service\AppUserRolePermissionService.class
 com\basics\support\ConfigReader.class
@@ -766,6 +770,7 @@ com\basics\app\dao\AppRolePermissionDao.class
 com\basics\broswer\controller\api\BroswerController.class
 com\basics\mall\dao\MallCustomerCarDao.class
 com\basics\app\service\impl\AppUserRoleMybatisService.class
+com\basics\gty\controller\api\GtyWalletApiController$1.class
 com\basics\app\shiro\ShiroInterceptor$1.class
 com\basics\cu\service\impl\CuReatil3ServiceImpl.class
 com\basics\support\fileupload\BizFileUploadRequest.class
@@ -830,6 +835,7 @@ com\basics\mall\entity\MallProductCommentBase.class
 com\basics\sys\controller\backend\SysNoticeBackendController.class
 com\basics\tr\service\TrTradeConvertService.class
 com\basics\or\entity\OrOrderDetailsBase.class
+com\basics\gty\service\impl\GtyWalletHistoryMybatisService.class
 com\basics\support\CRCUtils.class
 com\basics\sys\service\impl\SysNewsMybatisService.class
 com\basics\sys\service\SysProfitService.class
@@ -889,6 +895,7 @@ com\basics\tr\entity\TrTradeComplaint.class
 com\basics\support\AggregateDescriptor.class
 com\basics\support\quartz\SwitchSchedulerFactoryBean.class
 com\basics\sys\service\SysTurntableService.class
+com\basics\gty\controller\request\TokenTransferRequest.class
 com\basics\mall\dao\MallProductDao.class
 com\basics\support\auth\StreamUtil.class
 com\basics\support\log4j\AppLogSupportAware.class

@@ -15,6 +15,63 @@ public class GtyWallet extends GtyBaseBean {
  private BigDecimal mTokenNum;
  private BigDecimal scoreNum;
  private BigDecimal releasedSuperNum;
+ private BigDecimal releasedTokenNum;
+ private BigDecimal releasedScoreNum;
+
+ private BigDecimal mncPrice;
+ private String point;
+
+ private BigDecimal releasedMnc;
+
+ public BigDecimal getReleasedMnc() {
+  return releasedMnc;
+ }
+
+ public void setReleasedMnc(BigDecimal releasedMnc) {
+  this.releasedMnc = releasedMnc;
+ }
+
+ public BigDecimal getMncPrice() {
+  return mncPrice;
+ }
+
+ public void setMncPrice(BigDecimal mncPrice) {
+  this.mncPrice = mncPrice;
+ }
+
+ public String getPoint() {
+  return point;
+ }
+
+ public void setPoint(String point) {
+  this.point = point;
+ }
+
+ public BigDecimal getReleasedTokenNum() {
+  return releasedTokenNum;
+ }
+
+ public void setReleasedTokenNum(BigDecimal releasedTokenNum) {
+  this.releasedTokenNum = releasedTokenNum;
+ }
+
+ public BigDecimal getReleasedScoreNum() {
+  return releasedScoreNum;
+ }
+
+ public void setReleasedScoreNum(BigDecimal releasedScoreNum) {
+  this.releasedScoreNum = releasedScoreNum;
+ }
+
+ private String walletAddress;
+
+ public String getWalletAddress() {
+  return walletAddress;
+ }
+
+ public void setWalletAddress(String walletAddress) {
+  this.walletAddress = walletAddress;
+ }
 
  public BigDecimal getSuperNum() {
   return superNum;

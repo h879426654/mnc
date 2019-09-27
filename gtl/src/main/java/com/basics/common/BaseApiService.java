@@ -11,6 +11,8 @@ import javax.jms.Destination;
 import javax.servlet.http.HttpServletRequest;
 
 import com.basics.cu.dao.*;
+import com.basics.gty.dao.GtyWalletDao;
+import com.basics.gty.entity.GtyWallet;
 import com.basics.mall.dao.*;
 import com.basics.wallet.dao.WalletEntityDao;
 import com.basics.wallet.entity.WalletEntity;
@@ -209,6 +211,9 @@ public class BaseApiService {
 	protected CuDrawRewardDao cuDrawRewardDao;
 	@Autowired
 	public TrConvertDao trConvertDao;
+
+	@Autowired
+	public GtyWalletDao gtyWalletDao;
 
 	@Autowired
 	public TrTradeMoneyDao trTradeMoneyDao;
@@ -1295,21 +1300,15 @@ public class BaseApiService {
 	}
 
 
-	public void createActiveMq2(String customerId, int activemqType, BigDecimal moveNum, BigDecimal tokenNum, BigDecimal scoreNum, BigDecimal superNum,String userId, Object obj) {
+	public void createActiveMq2(String customerId, int activemqType, GtyWallet wallet, Object obj) {
 		JSONObject json = new JSONObject();
 		json.put("customerId", customerId);
 		json.put("activemqType", activemqType);
 		json.put("sourceId", "121");
 		json.put("obj", JSONObject.toJSONString(obj));
-		WalletEntity activemqRequest = new WalletEntity();
-		activemqRequest.setMoveNum(moveNum);
-//		activemqRequest.setMoveNum(scoreNum);
-//		activemqRequest.setScoreNum(scoreNum);
-//		activemqRequest.setSuperNum(superNum);
-//		activemqRequest.setUserId(userId);
 
-		walletEntityDao.save(activemqRequest);
-		json.put("activemqId", activemqRequest.getUserId());
+		gtyWalletDao.save(wallet);
+		json.put("activemqId", customerId+System.currentTimeMillis()/1000);
 		queueSender.sendMessage(queueDestination, json.toJSONString());
 	}
 
