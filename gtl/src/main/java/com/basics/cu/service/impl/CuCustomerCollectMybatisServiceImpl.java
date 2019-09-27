@@ -91,7 +91,7 @@ public class CuCustomerCollectMybatisServiceImpl extends BaseApiService implemen
         String customerId = this.getCuCustomerInfo(token);
         if (null != customerId) {
             CuCustomerInfo cuCustomerInfo = cuCustomerInfoDao.queryOne(new QueryFilterBuilder().put("customerId", customerId).build());
-            MallShopAdvert mallShopAdvert = mallShopAdvertDao.queryOne(new QueryFilterBuilder().put("customerId", cuCustomerInfo).build());
+            MallShopAdvert mallShopAdvert = mallShopAdvertDao.queryOne(new QueryFilterBuilder().put("customerId", cuCustomerInfo.getId()).build());
             CuHttpUrl cuHttpUrl = new CuHttpUrl();
             cuHttpUrl.setImage(cuCustomerInfo.getCustomerHead());
             cuHttpUrl.setUserName(cuCustomerInfo.getCustomerName());
