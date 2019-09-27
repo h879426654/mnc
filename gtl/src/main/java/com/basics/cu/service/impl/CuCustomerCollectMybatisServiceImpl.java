@@ -30,7 +30,7 @@ public class CuCustomerCollectMybatisServiceImpl extends BaseApiService implemen
         if (null != customerId) {
             List<CuCustomerCollect> list = cuCustomerCollectDao.query(new QueryFilterBuilder().put("customerId", customerId).put("state","1").put("page", (page-1)*10).put("rows", rows).build());
             for (CuCustomerCollect cuCustomerCollect:list) {
-                MallShopAdvert mallShopAdvert = mallShopAdvertDao.queryOne(new QueryFilterBuilder().put("id", cuCustomerCollect.getShopId()).build());
+                MallShopAdvert mallShopAdvert = mallShopAdvertDao.queryOne(new QueryFilterBuilder().put("id", cuCustomerCollect.getShopId()).put("applyStatus", "2").put("flagDel", "0").build());
                 cuCustomerCollect.setLatitude(mallShopAdvert.getAdvertLatitude());
                 cuCustomerCollect.setLongitude(mallShopAdvert.getAdvertLongitude());
                 cuCustomerCollect.setImage(mallShopAdvert.getAdvertImage());
@@ -91,7 +91,7 @@ public class CuCustomerCollectMybatisServiceImpl extends BaseApiService implemen
         String customerId = this.getCuCustomerInfo(token);
         if (null != customerId) {
             CuCustomerInfo cuCustomerInfo = cuCustomerInfoDao.queryOne(new QueryFilterBuilder().put("customerId", customerId).build());
-            MallShopAdvert mallShopAdvert = mallShopAdvertDao.queryOne(new QueryFilterBuilder().put("customerId", cuCustomerInfo.getId()).build());
+            MallShopAdvert mallShopAdvert = mallShopAdvertDao.queryOne(new QueryFilterBuilder().put("customerId", cuCustomerInfo.getId()).put("applyStatus", "2").put("flagDel", "0").build());
             CuHttpUrl cuHttpUrl = new CuHttpUrl();
             cuHttpUrl.setImage(cuCustomerInfo.getCustomerHead());
             cuHttpUrl.setUserName(cuCustomerInfo.getCustomerName());
@@ -119,13 +119,13 @@ public class CuCustomerCollectMybatisServiceImpl extends BaseApiService implemen
             if ("1".equals(type)) {
                 cuConsumes = cuConsumeDao.query(new QueryFilterBuilder().put("customerId", customerId).put("state",state).orderBy("createTime desc").build());
             } else if ("2".equals(type)) {
-                mallShopAdvert = mallShopAdvertDao.queryOne(new QueryFilterBuilder().put("customerId", customerId).build());
+                mallShopAdvert = mallShopAdvertDao.queryOne(new QueryFilterBuilder().put("customerId", customerId).put("applyStatus", "2").put("flagDel", "0").build());
                 cuConsumes = cuConsumeDao.query(new QueryFilterBuilder().put("shopId",mallShopAdvert.getId()).put("state",state).orderBy("createTime desc").build());
             }
 
             for (CuConsume cuConsume:cuConsumes) {
                 if ("1".equals(type)) {
-                    mallShopAdvert1 = mallShopAdvertDao.queryOne(new QueryFilterBuilder().put("id", cuConsume.getShopId()).build());
+                    mallShopAdvert1 = mallShopAdvertDao.queryOne(new QueryFilterBuilder().put("id", cuConsume.getShopId()).put("applyStatus", "2").put("flagDel", "0").build());
                     cuConsume.setImage(mallShopAdvert1.getAdvertImage());
                 } else if ("2".equals(type)) {
                     cuConsume.setImage(mallShopAdvert.getAdvertImage());
@@ -147,7 +147,7 @@ public class CuCustomerCollectMybatisServiceImpl extends BaseApiService implemen
     @Override
     public String insertConConsume(ConsumeRequest request) {
         try {
-            MallShopAdvert mallShopAdvert = mallShopAdvertDao.queryOne(new QueryFilterBuilder().put("id", request.getShopId()).build());
+            MallShopAdvert mallShopAdvert = mallShopAdvertDao.queryOne(new QueryFilterBuilder().put("id", request.getShopId()).put("applyStatus", "2").put("flagDel", "0").build());
             CuConsume cuConsume = new CuConsume();
             cuConsume.setShopId(request.getShopId());
             cuConsume.setShopName(mallShopAdvert.getAdvertName());
@@ -240,15 +240,20 @@ public class CuCustomerCollectMybatisServiceImpl extends BaseApiService implemen
 
     @Override
     public String getImageAndName(String shopId, String token) {
-        String customerId = this.getCuCustomerInfo(token);
-        if (null != customerId) {
-            CuCustomerInfo cuCustomerInfo = cuCustomerInfoDao.queryOne(new QueryFilterBuilder().put("customerId",customerId).build());
-            MallShopAdvert mallShopAdvert = mallShopAdvertDao.queryOne(new QueryFilterBuilder().put("id", shopId).build());
-            mallShopAdvert.setCustomerPhone(cuCustomerInfo.getCustomerPhone());
-            JSONObject json = (JSONObject) JSONObject.toJSON(mallShopAdvert);
-            return json.toString();
+        try {
+
+            String customerId = this.getCuCustomerInfo(token);
+            if (null != customerId) {
+                CuCustomerInfo cuCustomerInfo = cuCustomerInfoDao.queryOne(new QueryFilterBuilder().put("customerId",customerId).build());
+                MallShopAdvert mallShopAdvert = mallShopAdvertDao.queryOne(new QueryFilterBuilder().put("id", shopId).put("applyStatus", "2").put("flagDel", "0").build());
+                mallShopAdvert.setCustomerPhone(cuCustomerInfo.getCustomerPhone());
+                JSONObject json = (JSONObject) JSONObject.toJSON(mallShopAdvert);
+                return json.toString();
+            }
+            return "";
+        } catch (Exception e) {
+            return "";
         }
-        return "";
     }
 
     @Override

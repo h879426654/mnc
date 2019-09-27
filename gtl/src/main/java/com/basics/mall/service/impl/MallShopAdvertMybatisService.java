@@ -38,20 +38,7 @@ public class MallShopAdvertMybatisService extends GenericMybatisService<MallShop
 	
 	@Override
 	public FormResultSupport doSave(MallShopAdvert entity) {
-		FormResultSupport result = new FormResultSupport();
-		MallShopAdvert advert = this.dao.get(entity.getId());
-		if(Constant.APPLY_STATUS_1 != advert.getApplyStatus()) {
-			result.onException("已审核");
-		}
-		dao.save(entity);
-		if(Constant.APPLY_STATUS_3 == entity.getApplyStatus()) {
-			Map<String, Object> paramMap = new HashMap<>();
-			paramMap.put("ownerId", advert.getId());
-			paramMap.put("ownerClass", "MallShopAdvert");
-			appImageDao.deleteAll(paramMap);
-		}
-		result.onSuccess("操作成功");
-		return result;
+		return null;
 	}
 	
 
