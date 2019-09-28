@@ -31,13 +31,15 @@ public class CuCustomerCollectMybatisServiceImpl extends BaseApiService implemen
             List<CuCustomerCollect> list = cuCustomerCollectDao.query(new QueryFilterBuilder().put("customerId", customerId).put("state","1").put("page", (page-1)*10).put("rows", rows).build());
             for (CuCustomerCollect cuCustomerCollect:list) {
                 MallShopAdvert mallShopAdvert = mallShopAdvertDao.queryOne(new QueryFilterBuilder().put("id", cuCustomerCollect.getShopId()).put("applyStatus", "2").put("flagDel", "0").build());
-                cuCustomerCollect.setLatitude(mallShopAdvert.getAdvertLatitude());
-                cuCustomerCollect.setLongitude(mallShopAdvert.getAdvertLongitude());
-                cuCustomerCollect.setImage(mallShopAdvert.getAdvertImage());
-                cuCustomerCollect.setAddress(mallShopAdvert.getAdvertAddress());
-                cuCustomerCollect.setShopName(mallShopAdvert.getAdvertName());
-                List<CuConsume> list1 = cuConsumeDao.query(new QueryFilterBuilder().put("shopId", cuCustomerCollect.getShopId()).build());
-                cuCustomerCollect.setCount(list1.size());
+                if (null != mallShopAdvert) {
+                    cuCustomerCollect.setLatitude(mallShopAdvert.getAdvertLatitude());
+                    cuCustomerCollect.setLongitude(mallShopAdvert.getAdvertLongitude());
+                    cuCustomerCollect.setImage(mallShopAdvert.getAdvertImage());
+                    cuCustomerCollect.setAddress(mallShopAdvert.getAdvertAddress());
+                    cuCustomerCollect.setShopName(mallShopAdvert.getAdvertName());
+                    List<CuConsume> list1 = cuConsumeDao.query(new QueryFilterBuilder().put("shopId", cuCustomerCollect.getShopId()).build());
+                    cuCustomerCollect.setCount(list1.size());
+                }
             }
             return list;
         }
@@ -90,7 +92,7 @@ public class CuCustomerCollectMybatisServiceImpl extends BaseApiService implemen
     public String searchMy(String token) {
         String customerId = this.getCuCustomerInfo(token);
         if (null != customerId) {
-            CuCustomerInfo cuCustomerInfo = cuCustomerInfoDao.queryOne(new QueryFilterBuilder().put("customerId", customerId).build());
+            CuCustomerInfo cuCustomerInfo = cuCustomerInfoDao.queryOne(new QueryFilterBuilder().put("id", customerId).build());
             MallShopAdvert mallShopAdvert = mallShopAdvertDao.queryOne(new QueryFilterBuilder().put("customerId", cuCustomerInfo.getId()).put("applyStatus", "2").put("flagDel", "0").build());
             CuHttpUrl cuHttpUrl = new CuHttpUrl();
             cuHttpUrl.setImage(cuCustomerInfo.getCustomerHead());
@@ -100,7 +102,9 @@ public class CuCustomerCollectMybatisServiceImpl extends BaseApiService implemen
             List<CuHttpUrl> cuHttpUrls = cuHttpUrlDao.query(new QueryFilterBuilder().put("token", token).build());
             List<CuCustomerCollect> cuCustomerCollects = cuCustomerCollectDao.query(new QueryFilterBuilder().put("customerId",cuCustomerInfo.getId()).put("state","1").build());
             cuHttpUrl.setVermicelli(cuCustomerCollects.size());
-            cuHttpUrl.setShopId(mallShopAdvert.getId());
+            if (null != mallShopAdvert) {
+                cuHttpUrl.setShopId(mallShopAdvert.getId());
+            }
             JSONArray jsons = JSONArray.fromObject(cuHttpUrls);
             cuHttpUrl.setHttpList(jsons.toString());
             JSONObject json = (JSONObject) JSONObject.toJSON(cuHttpUrl);
@@ -110,17 +114,17 @@ public class CuCustomerCollectMybatisServiceImpl extends BaseApiService implemen
     }
 
     @Override
-    public String searchConConsume(String state, String token, String type) {
+    public String searchConConsume(String state, String token, String type, Integer pageNum, Integer pageSize) {
         String customerId = this.getCuCustomerInfo(token);
         if (null != customerId) {
             MallShopAdvert mallShopAdvert = null;
             MallShopAdvert mallShopAdvert1 = null;
             List<CuConsume> cuConsumes = null;
             if ("1".equals(type)) {
-                cuConsumes = cuConsumeDao.query(new QueryFilterBuilder().put("customerId", customerId).put("state",state).orderBy("createTime desc").build());
+                cuConsumes = cuConsumeDao.query(new QueryFilterBuilder().put("customerId", customerId).put("state",state).put("pageN", (pageNum-1)*10).put("pageS" ,pageSize).orderBy("createTime desc").build());
             } else if ("2".equals(type)) {
                 mallShopAdvert = mallShopAdvertDao.queryOne(new QueryFilterBuilder().put("customerId", customerId).put("applyStatus", "2").put("flagDel", "0").build());
-                cuConsumes = cuConsumeDao.query(new QueryFilterBuilder().put("shopId",mallShopAdvert.getId()).put("state",state).orderBy("createTime desc").build());
+                cuConsumes = cuConsumeDao.query(new QueryFilterBuilder().put("shopId",mallShopAdvert.getId()).put("state",state).put("pageN", pageNum).put("pageS" ,pageSize).orderBy("createTime desc").build());
             }
 
             for (CuConsume cuConsume:cuConsumes) {
@@ -244,7 +248,7 @@ public class CuCustomerCollectMybatisServiceImpl extends BaseApiService implemen
 
             String customerId = this.getCuCustomerInfo(token);
             if (null != customerId) {
-                CuCustomerInfo cuCustomerInfo = cuCustomerInfoDao.queryOne(new QueryFilterBuilder().put("customerId",customerId).build());
+                CuCustomerInfo cuCustomerInfo = cuCustomerInfoDao.queryOne(new QueryFilterBuilder().put("id",customerId).build());
                 MallShopAdvert mallShopAdvert = mallShopAdvertDao.queryOne(new QueryFilterBuilder().put("id", shopId).put("applyStatus", "2").put("flagDel", "0").build());
                 mallShopAdvert.setCustomerPhone(cuCustomerInfo.getCustomerPhone());
                 JSONObject json = (JSONObject) JSONObject.toJSON(mallShopAdvert);
@@ -257,7 +261,7 @@ public class CuCustomerCollectMybatisServiceImpl extends BaseApiService implemen
     }
 
     @Override
-    public String insertDiscuss(String token, String shopId, String remark) {
+    public String insertDiscuss(String token, String shopId, String remark, String id) {
         String customerId = this.getCuCustomerInfo(token);
         if (null != customerId) {
             try {
@@ -266,6 +270,7 @@ public class CuCustomerCollectMybatisServiceImpl extends BaseApiService implemen
                 cuDiscuss.setShopId(shopId);
                 cuDiscuss.setRemark(remark);
                 cuDiscussDao.insert(cuDiscuss);
+                updateConConsume(id, "3","0");
                 return "成功";
             } catch (Exception e) {
                 return "失败";
@@ -289,7 +294,7 @@ public class CuCustomerCollectMybatisServiceImpl extends BaseApiService implemen
             CuDiscuss cD = new CuDiscuss();
             List<CuDiscuss> cuDiscusses = cuDiscussDao.query(new QueryFilterBuilder().putAll(params).build());
             for (CuDiscuss cuDiscuss : cuDiscusses) {
-                CuCustomerInfo cuCustomerInfo = cuCustomerInfoDao.queryOne(new QueryFilterBuilder().put("customerId", cuDiscuss.getCustomerId()).build());
+                CuCustomerInfo cuCustomerInfo = cuCustomerInfoDao.queryOne(new QueryFilterBuilder().put("id", cuDiscuss.getCustomerId()).build());
                 cuDiscuss.setImage(cuCustomerInfo.getCustomerHead());
                 cuDiscuss.setName(cuCustomerInfo.getCustomerName());
             }

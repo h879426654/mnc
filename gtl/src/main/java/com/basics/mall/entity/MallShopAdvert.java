@@ -135,4 +135,24 @@ public class MallShopAdvert extends MallShopAdvertBase{
   this.setCustomerPhone(customerPhone);
   return this;
  }
+ public MallShopAdvert classifyId(String classifyId) {
+  this.setClassifyId(classifyId);
+  return this;
+ }
+ public MallShopAdvert pageN(Integer pageN) {
+  this.setPageN(pageN);
+  return this;
+ }
+ public MallShopAdvert pageS(Integer pageS) {
+  this.setPageS(pageS);
+  return this;
+ }
+ public MallShopAdvert classifyIds(String classifyIds) {
+  this.setClassifyIds(classifyIds);
+  return this;
+ }
+ public MallShopAdvert list(String list) {
+  this.setList(list);
+  return this;
+ }
 }

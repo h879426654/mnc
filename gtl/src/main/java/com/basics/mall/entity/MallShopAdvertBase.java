@@ -22,6 +22,51 @@ public class MallShopAdvertBase extends BaseBean{
     private String city;
     private String region;
     private String customerPhone;
+    private String classifyId;
+    private Integer pageN;
+    private Integer pageS;
+    private String classifyIds;
+    private String list;
+
+    public String getList() {
+        return list;
+    }
+
+    public void setList(String list) {
+        this.list = list;
+    }
+
+    public String getClassifyIds() {
+        return classifyIds;
+    }
+
+    public void setClassifyIds(String classifyIds) {
+        this.classifyIds = classifyIds;
+    }
+
+    public Integer getPageN() {
+        return pageN;
+    }
+
+    public void setPageN(Integer pageN) {
+        this.pageN = pageN;
+    }
+
+    public Integer getPageS() {
+        return pageS;
+    }
+
+    public void setPageS(Integer pageS) {
+        this.pageS = pageS;
+    }
+
+    public String getClassifyId() {
+        return classifyId;
+    }
+
+    public void setClassifyId(String classifyId) {
+        this.classifyId = classifyId;
+    }
 
     public String getCustomerPhone() {
         return customerPhone;

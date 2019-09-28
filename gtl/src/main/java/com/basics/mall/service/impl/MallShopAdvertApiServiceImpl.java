@@ -7,6 +7,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.basics.mall.entity.MallGoods;
+import com.basics.mall.entity.MallShop;
+import net.sf.json.JSONArray;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
@@ -39,6 +42,7 @@ import com.basics.support.MD5Util;
 import com.basics.support.PaginationSupport;
 import com.basics.support.QueryFilterBuilder;
 import com.basics.sys.entity.SysRule;
+import org.web3j.abi.datatypes.Int;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -287,6 +291,88 @@ public class MallShopAdvertApiServiceImpl extends BaseApiService implements Mall
 		response.setItem(data);
 		response.onHandleSuccess();
 		return response;
+	}
+
+	@Override
+	public String searchAdvert(String classifyId, String city, String region, String isNew, String sale, Integer pageNum, Integer pageSize, String shopName, String more) {
+		if (null == pageNum) {
+			pageNum = 1;
+		}
+		if (null == pageSize) {
+			pageSize = 10;
+		}
+		Map params = new HashMap();
+		params.put("classifyId", classifyId);
+		params.put("city", city);
+		params.put("region", region);
+		params.put("createTime", isNew);
+		params.put("advertSale", sale);
+		params.put("pageN", (pageNum-1)*10);
+		params.put("pageS", pageSize);
+		if (null != more) {
+			String classifyIds = "";
+			List<MallShopClassify> list = mallShopClassifyDao.query(new QueryFilterBuilder().put("flagDel","2").build());
+			for (MallShopClassify mallShopClassify : list) {
+				classifyIds += ",'" + mallShopClassify +"'";
+			}
+			params.put("classifyIds",classifyIds.substring(1));
+		}
+		params.put("advertName", shopName);
+		try {
+			List<MallShopAdvert> mallShopAdverts = mallShopAdvertDao.query(new QueryFilterBuilder().putAll(params).build());
+			JSONArray json = JSONArray.fromObject(mallShopAdverts);
+			return json.toString();
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+		return null;
+	}
+
+	@Override
+	public String searchClassify() {
+		List<MallShopClassify> list = mallShopClassifyDao.query(new QueryFilterBuilder().put("userA","123").build());
+		JSONArray json = JSONArray.fromObject(list);
+		return json.toString();
+	}
+
+	@Override
+	public String searchGoodsByShopId(String shopId) {
+		Integer pageN = 0;
+		Integer pageS = 4;
+		MallShopAdvert mallShopAdvert = mallShopAdvertDao.queryOne(new QueryFilterBuilder().put("id", shopId).build());
+		try {
+			Map params = new HashMap();
+			params.put("pageN", pageN);
+			params.put("pageS", pageS);
+			params.put("advertId", shopId);
+			params.put("state", "1");
+			params.put("delFlag",0);
+			List<MallGoods> list = mallGoodsDao.query(new QueryFilterBuilder().putAll(params).build());
+			JSONArray json = JSONArray.fromObject(list);
+			mallShopAdvert.setList(json.toString());
+			JSONObject json1 = (JSONObject) JSONObject.toJSON(mallShopAdvert);
+			return json1.toString();
+		} catch (Exception e) {
+			return "";
+		}
+	}
+
+	@Override
+	public String searchGoodsById(String id, Integer pageNum, Integer pageSize) {
+		Map params = new HashMap();
+		if (pageNum == null){
+			pageNum = 1;
+		}
+		if (pageSize == null){
+			pageSize = 10;
+		}
+		params.put("pageN", (pageNum-1)*10);
+		params.put("pageS", pageSize);
+		params.put("state", "1");
+		params.put("delFlag",0);
+		List<MallGoods> list = mallGoodsDao.query(new QueryFilterBuilder().putAll(params).build());
+		JSONObject json = (JSONObject) JSONObject.toJSON(list);
+		return json.toString();
 	}
 
 }

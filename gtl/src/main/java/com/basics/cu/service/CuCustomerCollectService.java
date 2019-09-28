@@ -5,6 +5,7 @@ import com.basics.cu.controller.request.ConsumeRequest;
 import com.basics.cu.controller.request.HistoryRequest;
 import com.basics.cu.entity.CuCustomerCollect;
 import jnr.ffi.annotations.In;
+import org.web3j.abi.datatypes.Int;
 
 import java.util.List;
 
@@ -17,7 +18,7 @@ public interface CuCustomerCollectService {
 
     String searchMy(String token);
 
-    String searchConConsume(String state, String token, String type);
+    String searchConConsume(String state, String token, String type, Integer pageNum, Integer rows);
 
     String insertConConsume(ConsumeRequest request);
 
@@ -31,7 +32,7 @@ public interface CuCustomerCollectService {
 
     String getImageAndName(String shopId, String token);
 
-    String insertDiscuss(String token, String shopId, String remark);
+    String insertDiscuss(String token, String shopId, String remark, String id);
 
     String searchDiscuss(String shopId, Integer pageNum, Integer pageSize);
 }

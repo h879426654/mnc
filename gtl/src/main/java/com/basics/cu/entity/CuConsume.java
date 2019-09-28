@@ -45,4 +45,12 @@ public class CuConsume extends CuConsumeBase {
 		this.setCreateTime(createTime);
 		return this;
 	}
+	public CuConsume pageN(String pageN) {
+		this.setPageN(pageN);
+		return this;
+	}
+	public CuConsume pageS(String pageS) {
+		this.setPageS(pageS);
+		return this;
+	}
 }

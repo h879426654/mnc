@@ -20,6 +20,9 @@
          <![CDATA[ AND id = #{id} ]]>
      </if>
      order by create_time desc
+     <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(pageN)">
+         <![CDATA[ limit #{pageN},#{pageS} ]]>
+     </if>
  </select>
  <insert id="insert" parameterType="com.basics.cu.entity.CuConsume">
      insert into cu_consume(shop_id, customer_id, shop_name, money, phone, image, create_time)

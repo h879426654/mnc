@@ -38,5 +38,32 @@
   <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(flagDel)">
     and FLAG_DEL = #{flagDel}
   </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(city)">
+    and city = #{city}
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(region)">
+    and region = #{region}
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(classifyId)">
+     and CLASSIFY_ID = #{classifyId}
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(classifyIds)">
+     and CLASSIFY_ID = ${classifyIds}
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(classifyIds)">
+     and CLASSIFY_ID = ${classifyIds}
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(advertName)">
+      <![CDATA[and advert_name like '%${advertName}%' ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(createTime)">
+     order by CREATE_TIME DESC
+  </if>
+  <if test="advertSale != null">
+     order by advert_sale desc
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(pageN)">
+      limit #{pageN},#{pageS}
+  </if>
  </select>
 </mapper>

@@ -515,8 +515,8 @@ public class CustomerApiController implements ApplicationContextAware {
 	 * @return
 	 */
 	@RequestMapping("searchConConsume")
-	public String searchConConsume(@Valid String state, String token, String type) {
-		return cuCustomerCollectService.searchConConsume(state, token, type);
+	public String searchConConsume(@Valid String state, String token, String type, Integer page, Integer rows) {
+		return cuCustomerCollectService.searchConConsume(state, token, type, page, rows);
 	}
 
 	/**
@@ -583,8 +583,8 @@ public class CustomerApiController implements ApplicationContextAware {
 	 * @return
 	 */
 	@RequestMapping("insertDiscuss")
-	public String insertDiscuss(@Valid String token, String shopId, String remark) {
-		return cuCustomerCollectService.insertDiscuss(token, shopId, remark);
+	public String insertDiscuss(@Valid String token, String shopId, String remark, String id) {
+		return cuCustomerCollectService.insertDiscuss(token, shopId, remark, id);
 	}
 
 	/**

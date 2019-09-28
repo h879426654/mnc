@@ -14,6 +14,24 @@ class CuConsumeBase extends BaseBean {
 	private String image;
 	private String stateText;
 	private Date createTime;
+	private String pageN;
+	private String pageS;
+
+	public String getPageN() {
+		return pageN;
+	}
+
+	public void setPageN(String pageN) {
+		this.pageN = pageN;
+	}
+
+	public String getPageS() {
+		return pageS;
+	}
+
+	public void setPageS(String pageS) {
+		this.pageS = pageS;
+	}
 
 	public Date getCreateTime() {
 		return createTime;
