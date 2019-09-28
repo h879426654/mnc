@@ -22,6 +22,7 @@ import com.basics.support.DateUtils;
 import com.basics.support.QueryFilter;
 import com.basics.support.QueryFilterBuilder;
 import com.basics.support.auth.HttpClientUtils;
+import com.basics.support.auth.HttpRequestUtils2;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import net.sf.json.JSONObject;
@@ -31,6 +32,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -52,17 +54,19 @@ public class BroswerController implements ApplicationContextAware {
 	private ApplicationContext applicationContext;
 
 	@Autowired
-	private CuCustomerInfoService cuCustomerInfo;
+	private GtyWalletService gtySer;
+
 	@Override
 	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
 		this.applicationContext = applicationContext;
 
 	}
+
 	/**
 	 * 查询区块信息
 	 */
 	@RequestMapping("getBlockInfo")
-	public BlockNetResponse selectProductClassifyList(TokenIdRequest request, HttpServletRequest req) {
+	public BlockNetResponse selectProductClassifyList(HttpServletRequest req) {
 		BlockNetResponse response = new BlockNetResponse();
 		Map<String,Object> map1 = new HashMap<>();
 		map1.put("jsonrpc","2.0");
@@ -108,16 +112,30 @@ public class BroswerController implements ApplicationContextAware {
 
 		return response;
 	}
-	@Autowired
-	private GtyWalletService gtySer;
+
+	@RequestMapping("getTransationRecord1")
+	public DataResponse getHistory1(TokenIdRequest request, HttpServletRequest req) {
+			DataResponse dataResponse = new DataResponse();
+			dataResponse.setMsg("id不能为空");
+			dataResponse.setStatus(1);
+			JSONObject jsonObject = new JSONObject();
+			jsonObject.put("msg","id不能为空");
+			jsonObject.put("status",1);
+			return dataResponse;
+	}
+
+
 	// 获取记录
 	@RequestMapping("getTransationRecord")
-	public String getHistory(TokenIdRequest request, HttpServletRequest req) {
+	public JSONObject getHistory(TokenIdRequest request, HttpServletRequest req) {
 		if(StringUtils.isBlank(request.getId())){
 			DataResponse dataResponse = new DataResponse();
 			dataResponse.setMsg("id不能为空");
 			dataResponse.setStatus(1);
-			return dataResponse.toString();
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("msg","id不能为空");
+            jsonObject.put("status",1);
+			return jsonObject;
 		}
 		QueryFilter filter = new QueryFilter();
 		Map<String, Object> map = new HashMap<>();
@@ -137,7 +155,10 @@ public class BroswerController implements ApplicationContextAware {
 		params.put("sort","asc");
 		params.put("apikey","6XY2BCUEKHGDC8CMDSY1M6VCFNJZSV9HJA");
 		String pendingBlock=HttpClientUtils.invokeGet("https://api.etherscan.io/api",params);
-		return pendingBlock;
+		JSONObject jsonobject=HttpRequestUtils2.httpGet("https://api.etherscan.io/api",params);
+//        JSONObject jsonobject = JSONObject.fromObject(pendingBlock);
+		System.out.println(jsonobject);
+		return jsonobject;
 	}
 
 }

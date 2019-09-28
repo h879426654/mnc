@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC
+ "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.basics.sys.entity.SysVersion">
+ <cache type="com.basics.support.mybatis.CacheAdapter"/>
+ <delete id="delete" parameterType="com.basics.sys.entity.SysVersion">
+  <![CDATA[ DELETE FROM sys_version WHERE  VERSION_ID = #{id} ]]>
+ </delete>
+ <insert id="insert" parameterType="com.basics.sys.entity.SysVersion">
+  <![CDATA[  INSERT INTO sys_version (]]>
+  <trim prefix="" suffixOverrides=",">
+   <if test="id!=null">VERSION_ID,</if>
+   <if test="versionName!=null">VERSION_NAME,</if>
+   <if test="versionType!=null">VERSION_TYPE,</if>
+   <if test="versionContext!=null">VERSION_CONTEXT,</if>
+   <if test="versionCode!=null">VERSION_CODE,</if>
+   <if test="versionNum!=null">VERSION_NUM,</if>
+   <if test="versionUrl!=null">VERSION_URL,</if>
+   <if test="flagDel!=null">FLAG_DEL,</if>
+   <if test="createTime!=null">CREATE_TIME,</if>
+  </trim>
+  <![CDATA[)VALUES(]]>
+  <trim prefix="" suffixOverrides=",">
+   <if test="id!=null">#{id},</if>
+   <if test="versionName!=null">#{versionName},</if>
+   <if test="versionType!=null">#{versionType},</if>
+   <if test="versionContext!=null">#{versionContext},</if>
+   <if test="versionCode!=null">#{versionCode},</if>
+   <if test="versionNum!=null">#{versionNum},</if>
+   <if test="versionUrl!=null">#{versionUrl},</if>
+   <if test="flagDel!=null">#{flagDel},</if>
+   <if test="createTime!=null">#{createTime},</if>
+  </trim>
+  <![CDATA[)]]>
+ </insert>
+ <update id="update" parameterType="com.basics.sys.entity.SysVersion">
+  <![CDATA[ UPDATE sys_version ]]>
+  <trim prefix="SET" suffixOverrides=",">
+  <if test="id!=null">VERSION_ID = #{id},</if>
+  <if test="versionName!=null">VERSION_NAME = #{versionName},</if>
+  <if test="versionType!=null">VERSION_TYPE = #{versionType},</if>
+  <if test="versionContext!=null">VERSION_CONTEXT = #{versionContext},</if>
+  <if test="versionCode!=null">VERSION_CODE = #{versionCode},</if>
+  <if test="versionNum!=null">VERSION_NUM = #{versionNum},</if>
+  <if test="versionUrl!=null">VERSION_URL = #{versionUrl},</if>
+  <if test="flagDel!=null">FLAG_DEL = #{flagDel},</if>
+  <if test="createTime!=null">CREATE_TIME = #{createTime},</if>
+  </trim>
+  <![CDATA[ WHERE  VERSION_ID = #{id}   ]]>
+ </update>
+ <sql id="condition">
+  <trim prefix="WHERE" prefixOverrides="AND |OR">
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(id)">
+   <![CDATA[ AND sysVersion.VERSION_ID = #{id}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(versionName)">
+   <![CDATA[ AND sysVersion.VERSION_NAME = #{versionName}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(versionType)">
+   <![CDATA[ AND sysVersion.VERSION_TYPE = #{versionType}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(versionContext)">
+   <![CDATA[ AND sysVersion.VERSION_CONTEXT = #{versionContext}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(versionCode)">
+   <![CDATA[ AND sysVersion.VERSION_CODE = #{versionCode}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(versionNum)">
+   <![CDATA[ AND sysVersion.VERSION_NUM = #{versionNum}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(versionUrl)">
+   <![CDATA[ AND sysVersion.VERSION_URL = #{versionUrl}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(flagDel)">
+   <![CDATA[ AND sysVersion.FLAG_DEL = #{flagDel}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(createTime)">
+   <![CDATA[ AND sysVersion.CREATE_TIME = #{createTime}    ]]>
+  </if>
+  </trim>
+ </sql>
+ <select id="query" parameterType="map" resultType="com.basics.sys.entity.SysVersion">
+  <![CDATA[
+  SELECT
+  sysVersion.VERSION_ID "id",
+  sysVersion.VERSION_NAME "versionName",
+  sysVersion.VERSION_TYPE "versionType",
+  sysVersion.VERSION_CONTEXT "versionContext",
+  sysVersion.VERSION_CODE "versionCode",
+  sysVersion.VERSION_NUM "versionNum",
+  sysVersion.VERSION_URL "versionUrl",
+  sysVersion.FLAG_DEL "flagDel",
+  sysVersion.CREATE_TIME "createTime"
+  FROM sys_version sysVersion
+  ]]>
+  <include refid="condition" />
+  <choose>
+   <when test="@org.apache.commons.lang.StringUtils@isNotEmpty(orderBy)"> ORDER BY ${orderBy}
+   </when>
+   <otherwise>
+    <!-- //TODO:ADD DEFAULT ORDER COLUMN OR DONOTHING! -->
+   </otherwise>
+  </choose>
+ </select>
+ <select id="count" parameterType="map" resultType="long">
+  <![CDATA[ SELECT COUNT(1) FROM sys_version sysVersion]]>
+  <include refid="condition" />
+ </select>
+ <sql id="conditionDeleteAll">
+  <trim prefix="WHERE" prefixOverrides="AND |OR">
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(id)">
+   <![CDATA[ AND VERSION_ID = #{id} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(versionName)">
+   <![CDATA[ AND VERSION_NAME = #{versionName} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(versionType)">
+   <![CDATA[ AND VERSION_TYPE = #{versionType} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(versionContext)">
+   <![CDATA[ AND VERSION_CONTEXT = #{versionContext} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(versionCode)">
+   <![CDATA[ AND VERSION_CODE = #{versionCode} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(versionNum)">
+   <![CDATA[ AND VERSION_NUM = #{versionNum} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(versionUrl)">
+   <![CDATA[ AND VERSION_URL = #{versionUrl} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(flagDel)">
+   <![CDATA[ AND FLAG_DEL = #{flagDel} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(createTime)">
+   <![CDATA[ AND CREATE_TIME = #{createTime} ]]>
+  </if>
+  </trim>
+ </sql>
+ <delete id="deleteAll" parameterType="map">
+  <![CDATA[DELETE FROM sys_version]]>
+  <include refid="conditionDeleteAll" />
+ </delete>
+</mapper>

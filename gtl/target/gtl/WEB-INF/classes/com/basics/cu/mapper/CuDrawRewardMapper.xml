@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC
+ "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.basics.cu.entity.CuDrawReward">
+ <cache type="com.basics.support.mybatis.CacheAdapter"/>
+ <delete id="delete" parameterType="com.basics.cu.entity.CuDrawReward">
+  <![CDATA[ DELETE FROM cu_draw_reward WHERE  REWARD_ID = #{id} ]]>
+ </delete>
+ <insert id="insert" parameterType="com.basics.cu.entity.CuDrawReward">
+  <![CDATA[  INSERT INTO cu_draw_reward (]]>
+  <trim prefix="" suffixOverrides=",">
+   <if test="id!=null">REWARD_ID,</if>
+   <if test="customerId!=null">CUSTOMER_ID,</if>
+   <if test="rewardNum!=null">REWARD_NUM,</if>
+   <if test="versionNum!=null">VERSION_NUM,</if>
+   <if test="flagDel!=null">FLAG_DEL,</if>
+   <if test="createTime!=null">CREATE_TIME,</if>
+   <if test="createUser!=null">CREATE_USER,</if>
+   <if test="modifyUser!=null">MODIFY_USER,</if>
+   <if test="modifyTime!=null">MODIFY_TIME,</if>
+  </trim>
+  <![CDATA[)VALUES(]]>
+  <trim prefix="" suffixOverrides=",">
+   <if test="id!=null">#{id},</if>
+   <if test="customerId!=null">#{customerId},</if>
+   <if test="rewardNum!=null">#{rewardNum},</if>
+   <if test="versionNum!=null">#{versionNum},</if>
+   <if test="flagDel!=null">#{flagDel},</if>
+   <if test="createTime!=null">#{createTime},</if>
+   <if test="createUser!=null">#{createUser},</if>
+   <if test="modifyUser!=null">#{modifyUser},</if>
+   <if test="modifyTime!=null">#{modifyTime},</if>
+  </trim>
+  <![CDATA[)]]>
+ </insert>
+ <update id="update" parameterType="com.basics.cu.entity.CuDrawReward">
+  <![CDATA[ UPDATE cu_draw_reward ]]>
+  <trim prefix="SET" suffixOverrides=",">
+  <if test="id!=null">REWARD_ID = #{id},</if>
+  <if test="customerId!=null">CUSTOMER_ID = #{customerId},</if>
+  <if test="rewardNum!=null">REWARD_NUM = #{rewardNum},</if>
+  <if test="versionNum!=null">VERSION_NUM = #{versionNum},</if>
+  <if test="flagDel!=null">FLAG_DEL = #{flagDel},</if>
+  <if test="createTime!=null">CREATE_TIME = #{createTime},</if>
+  <if test="createUser!=null">CREATE_USER = #{createUser},</if>
+  <if test="modifyUser!=null">MODIFY_USER = #{modifyUser},</if>
+  <if test="modifyTime!=null">MODIFY_TIME = #{modifyTime},</if>
+  </trim>
+  <![CDATA[ WHERE  REWARD_ID = #{id}   ]]>
+ </update>
+ <sql id="condition">
+  <trim prefix="WHERE" prefixOverrides="AND |OR">
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(id)">
+   <![CDATA[ AND cuDrawReward.REWARD_ID = #{id}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(customerId)">
+   <![CDATA[ AND cuDrawReward.CUSTOMER_ID = #{customerId}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(rewardNum)">
+   <![CDATA[ AND cuDrawReward.REWARD_NUM = #{rewardNum}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(versionNum)">
+   <![CDATA[ AND cuDrawReward.VERSION_NUM = #{versionNum}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(flagDel)">
+   <![CDATA[ AND cuDrawReward.FLAG_DEL = #{flagDel}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(createTime)">
+   <![CDATA[ AND cuDrawReward.CREATE_TIME = #{createTime}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(createUser)">
+   <![CDATA[ AND cuDrawReward.CREATE_USER = #{createUser}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(modifyUser)">
+   <![CDATA[ AND cuDrawReward.MODIFY_USER = #{modifyUser}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(modifyTime)">
+   <![CDATA[ AND cuDrawReward.MODIFY_TIME = #{modifyTime}    ]]>
+  </if>
+  </trim>
+ </sql>
+ <select id="query" parameterType="map" resultType="com.basics.cu.entity.CuDrawReward">
+  <![CDATA[
+  SELECT
+  cuDrawReward.REWARD_ID "id",
+  cuDrawReward.CUSTOMER_ID "customerId",
+  cuDrawReward.REWARD_NUM "rewardNum",
+  cuDrawReward.VERSION_NUM "versionNum",
+  cuDrawReward.FLAG_DEL "flagDel",
+  cuDrawReward.CREATE_TIME "createTime",
+  cuDrawReward.CREATE_USER "createUser",
+  cuDrawReward.MODIFY_USER "modifyUser",
+  cuDrawReward.MODIFY_TIME "modifyTime"
+  FROM cu_draw_reward cuDrawReward
+  ]]>
+  <include refid="condition" />
+  <choose>
+   <when test="@org.apache.commons.lang.StringUtils@isNotEmpty(orderBy)"> ORDER BY ${orderBy}
+   </when>
+   <otherwise>
+    <!-- //TODO:ADD DEFAULT ORDER COLUMN OR DONOTHING! -->
+   </otherwise>
+  </choose>
+ </select>
+ <select id="count" parameterType="map" resultType="long">
+  <![CDATA[ SELECT COUNT(1) FROM cu_draw_reward cuDrawReward]]>
+  <include refid="condition" />
+ </select>
+ <sql id="conditionDeleteAll">
+  <trim prefix="WHERE" prefixOverrides="AND |OR">
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(id)">
+   <![CDATA[ AND REWARD_ID = #{id} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(customerId)">
+   <![CDATA[ AND CUSTOMER_ID = #{customerId} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(rewardNum)">
+   <![CDATA[ AND REWARD_NUM = #{rewardNum} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(versionNum)">
+   <![CDATA[ AND VERSION_NUM = #{versionNum} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(flagDel)">
+   <![CDATA[ AND FLAG_DEL = #{flagDel} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(createTime)">
+   <![CDATA[ AND CREATE_TIME = #{createTime} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(createUser)">
+   <![CDATA[ AND CREATE_USER = #{createUser} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(modifyUser)">
+   <![CDATA[ AND MODIFY_USER = #{modifyUser} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(modifyTime)">
+   <![CDATA[ AND MODIFY_TIME = #{modifyTime} ]]>
+  </if>
+  </trim>
+ </sql>
+ <delete id="deleteAll" parameterType="map">
+  <![CDATA[DELETE FROM cu_draw_reward]]>
+  <include refid="conditionDeleteAll" />
+ </delete>
+ 
+ <select id="sumDrawReward" parameterType="map" resultType="java.lang.Double">
+  <![CDATA[ 
+  SELECT
+	IFNULL(SUM(cuDrawReward.REWARD_NUM),0)
+FROM
+	cu_draw_reward cuDrawReward
+WHERE
+	DATE_FORMAT(
+		cuDrawReward.CREATE_TIME,
+		'%Y-%d-%m'
+	) = DATE_FORMAT(#{nowDate}, '%Y-%m-%d')
+	]]>
+ </select>
+ 
+ <!-- 统计每日的抽奖数和中奖数 -->
+  <select id="selectRewardEveryDay" parameterType="map" resultType="com.basics.cu.controller.response.CountRewardResponse">
+  <![CDATA[ 
+	 SELECT
+		cdr.createTime "createTime",
+		IFNULL(cdr.drawNum, 0) "drawNum",
+		IFNULL(str.rewardNum, 0) "winNum"
+	FROM
+		(
+			SELECT
+				DATE_FORMAT(CREATE_TIME, '%Y-%m-%d') createTime,
+				SUM(REWARD_NUM) drawNum
+			FROM
+				cu_draw_reward
+			GROUP BY
+				createTime
+		) cdr
+	LEFT OUTER JOIN (
+		SELECT
+			DATE_FORMAT(CREATE_TIME, '%Y-%m-%d') createTime,
+			SUM(REWARD_NUM) rewardNum
+		FROM
+			sys_turntable_reward
+		GROUP BY
+			createTime
+	) str ON cdr.createTime = str.createTime
+	ORDER BY
+		cdr.createTime DESC
+	]]>
+ </select>
+ 
+ <!-- 统计每日的抽奖数和中奖数 -->
+  <select id="countRewardEveryDay" parameterType="map" resultType="long">
+  <![CDATA[ 
+	 SELECT
+		count(1)
+	FROM
+		(
+			SELECT
+				DATE_FORMAT(CREATE_TIME, '%Y-%m-%d') createTime,
+				SUM(REWARD_NUM) drawNum
+			FROM
+				cu_draw_reward
+			GROUP BY
+				createTime
+		) cdr
+	LEFT OUTER JOIN (
+		SELECT
+			DATE_FORMAT(CREATE_TIME, '%Y-%m-%d') createTime,
+			SUM(REWARD_NUM) rewardNum
+		FROM
+			sys_turntable_reward
+		GROUP BY
+			createTime
+	) str ON cdr.createTime = str.createTime
+	ORDER BY
+		cdr.createTime DESC
+	]]>
+ </select>
+ 
+ 
+ 
+ 
+</mapper>

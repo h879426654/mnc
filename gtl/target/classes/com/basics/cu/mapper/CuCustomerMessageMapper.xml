@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC
+ "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.basics.cu.entity.CuCustomerMessage">
+ <cache type="com.basics.support.mybatis.CacheAdapter"/>
+ <delete id="delete" parameterType="com.basics.cu.entity.CuCustomerMessage">
+  <![CDATA[ DELETE FROM cu_customer_message WHERE  MESSAGE_ID = #{id} ]]>
+ </delete>
+ <insert id="insert" parameterType="com.basics.cu.entity.CuCustomerMessage">
+  <![CDATA[  INSERT INTO cu_customer_message (]]>
+  <trim prefix="" suffixOverrides=",">
+   <if test="id!=null">MESSAGE_ID,</if>
+   <if test="customerId!=null">CUSTOMER_ID,</if>
+   <if test="messageType!=null">MESSAGE_TYPE,</if>
+   <if test="appMessageId!=null">APP_MESSAGE_ID,</if>
+   <if test="messageTitle!=null">MESSAGE_TITLE,</if>
+   <if test="messageContext!=null">MESSAGE_CONTEXT,</if>
+   <if test="flagRead!=null">FLAG_READ,</if>
+   <if test="versionNum!=null">VERSION_NUM,</if>
+   <if test="flagDel!=null">FLAG_DEL,</if>
+   <if test="createTime!=null">CREATE_TIME,</if>
+   <if test="createUser!=null">CREATE_USER,</if>
+   <if test="modifyUser!=null">MODIFY_USER,</if>
+   <if test="modifyDate!=null">MODIFY_DATE,</if>
+  </trim>
+  <![CDATA[)VALUES(]]>
+  <trim prefix="" suffixOverrides=",">
+   <if test="id!=null">#{id},</if>
+   <if test="customerId!=null">#{customerId},</if>
+   <if test="messageType!=null">#{messageType},</if>
+   <if test="appMessageId!=null">#{appMessageId},</if>
+   <if test="messageTitle!=null">#{messageTitle},</if>
+   <if test="messageContext!=null">#{messageContext},</if>
+   <if test="flagRead!=null">#{flagRead},</if>
+   <if test="versionNum!=null">#{versionNum},</if>
+   <if test="flagDel!=null">#{flagDel},</if>
+   <if test="createTime!=null">#{createTime},</if>
+   <if test="createUser!=null">#{createUser},</if>
+   <if test="modifyUser!=null">#{modifyUser},</if>
+   <if test="modifyDate!=null">#{modifyDate},</if>
+  </trim>
+  <![CDATA[)]]>
+ </insert>
+ <update id="update" parameterType="com.basics.cu.entity.CuCustomerMessage">
+  <![CDATA[ UPDATE cu_customer_message ]]>
+  <trim prefix="SET" suffixOverrides=",">
+  <if test="id!=null">MESSAGE_ID = #{id},</if>
+  <if test="customerId!=null">CUSTOMER_ID = #{customerId},</if>
+  <if test="messageType!=null">MESSAGE_TYPE = #{messageType},</if>
+  <if test="appMessageId!=null">APP_MESSAGE_ID = #{appMessageId},</if>
+  <if test="messageTitle!=null">MESSAGE_TITLE = #{messageTitle},</if>
+  <if test="messageContext!=null">MESSAGE_CONTEXT = #{messageContext},</if>
+  <if test="flagRead!=null">FLAG_READ = #{flagRead},</if>
+  <if test="versionNum!=null">VERSION_NUM = #{versionNum},</if>
+  <if test="flagDel!=null">FLAG_DEL = #{flagDel},</if>
+  <if test="createTime!=null">CREATE_TIME = #{createTime},</if>
+  <if test="createUser!=null">CREATE_USER = #{createUser},</if>
+  <if test="modifyUser!=null">MODIFY_USER = #{modifyUser},</if>
+  <if test="modifyDate!=null">MODIFY_DATE = #{modifyDate},</if>
+  </trim>
+  <![CDATA[ WHERE  MESSAGE_ID = #{id}   ]]>
+ </update>
+ <sql id="condition">
+  <trim prefix="WHERE" prefixOverrides="AND |OR">
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(id)">
+   <![CDATA[ AND cuCustomerMessage.MESSAGE_ID = #{id}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(customerId)">
+   <![CDATA[ AND cuCustomerMessage.CUSTOMER_ID = #{customerId}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(messageType)">
+   <![CDATA[ AND cuCustomerMessage.MESSAGE_TYPE = #{messageType}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(appMessageId)">
+   <![CDATA[ AND cuCustomerMessage.APP_MESSAGE_ID = #{appMessageId}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(messageTitle)">
+   <![CDATA[ AND cuCustomerMessage.MESSAGE_TITLE = #{messageTitle}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(messageContext)">
+   <![CDATA[ AND cuCustomerMessage.MESSAGE_CONTEXT = #{messageContext}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(flagRead)">
+   <![CDATA[ AND cuCustomerMessage.FLAG_READ = #{flagRead}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(versionNum)">
+   <![CDATA[ AND cuCustomerMessage.VERSION_NUM = #{versionNum}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(flagDel)">
+   <![CDATA[ AND cuCustomerMessage.FLAG_DEL = #{flagDel}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(createTime)">
+   <![CDATA[ AND cuCustomerMessage.CREATE_TIME = #{createTime}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(createUser)">
+   <![CDATA[ AND cuCustomerMessage.CREATE_USER = #{createUser}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(modifyUser)">
+   <![CDATA[ AND cuCustomerMessage.MODIFY_USER = #{modifyUser}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(modifyDate)">
+   <![CDATA[ AND cuCustomerMessage.MODIFY_DATE = #{modifyDate}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(appMessageIdIsNull)">
+   <![CDATA[ AND ISNULL(cuCustomerMessage.APP_MESSAGE_ID)    ]]>
+  </if>
+  </trim>
+ </sql>
+ <select id="query" parameterType="map" resultType="com.basics.cu.entity.CuCustomerMessage">
+  <![CDATA[
+  SELECT
+  cuCustomerMessage.MESSAGE_ID "id",
+  cuCustomerMessage.CUSTOMER_ID "customerId",
+  cuCustomerMessage.MESSAGE_TYPE "messageType",
+  cuCustomerMessage.APP_MESSAGE_ID "appMessageId",
+  cuCustomerMessage.MESSAGE_TITLE "messageTitle",
+  cuCustomerMessage.MESSAGE_CONTEXT "messageContext",
+  cuCustomerMessage.FLAG_READ "flagRead",
+  cuCustomerMessage.VERSION_NUM "versionNum",
+  cuCustomerMessage.FLAG_DEL "flagDel",
+  cuCustomerMessage.CREATE_TIME "createTime",
+  cuCustomerMessage.CREATE_USER "createUser",
+  cuCustomerMessage.MODIFY_USER "modifyUser",
+  cuCustomerMessage.MODIFY_DATE "modifyDate"
+  FROM cu_customer_message cuCustomerMessage
+  ]]>
+  <include refid="condition" />
+  <choose>
+   <when test="@org.apache.commons.lang.StringUtils@isNotEmpty(orderBy)"> ORDER BY ${orderBy}
+   </when>
+   <otherwise>
+   </otherwise>
+  </choose>
+ </select>
+ <select id="count" parameterType="map" resultType="long">
+  <![CDATA[ SELECT COUNT(1) FROM cu_customer_message cuCustomerMessage]]>
+  <include refid="condition" />
+ </select>
+ <sql id="conditionDeleteAll">
+  <trim prefix="WHERE" prefixOverrides="AND |OR">
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(id)">
+   <![CDATA[ AND MESSAGE_ID = #{id} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(customerId)">
+   <![CDATA[ AND CUSTOMER_ID = #{customerId} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(messageType)">
+   <![CDATA[ AND MESSAGE_TYPE = #{messageType} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(appMessageId)">
+   <![CDATA[ AND APP_MESSAGE_ID = #{appMessageId} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(messageTitle)">
+   <![CDATA[ AND MESSAGE_TITLE = #{messageTitle} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(messageContext)">
+   <![CDATA[ AND MESSAGE_CONTEXT = #{messageContext} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(flagRead)">
+   <![CDATA[ AND FLAG_READ = #{flagRead} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(versionNum)">
+   <![CDATA[ AND VERSION_NUM = #{versionNum} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(flagDel)">
+   <![CDATA[ AND FLAG_DEL = #{flagDel} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(createTime)">
+   <![CDATA[ AND CREATE_TIME = #{createTime} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(createUser)">
+   <![CDATA[ AND CREATE_USER = #{createUser} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(modifyUser)">
+   <![CDATA[ AND MODIFY_USER = #{modifyUser} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(modifyDate)">
+   <![CDATA[ AND MODIFY_DATE = #{modifyDate} ]]>
+  </if>
+  </trim>
+ </sql>
+ <delete id="deleteAll" parameterType="map">
+  <![CDATA[DELETE FROM cu_customer_message]]>
+  <include refid="conditionDeleteAll" />
+ </delete>
+ 
+ <update id="updateByCustomerId" parameterType="com.basics.cu.entity.CuCustomerMessage">
+  <![CDATA[ UPDATE cu_customer_message ]]>
+  <trim prefix="SET" suffixOverrides=",">
+  <if test="flagRead!=null">FLAG_READ = #{flagRead},</if>
+  </trim>
+  <![CDATA[ WHERE  CUSTOMER_ID = #{customerId}   ]]>
+ </update>
+</mapper>

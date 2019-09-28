@@ -1,0 +1,499 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC
+ "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.basics.tr.entity.TrTradeCoin">
+ <cache type="com.basics.support.mybatis.CacheAdapter"/>
+ <delete id="delete" parameterType="com.basics.tr.entity.TrTradeCoin">
+  <![CDATA[ DELETE FROM tr_trade_coin WHERE  TRADE_ID = #{id} ]]>
+ </delete>
+ <insert id="insert" parameterType="com.basics.tr.entity.TrTradeCoin">
+  <![CDATA[  INSERT INTO tr_trade_coin (]]>
+  <trim prefix="" suffixOverrides=",">
+   <if test="id!=null">TRADE_ID,</if>
+   <if test="countryId!=null">COUNTRY_ID,</if>
+   <if test="tradeSerial!=null">TRADE_SERIAL,</if>
+   <if test="customerId!=null">CUSTOMER_ID,</if>
+   <if test="tradeType!=null">TRADE_TYPE,</if>
+   <if test="tradePrice!=null">TRADE_PRICE,</if>
+   <if test="moneyNum!=null">MONEY_NUM,</if>
+   <if test="tradeStatus!=null">TRADE_STATUS,</if>
+   <if test="customerBuyId!=null">CUSTOMER_BUY_ID,</if>
+   <if test="tradeMatchTime!=null">TRADE_MATCH_TIME,</if>
+   <if test="tradePayType!=null">TRADE_PAY_TYPE,</if>
+   <if test="tradePayTime!=null">TRADE_PAY_TIME,</if>
+   <if test="tradeFinishTime!=null">TRADE_FINISH_TIME,</if>
+   <if test="applyStatus!=null">APPLY_STATUS,</if>
+   <if test="applyContext!=null">APPLY_CONTEXT,</if>
+   <if test="applyTime!=null">APPLY_TIME,</if>
+   <if test="lockMoneyNum!=null">LOCK_MONEY_NUM,</if>
+   <if test="lockTradeCoin!=null">LOCK_TRADE_COIN,</if>
+   <if test="versionNum!=null">VERSION_NUM,</if>
+   <if test="flagDel!=null">FLAG_DEL,</if>
+   <if test="createTime!=null">CREATE_TIME,</if>
+   <if test="createUser!=null">CREATE_USER,</if>
+   <if test="modifyUser!=null">MODIFY_USER,</if>
+   <if test="modifyTime!=null">MODIFY_TIME,</if>
+  </trim>
+  <![CDATA[)VALUES(]]>
+  <trim prefix="" suffixOverrides=",">
+   <if test="id!=null">#{id},</if>
+   <if test="countryId!=null">#{countryId},</if>
+   <if test="tradeSerial!=null">#{tradeSerial},</if>
+   <if test="customerId!=null">#{customerId},</if>
+   <if test="tradeType!=null">#{tradeType},</if>
+   <if test="tradePrice!=null">#{tradePrice},</if>
+   <if test="moneyNum!=null">#{moneyNum},</if>
+   <if test="tradeStatus!=null">#{tradeStatus},</if>
+   <if test="customerBuyId!=null">#{customerBuyId},</if>
+   <if test="tradeMatchTime!=null">#{tradeMatchTime},</if>
+   <if test="tradePayType!=null">#{tradePayType},</if>
+   <if test="tradePayTime!=null">#{tradePayTime},</if>
+   <if test="tradeFinishTime!=null">#{tradeFinishTime},</if>
+   <if test="applyStatus!=null">#{applyStatus},</if>
+   <if test="applyContext!=null">#{applyContext},</if>
+   <if test="applyTime!=null">#{applyTime},</if>
+   <if test="lockMoneyNum!=null">#{lockMoneyNum},</if>
+   <if test="lockTradeCoin!=null">#{lockTradeCoin},</if>
+   <if test="versionNum!=null">#{versionNum},</if>
+   <if test="flagDel!=null">#{flagDel},</if>
+   <if test="createTime!=null">#{createTime},</if>
+   <if test="createUser!=null">#{createUser},</if>
+   <if test="modifyUser!=null">#{modifyUser},</if>
+   <if test="modifyTime!=null">#{modifyTime},</if>
+  </trim>
+  <![CDATA[)]]>
+ </insert>
+ <update id="update" parameterType="com.basics.tr.entity.TrTradeCoin">
+  <![CDATA[ UPDATE tr_trade_coin ]]>
+  <trim prefix="SET" suffixOverrides=",">
+  <if test="id!=null">TRADE_ID = #{id},</if>
+  <if test="countryId!=null">COUNTRY_ID = #{countryId},</if>
+  <if test="tradeSerial!=null">TRADE_SERIAL = #{tradeSerial},</if>
+  <if test="customerId!=null">CUSTOMER_ID = #{customerId},</if>
+  <if test="tradeType!=null">TRADE_TYPE = #{tradeType},</if>
+  <if test="tradePrice!=null">TRADE_PRICE = #{tradePrice},</if>
+  <if test="moneyNum!=null">MONEY_NUM = #{moneyNum},</if>
+  <if test="tradeStatus!=null">TRADE_STATUS = #{tradeStatus},</if>
+  <if test="customerBuyId!=null">CUSTOMER_BUY_ID = #{customerBuyId},</if>
+  <if test="tradeMatchTime!=null">TRADE_MATCH_TIME = #{tradeMatchTime},</if>
+  <if test="tradePayType!=null">TRADE_PAY_TYPE = #{tradePayType},</if>
+  <if test="tradePayTime!=null">TRADE_PAY_TIME = #{tradePayTime},</if>
+  <if test="tradeFinishTime!=null">TRADE_FINISH_TIME = #{tradeFinishTime},</if>
+  <if test="applyStatus!=null">APPLY_STATUS = #{applyStatus},</if>
+  <if test="applyContext!=null">APPLY_CONTEXT = #{applyContext},</if>
+  <if test="applyTime!=null">APPLY_TIME = #{applyTime},</if>
+  <if test="lockMoneyNum!=null">LOCK_MONEY_NUM = #{lockMoneyNum},</if>
+  <if test="lockTradeCoin!=null">LOCK_TRADE_COIN = #{lockTradeCoin},</if>
+  <if test="versionNum!=null">VERSION_NUM = #{versionNum},</if>
+  <if test="flagDel!=null">FLAG_DEL = #{flagDel},</if>
+  <if test="createTime!=null">CREATE_TIME = #{createTime},</if>
+  <if test="createUser!=null">CREATE_USER = #{createUser},</if>
+  <if test="modifyUser!=null">MODIFY_USER = #{modifyUser},</if>
+  <if test="modifyTime!=null">MODIFY_TIME = #{modifyTime},</if>
+  </trim>
+  <![CDATA[ WHERE  TRADE_ID = #{id}   ]]>
+ </update>
+ <sql id="condition">
+  <trim prefix="WHERE" prefixOverrides="AND |OR">
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(id)">
+   <![CDATA[ AND trTradeCoin.TRADE_ID = #{id}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(countryId)">
+   <![CDATA[ AND trTradeCoin.COUNTRY_ID = #{countryId}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(tradeSerial)">
+   <![CDATA[ AND trTradeCoin.TRADE_SERIAL = #{tradeSerial}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(customerId)">
+   <![CDATA[ AND trTradeCoin.CUSTOMER_ID = #{customerId}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(tradeType)">
+   <![CDATA[ AND trTradeCoin.TRADE_TYPE = #{tradeType}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(tradePrice)">
+   <![CDATA[ AND trTradeCoin.TRADE_PRICE = #{tradePrice}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(moneyNum)">
+   <![CDATA[ AND trTradeCoin.MONEY_NUM = #{moneyNum}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(tradeStatus)">
+   <![CDATA[ AND trTradeCoin.TRADE_STATUS = #{tradeStatus}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(customerBuyId)">
+   <![CDATA[ AND trTradeCoin.CUSTOMER_BUY_ID = #{customerBuyId}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(tradeMatchTime)">
+   <![CDATA[ AND trTradeCoin.TRADE_MATCH_TIME = #{tradeMatchTime}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(tradePayType)">
+   <![CDATA[ AND trTradeCoin.TRADE_PAY_TYPE = #{tradePayType}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(tradePayTime)">
+   <![CDATA[ AND trTradeCoin.TRADE_PAY_TIME = #{tradePayTime}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(tradeFinishTime)">
+   <![CDATA[ AND trTradeCoin.TRADE_FINISH_TIME = #{tradeFinishTime}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(applyStatus)">
+   <![CDATA[ AND trTradeCoin.APPLY_STATUS = #{applyStatus}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(applyContext)">
+   <![CDATA[ AND trTradeCoin.APPLY_CONTEXT = #{applyContext}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(applyTime)">
+   <![CDATA[ AND trTradeCoin.APPLY_TIME = #{applyTime}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(lockMoneyNum)">
+   <![CDATA[ AND trTradeCoin.LOCK_MONEY_NUM = #{lockMoneyNum}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(lockTradeCoin)">
+   <![CDATA[ AND trTradeCoin.LOCK_TRADE_COIN = #{lockTradeCoin}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(versionNum)">
+   <![CDATA[ AND trTradeCoin.VERSION_NUM = #{versionNum}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(flagDel)">
+   <![CDATA[ AND trTradeCoin.FLAG_DEL = #{flagDel}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(createTime)">
+   <![CDATA[ AND trTradeCoin.CREATE_TIME = #{createTime}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(createUser)">
+   <![CDATA[ AND trTradeCoin.CREATE_USER = #{createUser}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(modifyUser)">
+   <![CDATA[ AND trTradeCoin.MODIFY_USER = #{modifyUser}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(modifyTime)">
+   <![CDATA[ AND trTradeCoin.MODIFY_TIME = #{modifyTime}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(LTtradeStatus)">
+   <![CDATA[ AND trTradeCoin.TRADE_STATUS < #{LTtradeStatus}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(GTtradeStatus)">
+   <![CDATA[ AND trTradeCoin.TRADE_STATUS > #{GTtradeStatus}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(searchName)">
+   <![CDATA[ AND (customer.customer_name like CONCAT('%',#{searchName},'%') or customer.customer_phone like CONCAT('%',#{searchName},'%') or customerBuy.customer_name like CONCAT('%',#{searchName},'%') or customerBuy.customer_phone like CONCAT('%',#{searchName},'%'))    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(customerOrBuyId)">
+   <![CDATA[ AND (trTradeCoin.customer_id = #{customerOrBuyId} or trTradeCoin.customer_buy_id = #{customerOrBuyId})    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(tradeIng)">
+   <![CDATA[ AND (trTradeCoin.TRADE_STATUS > 1 AND trTradeCoin.TRADE_STATUS < 4 )  ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(cancleTrade)">
+   <![CDATA[ AND trTradeCoin.TRADE_STATUS <= #{cancleTrade}   ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(q)">
+   <![CDATA[ AND (customer.customer_name like CONCAT('%',#{q},'%') or customer.customer_phone like CONCAT('%',#{q},'%') or customerBuy.customer_name like CONCAT('%',#{q},'%') or customerBuy.customer_phone like CONCAT('%',#{q},'%'))    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(tradeMatchingTimeOver)">
+   <![CDATA[ AND trTradeCoin.trade_matching_time > DATE_SUB(trTradeCoin.trade_matching_time,INTERVAL #{tradeMatchingTimeOver} HOUR)]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(notTradeStatus)">
+   <![CDATA[ AND trTradeCoin.TRADE_STATUS !=  #{notTradeStatus} ]]>
+  </if>
+  </trim>
+ </sql>
+ <select id="query" parameterType="map" resultType="com.basics.tr.entity.TrTradeCoin">
+  <![CDATA[
+  SELECT
+  trTradeCoin.TRADE_ID "id",
+  trTradeCoin.COUNTRY_ID "countryId",
+  trTradeCoin.TRADE_SERIAL "tradeSerial",
+  trTradeCoin.CUSTOMER_ID "customerId",
+  trTradeCoin.TRADE_TYPE "tradeType",
+  trTradeCoin.TRADE_PRICE "tradePrice",
+  trTradeCoin.MONEY_NUM "moneyNum",
+  trTradeCoin.TRADE_STATUS "tradeStatus",
+  trTradeCoin.CUSTOMER_BUY_ID "customerBuyId",
+  trTradeCoin.TRADE_MATCH_TIME "tradeMatchTime",
+  trTradeCoin.TRADE_PAY_TYPE "tradePayType",
+  trTradeCoin.TRADE_PAY_TIME "tradePayTime",
+  trTradeCoin.TRADE_FINISH_TIME "tradeFinishTime",
+  trTradeCoin.APPLY_STATUS "applyStatus",
+  trTradeCoin.APPLY_CONTEXT "applyContext",
+  trTradeCoin.APPLY_TIME "applyTime",
+  trTradeCoin.LOCK_MONEY_NUM "lockMoneyNum",
+  trTradeCoin.LOCK_TRADE_COIN "lockTradeCoin",
+  trTradeCoin.VERSION_NUM "versionNum",
+  trTradeCoin.FLAG_DEL "flagDel",
+  trTradeCoin.CREATE_TIME "createTime",
+  trTradeCoin.CREATE_USER "createUser",
+  trTradeCoin.MODIFY_USER "modifyUser",
+  trTradeCoin.MODIFY_TIME "modifyTime"
+  FROM tr_trade_coin trTradeCoin
+  ]]>
+  <include refid="condition" />
+  <choose>
+   <when test="@org.apache.commons.lang.StringUtils@isNotEmpty(orderBy)"> ORDER BY ${orderBy}
+   </when>
+   <otherwise>
+    <!-- //TODO:ADD DEFAULT ORDER COLUMN OR DONOTHING! -->
+   </otherwise>
+  </choose>
+ </select>
+ <select id="count" parameterType="map" resultType="long">
+  <![CDATA[ SELECT COUNT(1) FROM tr_trade_coin trTradeCoin]]>
+  <include refid="condition" />
+ </select>
+ <sql id="conditionDeleteAll">
+  <trim prefix="WHERE" prefixOverrides="AND |OR">
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(id)">
+   <![CDATA[ AND TRADE_ID = #{id} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(countryId)">
+   <![CDATA[ AND COUNTRY_ID = #{countryId} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(tradeSerial)">
+   <![CDATA[ AND TRADE_SERIAL = #{tradeSerial} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(customerId)">
+   <![CDATA[ AND CUSTOMER_ID = #{customerId} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(tradeType)">
+   <![CDATA[ AND TRADE_TYPE = #{tradeType} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(tradePrice)">
+   <![CDATA[ AND TRADE_PRICE = #{tradePrice} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(moneyNum)">
+   <![CDATA[ AND MONEY_NUM = #{moneyNum} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(tradeStatus)">
+   <![CDATA[ AND TRADE_STATUS = #{tradeStatus} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(customerBuyId)">
+   <![CDATA[ AND CUSTOMER_BUY_ID = #{customerBuyId} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(tradeMatchTime)">
+   <![CDATA[ AND TRADE_MATCH_TIME = #{tradeMatchTime} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(tradePayType)">
+   <![CDATA[ AND TRADE_PAY_TYPE = #{tradePayType} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(tradePayTime)">
+   <![CDATA[ AND TRADE_PAY_TIME = #{tradePayTime} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(tradeFinishTime)">
+   <![CDATA[ AND TRADE_FINISH_TIME = #{tradeFinishTime} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(applyStatus)">
+   <![CDATA[ AND APPLY_STATUS = #{applyStatus} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(applyContext)">
+   <![CDATA[ AND APPLY_CONTEXT = #{applyContext} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(applyTime)">
+   <![CDATA[ AND APPLY_TIME = #{applyTime} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(lockMoneyNum)">
+   <![CDATA[ AND LOCK_MONEY_NUM = #{lockMoneyNum} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(lockTradeCoin)">
+   <![CDATA[ AND LOCK_TRADE_COIN = #{lockTradeCoin}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(versionNum)">
+   <![CDATA[ AND VERSION_NUM = #{versionNum} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(flagDel)">
+   <![CDATA[ AND FLAG_DEL = #{flagDel} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(createTime)">
+   <![CDATA[ AND CREATE_TIME = #{createTime} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(createUser)">
+   <![CDATA[ AND CREATE_USER = #{createUser} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(modifyUser)">
+   <![CDATA[ AND MODIFY_USER = #{modifyUser} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(modifyTime)">
+   <![CDATA[ AND MODIFY_TIME = #{modifyTime} ]]>
+  </if>
+  </trim>
+ </sql>
+ <delete id="deleteAll" parameterType="map">
+  <![CDATA[DELETE FROM tr_trade_coin]]>
+  <include refid="conditionDeleteAll" />
+ </delete>
+ 
+ <select id="queryTradeInfo" parameterType="map" resultType="com.basics.tr.entity.TrTradeCoin">
+  <![CDATA[
+  SELECT
+  trTradeCoin.trade_id "id",
+  trTradeCoin.COUNTRY_ID "countryId",
+  trTradeCoin.customer_id "customerId",
+  trTradeCoin.trade_serial "tradeSerial",
+  trTradeCoin.trade_type "tradeType",
+  trTradeCoin.money_num "moneyNum",
+  trTradeCoin.TRADE_PRICE "tradePrice",
+  trTradeCoin.lock_money_num "lockMoneyNum",
+  trTradeCoin.trade_status "tradeStatus",
+  trTradeCoin.create_time "createTime",
+  trTradeCoin.customer_buy_id "customerBuyId",
+  trTradeCoin.apply_status "applyStatus",
+  trTradeCoin.apply_context "applyContext",
+  trTradeCoin.trade_pay_time "tradePayTime",
+  trTradeCoin.TRADE_MATCH_TIME "tradeMatchTime",
+  trTradeCoin.trade_finish_time "tradeFinishTime",
+  trTradeCoin.APPLY_TIME "applyTime",
+  trTradeCoin.LOCK_TRADE_COIN "lockTradeCoin",
+  customer.customer_name "customerName",
+  customer.REAL_NAME "customerRealName",
+  customer.customer_phone "customerPhone",
+  customerBuy.customer_name "customerBuyName",
+  customerBuy.REAL_NAME "customerBuyRealName",
+  customerBuy.customer_phone "customerBuyPhone",
+  appOption1.OPTION_NAME "tradeTypeName",
+  appOption2.OPTION_NAME "applyStatusName",
+  appOption3.OPTION_NAME "tradeStatusName"
+  FROM tr_trade_coin trTradeCoin
+  LEFT OUTER JOIN app_option appOption1 ON appOption1.OPTION_PARENT_ID = 'TRADE_TYPE' AND trTradeCoin.trade_type = appOption1.OPTION_CODE
+  LEFT OUTER JOIN app_option appOption2 ON appOption2.OPTION_PARENT_ID = 'APPLY_STATUS' AND trTradeCoin.apply_status = appOption2.OPTION_CODE
+  LEFT OUTER JOIN app_option appOption3 ON appOption3.OPTION_PARENT_ID = 'TRADE_STATUS' AND trTradeCoin.trade_status = appOption3.OPTION_CODE
+  LEFT OUTER JOIN cu_customer_info customer ON customer.customer_id=trTradeCoin.customer_id
+  LEFT OUTER JOIN cu_customer_info customerBuy ON customerBuy.customer_id=trTradeCoin.customer_buy_id
+  ]]>
+  <include refid="condition" />
+  <choose>
+   <when test="@org.apache.commons.lang.StringUtils@isNotEmpty(orderBy)"> ORDER BY ${orderBy}
+   </when>
+   <otherwise>
+    <!-- //TODO:ADD DEFAULT ORDER COLUMN OR DONOTHING! -->
+   </otherwise>
+  </choose>
+ </select>
+ 
+ 
+ <select id="queryTradeResponse" parameterType="map" resultType="com.basics.tr.controller.response.TradeResponse">
+  <![CDATA[
+  SELECT
+    trTradeCoin.TRADE_ID "id",
+    trTradeCoin.COUNTRY_ID "countryId",
+    trTradeCoin.TRADE_SERIAL "tradeSerial",
+    trTradeCoin.TRADE_TYPE "tradeType",
+    trTradeCoin.TRADE_PRICE "tradePrice",
+    trTradeCoin.MONEY_NUM "moneyNum",
+    trTradeCoin.TRADE_STATUS "tradeStatus",
+    trTradeCoin.CREATE_TIME "createTime",
+    trTradeCoin.LOCK_TRADE_COIN "lockTradeCoin",
+      CASE
+    WHEN trTradeCoin.trade_type = 1 THEN
+      trTradeCoin.customer_id
+    WHEN trTradeCoin.trade_type = 2 THEN
+      trTradeCoin.customer_buy_id
+    END "customerId",
+    CASE
+    WHEN trTradeCoin.trade_type = 1 THEN
+      customer.customer_phone
+    WHEN trTradeCoin.trade_type = 2 THEN
+      customerBuy.customer_phone
+    END "customerPhone",
+    CASE
+    WHEN trTradeCoin.trade_type = 1 THEN
+      customer.customer_name
+    WHEN trTradeCoin.trade_type = 2 THEN
+      customerBuy.customer_name
+    END "customerName"
+  FROM
+    tr_trade_coin trTradeCoin
+  LEFT OUTER JOIN cu_customer_info customer ON customer.customer_id = trTradeCoin.customer_id
+  LEFT OUTER JOIN cu_customer_info customerBuy ON customerBuy.customer_id = trTradeCoin.customer_buy_id
+  ]]>
+  <include refid="condition" />
+  <choose>
+   <when test="@org.apache.commons.lang.StringUtils@isNotEmpty(orderBy)"> ORDER BY ${orderBy}
+   </when>
+   <otherwise>
+    <!-- //TODO:ADD DEFAULT ORDER COLUMN OR DONOTHING! -->
+   </otherwise>
+  </choose>
+ </select>
+ 
+ <select id="countTradeResponse" parameterType="map" resultType="long">
+  <![CDATA[ 
+    SELECT
+      COUNT(1)
+    FROM
+      tr_trade_coin trTradeCoin
+    LEFT OUTER JOIN cu_customer_info customer ON customer.customer_id = trTradeCoin.customer_id
+    LEFT OUTER JOIN cu_customer_info customerBuy ON customerBuy.customer_id = trTradeCoin.customer_buy_id
+  ]]>
+  <include refid="condition" />
+ </select>
+ 
+ <select id="queryTradeIngResponse" parameterType="map" resultType="com.basics.tr.controller.response.TradeResponse">
+  <![CDATA[
+    SELECT
+      trTradeCoin.TRADE_ID "id",
+      trTradeCoin.COUNTRY_ID "countryId",
+      trTradeCoin.TRADE_SERIAL "tradeSerial",
+      trTradeCoin.CUSTOMER_ID "customerId",
+      trTradeCoin.TRADE_TYPE "tradeType",
+      trTradeCoin.TRADE_PRICE "tradePrice",
+      trTradeCoin.MONEY_NUM "moneyNum",
+      trTradeCoin.TRADE_STATUS "tradeStatus",
+      trTradeCoin.APPLY_STATUS "applyStatus",
+      trTradeCoin.TRADE_MATCH_TIME "tradeMatchTime",
+      mallCustomer.customer_name mallCustomerName,
+      mallCustomer.customer_phone mallCustomerPhone,
+      mallCustomer.REAL_NAME mallRealName,
+      mallCustomer.bank_card mallBankCard,
+      mallCustomer.bank_name "mallBankName",
+      mallCustomer.customer_alipay mallCustomerAlipay,
+      mallCustomer.customer_head mallCustomerHead,
+      buyCustomer.customer_name buyCustomerName,
+      buyCustomer.customer_phone buyCustomerPhone,
+      buyCustomer.REAL_NAME buyRealName,
+      buyCustomer.customer_head buyCustomerHead,
+      buyCustomer.bank_card buyBankCard,
+      buyCustomer.bank_name "buyBankName",
+      buyCustomer.customer_alipay buyCustomerAlipay
+    FROM tr_trade_coin trTradeCoin
+    LEFT OUTER JOIN cu_customer_info mallCustomer ON mallCustomer.customer_id = trTradeCoin.customer_id
+    LEFT OUTER JOIN cu_customer_info buyCustomer ON trTradeCoin.customer_buy_id = buyCustomer.customer_id
+  ]]>
+  <include refid="condition" />
+  <choose>
+   <when test="@org.apache.commons.lang.StringUtils@isNotEmpty(orderBy)"> ORDER BY ${orderBy}
+   </when>
+   <otherwise>
+    <!-- //TODO:ADD DEFAULT ORDER COLUMN OR DONOTHING! -->
+   </otherwise>
+  </choose>
+ </select>
+ 
+ 
+ 
+  <select id="queryTradeCoinTables" parameterType="map" resultType="com.basics.tr.entity.TrTradeCoin">
+ 	SELECT
+	tempDateTable.currentDate "tradeFinishTime",
+	ifnull(tradeTime.moneyNum, 0) AS "moneyNum"
+	FROM
+		(
+			SELECT
+				curdate() AS "currentDate"
+			UNION ALL SELECT date_sub(curdate(), INTERVAL 1 DAY) AS need_date
+			UNION ALL SELECT date_sub(curdate(), INTERVAL 2 DAY) AS need_date
+			UNION ALL SELECT date_sub(curdate(), INTERVAL 3 DAY) AS need_date
+			UNION ALL SELECT date_sub(curdate(), INTERVAL 4 DAY) AS need_date
+			UNION ALL	SELECT date_sub(curdate(), INTERVAL 5 DAY) AS need_date
+			UNION ALL SELECT date_sub(curdate(), INTERVAL 6 DAY) AS need_date
+		) tempDateTable
+	LEFT JOIN (
+		SELECT
+			DATE_FORMAT(trade_finish_time, '%Y%m%d') AS "tradeFinishTime",
+			sum(MONEY_NUM) "moneyNum"
+		FROM
+			tr_trade_coin
+		WHERE APPLY_STATUS = 2 AND TRADE_STATUS = 6
+		GROUP BY
+			tradeFinishTime
+	) tradeTime ON tempDateTable.currentDate = tradeTime.tradeFinishTime
+	ORDER BY tempDateTable.currentDate ASC
+ </select>
+ 
+</mapper>

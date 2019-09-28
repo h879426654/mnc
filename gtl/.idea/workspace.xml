@@ -74,7 +74,7 @@
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/main/resources/com/basics/gty/mapper" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/target/gtl.war" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
@@ -84,8 +84,8 @@
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="project.structure.last.edited" value="Artifacts" />
     <property name="project.structure.proportion" value="0.15" />
-    <property name="project.structure.side.proportion" value="0.2" />
-    <property name="settings.editor.selected.configurable" value="preferences.fileTypes" />
+    <property name="project.structure.side.proportion" value="0.20186698" />
+    <property name="settings.editor.selected.configurable" value="MavenSettings" />
   </component>
   <component name="RecentsManager">
     <key name="CopyClassDialog.RECENTS_KEY">
@@ -168,14 +168,14 @@
       </method>
     </configuration>
     <configuration name="Tomcat 9.0.24" type="#com.intellij.j2ee.web.tomcat.TomcatRunConfigurationFactory" factoryName="Local" APPLICATION_SERVER_NAME="Tomcat 9.0.24" ALTERNATIVE_JRE_ENABLED="false" nameIsGenerated="true">
-      <option name="UPDATE_ON_FRAME_DEACTIVATION" value="true" />
+      <option name="OPEN_IN_BROWSER_URL" value="http://localhost:8080/gtl_war/" />
       <option name="UPDATING_POLICY" value="restart-server" />
       <deployment>
-        <artifact name="gtl:war exploded">
+        <file path="$PROJECT_DIR$/target/gtl.war">
           <settings>
-            <option name="CONTEXT_PATH" value="/gtl" />
+            <option name="CONTEXT_PATH" value="/gtl_war" />
           </settings>
-        </artifact>
+        </file>
       </deployment>
       <server-settings>
         <option name="BASE_DIRECTORY_NAME" value="Unnamed_gtl_6" />
@@ -235,7 +235,7 @@
       </ConfigurationWrapper>
       <method v="2">
         <option name="Make" enabled="true" />
-        <option name="BuildArtifacts" enabled="true" />
+        <option name="BuildArtifacts" enabled="false" />
       </method>
     </configuration>
     <list>
@@ -278,7 +278,10 @@
       <workItem from="1569540375318" duration="4149000" />
       <workItem from="1569544674936" duration="6325000" />
       <workItem from="1569551082759" duration="145000" />
-      <workItem from="1569551240470" duration="43987000" />
+      <workItem from="1569551240470" duration="44888000" />
+      <workItem from="1569633843599" duration="1595000" />
+      <workItem from="1569635576836" duration="17667000" />
+      <workItem from="1569656025889" duration="11935000" />
     </task>
     <servers />
   </component>
@@ -468,22 +471,17 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/basics/broswer/controller/api/BroswerController.java</url>
-          <line>65</line>
-          <option name="timeStamp" value="248" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/com/basics/broswer/controller/api/BroswerController.java</url>
-          <line>102</line>
+          <line>106</line>
           <option name="timeStamp" value="252" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/basics/broswer/controller/api/BroswerController.java</url>
-          <line>99</line>
+          <line>103</line>
           <option name="timeStamp" value="258" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/basics/broswer/controller/api/BroswerController.java</url>
-          <line>138</line>
+          <line>156</line>
           <option name="timeStamp" value="260" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
@@ -537,44 +535,74 @@
           <option name="timeStamp" value="287" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/com/basics/job/EveryMinuteDebugJob.java</url>
-          <line>34</line>
-          <option name="timeStamp" value="290" />
+          <url>file://$PROJECT_DIR$/src/main/java/com/basics/broswer/controller/api/BroswerController.java</url>
+          <line>78</line>
+          <option name="timeStamp" value="304" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/com/basics/job/EveryMinuteDebugJob.java</url>
-          <line>48</line>
-          <option name="timeStamp" value="293" />
+          <url>file://$PROJECT_DIR$/src/main/java/com/basics/broswer/controller/api/BroswerController.java</url>
+          <line>73</line>
+          <option name="timeStamp" value="307" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/com/basics/job/EveryMinuteDebugJob.java</url>
-          <line>41</line>
-          <option name="timeStamp" value="294" />
+          <url>file://$PROJECT_DIR$/src/main/java/com/basics/gty/controller/api/GtyWalletApiController.java</url>
+          <line>67</line>
+          <option name="timeStamp" value="322" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/com/basics/job/EveryMinuteDebugJob.java</url>
-          <line>99</line>
-          <option name="timeStamp" value="296" />
+          <url>file://$PROJECT_DIR$/src/main/java/com/basics/gty/controller/api/GtyWalletApiController.java</url>
+          <line>66</line>
+          <option name="timeStamp" value="323" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/com/basics/job/EveryMinuteDebugJob.java</url>
-          <line>63</line>
-          <option name="timeStamp" value="297" />
+          <url>file://$PROJECT_DIR$/src/main/java/com/basics/gty/controller/api/GtyWalletApiController.java</url>
+          <line>70</line>
+          <option name="timeStamp" value="324" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/com/basics/job/EveryMinuteDebugJob.java</url>
-          <line>50</line>
-          <option name="timeStamp" value="298" />
+          <url>file://$PROJECT_DIR$/src/main/java/com/basics/gty/controller/api/GtyWalletApiController.java</url>
+          <line>74</line>
+          <option name="timeStamp" value="325" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/com/basics/job/EveryMinuteDebugJob.java</url>
-          <line>49</line>
-          <option name="timeStamp" value="299" />
+          <url>file://$PROJECT_DIR$/src/main/java/com/basics/gty/controller/api/GtyWalletApiController.java</url>
+          <line>80</line>
+          <option name="timeStamp" value="326" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/com/basics/job/EveryMinuteDebugJob.java</url>
-          <line>58</line>
-          <option name="timeStamp" value="300" />
+          <url>file://$PROJECT_DIR$/src/main/java/com/basics/gty/controller/api/GtyWalletApiController.java</url>
+          <line>90</line>
+          <option name="timeStamp" value="327" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/basics/gty/controller/api/GtyWalletApiController.java</url>
+          <line>93</line>
+          <option name="timeStamp" value="328" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/basics/gty/controller/api/GtyWalletApiController.java</url>
+          <line>307</line>
+          <option name="timeStamp" value="329" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/basics/gty/controller/api/GtyWalletApiController.java</url>
+          <line>313</line>
+          <option name="timeStamp" value="330" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/basics/gty/controller/api/GtyWalletApiController.java</url>
+          <line>310</line>
+          <option name="timeStamp" value="331" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/basics/gty/controller/api/GtyWalletApiController.java</url>
+          <line>321</line>
+          <option name="timeStamp" value="332" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/basics/gty/controller/api/GtyWalletApiController.java</url>
+          <line>318</line>
+          <option name="timeStamp" value="333" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

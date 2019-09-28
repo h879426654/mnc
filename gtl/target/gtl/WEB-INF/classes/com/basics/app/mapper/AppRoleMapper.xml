@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC 
+    "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.basics.app.entity.AppRole">
+ <cache type="com.basics.support.mybatis.CacheAdapter" />
+ <delete id="delete" parameterType="com.basics.app.entity.AppRole">
+<![CDATA[ DELETE FROM app_role WHERE  ROLE_ID = #{id}   ]]>
+ </delete>
+ <insert id="insert" parameterType="com.basics.app.entity.AppRole">
+<![CDATA[  INSERT INTO app_role (]]>
+  <trim prefix="" suffixOverrides=",">
+   <if test="id!=null">ROLE_ID,</if>
+   <if test="code!=null">ROLE_CODE,</if>
+   <if test="name!=null">ROLE_NAME,</if>
+   <if test="comment!=null">ROLE_COMMENT,</if>
+   <if test="state!=null">ROLE_STATE,</if>
+  </trim>
+<![CDATA[)VALUES(]]>
+  <trim prefix="" suffixOverrides=",">
+   <if test="id!=null">#{id},</if>
+   <if test="code!=null">#{code},</if>
+   <if test="name!=null">#{name},</if>
+   <if test="comment!=null">#{comment},</if>
+   <if test="state!=null">#{state},</if>
+  </trim>
+<![CDATA[)]]>
+ </insert>
+ <update id="update" parameterType="com.basics.app.entity.AppRole">  
+<![CDATA[ UPDATE app_role ]]>
+  <trim prefix="SET" suffixOverrides=",">
+   <if test="code!=null">ROLE_CODE = #{code},</if>
+   <if test="name!=null">ROLE_NAME = #{name},</if>
+   <if test="comment!=null">ROLE_COMMENT = #{comment},</if>
+   <if test="state!=null">ROLE_STATE = #{state},</if>
+  </trim>
+<![CDATA[ WHERE  ROLE_ID = #{id}   ]]>
+ </update>
+ <sql id="condition">
+  <trim prefix="WHERE" prefixOverrides="AND |OR">
+   <if test="id!=null"> AND appRole.ROLE_ID = #{id}
+   </if>
+   <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(code)"> AND appRole.ROLE_CODE = #{code}
+   </if>
+   <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(name)"> AND appRole.ROLE_NAME = #{name}
+   </if>
+   <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(comment)"> AND appRole.ROLE_COMMENT = #{comment}
+   </if>
+   <if test="state!=null"> AND appRole.ROLE_STATE = #{state}
+   </if>
+   <if test="userId!=null"> AND ROLE_ID IN (SELECT ROLE_ID FROM app_user_role WHERE USER_ID=#{userId})
+   </if>
+   <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(q)">
+<![CDATA[
+  (
+  appRole.ROLE_CODE LIKE concat('%',#{q},'%')
+  or 
+  appRole.ROLE_NAME LIKE concat('%',#{q},'%')
+  )
+]]>
+   </if>
+  </trim>
+ </sql>
+ <select id="query" parameterType="map" resultType="com.basics.app.entity.AppRole">
+<![CDATA[
+SELECT
+appRole.ROLE_ID "id" ,
+appRole.ROLE_CODE "code" ,
+appRole.ROLE_NAME "name" ,
+appRole.ROLE_COMMENT "comment" ,
+appRole.ROLE_STATE "state",stateDict.OPTION_NAME "stateName" 
+FROM app_role appRole
+LEFT JOIN app_option  stateDict on stateDict.OPTION_CODE=appRole.ROLE_STATE and stateDict.OPTION_PARENT_ID='yes_no'
+    ]]>
+  <include refid="condition" />
+  <choose>
+   <when test="@org.apache.commons.lang.StringUtils@isNotEmpty(orderBy)"> ORDER BY ${orderBy}
+   </when>
+   <otherwise>
+    <!-- //TODO:ADD DEFAULT ORDER COLUMN OR DONOTHING! -->
+   </otherwise>
+  </choose>
+ </select>
+ <select id="count" parameterType="map" resultType="long">
+ <![CDATA[ SELECT COUNT(1) FROM app_role appRole]]>
+  <include refid="condition" />
+ </select>
+ <sql id="conditionDeleteAll">
+  <trim prefix="WHERE" prefixOverrides="AND |OR">
+   <if test="id!=null"> AND ROLE_ID = #{id}
+   </if>
+   <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(code)"> AND ROLE_CODE = #{code}
+   </if>
+   <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(name)"> AND ROLE_NAME = #{name}
+   </if>
+   <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(comment)"> AND ROLE_COMMENT = #{comment}
+   </if>
+   <if test="state!=null"> AND ROLE_STATE = #{state}
+   </if>
+  </trim>
+ </sql>
+ <delete id="deleteAll" parameterType="map">
+<![CDATA[DELETE FROM app_role]]>
+  <include refid="conditionDeleteAll" />
+ </delete>
+ 
+ <select id="queryUserRoleByMap" parameterType="map" resultType="com.basics.app.entity.AppRole">
+  SELECT
+  ar.ROLE_NAME name,
+  ar.ROLE_CODE code,
+  ar.ROLE_COMMENT comment,
+  ar.ROLE_ID id
+ FROM
+  app_user_role aur
+ INNER JOIN app_role ar ON aur.ROLE_ID = ar.ROLE_ID
+ AND ar.ROLE_STATE = 0
+ WHERE
+  aur.USER_ID = #{userId}
+ </select>
+</mapper>

@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC
+ "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.basics.sys.entity.SysActivemqRequest">
+ <cache type="com.basics.support.mybatis.CacheAdapter"/>
+ <delete id="delete" parameterType="com.basics.sys.entity.SysActivemqRequest">
+  <![CDATA[ DELETE FROM sys_activemq_request WHERE  ACTIVEMQ_ID = #{id} ]]>
+ </delete>
+ <insert id="insert" parameterType="com.basics.sys.entity.SysActivemqRequest">
+  <![CDATA[  INSERT INTO sys_activemq_request (]]>
+  <trim prefix="" suffixOverrides=",">
+   <if test="id!=null">ACTIVEMQ_ID,</if>
+   <if test="customerId!=null">CUSTOMER_ID,</if>
+   <if test="activemqType!=null">ACTIVEMQ_TYPE,</if>
+   <if test="activemqContext!=null">ACTIVEMQ_CONTEXT,</if>
+   <if test="activemqRemark!=null">ACTIVEMQ_REMARK,</if>
+   <if test="createDate!=null">CREATE_DATE,</if>
+  </trim>
+  <![CDATA[)VALUES(]]>
+  <trim prefix="" suffixOverrides=",">
+   <if test="id!=null">#{id},</if>
+   <if test="customerId!=null">#{customerId},</if>
+   <if test="activemqType!=null">#{activemqType},</if>
+   <if test="activemqContext!=null">#{activemqContext},</if>
+   <if test="activemqRemark!=null">#{activemqRemark},</if>
+   <if test="createDate!=null">#{createDate},</if>
+  </trim>
+  <![CDATA[)]]>
+ </insert>
+ <update id="update" parameterType="com.basics.sys.entity.SysActivemqRequest">
+  <![CDATA[ UPDATE sys_activemq_request ]]>
+  <trim prefix="SET" suffixOverrides=",">
+  <if test="id!=null">ACTIVEMQ_ID = #{id},</if>
+  <if test="customerId!=null">CUSTOMER_ID = #{customerId},</if>
+  <if test="activemqType!=null">ACTIVEMQ_TYPE = #{activemqType},</if>
+  <if test="activemqContext!=null">ACTIVEMQ_CONTEXT = #{activemqContext},</if>
+  <if test="activemqRemark!=null">ACTIVEMQ_REMARK = #{activemqRemark},</if>
+  <if test="createDate!=null">CREATE_DATE = #{createDate},</if>
+  </trim>
+  <![CDATA[ WHERE  ACTIVEMQ_ID = #{id}   ]]>
+ </update>
+ <sql id="condition">
+  <trim prefix="WHERE" prefixOverrides="AND |OR">
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(id)">
+   <![CDATA[ AND sysActivemqRequest.ACTIVEMQ_ID = #{id}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(customerId)">
+   <![CDATA[ AND sysActivemqRequest.CUSTOMER_ID = #{customerId}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(activemqType)">
+   <![CDATA[ AND sysActivemqRequest.ACTIVEMQ_TYPE = #{activemqType}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(activemqContext)">
+   <![CDATA[ AND sysActivemqRequest.ACTIVEMQ_CONTEXT = #{activemqContext}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(activemqRemark)">
+   <![CDATA[ AND sysActivemqRequest.ACTIVEMQ_REMARK = #{activemqRemark}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(createDate)">
+   <![CDATA[ AND sysActivemqRequest.CREATE_DATE = #{createDate}    ]]>
+  </if>
+  </trim>
+ </sql>
+ <select id="query" parameterType="map" resultType="com.basics.sys.entity.SysActivemqRequest">
+  <![CDATA[
+  SELECT
+  sysActivemqRequest.ACTIVEMQ_ID "id",
+  sysActivemqRequest.CUSTOMER_ID "customerId",
+  sysActivemqRequest.ACTIVEMQ_TYPE "activemqType",
+  sysActivemqRequest.ACTIVEMQ_CONTEXT "activemqContext",
+  sysActivemqRequest.ACTIVEMQ_REMARK "activemqRemark",
+  sysActivemqRequest.CREATE_DATE "createDate"
+  FROM sys_activemq_request sysActivemqRequest
+  ]]>
+  <include refid="condition" />
+  <choose>
+   <when test="@org.apache.commons.lang.StringUtils@isNotEmpty(orderBy)"> ORDER BY ${orderBy}
+   </when>
+   <otherwise>
+    <!-- //TODO:ADD DEFAULT ORDER COLUMN OR DONOTHING! -->
+   </otherwise>
+  </choose>
+ </select>
+ <select id="count" parameterType="map" resultType="long">
+  <![CDATA[ SELECT COUNT(1) FROM sys_activemq_request sysActivemqRequest]]>
+  <include refid="condition" />
+ </select>
+ <sql id="conditionDeleteAll">
+  <trim prefix="WHERE" prefixOverrides="AND |OR">
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(id)">
+   <![CDATA[ AND ACTIVEMQ_ID = #{id} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(customerId)">
+   <![CDATA[ AND CUSTOMER_ID = #{customerId} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(activemqType)">
+   <![CDATA[ AND ACTIVEMQ_TYPE = #{activemqType} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(activemqContext)">
+   <![CDATA[ AND ACTIVEMQ_CONTEXT = #{activemqContext} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(activemqRemark)">
+   <![CDATA[ AND ACTIVEMQ_REMARK = #{activemqRemark} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(createDate)">
+   <![CDATA[ AND CREATE_DATE = #{createDate} ]]>
+  </if>
+  </trim>
+ </sql>
+ <delete id="deleteAll" parameterType="map">
+  <![CDATA[DELETE FROM sys_activemq_request]]>
+  <include refid="conditionDeleteAll" />
+ </delete>
+</mapper>

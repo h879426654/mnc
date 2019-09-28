@@ -1,3 +1,4 @@
+com\basics\cu\dao\CuDiscussDao.class
 com\basics\cu\entity\CuCustomerMessageBase.class
 com\basics\gty\dao\MybatisDao\GtyWalletHistoryMybatisDao.class
 com\basics\cu\service\impl\CuCustomerAccountMybatisService.class
@@ -15,6 +16,7 @@ com\basics\support\auth\AuthCheckUtil.class
 com\basics\tr\controller\backend\TrTradeMoneyBackendController.class
 com\basics\support\ueditor\UEditorGetConfigResponse.class
 com\basics\cu\controller\backend\CuDrawRewardBackendController.class
+com\basics\cu\controller\response\CuDiscussResponse.class
 com\basics\common\TokenResponse.class
 com\basics\app\service\AppTokenService.class
 com\basics\cu\controller\backend\CuAccountConvertBackendController.class
@@ -476,6 +478,7 @@ com\basics\app\entity\AppPermission.class
 com\basics\sys\service\SysActivemqRequestService.class
 com\basics\support\job\GenericJobSupport.class
 com\basics\app\dao\FormApproveSupport.class
+com\basics\cu\entity\CuDiscuss.class
 com\basics\support\PlaceholderUtils.class
 com\basics\sys\service\impl\SysTurntableMybatisService.class
 com\basics\app\entity\Dictionary.class
@@ -501,6 +504,7 @@ com\basics\mall\dao\MallAdvertHotDao.class
 com\basics\app\service\AppRoleService.class
 com\basics\cu\entity\CuCustomerInfo.class
 com\basics\cu\service\CuCustomerCountService.class
+com\basics\support\auth\HttpRequestUtils2.class
 com\basics\support\ResultSupport.class
 com\basics\mall\dao\MybatisDao\MallProductKindDetailMybatisDao.class
 com\basics\sys\controller\backend\SysActivemqRequestBackendController.class
@@ -562,7 +566,6 @@ com\basics\cu\dao\MybatisDao\CuCustomerCollectMybatisDao.class
 com\basics\gty\service\GtyWalletHistory2Service.class
 com\basics\app\entity\AppLogBase.class
 com\basics\support\Container.class
-com\basics\cu\entity\CuRetail1Base.class
 com\basics\support\GsonUtil.class
 com\basics\support\ServiceSupport.class
 com\basics\sys\service\impl\SysActivemqResponseMybatisService.class
@@ -616,6 +619,7 @@ com\basics\app\dao\AppUserRoleDao.class
 com\basics\cu\service\CuCustomerInfoService.class
 com\basics\app\service\AppOptionService.class
 com\basics\tr\controller\request\PayMyTradeRequest.class
+com\basics\cu\entity\CuDiscussBase.class
 com\basics\cu\controller\request\CollectRequest.class
 com\basics\cu\entity\CuCustomerProfitAdmin.class
 com\basics\mall\dao\MallProductCommentDao.class
@@ -850,6 +854,7 @@ com\basics\cu\dao\CuCustomerLoginDao.class
 com\basics\support\fileupload\BootstrapFileInputInitialResponse.class
 com\basics\sys\service\SysCountryService.class
 com\basics\mall\entity\MallShop.class
+com\basics\cu\dao\MybatisDao\CuDiscussMybatisDao.class
 com\basics\sys\entity\SysActivemqResponse.class
 com\basics\mall\vo\CombinationVo.class
 com\basics\mall\service\MallProductClassifyService.class

@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC
+ "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.basics.mall.entity.MallIndexType">
+ <cache type="com.basics.support.mybatis.CacheAdapter"/>
+ <delete id="delete" parameterType="com.basics.mall.entity.MallIndexType">
+  <![CDATA[ DELETE FROM mall_index_type WHERE  TYPE_ID = #{id} ]]>
+ </delete>
+ <insert id="insert" parameterType="com.basics.mall.entity.MallIndexType">
+  <![CDATA[  INSERT INTO mall_index_type (]]>
+  <trim prefix="" suffixOverrides=",">
+   <if test="id!=null">TYPE_ID,</if>
+   <if test="typeTitle!=null">TYPE_TITLE,</if>
+   <if test="typeImg!=null">TYPE_IMG,</if>
+   <if test="typeUrl!=null">TYPE_URL,</if>
+   <if test="typeSort!=null">TYPE_SORT,</if>
+   <if test="versionNum!=null">VERSION_NUM,</if>
+   <if test="flagDel!=null">FLAG_DEL,</if>
+   <if test="createTime!=null">CREATE_TIME,</if>
+   <if test="createUser!=null">CREATE_USER,</if>
+   <if test="modifyUser!=null">MODIFY_USER,</if>
+   <if test="modifyDate!=null">MODIFY_DATE,</if>
+  </trim>
+  <![CDATA[)VALUES(]]>
+  <trim prefix="" suffixOverrides=",">
+   <if test="id!=null">#{id},</if>
+   <if test="typeTitle!=null">#{typeTitle},</if>
+   <if test="typeImg!=null">#{typeImg},</if>
+   <if test="typeUrl!=null">#{typeUrl},</if>
+   <if test="typeSort!=null">#{typeSort},</if>
+   <if test="versionNum!=null">#{versionNum},</if>
+   <if test="flagDel!=null">#{flagDel},</if>
+   <if test="createTime!=null">#{createTime},</if>
+   <if test="createUser!=null">#{createUser},</if>
+   <if test="modifyUser!=null">#{modifyUser},</if>
+   <if test="modifyDate!=null">#{modifyDate},</if>
+  </trim>
+  <![CDATA[)]]>
+ </insert>
+ <update id="update" parameterType="com.basics.mall.entity.MallIndexType">
+  <![CDATA[ UPDATE mall_index_type ]]>
+  <trim prefix="SET" suffixOverrides=",">
+  <if test="id!=null">TYPE_ID = #{id},</if>
+  <if test="typeTitle!=null">TYPE_TITLE = #{typeTitle},</if>
+  <if test="typeImg!=null">TYPE_IMG = #{typeImg},</if>
+  <if test="typeUrl!=null">TYPE_URL = #{typeUrl},</if>
+  <if test="typeSort!=null">TYPE_SORT = #{typeSort},</if>
+  <if test="versionNum!=null">VERSION_NUM = #{versionNum},</if>
+  <if test="flagDel!=null">FLAG_DEL = #{flagDel},</if>
+  <if test="createTime!=null">CREATE_TIME = #{createTime},</if>
+  <if test="createUser!=null">CREATE_USER = #{createUser},</if>
+  <if test="modifyUser!=null">MODIFY_USER = #{modifyUser},</if>
+  <if test="modifyDate!=null">MODIFY_DATE = #{modifyDate},</if>
+  </trim>
+  <![CDATA[ WHERE  TYPE_ID = #{id}   ]]>
+ </update>
+ <sql id="condition">
+  <trim prefix="WHERE" prefixOverrides="AND |OR">
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(id)">
+   <![CDATA[ AND mallIndexType.TYPE_ID = #{id}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(typeTitle)">
+   <![CDATA[ AND mallIndexType.TYPE_TITLE = #{typeTitle}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(typeImg)">
+   <![CDATA[ AND mallIndexType.TYPE_IMG = #{typeImg}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(typeUrl)">
+   <![CDATA[ AND mallIndexType.TYPE_URL = #{typeUrl}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(typeSort)">
+   <![CDATA[ AND mallIndexType.TYPE_SORT = #{typeSort}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(versionNum)">
+   <![CDATA[ AND mallIndexType.VERSION_NUM = #{versionNum}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(flagDel)">
+   <![CDATA[ AND mallIndexType.FLAG_DEL = #{flagDel}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(createTime)">
+   <![CDATA[ AND mallIndexType.CREATE_TIME = #{createTime}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(createUser)">
+   <![CDATA[ AND mallIndexType.CREATE_USER = #{createUser}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(modifyUser)">
+   <![CDATA[ AND mallIndexType.MODIFY_USER = #{modifyUser}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(modifyDate)">
+   <![CDATA[ AND mallIndexType.MODIFY_DATE = #{modifyDate}    ]]>
+  </if>
+  </trim>
+ </sql>
+ <select id="query" parameterType="map" resultType="com.basics.mall.entity.MallIndexType">
+  <![CDATA[
+  SELECT
+  mallIndexType.TYPE_ID "id",
+  mallIndexType.TYPE_TITLE "typeTitle",
+  mallIndexType.TYPE_IMG "typeImg",
+  mallIndexType.TYPE_URL "typeUrl",
+  mallIndexType.TYPE_SORT "typeSort",
+  mallIndexType.VERSION_NUM "versionNum",
+  mallIndexType.FLAG_DEL "flagDel",
+  mallIndexType.CREATE_TIME "createTime",
+  mallIndexType.CREATE_USER "createUser",
+  mallIndexType.MODIFY_USER "modifyUser",
+  mallIndexType.MODIFY_DATE "modifyDate"
+  FROM mall_index_type mallIndexType
+  ]]>
+  <include refid="condition" />
+  <choose>
+   <when test="@org.apache.commons.lang.StringUtils@isNotEmpty(orderBy)"> ORDER BY ${orderBy}
+   </when>
+   <otherwise>
+    <!-- //TODO:ADD DEFAULT ORDER COLUMN OR DONOTHING! -->
+   </otherwise>
+  </choose>
+ </select>
+ <select id="count" parameterType="map" resultType="long">
+  <![CDATA[ SELECT COUNT(1) FROM mall_index_type mallIndexType]]>
+  <include refid="condition" />
+ </select>
+ <sql id="conditionDeleteAll">
+  <trim prefix="WHERE" prefixOverrides="AND |OR">
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(id)">
+   <![CDATA[ AND TYPE_ID = #{id} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(typeTitle)">
+   <![CDATA[ AND TYPE_TITLE = #{typeTitle} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(typeImg)">
+   <![CDATA[ AND TYPE_IMG = #{typeImg} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(typeUrl)">
+   <![CDATA[ AND TYPE_URL = #{typeUrl} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(typeSort)">
+   <![CDATA[ AND TYPE_SORT = #{typeSort} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(versionNum)">
+   <![CDATA[ AND VERSION_NUM = #{versionNum} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(flagDel)">
+   <![CDATA[ AND FLAG_DEL = #{flagDel} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(createTime)">
+   <![CDATA[ AND CREATE_TIME = #{createTime} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(createUser)">
+   <![CDATA[ AND CREATE_USER = #{createUser} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(modifyUser)">
+   <![CDATA[ AND MODIFY_USER = #{modifyUser} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(modifyDate)">
+   <![CDATA[ AND MODIFY_DATE = #{modifyDate} ]]>
+  </if>
+  </trim>
+ </sql>
+ <delete id="deleteAll" parameterType="map">
+  <![CDATA[DELETE FROM mall_index_type]]>
+  <include refid="conditionDeleteAll" />
+ </delete>
+</mapper>

@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC
+ "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.basics.sys.entity.SysNotice">
+ <cache type="com.basics.support.mybatis.CacheAdapter"/>
+ <delete id="delete" parameterType="com.basics.sys.entity.SysNotice">
+  <![CDATA[ DELETE FROM sys_notice WHERE  NOTICE_ID = #{id} ]]>
+ </delete>
+ <insert id="insert" parameterType="com.basics.sys.entity.SysNotice">
+  <![CDATA[  INSERT INTO sys_notice (]]>
+  <trim prefix="" suffixOverrides=",">
+   <if test="id!=null">NOTICE_ID,</if>
+   <if test="bulletinType!=null">BULLETIN_TYPE,</if>
+   <if test="noticeTitle!=null">NOTICE_TITLE,</if>
+   <if test="noticeContext!=null">NOTICE_CONTEXT,</if>
+   <if test="noticeSort!=null">NOTICE_SORT,</if>
+   <if test="versionNum!=null">VERSION_NUM,</if>
+   <if test="flagDel!=null">FLAG_DEL,</if>
+   <if test="createTime!=null">CREATE_TIME,</if>
+   <if test="createUser!=null">CREATE_USER,</if>
+   <if test="modifyUser!=null">MODIFY_USER,</if>
+   <if test="modifyTime!=null">MODIFY_TIME,</if>
+  </trim>
+  <![CDATA[)VALUES(]]>
+  <trim prefix="" suffixOverrides=",">
+   <if test="id!=null">#{id},</if>
+   <if test="bulletinType!=null">#{bulletinType},</if>
+   <if test="noticeTitle!=null">#{noticeTitle},</if>
+   <if test="noticeContext!=null">#{noticeContext},</if>
+   <if test="noticeSort!=null">#{noticeSort},</if>
+   <if test="versionNum!=null">#{versionNum},</if>
+   <if test="flagDel!=null">#{flagDel},</if>
+   <if test="createTime!=null">#{createTime},</if>
+   <if test="createUser!=null">#{createUser},</if>
+   <if test="modifyUser!=null">#{modifyUser},</if>
+   <if test="modifyTime!=null">#{modifyTime},</if>
+  </trim>
+  <![CDATA[)]]>
+ </insert>
+ <update id="update" parameterType="com.basics.sys.entity.SysNotice">
+  <![CDATA[ UPDATE sys_notice ]]>
+  <trim prefix="SET" suffixOverrides=",">
+  <if test="id!=null">NOTICE_ID = #{id},</if>
+  <if test="bulletinType!=null">BULLETIN_TYPE = #{bulletinType},</if>
+  <if test="noticeTitle!=null">NOTICE_TITLE = #{noticeTitle},</if>
+  <if test="noticeContext!=null">NOTICE_CONTEXT = #{noticeContext},</if>
+  <if test="noticeSort!=null">NOTICE_SORT = #{noticeSort},</if>
+  <if test="versionNum!=null">VERSION_NUM = #{versionNum},</if>
+  <if test="flagDel!=null">FLAG_DEL = #{flagDel},</if>
+  <if test="createTime!=null">CREATE_TIME = #{createTime},</if>
+  <if test="createUser!=null">CREATE_USER = #{createUser},</if>
+  <if test="modifyUser!=null">MODIFY_USER = #{modifyUser},</if>
+  <if test="modifyTime!=null">MODIFY_TIME = #{modifyTime},</if>
+  </trim>
+  <![CDATA[ WHERE  NOTICE_ID = #{id}   ]]>
+ </update>
+ <sql id="condition">
+  <trim prefix="WHERE" prefixOverrides="AND |OR">
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(id)">
+   <![CDATA[ AND sysNotice.NOTICE_ID = #{id}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(bulletinType)">
+   <![CDATA[ AND sysNotice.BULLETIN_TYPE = #{bulletinType}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(noticeTitle)">
+   <![CDATA[ AND sysNotice.NOTICE_TITLE = #{noticeTitle}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(noticeContext)">
+   <![CDATA[ AND sysNotice.NOTICE_CONTEXT = #{noticeContext}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(noticeSort)">
+   <![CDATA[ AND sysNotice.NOTICE_SORT = #{noticeSort}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(versionNum)">
+   <![CDATA[ AND sysNotice.VERSION_NUM = #{versionNum}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(flagDel)">
+   <![CDATA[ AND sysNotice.FLAG_DEL = #{flagDel}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(createTime)">
+   <![CDATA[ AND sysNotice.CREATE_TIME = #{createTime}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(createUser)">
+   <![CDATA[ AND sysNotice.CREATE_USER = #{createUser}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(modifyUser)">
+   <![CDATA[ AND sysNotice.MODIFY_USER = #{modifyUser}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(modifyTime)">
+   <![CDATA[ AND sysNotice.MODIFY_TIME = #{modifyTime}    ]]>
+  </if>
+  </trim>
+ </sql>
+ <select id="query" parameterType="map" resultType="com.basics.sys.entity.SysNotice">
+  <![CDATA[
+  SELECT
+  sysNotice.NOTICE_ID "id",
+  sysNotice.BULLETIN_TYPE "bulletinType",
+  sysNotice.NOTICE_TITLE "noticeTitle",
+  sysNotice.NOTICE_CONTEXT "noticeContext",
+  sysNotice.NOTICE_SORT "noticeSort",
+  sysNotice.VERSION_NUM "versionNum",
+  sysNotice.FLAG_DEL "flagDel",
+  sysNotice.CREATE_TIME "createTime",
+  sysNotice.CREATE_USER "createUser",
+  sysNotice.MODIFY_USER "modifyUser",
+  sysNotice.MODIFY_TIME "modifyTime",
+  appOption.OPTION_NAME "bulletinTypeName"
+  FROM sys_notice sysNotice
+  LEFT OUTER JOIN app_option appOption ON appOption.OPTION_PARENT_ID = 'BULLETIN_TYPE' AND appOption.OPTION_CODE = sysNotice.BULLETIN_TYPE
+  ]]>
+  <include refid="condition" />
+  <choose>
+   <when test="@org.apache.commons.lang.StringUtils@isNotEmpty(orderBy)"> ORDER BY ${orderBy}
+   </when>
+   <otherwise>
+    <!-- //TODO:ADD DEFAULT ORDER COLUMN OR DONOTHING! -->
+   </otherwise>
+  </choose>
+ </select>
+ <select id="count" parameterType="map" resultType="long">
+  <![CDATA[ SELECT COUNT(1) FROM sys_notice sysNotice]]>
+  <include refid="condition" />
+ </select>
+ <sql id="conditionDeleteAll">
+  <trim prefix="WHERE" prefixOverrides="AND |OR">
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(id)">
+   <![CDATA[ AND NOTICE_ID = #{id} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(bulletinType)">
+   <![CDATA[ AND BULLETIN_TYPE = #{bulletinType} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(noticeTitle)">
+   <![CDATA[ AND NOTICE_TITLE = #{noticeTitle} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(noticeContext)">
+   <![CDATA[ AND NOTICE_CONTEXT = #{noticeContext} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(noticeSort)">
+   <![CDATA[ AND NOTICE_SORT = #{noticeSort} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(versionNum)">
+   <![CDATA[ AND VERSION_NUM = #{versionNum} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(flagDel)">
+   <![CDATA[ AND FLAG_DEL = #{flagDel} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(createTime)">
+   <![CDATA[ AND CREATE_TIME = #{createTime} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(createUser)">
+   <![CDATA[ AND CREATE_USER = #{createUser} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(modifyUser)">
+   <![CDATA[ AND MODIFY_USER = #{modifyUser} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(modifyTime)">
+   <![CDATA[ AND MODIFY_TIME = #{modifyTime} ]]>
+  </if>
+  </trim>
+ </sql>
+ <delete id="deleteAll" parameterType="map">
+  <![CDATA[DELETE FROM sys_notice]]>
+  <include refid="conditionDeleteAll" />
+ </delete>
+</mapper>

@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC
+ "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.basics.mall.entity.MallProductKind">
+ <cache type="com.basics.support.mybatis.CacheAdapter"/>
+ <delete id="delete" parameterType="com.basics.mall.entity.MallProductKind">
+  <![CDATA[ DELETE FROM mall_product_kind WHERE  PRODUCT_KIND_ID = #{id} ]]>
+ </delete>
+ <insert id="insert" parameterType="com.basics.mall.entity.MallProductKind">
+  <![CDATA[  INSERT INTO mall_product_kind (]]>
+  <trim prefix="" suffixOverrides=",">
+   <if test="id!=null">PRODUCT_KIND_ID,</if>
+   <if test="productKindName!=null">PRODUCT_KIND_NAME,</if>
+   <if test="productKindDescription!=null">PRODUCT_KIND_DESCRIPTION,</if>
+   <if test="productKindMosaicOrder!=null">PRODUCT_KIND_MOSAIC_ORDER,</if>
+  </trim>
+  <![CDATA[)VALUES(]]>
+  <trim prefix="" suffixOverrides=",">
+   <if test="id!=null">#{id},</if>
+   <if test="productKindName!=null">#{productKindName},</if>
+   <if test="productKindDescription!=null">#{productKindDescription},</if>
+   <if test="productKindMosaicOrder!=null">#{productKindMosaicOrder},</if>
+  </trim>
+  <![CDATA[)]]>
+ </insert>
+ <update id="update" parameterType="com.basics.mall.entity.MallProductKind">
+  <![CDATA[ UPDATE mall_product_kind ]]>
+  <trim prefix="SET" suffixOverrides=",">
+  <if test="id!=null">PRODUCT_KIND_ID = #{id},</if>
+  <if test="productKindName!=null">PRODUCT_KIND_NAME = #{productKindName},</if>
+  <if test="productKindDescription!=null">PRODUCT_KIND_DESCRIPTION = #{productKindDescription},</if>
+  <if test="productKindMosaicOrder!=null">PRODUCT_KIND_MOSAIC_ORDER = #{productKindMosaicOrder},</if>
+  </trim>
+  <![CDATA[ WHERE  PRODUCT_KIND_ID = #{id}   ]]>
+ </update>
+ <sql id="condition">
+  <trim prefix="WHERE" prefixOverrides="AND |OR">
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(id)">
+   <![CDATA[ AND mallProductKind.PRODUCT_KIND_ID = #{id}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(productKindName)">
+   <![CDATA[ AND mallProductKind.PRODUCT_KIND_NAME = #{productKindName}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(productKindDescription)">
+   <![CDATA[ AND mallProductKind.PRODUCT_KIND_DESCRIPTION = #{productKindDescription}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(productKindMosaicOrder)">
+   <![CDATA[ AND mallProductKind.PRODUCT_KIND_MOSAIC_ORDER = #{productKindMosaicOrder}    ]]>
+  </if>
+  </trim>
+ </sql>
+ <select id="query" parameterType="map" resultType="com.basics.mall.entity.MallProductKind">
+  <![CDATA[
+  SELECT
+  mallProductKind.PRODUCT_KIND_ID "id",
+  mallProductKind.PRODUCT_KIND_NAME "productKindName",
+  mallProductKind.PRODUCT_KIND_DESCRIPTION "productKindDescription",
+  mallProductKind.PRODUCT_KIND_MOSAIC_ORDER "productKindMosaicOrder"
+  FROM mall_product_kind mallProductKind
+  ]]>
+  <include refid="condition" />
+  <choose>
+   <when test="@org.apache.commons.lang.StringUtils@isNotEmpty(orderBy)"> ORDER BY ${orderBy}
+   </when>
+   <otherwise>
+    <!-- //TODO:ADD DEFAULT ORDER COLUMN OR DONOTHING! -->
+   </otherwise>
+  </choose>
+ </select>
+ <select id="count" parameterType="map" resultType="long">
+  <![CDATA[ SELECT COUNT(1) FROM mall_product_kind mallProductKind]]>
+  <include refid="condition" />
+ </select>
+ <sql id="conditionDeleteAll">
+  <trim prefix="WHERE" prefixOverrides="AND |OR">
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(id)">
+   <![CDATA[ AND PRODUCT_KIND_ID = #{id} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(productKindName)">
+   <![CDATA[ AND PRODUCT_KIND_NAME = #{productKindName} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(productKindDescription)">
+   <![CDATA[ AND PRODUCT_KIND_DESCRIPTION = #{productKindDescription} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(productKindMosaicOrder)">
+   <![CDATA[ AND PRODUCT_KIND_MOSAIC_ORDER = #{productKindMosaicOrder} ]]>
+  </if>
+  </trim>
+ </sql>
+ <delete id="deleteAll" parameterType="map">
+  <![CDATA[DELETE FROM mall_product_kind]]>
+  <include refid="conditionDeleteAll" />
+ </delete>
+</mapper>

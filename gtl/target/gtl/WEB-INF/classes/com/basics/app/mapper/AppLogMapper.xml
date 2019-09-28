@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC
+ "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.basics.app.entity.AppLog">
+ <cache type="com.basics.support.mybatis.CacheAdapter"/>
+ <delete id="delete" parameterType="com.basics.app.entity.AppLog">
+  <![CDATA[ DELETE FROM app_log WHERE  LOG_ID = #{id} ]]>
+ </delete>
+ <insert id="insert" parameterType="com.basics.app.entity.AppLog">
+  <![CDATA[  INSERT INTO app_log (]]>
+  <trim prefix="" suffixOverrides=",">
+   <if test="id!=null">LOG_ID,</if>
+   <if test="logName!=null">LOG_NAME,</if>
+   <if test="logContext!=null">LOG_CONTEXT,</if>
+   <if test="logRemark!=null">LOG_REMARK,</if>
+   <if test="logCreateDate!=null">LOG_CREATE_DATE,</if>
+  </trim>
+  <![CDATA[)VALUES(]]>
+  <trim prefix="" suffixOverrides=",">
+   <if test="id!=null">#{id},</if>
+   <if test="logName!=null">#{logName},</if>
+   <if test="logContext!=null">#{logContext},</if>
+   <if test="logRemark!=null">#{logRemark},</if>
+   <if test="logCreateDate!=null">#{logCreateDate},</if>
+  </trim>
+  <![CDATA[)]]>
+ </insert>
+ <update id="update" parameterType="com.basics.app.entity.AppLog">
+  <![CDATA[ UPDATE app_log ]]>
+  <trim prefix="SET" suffixOverrides=",">
+  <if test="id!=null">LOG_ID = #{id},</if>
+  <if test="logName!=null">LOG_NAME = #{logName},</if>
+  <if test="logContext!=null">LOG_CONTEXT = #{logContext},</if>
+  <if test="logRemark!=null">LOG_REMARK = #{logRemark},</if>
+  <if test="logCreateDate!=null">LOG_CREATE_DATE = #{logCreateDate},</if>
+  </trim>
+  <![CDATA[ WHERE  LOG_ID = #{id}   ]]>
+ </update>
+ <sql id="condition">
+  <trim prefix="WHERE" prefixOverrides="AND |OR">
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(id)">
+   <![CDATA[ AND appLog.LOG_ID = #{id}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(logName)">
+   <![CDATA[ AND appLog.LOG_NAME = #{logName}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(logContext)">
+   <![CDATA[ AND appLog.LOG_CONTEXT = #{logContext}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(logRemark)">
+   <![CDATA[ AND appLog.LOG_REMARK = #{logRemark}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(logCreateDate)">
+   <![CDATA[ AND appLog.LOG_CREATE_DATE = #{logCreateDate}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(nowToOneHour)">
+   <![CDATA[ AND (LOG_CREATE_DATE > date_sub(#{nowToOneHour}, INTERVAL 1 HOUR) AND LOG_CREATE_DATE < #{nowToOneHour}) ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(nowToOneDay)">
+   <![CDATA[ AND (LOG_CREATE_DATE > DATE_SUB(curdate(), INTERVAL 1 DAY) AND LOG_CREATE_DATE < DATE_SUB(curdate(), INTERVAL - 1 DAY)) ]]>
+  </if>
+  </trim>
+ </sql>
+ <select id="query" parameterType="map" resultType="com.basics.app.entity.AppLog">
+  <![CDATA[
+  SELECT
+  appLog.LOG_ID "id",
+  appLog.LOG_NAME "logName",
+  appLog.LOG_CONTEXT "logContext",
+  appLog.LOG_REMARK "logRemark",
+  appLog.LOG_CREATE_DATE "logCreateDate"
+  FROM app_log appLog
+  ]]>
+  <include refid="condition" />
+  <choose>
+   <when test="@org.apache.commons.lang.StringUtils@isNotEmpty(orderBy)"> ORDER BY ${orderBy}
+   </when>
+   <otherwise>
+    <!-- //TODO:ADD DEFAULT ORDER COLUMN OR DONOTHING! -->
+   </otherwise>
+  </choose>
+ </select>
+ <select id="count" parameterType="map" resultType="long">
+  <![CDATA[ SELECT COUNT(1) FROM app_log appLog]]>
+  <include refid="condition" />
+ </select>
+ <sql id="conditionDeleteAll">
+  <trim prefix="WHERE" prefixOverrides="AND |OR">
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(id)">
+   <![CDATA[ AND LOG_ID = #{id} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(logName)">
+   <![CDATA[ AND LOG_NAME = #{logName} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(logContext)">
+   <![CDATA[ AND LOG_CONTEXT = #{logContext} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(logRemark)">
+   <![CDATA[ AND LOG_REMARK = #{logRemark} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(logCreateDate)">
+   <![CDATA[ AND LOG_CREATE_DATE = #{logCreateDate} ]]>
+  </if>
+  </trim>
+ </sql>
+ <delete id="deleteAll" parameterType="map">
+  <![CDATA[DELETE FROM app_log]]>
+  <include refid="conditionDeleteAll" />
+ </delete>
+</mapper>

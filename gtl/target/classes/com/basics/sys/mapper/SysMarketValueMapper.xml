@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC
+ "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.basics.sys.entity.SysMarketValue">
+ <cache type="com.basics.support.mybatis.CacheAdapter"/>
+ <delete id="delete" parameterType="com.basics.sys.entity.SysMarketValue">
+  <![CDATA[ DELETE FROM sys_market_value WHERE  RATE_ID = #{id} ]]>
+ </delete>
+ <insert id="insert" parameterType="com.basics.sys.entity.SysMarketValue">
+  <![CDATA[  INSERT INTO sys_market_value (]]>
+  <trim prefix="" suffixOverrides=",">
+   <if test="id!=null">RATE_ID,</if>
+   <if test="dollarRate!=null">DOLLAR_RATE,</if>
+   <if test="rmbRate!=null">RMB_RATE,</if>
+   <if test="rateTime!=null">RATE_TIME,</if>
+   <if test="versionNum!=null">VERSION_NUM,</if>
+   <if test="flagDel!=null">FLAG_DEL,</if>
+   <if test="createTime!=null">CREATE_TIME,</if>
+   <if test="createUser!=null">CREATE_USER,</if>
+   <if test="modifyUser!=null">MODIFY_USER,</if>
+   <if test="modifyTime!=null">MODIFY_TIME,</if>
+  </trim>
+  <![CDATA[)VALUES(]]>
+  <trim prefix="" suffixOverrides=",">
+   <if test="id!=null">#{id},</if>
+   <if test="dollarRate!=null">#{dollarRate},</if>
+   <if test="rmbRate!=null">#{rmbRate},</if>
+   <if test="rateTime!=null">#{rateTime},</if>
+   <if test="versionNum!=null">#{versionNum},</if>
+   <if test="flagDel!=null">#{flagDel},</if>
+   <if test="createTime!=null">#{createTime},</if>
+   <if test="createUser!=null">#{createUser},</if>
+   <if test="modifyUser!=null">#{modifyUser},</if>
+   <if test="modifyTime!=null">#{modifyTime},</if>
+  </trim>
+  <![CDATA[)]]>
+ </insert>
+ <update id="update" parameterType="com.basics.sys.entity.SysMarketValue">
+  <![CDATA[ UPDATE sys_market_value ]]>
+  <trim prefix="SET" suffixOverrides=",">
+  <if test="id!=null">RATE_ID = #{id},</if>
+  <if test="dollarRate!=null">DOLLAR_RATE = #{dollarRate},</if>
+  <if test="rmbRate!=null">RMB_RATE = #{rmbRate},</if>
+  <if test="rateTime!=null">RATE_TIME = #{rateTime},</if>
+  <if test="versionNum!=null">VERSION_NUM = #{versionNum},</if>
+  <if test="flagDel!=null">FLAG_DEL = #{flagDel},</if>
+  <if test="createTime!=null">CREATE_TIME = #{createTime},</if>
+  <if test="createUser!=null">CREATE_USER = #{createUser},</if>
+  <if test="modifyUser!=null">MODIFY_USER = #{modifyUser},</if>
+  <if test="modifyTime!=null">MODIFY_TIME = #{modifyTime},</if>
+  </trim>
+  <![CDATA[ WHERE  RATE_ID = #{id}   ]]>
+ </update>
+ <sql id="condition">
+  <trim prefix="WHERE" prefixOverrides="AND |OR">
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(id)">
+   <![CDATA[ AND sysMarketValue.RATE_ID = #{id}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(dollarRate)">
+   <![CDATA[ AND sysMarketValue.DOLLAR_RATE = #{dollarRate}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(rmbRate)">
+   <![CDATA[ AND sysMarketValue.RMB_RATE = #{rmbRate}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(rateTime)">
+   <![CDATA[ AND sysMarketValue.RATE_TIME = #{rateTime}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(versionNum)">
+   <![CDATA[ AND sysMarketValue.VERSION_NUM = #{versionNum}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(flagDel)">
+   <![CDATA[ AND sysMarketValue.FLAG_DEL = #{flagDel}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(createTime)">
+   <![CDATA[ AND sysMarketValue.CREATE_TIME = #{createTime}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(createUser)">
+   <![CDATA[ AND sysMarketValue.CREATE_USER = #{createUser}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(modifyUser)">
+   <![CDATA[ AND sysMarketValue.MODIFY_USER = #{modifyUser}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(modifyTime)">
+   <![CDATA[ AND sysMarketValue.MODIFY_TIME = #{modifyTime}    ]]>
+  </if>
+   <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(nowDate)">
+   <![CDATA[ AND DATE_FORMAT(sysMarketValue.RATE_TIME,'%Y-%m-%d') = DATE_FORMAT(#{nowDate},'%Y-%m-%d')    ]]>
+  </if>
+  </trim>
+ </sql>
+ <select id="query" parameterType="map" resultType="com.basics.sys.entity.SysMarketValue">
+  <![CDATA[
+  SELECT
+  sysMarketValue.RATE_ID "id",
+  sysMarketValue.DOLLAR_RATE "dollarRate",
+  sysMarketValue.RMB_RATE "rmbRate",
+  sysMarketValue.RATE_TIME "rateTime",
+  sysMarketValue.VERSION_NUM "versionNum",
+  sysMarketValue.FLAG_DEL "flagDel",
+  sysMarketValue.CREATE_TIME "createTime",
+  sysMarketValue.CREATE_USER "createUser",
+  sysMarketValue.MODIFY_USER "modifyUser",
+  sysMarketValue.MODIFY_TIME "modifyTime"
+  FROM sys_market_value sysMarketValue
+  ]]>
+  <include refid="condition" />
+  <choose>
+   <when test="@org.apache.commons.lang.StringUtils@isNotEmpty(orderBy)"> ORDER BY ${orderBy}
+   </when>
+   <otherwise>
+    <!-- //TODO:ADD DEFAULT ORDER COLUMN OR DONOTHING! -->
+   </otherwise>
+  </choose>
+ </select>
+ <select id="count" parameterType="map" resultType="long">
+  <![CDATA[ SELECT COUNT(1) FROM sys_market_value sysMarketValue]]>
+  <include refid="condition" />
+ </select>
+ <sql id="conditionDeleteAll">
+  <trim prefix="WHERE" prefixOverrides="AND |OR">
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(id)">
+   <![CDATA[ AND RATE_ID = #{id} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(dollarRate)">
+   <![CDATA[ AND DOLLAR_RATE = #{dollarRate} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(rmbRate)">
+   <![CDATA[ AND RMB_RATE = #{rmbRate} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(rateTime)">
+   <![CDATA[ AND RATE_TIME = #{rateTime} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(versionNum)">
+   <![CDATA[ AND VERSION_NUM = #{versionNum} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(flagDel)">
+   <![CDATA[ AND FLAG_DEL = #{flagDel} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(createTime)">
+   <![CDATA[ AND CREATE_TIME = #{createTime} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(createUser)">
+   <![CDATA[ AND CREATE_USER = #{createUser} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(modifyUser)">
+   <![CDATA[ AND MODIFY_USER = #{modifyUser} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(modifyTime)">
+   <![CDATA[ AND MODIFY_TIME = #{modifyTime} ]]>
+  </if>
+  </trim>
+ </sql>
+ <delete id="deleteAll" parameterType="map">
+  <![CDATA[DELETE FROM sys_market_value]]>
+  <include refid="conditionDeleteAll" />
+ </delete>
+ 
+ <select id="queryMarketValueTables" parameterType="map" resultType="com.basics.sys.entity.SysMarketValue">
+  SELECT
+	tempDateTable.currentDate "rateTime",
+	ifnull(sysMarketValue.dollarRate, 0) AS "dollarRate"
+	FROM
+		(
+			SELECT
+				curdate() AS "currentDate"
+			UNION ALL SELECT date_sub(curdate(), INTERVAL 1 DAY) AS need_date
+			UNION ALL SELECT date_sub(curdate(), INTERVAL 2 DAY) AS need_date
+			UNION ALL SELECT date_sub(curdate(), INTERVAL 3 DAY) AS need_date
+			UNION ALL SELECT date_sub(curdate(), INTERVAL 4 DAY) AS need_date
+			UNION ALL	SELECT date_sub(curdate(), INTERVAL 5 DAY) AS need_date
+			UNION ALL SELECT date_sub(curdate(), INTERVAL 6 DAY) AS need_date
+		) tempDateTable
+	LEFT JOIN (
+		SELECT
+			DATE_FORMAT(RATE_TIME, '%Y%m%d') AS "rateTime",
+			DOLLAR_RATE "dollarRate"
+		FROM
+			sys_market_value
+	) sysMarketValue ON tempDateTable.currentDate = sysMarketValue.rateTime
+	ORDER BY tempDateTable.currentDate ASC
+ </select>
+ 
+ 
+</mapper>

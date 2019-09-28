@@ -1,8 +1,16 @@
 package com.basics.wallet;
 
+import com.basics.cu.controller.response.CustomerInfoResponse;
+import com.basics.gty.entity.GtyWallet;
+import com.basics.gty.service.GtyWalletHistory2Service;
+import com.basics.gty.service.GtyWalletService;
+import com.basics.support.QueryFilterBuilder;
 import com.basics.support.auth.HttpClientUtils;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
+import com.mysql.jdbc.StringUtils;
+import org.apache.commons.collections.CollectionUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.web3j.abi.FunctionEncoder;
 import org.web3j.abi.TypeReference;
 import org.web3j.abi.datatypes.Address;
@@ -18,9 +26,11 @@ import org.web3j.protocol.core.methods.response.EthSendTransaction;
 import org.web3j.tx.Contract;
 import org.web3j.utils.Numeric;
 
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
@@ -99,6 +109,10 @@ public class test {
         String number = new BigInteger(gasInfo.substring(2,gasInfo.length()), 16).toString(10);
         return BigInteger.valueOf(Long.parseLong(number));
     }
+    @Autowired
+    private GtyWalletService gtySer;
+    @Autowired
+    private GtyWalletHistory2Service gtyWalletHistoryService;
 
 
 }

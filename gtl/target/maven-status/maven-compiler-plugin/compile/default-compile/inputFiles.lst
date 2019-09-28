@@ -85,6 +85,7 @@ D:\code\mnc1\gtl\src\main\java\com\basics\app\shiro\UsersAndRoles.java
 D:\code\mnc1\gtl\src\main\java\com\basics\mall\controller\api\MallShopAdvertApiController.java
 D:\code\mnc1\gtl\src\main\java\com\basics\app\shiro\ShiroSupport.java
 D:\code\mnc1\gtl\src\main\java\com\basics\wallet\dao\myBatisDao\WalletMybatisDao.java
+D:\code\mnc1\gtl\src\main\java\com\basics\gty\service\impl\GtyWalletMybatisService.java
 D:\code\mnc1\gtl\src\main\java\com\basics\job\EveryDayAutoConfirmOrderJob.java
 D:\code\mnc1\gtl\src\main\java\com\basics\support\Container.java
 D:\code\mnc1\gtl\src\main\java\com\basics\mall\controller\backend\MallProductClassifyBackendController.java
@@ -120,6 +121,7 @@ D:\code\mnc1\gtl\src\main\java\com\basics\tr\entity\TrTradeCoin.java
 D:\code\mnc1\gtl\src\main\java\com\basics\sys\service\impl\SysNoticeMybatisService.java
 D:\code\mnc1\gtl\src\main\java\com\basics\cu\dao\CuReatil2Dao.java
 D:\code\mnc1\gtl\src\main\java\com\basics\mall\controller\response\BusinessResponse.java
+D:\code\mnc1\gtl\src\main\java\com\basics\gty\service\GtyWalletHistory2Service.java
 D:\code\mnc1\gtl\src\main\java\com\basics\cu\entity\CuCustomerCollectionBase.java
 D:\code\mnc1\gtl\src\main\java\com\basics\app\ui\AppUserZTreeDataProvider.java
 D:\code\mnc1\gtl\src\main\java\com\basics\common\DataItemResponse.java
@@ -164,6 +166,7 @@ D:\code\mnc1\gtl\src\main\java\com\basics\support\RestTemplateSupport.java
 D:\code\mnc1\gtl\src\main\java\com\basics\support\auth\RsaSignature.java
 D:\code\mnc1\gtl\src\main\java\com\basics\tr\entity\BaseBean.java
 D:\code\mnc1\gtl\src\main\java\com\basics\tr\service\TrTradeCoinService.java
+D:\code\mnc1\gtl\src\main\java\com\basics\wallet\entity\WalletEntityBase.java
 D:\code\mnc1\gtl\src\main\java\com\basics\sys\entity\SysTurntableBase.java
 D:\code\mnc1\gtl\src\main\java\com\basics\support\converters\DateConverter.java
 D:\code\mnc1\gtl\src\main\java\com\basics\sys\service\SysNewsService.java
@@ -174,6 +177,7 @@ D:\code\mnc1\gtl\src\main\java\com\basics\cu\dao\CuConsumeDao.java
 D:\code\mnc1\gtl\src\main\java\com\basics\support\fileupload\BootstrapFileInputSupport.java
 D:\code\mnc1\gtl\src\main\java\com\basics\wallet\service\WalletService.java
 D:\code\mnc1\gtl\src\main\java\com\basics\sys\dao\SysProfitDao.java
+D:\code\mnc1\gtl\src\main\java\com\basics\cu\entity\CuDiscuss.java
 D:\code\mnc1\gtl\src\main\java\com\basics\tr\controller\response\TradeResponse.java
 D:\code\mnc1\gtl\src\main\java\com\basics\or\entity\OrOrderDetailsBase.java
 D:\code\mnc1\gtl\src\main\java\com\basics\mall\service\impl\MallProductMybatisService.java
@@ -187,6 +191,7 @@ D:\code\mnc1\gtl\src\main\java\com\basics\mall\controller\response\MallProductDe
 D:\code\mnc1\gtl\src\main\java\com\basics\job\EveryDayAutoCancelOrderJob.java
 D:\code\mnc1\gtl\src\main\java\com\basics\cu\controller\api\CustomerApiController.java
 D:\code\mnc1\gtl\src\main\java\com\basics\app\entity\AppAreaBase.java
+D:\code\mnc1\gtl\src\main\java\com\basics\gty\controller\request\TokenTransferRequest.java
 D:\code\mnc1\gtl\src\main\java\com\basics\cu\service\CuCustomerMessageService.java
 D:\code\mnc1\gtl\src\main\java\com\basics\sys\entity\SysCustomerLevel.java
 D:\code\mnc1\gtl\src\main\java\com\basics\mall\vo\KindDetailVo.java
@@ -253,6 +258,7 @@ D:\code\mnc1\gtl\src\main\java\com\basics\cu\entity\CuReatil2.java
 D:\code\mnc1\gtl\src\main\java\com\basics\mall\controller\api\MallCustomerCarApiController.java
 D:\code\mnc1\gtl\src\main\java\com\basics\app\dao\AppLogDao.java
 D:\code\mnc1\gtl\src\main\java\com\basics\cu\service\CuCustomerFeedbackService.java
+D:\code\mnc1\gtl\src\main\java\com\basics\gty\service\GtyWalletService.java
 D:\code\mnc1\gtl\src\main\java\com\basics\support\ListResultSupport.java
 D:\code\mnc1\gtl\src\main\java\com\basics\mall\dao\MybatisDao\MallProductKindContrastMybatisDao.java
 D:\code\mnc1\gtl\src\main\java\com\basics\or\support\GenericMybatisDaoSupport.java
@@ -393,6 +399,7 @@ D:\code\mnc1\gtl\src\main\java\com\basics\support\PaginationSupport.java
 D:\code\mnc1\gtl\src\main\java\com\basics\sys\dao\SysNewsDao.java
 D:\code\mnc1\gtl\src\main\java\com\basics\job\EveryDayAutoReleaseJob.java
 D:\code\mnc1\gtl\src\main\java\com\basics\cu\controller\request\ForGetPassRequest.java
+D:\code\mnc1\gtl\src\main\java\com\basics\gty\dao\MybatisDao\GtyWalletMybatisDao.java
 D:\code\mnc1\gtl\src\main\java\com\basics\mall\controller\response\ShopAdvertInfoResponse.java
 D:\code\mnc1\gtl\src\main\java\com\basics\mall\controller\request\SelectShopAdvertRequest.java
 D:\code\mnc1\gtl\src\main\java\com\basics\sys\dao\SysConfigDao.java
@@ -411,6 +418,8 @@ D:\code\mnc1\gtl\src\main\java\com\basics\support\FileStoreService.java
 D:\code\mnc1\gtl\src\main\java\com\basics\wallet\controller\response\TransationResponse.java
 D:\code\mnc1\gtl\src\main\java\com\basics\app\service\impl\AppTokenMybatisService.java
 D:\code\mnc1\gtl\src\main\java\com\basics\app\entity\AppOptionBase.java
+D:\code\mnc1\gtl\src\main\java\com\basics\cu\dao\CuDiscussDao.java
+D:\code\mnc1\gtl\src\main\java\com\basics\gty\controller\backend\GtyWalletBackendController.java
 D:\code\mnc1\gtl\src\main\java\com\basics\sys\entity\SysProfitBase.java
 D:\code\mnc1\gtl\src\main\java\com\basics\mall\entity\MallAdvertHotBase.java
 D:\code\mnc1\gtl\src\main\java\com\basics\tr\dao\TrConvertDao.java
@@ -419,7 +428,9 @@ D:\code\mnc1\gtl\src\main\java\com\basics\sys\service\impl\SysProfitMybatisServi
 D:\code\mnc1\gtl\src\main\java\com\basics\app\service\AppRewardService.java
 D:\code\mnc1\gtl\src\main\java\com\basics\cu\entity\CuCustomerAddressBase.java
 D:\code\mnc1\gtl\src\main\java\com\basics\support\auth\BankAuthUtil.java
+D:\code\mnc1\gtl\src\main\java\com\basics\gty\entity\GtyWalletBean.java
 D:\code\mnc1\gtl\src\main\java\com\basics\app\service\impl\AppPermissionMybatisService.java
+D:\code\mnc1\gtl\src\main\java\com\basics\cu\entity\CuDiscussBase.java
 D:\code\mnc1\gtl\src\main\java\com\basics\sys\service\SysVersionService.java
 D:\code\mnc1\gtl\src\main\java\com\basics\tr\service\impl\TrConvertMybatisService.java
 D:\code\mnc1\gtl\src\main\java\com\basics\sys\entity\SysOperLog.java
@@ -455,7 +466,9 @@ D:\code\mnc1\gtl\src\main\java\com\basics\app\entity\AppImageBase.java
 D:\code\mnc1\gtl\src\main\java\com\basics\cu\controller\backend\CuCustomerLoginBackendController.java
 D:\code\mnc1\gtl\src\main\java\com\basics\mall\controller\backend\MallIndexProductBackendController.java
 D:\code\mnc1\gtl\src\main\java\com\basics\cu\dao\MybatisDao\CuCustomerCollectMybatisDao.java
+D:\code\mnc1\gtl\src\main\java\com\basics\cu\controller\response\CuDiscussResponse.java
 D:\code\mnc1\gtl\src\main\java\com\basics\app\controller\frontend\ApiController.java
+D:\code\mnc1\gtl\src\main\java\com\basics\gty\dao\MybatisDao\GtyWalletHistoryMybatisDao.java
 D:\code\mnc1\gtl\src\main\java\com\basics\sys\dao\MybatisDao\SysTurntableRewardMybatisDao.java
 D:\code\mnc1\gtl\src\main\java\com\basics\tr\dao\TrTradeConvertDao.java
 D:\code\mnc1\gtl\src\main\java\com\basics\mall\controller\response\CustomerCarResponsePlus.java
@@ -474,6 +487,7 @@ D:\code\mnc1\gtl\src\main\java\com\basics\support\mybatis\JedisCacheAdapter.java
 D:\code\mnc1\gtl\src\main\java\com\basics\tr\controller\request\PushTradeRequest.java
 D:\code\mnc1\gtl\src\main\java\com\basics\sys\entity\BaseBean.java
 D:\code\mnc1\gtl\src\main\java\com\basics\app\controller\backend\AppPermissionBackendController.java
+D:\code\mnc1\gtl\src\main\java\com\basics\gty\controller\backend\BaseBackendController.java
 D:\code\mnc1\gtl\src\main\java\com\basics\support\JuheClient.java
 D:\code\mnc1\gtl\src\main\java\com\basics\or\controller\backend\BaseBackendController.java
 D:\code\mnc1\gtl\src\main\java\com\basics\app\controller\frontend\BaseFrontendController.java
@@ -481,6 +495,7 @@ D:\code\mnc1\gtl\src\main\java\com\basics\mall\dao\MybatisDao\MallProductComment
 D:\code\mnc1\gtl\src\main\java\com\basics\sys\controller\backend\SysNoticeBackendController.java
 D:\code\mnc1\gtl\src\main\java\com\basics\support\mybatis\DefaultCacheAdvisor.java
 D:\code\mnc1\gtl\src\main\java\com\basics\common\QueryFilterUtil.java
+D:\code\mnc1\gtl\src\main\java\com\basics\cu\dao\MybatisDao\CuDiscussMybatisDao.java
 D:\code\mnc1\gtl\src\main\java\com\basics\app\service\impl\AppOptionMybatisService.java
 D:\code\mnc1\gtl\src\main\java\com\basics\wallet\service\impl\WalletServiceImpl.java
 D:\code\mnc1\gtl\src\main\java\com\basics\mall\dao\MallProductKindContrastDao.java
@@ -578,7 +593,6 @@ D:\code\mnc1\gtl\src\main\java\com\basics\cu\entity\CuHistoryBase.java
 D:\code\mnc1\gtl\src\main\java\com\basics\app\dao\FormSubmitNextSupport.java
 D:\code\mnc1\gtl\src\main\java\com\basics\sys\service\impl\SysCountryMybatisService.java
 D:\code\mnc1\gtl\src\main\java\com\basics\support\auth\Base64.java
-D:\code\mnc1\gtl\src\main\java\com\basics\cu\entity\CuReati1Base.java
 D:\code\mnc1\gtl\src\main\java\com\basics\support\GsonUtil.java
 D:\code\mnc1\gtl\src\main\java\com\basics\sys\controller\backend\SysVersionBackendController.java
 D:\code\mnc1\gtl\src\main\java\com\basics\sys\entity\SysActivemqResponseBase.java
@@ -618,6 +632,7 @@ D:\code\mnc1\gtl\src\main\java\com\basics\app\dao\AppRoleDao.java
 D:\code\mnc1\gtl\src\main\java\com\basics\app\entity\AppPermissionBase.java
 D:\code\mnc1\gtl\src\main\java\com\basics\sys\dao\SysVersionDao.java
 D:\code\mnc1\gtl\src\main\java\com\basics\support\AbstractClientSupport.java
+D:\code\mnc1\gtl\src\main\java\com\basics\gty\dao\GtyWalletDao.java
 D:\code\mnc1\gtl\src\main\java\com\basics\cu\entity\CuCustomerFeedbackBase.java
 D:\code\mnc1\gtl\src\main\java\com\basics\support\auth\HttpClientUtils.java
 D:\code\mnc1\gtl\src\main\java\com\basics\app\controller\backend\AppUserBackendController.java
@@ -655,8 +670,10 @@ D:\code\mnc1\gtl\src\main\java\com\basics\support\EncryptUtils.java
 D:\code\mnc1\gtl\src\main\java\com\basics\mall\service\impl\MallProductKindDetailMybatisService.java
 D:\code\mnc1\gtl\src\main\java\com\basics\mall\dao\MallShopAdvertDao.java
 D:\code\mnc1\gtl\src\main\java\com\basics\cu\dao\CuCustomerInfoDao.java
+D:\code\mnc1\gtl\src\main\java\com\basics\gty\service\impl\GtyWalletHistoryMybatisService.java
 D:\code\mnc1\gtl\src\main\java\com\basics\support\QueryFilter.java
 D:\code\mnc1\gtl\src\main\java\com\basics\broswer\controller\response\BlockNetResponse.java
+D:\code\mnc1\gtl\src\main\java\com\basics\gty\entity\GtyWallet.java
 D:\code\mnc1\gtl\src\main\java\com\basics\support\UserAware.java
 D:\code\mnc1\gtl\src\main\java\com\basics\support\ParamsUtils.java
 D:\code\mnc1\gtl\src\main\java\com\basics\mall\entity\MallIndexTypeBase.java
@@ -691,6 +708,7 @@ D:\code\mnc1\gtl\src\main\java\com\basics\cu\controller\backend\CuCustomerProfit
 D:\code\mnc1\gtl\src\main\java\com\basics\sys\service\SysCountryService.java
 D:\code\mnc1\gtl\src\main\java\com\basics\cu\entity\CuCustomerProfitBase.java
 D:\code\mnc1\gtl\src\main\java\com\basics\sys\entity\SysProfit.java
+D:\code\mnc1\gtl\src\main\java\com\basics\gty\entity\GtyBaseBean.java
 D:\code\mnc1\gtl\src\main\java\com\basics\support\ModelSupport.java
 D:\code\mnc1\gtl\src\main\java\com\basics\common\JsonSupport.java
 D:\code\mnc1\gtl\src\main\java\com\basics\app\controller\backend\AppCodeBackendController.java
@@ -737,6 +755,7 @@ D:\code\mnc1\gtl\src\main\java\com\basics\support\MessageBuilder.java
 D:\code\mnc1\gtl\src\main\java\com\basics\cu\service\CuCustomerAddressService.java
 D:\code\mnc1\gtl\src\main\java\com\basics\mall\service\impl\MallProductKindContrastMybatisService.java
 D:\code\mnc1\gtl\src\main\java\com\basics\app\dao\impl\AppImageMybatisDao.java
+D:\code\mnc1\gtl\src\main\java\com\basics\support\auth\HttpRequestUtils2.java
 D:\code\mnc1\gtl\src\main\java\com\basics\or\support\BackendControllerSupport.java
 D:\code\mnc1\gtl\src\main\java\com\basics\common\DataItem.java
 D:\code\mnc1\gtl\src\main\java\com\basics\cu\service\CuDrawRewardService.java
@@ -779,12 +798,14 @@ D:\code\mnc1\gtl\src\main\java\com\basics\support\ueditor\UEditorGetConfigRespon
 D:\code\mnc1\gtl\src\main\java\com\basics\app\service\impl\AppPasswordCryptor.java
 D:\code\mnc1\gtl\src\main\java\com\basics\mall\entity\MallIndexType.java
 D:\code\mnc1\gtl\src\main\java\com\basics\app\dao\impl\AppUserRoleMybatisDao.java
+D:\code\mnc1\gtl\src\main\java\com\basics\gty\entity\GtyWalletHistory.java
 D:\code\mnc1\gtl\src\main\java\com\basics\cu\dao\MybatisDao\CuCustomerMessageMybatisDao.java
 D:\code\mnc1\gtl\src\main\java\com\basics\cu\dao\MybatisDao\CuReatil2MybatisDao.java
 D:\code\mnc1\gtl\src\main\java\com\basics\mall\service\MallIndexProductService.java
 D:\code\mnc1\gtl\src\main\java\com\basics\support\redis\JedisCallback.java
 D:\code\mnc1\gtl\src\main\java\com\basics\cu\controller\response\BaseImgResponse.java
 D:\code\mnc1\gtl\src\main\java\com\basics\support\EnumSupport.java
+D:\code\mnc1\gtl\src\main\java\com\basics\gty\controller\api\GtyWalletApiController.java
 D:\code\mnc1\gtl\src\main\java\com\basics\mall\dao\MallProductCommentDao.java
 D:\code\mnc1\gtl\src\main\java\com\basics\sys\dao\MybatisDao\SysActivemqRequestMybatisDao.java
 D:\code\mnc1\gtl\src\main\java\com\basics\mall\service\impl\MallShopAdvertMybatisService.java
@@ -867,4 +888,5 @@ D:\code\mnc1\gtl\src\main\java\com\basics\cu\controller\backend\CuCustomerProfit
 D:\code\mnc1\gtl\src\main\java\com\basics\support\GenericUtils.java
 D:\code\mnc1\gtl\src\main\java\com\basics\support\mybatis\CacheUsedMapper.java
 D:\code\mnc1\gtl\src\main\java\com\basics\cu\entity\CuConsume.java
+D:\code\mnc1\gtl\src\main\java\com\basics\gty\dao\GtyWalletHistoryDao.java
 D:\code\mnc1\gtl\src\main\java\com\basics\wallet\entity\WalletEntity.java

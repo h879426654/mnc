@@ -1,0 +1,288 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC
+ "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.basics.sys.entity.SysCustomerLevel">
+ <cache type="com.basics.support.mybatis.CacheAdapter"/>
+ <delete id="delete" parameterType="com.basics.sys.entity.SysCustomerLevel">
+  <![CDATA[ DELETE FROM sys_customer_level WHERE  LEVEL_ID = #{id} ]]>
+ </delete>
+ <insert id="insert" parameterType="com.basics.sys.entity.SysCustomerLevel">
+  <![CDATA[  INSERT INTO sys_customer_level (]]>
+  <trim prefix="" suffixOverrides=",">
+   <if test="id!=null">LEVEL_ID,</if>
+   <if test="levelName!=null">LEVEL_NAME,</if>
+   <if test="levelEnglishName!=null">LEVEL_ENGLISH_NAME,</if>
+   <if test="levelKoreanName!=null">LEVEL_KOREAN_NAME,</if>
+   <if test="levelJapaneseName!=null">LEVEL_JAPANESE_NAME,</if>
+   <if test="levelMinIntegral!=null">LEVEL_MIN_INTEGRAL,</if>
+   <if test="levelMaxIntegral!=null">LEVEL_MAX_INTEGRAL,</if>
+   <if test="salfNum!=null">SALF_NUM,</if>
+   <if test="salfRewardRate!=null">SALF_REWARD_RATE,</if>
+   <if test="recastRewardRate!=null">RECAST_REWARD_RATE,</if>
+   <if test="teamOutRewardRate!=null">TEAM_OUT_REWARD_RATE,</if>
+   <if test="teamInRewardRate!=null">TEAM_IN_REWARD_RATE,</if>
+   <if test="flatRewardRate!=null">FLAT_REWARD_RATE,</if>
+   <if test="exchangeRate!=null">EXCHANGE_RATE,</if>
+   <if test="levelSort!=null">LEVEL_SORT,</if>
+   <if test="floorNum!=null">FLOOR_NUM,</if>
+   <if test="limitCoin!=null">LIMIT_COIN,</if>
+   <if test="versionNum!=null">VERSION_NUM,</if>
+   <if test="flagDel!=null">FLAG_DEL,</if>
+   <if test="createTime!=null">CREATE_TIME,</if>
+   <if test="createUser!=null">CREATE_USER,</if>
+   <if test="modifyUser!=null">MODIFY_USER,</if>
+   <if test="modifyTime!=null">MODIFY_TIME,</if>
+  </trim>
+  <![CDATA[)VALUES(]]>
+  <trim prefix="" suffixOverrides=",">
+   <if test="id!=null">#{id},</if>
+   <if test="levelName!=null">#{levelName},</if>
+   <if test="levelEnglishName!=null">#{levelEnglishName},</if>
+   <if test="levelKoreanName!=null">#{levelKoreanName},</if>
+   <if test="levelJapaneseName!=null">#{levelJapaneseName},</if>
+   <if test="levelMinIntegral!=null">#{levelMinIntegral},</if>
+   <if test="levelMaxIntegral!=null">#{levelMaxIntegral},</if>
+   <if test="salfNum!=null">#{salfNum},</if>
+   <if test="salfRewardRate!=null">#{salfRewardRate},</if>
+   <if test="recastRewardRate!=null">#{recastRewardRate},</if>
+   <if test="teamOutRewardRate!=null">#{teamOutRewardRate},</if>
+   <if test="teamInRewardRate!=null">#{teamInRewardRate},</if>
+   <if test="flatRewardRate!=null">#{flatRewardRate},</if>
+   <if test="exchangeRate!=null">#{exchangeRate},</if>
+   <if test="levelSort!=null">#{levelSort},</if>
+   <if test="floorNum!=null">#{floorNum},</if>
+   <if test="limitCoin!=null">#{limitCoin},</if>
+   <if test="versionNum!=null">#{versionNum},</if>
+   <if test="flagDel!=null">#{flagDel},</if>
+   <if test="createTime!=null">#{createTime},</if>
+   <if test="createUser!=null">#{createUser},</if>
+   <if test="modifyUser!=null">#{modifyUser},</if>
+   <if test="modifyTime!=null">#{modifyTime},</if>
+  </trim>
+  <![CDATA[)]]>
+ </insert>
+ <update id="update" parameterType="com.basics.sys.entity.SysCustomerLevel">
+  <![CDATA[ UPDATE sys_customer_level ]]>
+  <trim prefix="SET" suffixOverrides=",">
+  <if test="id!=null">LEVEL_ID = #{id},</if>
+  <if test="levelName!=null">LEVEL_NAME = #{levelName},</if>
+  <if test="levelEnglishName!=null">LEVEL_ENGLISH_NAME = #{levelEnglishName},</if>
+  <if test="levelKoreanName!=null">LEVEL_KOREAN_NAME = #{levelKoreanName},</if>
+  <if test="levelJapaneseName!=null">LEVEL_JAPANESE_NAME = #{levelJapaneseName},</if>
+  <if test="levelMinIntegral!=null">LEVEL_MIN_INTEGRAL = #{levelMinIntegral},</if>
+  <if test="levelMaxIntegral!=null">LEVEL_MAX_INTEGRAL = #{levelMaxIntegral},</if>
+  <if test="salfNum!=null">SALF_NUM = #{salfNum},</if>
+  <if test="salfRewardRate!=null">SALF_REWARD_RATE = #{salfRewardRate},</if>
+  <if test="recastRewardRate!=null">RECAST_REWARD_RATE = #{recastRewardRate},</if>
+  <if test="teamOutRewardRate!=null">TEAM_OUT_REWARD_RATE = #{teamOutRewardRate},</if>
+  <if test="teamInRewardRate!=null">TEAM_IN_REWARD_RATE = #{teamInRewardRate},</if>
+  <if test="flatRewardRate!=null">FLAT_REWARD_RATE = #{flatRewardRate},</if>
+  <if test="exchangeRate!=null">EXCHANGE_RATE = #{exchangeRate},</if>
+  <if test="levelSort!=null">LEVEL_SORT = #{levelSort},</if>
+  <if test="floorNum!=null">FLOOR_NUM = #{floorNum},</if>
+  <if test="limitCoin!=null">LIMIT_COIN = #{limitCoin},</if>
+  <if test="versionNum!=null">VERSION_NUM = #{versionNum},</if>
+  <if test="flagDel!=null">FLAG_DEL = #{flagDel},</if>
+  <if test="createTime!=null">CREATE_TIME = #{createTime},</if>
+  <if test="createUser!=null">CREATE_USER = #{createUser},</if>
+  <if test="modifyUser!=null">MODIFY_USER = #{modifyUser},</if>
+  <if test="modifyTime!=null">MODIFY_TIME = #{modifyTime},</if>
+  </trim>
+  <![CDATA[ WHERE  LEVEL_ID = #{id}   ]]>
+ </update>
+ <sql id="condition">
+  <trim prefix="WHERE" prefixOverrides="AND |OR">
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(id)">
+   <![CDATA[ AND sysCustomerLevel.LEVEL_ID = #{id}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(levelName)">
+   <![CDATA[ AND sysCustomerLevel.LEVEL_NAME = #{levelName}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(levelEnglishName)">
+   <![CDATA[ AND sysCustomerLevel.LEVEL_ENGLISH_NAME = #{levelEnglishName}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(levelKoreanName)">
+   <![CDATA[ AND sysCustomerLevel.LEVEL_KOREAN_NAME = #{levelKoreanName}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(levelJapaneseName)">
+   <![CDATA[ AND sysCustomerLevel.LEVEL_JAPANESE_NAME = #{levelJapaneseName}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(levelMinIntegral)">
+   <![CDATA[ AND sysCustomerLevel.LEVEL_MIN_INTEGRAL = #{levelMinIntegral}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(levelMaxIntegral)">
+   <![CDATA[ AND sysCustomerLevel.LEVEL_MAX_INTEGRAL = #{levelMaxIntegral}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(salfNum)">
+   <![CDATA[ AND sysCustomerLevel.SALF_NUM = #{salfNum}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(salfRewardRate)">
+   <![CDATA[ AND sysCustomerLevel.SALF_REWARD_RATE = #{salfRewardRate}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(recastRewardRate)">
+   <![CDATA[ AND sysCustomerLevel.RECAST_REWARD_RATE = #{recastRewardRate}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(teamOutRewardRate)">
+   <![CDATA[ AND sysCustomerLevel.TEAM_OUT_REWARD_RATE = #{teamOutRewardRate}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(teamInRewardRate)">
+   <![CDATA[ AND sysCustomerLevel.TEAM_IN_REWARD_RATE = #{teamInRewardRate}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(flatRewardRate)">
+   <![CDATA[ AND sysCustomerLevel.FLAT_REWARD_RATE = #{flatRewardRate}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(exchangeRate)">
+   <![CDATA[ AND sysCustomerLevel.EXCHANGE_RATE = #{exchangeRate}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(limitCoin)">
+   <![CDATA[ AND sysCustomerLevel.LIMIT_COIN = #{limitCoin}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(levelSort)">
+   <![CDATA[ AND sysCustomerLevel.LEVEL_SORT = #{levelSort}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(floorNum)">
+   <![CDATA[ AND sysCustomerLevel.FLOOR_NUM = #{floorNum}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(versionNum)">
+   <![CDATA[ AND sysCustomerLevel.VERSION_NUM = #{versionNum}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(flagDel)">
+   <![CDATA[ AND sysCustomerLevel.FLAG_DEL = #{flagDel}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(createTime)">
+   <![CDATA[ AND sysCustomerLevel.CREATE_TIME = #{createTime}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(createUser)">
+   <![CDATA[ AND sysCustomerLevel.CREATE_USER = #{createUser}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(modifyUser)">
+   <![CDATA[ AND sysCustomerLevel.MODIFY_USER = #{modifyUser}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(modifyTime)">
+   <![CDATA[ AND sysCustomerLevel.MODIFY_TIME = #{modifyTime}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(tallyWithLevel)">
+   <![CDATA[ AND (sysCustomerLevel.LEVEL_MIN_INTEGRAL <= #{tallyWithLevel} AND sysCustomerLevel.LEVEL_MAX_INTEGRAL > #{tallyWithLevel} )   ]]>
+  </if>
+  </trim>
+ </sql>
+ <select id="query" parameterType="map" resultType="com.basics.sys.entity.SysCustomerLevel">
+  <![CDATA[
+  SELECT
+  sysCustomerLevel.LEVEL_ID "id",
+  sysCustomerLevel.LEVEL_NAME "levelName",
+  sysCustomerLevel.LEVEL_ENGLISH_NAME "levelEnglishName",
+  sysCustomerLevel.LEVEL_KOREAN_NAME "levelKoreanName",
+  sysCustomerLevel.LEVEL_JAPANESE_NAME "levelJapaneseName",
+  sysCustomerLevel.LEVEL_MIN_INTEGRAL "levelMinIntegral",
+  sysCustomerLevel.LEVEL_MAX_INTEGRAL "levelMaxIntegral",
+  sysCustomerLevel.SALF_NUM "salfNum",
+  sysCustomerLevel.SALF_REWARD_RATE "salfRewardRate",
+  sysCustomerLevel.RECAST_REWARD_RATE "recastRewardRate",
+  sysCustomerLevel.TEAM_OUT_REWARD_RATE "teamOutRewardRate",
+  sysCustomerLevel.TEAM_IN_REWARD_RATE "teamInRewardRate",
+  sysCustomerLevel.FLAT_REWARD_RATE "flatRewardRate",
+  sysCustomerLevel.EXCHANGE_RATE "exchangeRate",
+  sysCustomerLevel.LEVEL_SORT "levelSort",
+  sysCustomerLevel.FLOOR_NUM "floorNum",
+  sysCustomerLevel.LIMIT_COIN "limitCoin",
+  sysCustomerLevel.VERSION_NUM "versionNum",
+  sysCustomerLevel.FLAG_DEL "flagDel",
+  sysCustomerLevel.CREATE_TIME "createTime",
+  sysCustomerLevel.CREATE_USER "createUser",
+  sysCustomerLevel.MODIFY_USER "modifyUser",
+  sysCustomerLevel.MODIFY_TIME "modifyTime"
+  FROM sys_customer_level sysCustomerLevel
+  ]]>
+  <include refid="condition" />
+  <choose>
+   <when test="@org.apache.commons.lang.StringUtils@isNotEmpty(orderBy)"> ORDER BY ${orderBy}
+   </when>
+   <otherwise>
+    <!-- //TODO:ADD DEFAULT ORDER COLUMN OR DONOTHING! -->
+   </otherwise>
+  </choose>
+ </select>
+ <select id="count" parameterType="map" resultType="long">
+  <![CDATA[ SELECT COUNT(1) FROM sys_customer_level sysCustomerLevel]]>
+  <include refid="condition" />
+ </select>
+ <sql id="conditionDeleteAll">
+  <trim prefix="WHERE" prefixOverrides="AND |OR">
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(id)">
+   <![CDATA[ AND LEVEL_ID = #{id} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(levelName)">
+   <![CDATA[ AND LEVEL_NAME = #{levelName} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(levelEnglishName)">
+   <![CDATA[ AND LEVEL_ENGLISH_NAME = #{levelEnglishName} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(levelKoreanName)">
+   <![CDATA[ AND LEVEL_KOREAN_NAME = #{levelKoreanName} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(levelJapaneseName)">
+   <![CDATA[ AND LEVEL_JAPANESE_NAME = #{levelJapaneseName} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(levelMinIntegral)">
+   <![CDATA[ AND LEVEL_MIN_INTEGRAL = #{levelMinIntegral} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(levelMaxIntegral)">
+   <![CDATA[ AND LEVEL_MAX_INTEGRAL = #{levelMaxIntegral} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(salfNum)">
+   <![CDATA[ AND SALF_NUM = #{salfNum} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(salfRewardRate)">
+   <![CDATA[ AND SALF_REWARD_RATE = #{salfRewardRate} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(recastRewardRate)">
+   <![CDATA[ AND RECAST_REWARD_RATE = #{recastRewardRate} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(teamOutRewardRate)">
+   <![CDATA[ AND TEAM_OUT_REWARD_RATE = #{teamOutRewardRate} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(teamInRewardRate)">
+   <![CDATA[ AND TEAM_IN_REWARD_RATE = #{teamInRewardRate} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(flatRewardRate)">
+   <![CDATA[ AND FLAT_REWARD_RATE = #{flatRewardRate} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(exchangeRate)">
+   <![CDATA[ AND EXCHANGE_RATE = #{exchangeRate} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(levelSort)">
+   <![CDATA[ AND LEVEL_SORT = #{levelSort} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(floorNum)">
+   <![CDATA[ AND FLOOR_NUM = #{floorNum} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(limitCoin)">
+   <![CDATA[ AND LIMIT_COIN = #{limitCoin} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(versionNum)">
+   <![CDATA[ AND VERSION_NUM = #{versionNum} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(flagDel)">
+   <![CDATA[ AND FLAG_DEL = #{flagDel} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(createTime)">
+   <![CDATA[ AND CREATE_TIME = #{createTime} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(createUser)">
+   <![CDATA[ AND CREATE_USER = #{createUser} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(modifyUser)">
+   <![CDATA[ AND MODIFY_USER = #{modifyUser} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(modifyTime)">
+   <![CDATA[ AND MODIFY_TIME = #{modifyTime} ]]>
+  </if>
+  </trim>
+ </sql>
+ <delete id="deleteAll" parameterType="map">
+  <![CDATA[DELETE FROM sys_customer_level]]>
+  <include refid="conditionDeleteAll" />
+ </delete>
+</mapper>

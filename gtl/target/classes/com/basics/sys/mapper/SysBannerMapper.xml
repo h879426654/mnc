@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC
+ "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.basics.sys.entity.SysBanner">
+ <cache type="com.basics.support.mybatis.CacheAdapter"/>
+ <delete id="delete" parameterType="com.basics.sys.entity.SysBanner">
+  <![CDATA[ DELETE FROM sys_banner WHERE  BANNER_ID = #{id} ]]>
+ </delete>
+ <insert id="insert" parameterType="com.basics.sys.entity.SysBanner">
+  <![CDATA[  INSERT INTO sys_banner (]]>
+  <trim prefix="" suffixOverrides=",">
+   <if test="id!=null">BANNER_ID,</if>
+   <if test="countryId!=null">COUNTRY_ID,</if>
+   <if test="bannerTitle!=null">BANNER_TITLE,</if>
+   <if test="bannerImage!=null">BANNER_IMAGE,</if>
+   <if test="bannerType!=null">BANNER_TYPE,</if>
+   <if test="bannerUrl!=null">BANNER_URL,</if>
+   <if test="bannerSort!=null">BANNER_SORT,</if>
+   <if test="versionNum!=null">VERSION_NUM,</if>
+   <if test="flagDel!=null">FLAG_DEL,</if>
+   <if test="createTime!=null">CREATE_TIME,</if>
+   <if test="createUser!=null">CREATE_USER,</if>
+   <if test="modifyUser!=null">MODIFY_USER,</if>
+   <if test="modifyTime!=null">MODIFY_TIME,</if>
+  </trim>
+  <![CDATA[)VALUES(]]>
+  <trim prefix="" suffixOverrides=",">
+   <if test="id!=null">#{id},</if>
+   <if test="countryId!=null">#{countryId},</if>
+   <if test="bannerTitle!=null">#{bannerTitle},</if>
+   <if test="bannerImage!=null">#{bannerImage},</if>
+   <if test="bannerType!=null">#{bannerType},</if>
+   <if test="bannerUrl!=null">#{bannerUrl},</if>
+   <if test="bannerSort!=null">#{bannerSort},</if>
+   <if test="versionNum!=null">#{versionNum},</if>
+   <if test="flagDel!=null">#{flagDel},</if>
+   <if test="createTime!=null">#{createTime},</if>
+   <if test="createUser!=null">#{createUser},</if>
+   <if test="modifyUser!=null">#{modifyUser},</if>
+   <if test="modifyTime!=null">#{modifyTime},</if>
+  </trim>
+  <![CDATA[)]]>
+ </insert>
+ <update id="update" parameterType="com.basics.sys.entity.SysBanner">
+  <![CDATA[ UPDATE sys_banner ]]>
+  <trim prefix="SET" suffixOverrides=",">
+  <if test="id!=null">BANNER_ID = #{id},</if>
+  <if test="countryId!=null">COUNTRY_ID = #{countryId},</if>
+  <if test="bannerTitle!=null">BANNER_TITLE = #{bannerTitle},</if>
+  <if test="bannerImage!=null">BANNER_IMAGE = #{bannerImage},</if>
+  <if test="bannerType!=null">BANNER_TYPE = #{bannerType},</if>
+  <if test="bannerUrl!=null">BANNER_URL = #{bannerUrl},</if>
+  <if test="bannerSort!=null">BANNER_SORT = #{bannerSort},</if>
+  <if test="versionNum!=null">VERSION_NUM = #{versionNum},</if>
+  <if test="flagDel!=null">FLAG_DEL = #{flagDel},</if>
+  <if test="createTime!=null">CREATE_TIME = #{createTime},</if>
+  <if test="createUser!=null">CREATE_USER = #{createUser},</if>
+  <if test="modifyUser!=null">MODIFY_USER = #{modifyUser},</if>
+  <if test="modifyTime!=null">MODIFY_TIME = #{modifyTime},</if>
+  </trim>
+  <![CDATA[ WHERE  BANNER_ID = #{id}   ]]>
+ </update>
+ <sql id="condition">
+  <trim prefix="WHERE" prefixOverrides="AND |OR">
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(id)">
+   <![CDATA[ AND sysBanner.BANNER_ID = #{id}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(countryId)">
+   <![CDATA[ AND sysBanner.COUNTRY_ID = #{countryId}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(bannerTitle)">
+   <![CDATA[ AND sysBanner.BANNER_TITLE = #{bannerTitle}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(bannerImage)">
+   <![CDATA[ AND sysBanner.BANNER_IMAGE = #{bannerImage}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(bannerType)">
+   <![CDATA[ AND sysBanner.BANNER_TYPE = #{bannerType}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(bannerUrl)">
+   <![CDATA[ AND sysBanner.BANNER_URL = #{bannerUrl}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(bannerSort)">
+   <![CDATA[ AND sysBanner.BANNER_SORT = #{bannerSort}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(versionNum)">
+   <![CDATA[ AND sysBanner.VERSION_NUM = #{versionNum}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(flagDel)">
+   <![CDATA[ AND sysBanner.FLAG_DEL = #{flagDel}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(createTime)">
+   <![CDATA[ AND sysBanner.CREATE_TIME = #{createTime}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(createUser)">
+   <![CDATA[ AND sysBanner.CREATE_USER = #{createUser}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(modifyUser)">
+   <![CDATA[ AND sysBanner.MODIFY_USER = #{modifyUser}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(modifyTime)">
+   <![CDATA[ AND sysBanner.MODIFY_TIME = #{modifyTime}    ]]>
+  </if>
+  </trim>
+ </sql>
+ <select id="query" parameterType="map" resultType="com.basics.sys.entity.SysBanner">
+  <![CDATA[
+  SELECT
+  sysBanner.BANNER_ID "id",
+  sysBanner.COUNTRY_ID "countryId",
+  sysBanner.BANNER_TITLE "bannerTitle",
+  sysBanner.BANNER_IMAGE "bannerImage",
+  sysBanner.BANNER_TYPE "bannerType",
+  sysBanner.BANNER_URL "bannerUrl",
+  sysBanner.BANNER_SORT "bannerSort",
+  sysBanner.VERSION_NUM "versionNum",
+  sysBanner.FLAG_DEL "flagDel",
+  sysBanner.CREATE_TIME "createTime",
+  sysBanner.CREATE_USER "createUser",
+  sysBanner.MODIFY_USER "modifyUser",
+  sysBanner.MODIFY_TIME "modifyTime",
+  appOption.OPTION_NAME "bannerTypeName",
+  country.COUNTRY_NAME "countryName"
+  FROM sys_banner sysBanner
+  LEFT OUTER JOIN app_option appOption ON appOption.OPTION_PARENT_ID = "BANNER_TYPE" AND appOption.OPTION_CODE = sysBanner.BANNER_TYPE
+  LEFT OUTER JOIN sys_country country ON country.COUNTRY_ID = sysBanner.COUNTRY_ID
+  ]]>
+  <include refid="condition" />
+  <choose>
+   <when test="@org.apache.commons.lang.StringUtils@isNotEmpty(orderBy)"> ORDER BY ${orderBy}
+   </when>
+   <otherwise>
+    <!-- //TODO:ADD DEFAULT ORDER COLUMN OR DONOTHING! -->
+   </otherwise>
+  </choose>
+ </select>
+ <select id="count" parameterType="map" resultType="long">
+  <![CDATA[ SELECT COUNT(1) FROM sys_banner sysBanner]]>
+  <include refid="condition" />
+ </select>
+ <sql id="conditionDeleteAll">
+  <trim prefix="WHERE" prefixOverrides="AND |OR">
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(id)">
+   <![CDATA[ AND BANNER_ID = #{id} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(countryId)">
+   <![CDATA[ AND COUNTRY_ID = #{countryId} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(bannerTitle)">
+   <![CDATA[ AND BANNER_TITLE = #{bannerTitle} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(bannerImage)">
+   <![CDATA[ AND BANNER_IMAGE = #{bannerImage} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(bannerType)">
+   <![CDATA[ AND BANNER_TYPE = #{bannerType} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(bannerUrl)">
+   <![CDATA[ AND BANNER_URL = #{bannerUrl} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(bannerSort)">
+   <![CDATA[ AND BANNER_SORT = #{bannerSort} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(versionNum)">
+   <![CDATA[ AND VERSION_NUM = #{versionNum} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(flagDel)">
+   <![CDATA[ AND FLAG_DEL = #{flagDel} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(createTime)">
+   <![CDATA[ AND CREATE_TIME = #{createTime} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(createUser)">
+   <![CDATA[ AND CREATE_USER = #{createUser} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(modifyUser)">
+   <![CDATA[ AND MODIFY_USER = #{modifyUser} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(modifyTime)">
+   <![CDATA[ AND MODIFY_TIME = #{modifyTime} ]]>
+  </if>
+  </trim>
+ </sql>
+ <delete id="deleteAll" parameterType="map">
+  <![CDATA[DELETE FROM sys_banner]]>
+  <include refid="conditionDeleteAll" />
+ </delete>
+ 
+ <select id="queryBannerImg" parameterType="map" resultType="com.basics.cu.controller.response.BaseImgResponse">
+  <![CDATA[
+  SELECT
+  sysBanner.BANNER_IMAGE "img",
+  sysBanner.BANNER_URL "url"
+  FROM sys_banner sysBanner
+  ]]>
+  <include refid="condition" />
+  <choose>
+   <when test="@org.apache.commons.lang.StringUtils@isNotEmpty(orderBy)"> ORDER BY ${orderBy}
+   </when>
+   <otherwise>
+    <!-- //TODO:ADD DEFAULT ORDER COLUMN OR DONOTHING! -->
+   </otherwise>
+  </choose>
+ </select>
+ 
+</mapper>

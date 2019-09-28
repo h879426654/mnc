@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC
+ "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.basics.cu.entity.CuCustomerReferee">
+ <cache type="com.basics.support.mybatis.CacheAdapter"/>
+ <delete id="delete" parameterType="com.basics.cu.entity.CuCustomerReferee">
+  <![CDATA[ DELETE FROM cu_customer_referee WHERE  CUSTOMER_ID = #{id} ]]>
+ </delete>
+ <insert id="insert" parameterType="com.basics.cu.entity.CuCustomerReferee">
+  <![CDATA[  INSERT INTO cu_customer_referee (]]>
+  <trim prefix="" suffixOverrides=",">
+   <if test="id!=null">CUSTOMER_ID,</if>
+   <if test="refereeId!=null">REFEREE_ID,</if>
+  </trim>
+  <![CDATA[)VALUES(]]>
+  <trim prefix="" suffixOverrides=",">
+   <if test="id!=null">#{id},</if>
+   <if test="refereeId!=null">#{refereeId},</if>
+  </trim>
+  <![CDATA[)]]>
+ </insert>
+ <update id="update" parameterType="com.basics.cu.entity.CuCustomerReferee">
+  <![CDATA[ UPDATE cu_customer_referee ]]>
+  <trim prefix="SET" suffixOverrides=",">
+  <if test="id!=null">CUSTOMER_ID = #{id},</if>
+  <if test="refereeId!=null">REFEREE_ID = #{refereeId},</if>
+  </trim>
+  <![CDATA[ WHERE  CUSTOMER_ID = #{id}   ]]>
+ </update>
+ <sql id="condition">
+  <trim prefix="WHERE" prefixOverrides="AND |OR">
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(id)">
+   <![CDATA[ AND cuCustomerReferee.CUSTOMER_ID = #{id}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(refereeId)">
+   <![CDATA[ AND cuCustomerReferee.REFEREE_ID = #{refereeId}    ]]>
+  </if>
+   <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(customerPhone)">
+    <![CDATA[ AND cuCustomerReferee.REFEREE_ID=(SELECT CUSTOMER_ID FROM `cu_customer_login` WHERE CUSTOMER_PHONE=#{customerPhone})   ]]>
+   </if>
+  </trim>
+ </sql>
+ <select id="query" parameterType="map" resultType="com.basics.cu.entity.CuCustomerReferee">
+  <![CDATA[
+  SELECT
+  cuCustomerReferee.CUSTOMER_ID "id",
+  cuCustomerReferee.REFEREE_ID "refereeId"
+  FROM cu_customer_referee cuCustomerReferee
+  ]]>
+  <include refid="condition" />
+  <choose>
+   <when test="@org.apache.commons.lang.StringUtils@isNotEmpty(orderBy)"> ORDER BY ${orderBy}
+   </when>
+   <otherwise>
+    <!-- //TODO:ADD DEFAULT ORDER COLUMN OR DONOTHING! -->
+   </otherwise>
+  </choose>
+ </select>
+ <select id="count" parameterType="map" resultType="long">
+  <![CDATA[ SELECT COUNT(1) FROM cu_customer_referee cuCustomerReferee]]>
+  <include refid="condition" />
+ </select>
+ <sql id="conditionDeleteAll">
+  <trim prefix="WHERE" prefixOverrides="AND |OR">
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(id)">
+   <![CDATA[ AND CUSTOMER_ID = #{id} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(refereeId)">
+   <![CDATA[ AND REFEREE_ID = #{refereeId} ]]>
+  </if>
+  </trim>
+ </sql>
+ <delete id="deleteAll" parameterType="map">
+  <![CDATA[DELETE FROM cu_customer_referee]]>
+  <include refid="conditionDeleteAll" />
+ </delete>
+ 
+ <select id="queryDirectCustomer" parameterType="map" resultType="com.basics.cu.controller.response.DirectCustomerResponse">
+  <![CDATA[
+  SELECT
+	cuCustomerInfo.CUSTOMER_NAME "customerName",
+	cuCustomerInfo.CUSTOMER_PHONE "customerPhone",
+	cuCustomerInfo.REGISTER_TIME "registerTime",
+	cuCustomerAccount.use_money "useMoney",
+	cuCustomerAccount.USE_COIN "useCoin",
+	cuCustomerAccount.CUSTOMER_INTEGRAL "customerIntegral",
+	IFNULL(cuCustomerCount.SALF_NUM,0) "salfNum",
+	IFNULL(cuCustomerCount.TEAM_NUM,0) "teamNum",
+	sysCustomerLevel.LEVEL_NAME "customerLevelName"
+  FROM
+	cu_customer_referee cuCustomerReferee
+  LEFT OUTER JOIN cu_customer_info cuCustomerInfo ON cuCustomerInfo.CUSTOMER_ID = cuCustomerReferee.CUSTOMER_ID
+  LEFT OUTER JOIN cu_customer_count cuCustomerCount ON cuCustomerCount.COUNT_ID = cuCustomerReferee.CUSTOMER_ID
+  LEFT OUTER JOIN cu_customer_account cuCustomerAccount ON cuCustomerAccount.CUSTOMER_ID = cuCustomerReferee.CUSTOMER_ID
+  LEFT OUTER JOIN sys_customer_level sysCustomerLevel ON sysCustomerLevel.LEVEL_ID = cuCustomerCount.CUSTOMER_LEVEL_ID
+  ]]>
+  <include refid="condition" />
+  <choose>
+   <when test="@org.apache.commons.lang.StringUtils@isNotEmpty(orderBy)"> ORDER BY ${orderBy}
+   </when>
+   <otherwise>
+    <!-- //TODO:ADD DEFAULT ORDER COLUMN OR DONOTHING! -->
+   </otherwise>
+  </choose>
+ </select>
+ 
+ <select id="queryRefereeCustomer" parameterType="map" resultType="com.basics.cu.controller.response.DirectCustomerResponse">
+  <![CDATA[
+  SELECT
+	cuCustomerInfo.CUSTOMER_NAME "customerName",
+	cuCustomerInfo.CUSTOMER_PHONE "customerPhone"
+  FROM
+	cu_customer_referee cuCustomerReferee
+  INNER JOIN cu_customer_info cuCustomerInfo ON cuCustomerInfo.CUSTOMER_ID = cuCustomerReferee.REFEREE_ID
+  ]]>
+  <include refid="condition" />
+  <choose>
+   <when test="@org.apache.commons.lang.StringUtils@isNotEmpty(orderBy)"> ORDER BY ${orderBy}
+   </when>
+   <otherwise>
+    <!-- //TODO:ADD DEFAULT ORDER COLUMN OR DONOTHING! -->
+   </otherwise>
+  </choose>
+ </select>
+
+
+ <select id="queryZtree" parameterType="map" resultType="com.basics.cu.entity.CuCustomerReferee">
+  <![CDATA[
+   SELECT
+    cuCustomerReferee.CUSTOMER_ID "id",
+    cuCustomerReferee.REFEREE_ID "refereeId",
+    customer.CUSTOMER_PHONE "customerPhone",
+    customer.REAL_NAME "realName",
+    customer.CUSTOMER_NAME "customerName"
+    FROM cu_customer_referee cuCustomerReferee
+  left join cu_customer_info customer on cuCustomerReferee.CUSTOMER_ID=customer.CUSTOMER_ID
+  ]]>
+  <include refid="condition" />
+  <choose>
+   <when test="@org.apache.commons.lang.StringUtils@isNotEmpty(orderBy)"> ORDER BY ${orderBy}
+   </when>
+   <otherwise>
+   </otherwise>
+  </choose>
+ </select>
+ 
+</mapper>

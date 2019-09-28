@@ -1,13 +1,16 @@
 package com.basics.gty.controller.api;
 
-import com.basics.common.DataResponse;
-import com.basics.common.TokenIdRequest;
+import com.basics.common.*;
+import com.basics.cu.controller.response.CustomerInfoResponse;
+import com.basics.cu.service.CuCustomerInfoService;
+import com.basics.cu.service.CustomerApiService;
 import com.basics.gty.controller.request.TokenTransferRequest;
 import com.basics.gty.entity.GtyWallet;
 import com.basics.gty.entity.GtyWalletHistory;
 import com.basics.gty.service.GtyWalletHistory2Service;
 import com.basics.gty.service.GtyWalletService;
 import com.basics.support.QueryFilter;
+import com.basics.support.QueryFilterBuilder;
 import com.basics.support.auth.HttpClientUtils;
 import com.basics.wallet.Web3JConfigure;
 import com.basics.wallet.controller.response.TransationResponse;
@@ -30,6 +33,7 @@ import org.web3j.abi.datatypes.generated.Uint256;
 import org.web3j.crypto.Credentials;
 import org.web3j.crypto.RawTransaction;
 import org.web3j.crypto.TransactionEncoder;
+import org.web3j.crypto.WalletUtils;
 import org.web3j.protocol.core.DefaultBlockParameterName;
 import org.web3j.protocol.core.methods.response.EthGetTransactionCount;
 import org.web3j.protocol.core.methods.response.EthSendTransaction;
@@ -37,6 +41,7 @@ import org.web3j.tx.Contract;
 import org.web3j.utils.Numeric;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.File;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.*;
@@ -165,9 +170,59 @@ public class GtyWalletApiController implements ApplicationContextAware {
         return transationResponse;
     }
 
-    @RequestMapping("transferMoney")
-    public DataResponse transfer(TokenTransferRequest request) {
+    @RequestMapping("createWallet")
+    public DataResponse createWallet(TokenRequest request, HttpServletRequest req){
         DataResponse dataResponse = new DataResponse();
+        DataItemResponse<CustomerInfoResponse> response  = cuCustomerInfoService.selectCustomerInfo(request, req);
+        CustomerInfoResponse customerInfoResponse;
+        if(response.getItem()!=null){
+            customerInfoResponse = response.getItem();
+        }else {
+            dataResponse.setMsg("未找到该用户");
+            dataResponse.setStatus(1);
+            return dataResponse;
+        }
+
+        QueryFilter filter = new QueryFilter();
+        Map<String, Object> map = new HashMap<>();
+        map.put("USER_ID", customerInfoResponse.getId());
+        filter.setParams(map);
+        GtyWallet gtyWallet1 = gtySer.queryOne(filter);
+        if(StringUtils.isBlank(gtyWallet1.getWalletAddress())){
+            dataResponse.setStatus(0);
+            dataResponse.setMsg("成功");
+            return dataResponse;
+        }
+
+//        String walletFileName = WalletUtils.generateNewWalletFile(password, new File(walletFilePath), false);
+//        Credentials credentials = WalletUtils.loadCredentials(password, walletFilePath + "/" + walletFileName);
+//        String address = credentials.getAddress();
+//        GtyWallet gtyWallet = new GtyWallet();
+//        gtyWallet.setUserId(customerInfoResponse.getId());
+//        gtyWallet.setWalletAddress(address);
+//        gtySer.save(gtyWallet);
+        dataResponse.setStatus(0);
+        dataResponse.setMsg("成功");
+        return dataResponse;
+    }
+
+
+    @Autowired
+    CustomerApiService cuCustomerInfoService;
+
+
+    @RequestMapping("transferMoney")
+    public DataResponse transfer(TokenTransferRequest request, HttpServletRequest req) {
+        DataItemResponse<CustomerInfoResponse> response  = cuCustomerInfoService.selectCustomerInfo(request, req);
+        DataResponse dataResponse = new DataResponse();
+        if(response.getItem()!=null){
+
+        }else {
+            dataResponse.setMsg("未找到该用户");
+            dataResponse.setStatus(1);
+            return dataResponse;
+        }
+
         if (StringUtils.isBlank(request.getId())) {
             dataResponse.setMsg("未找到该用户");
             dataResponse.setStatus(1);
@@ -246,6 +301,27 @@ public class GtyWalletApiController implements ApplicationContextAware {
 		dataResponse.setStatus(0);
         return dataResponse;
     }
+
+    @RequestMapping("transferTokenHistory")
+    public DataItemResponse<List<GtyWalletHistory>> getWalletTransferHistory(IdRequest request){
+        DataItemResponse dataItemResponse = new DataItemResponse();
+        if (StringUtils.isBlank(request.getId())) {
+            dataItemResponse.setMsg("未找到该用户");
+            dataItemResponse.setStatus(1);
+            return dataItemResponse;
+        }
+        QueryFilter filter = new QueryFilter();
+        Map<String, Object> map = new HashMap<>();
+        map.put("USER_ID", request.getId());
+        filter.setParams(map);
+
+        List<GtyWalletHistory> gtyWallet = gtyWalletHistoryService.query(filter);
+        dataItemResponse.setItem(gtyWallet);
+        dataItemResponse.setMsg("成功");
+        dataItemResponse.setStatus(0);
+        return dataItemResponse;
+    }
+
 
     private DataResponse transferError(DataResponse dataResponse, String msg) {
         dataResponse.setMsg(msg);
