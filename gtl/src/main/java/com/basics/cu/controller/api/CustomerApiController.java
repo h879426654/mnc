@@ -596,4 +596,10 @@ public class CustomerApiController implements ApplicationContextAware {
 	public String searchDiscuss(@Valid String shopId, Integer pageNum, Integer pageSize) {
 		return cuCustomerCollectService.searchDiscuss(shopId, pageNum, pageSize);
 	}
+
+	@RequestMapping("getPhone")
+	public String getPhone(@Valid String personToken) {
+		return cuCustomerCollectService.getPhone(personToken);
+	}
+
 }

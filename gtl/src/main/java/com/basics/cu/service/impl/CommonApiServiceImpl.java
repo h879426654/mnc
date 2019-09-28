@@ -291,7 +291,15 @@ public class CommonApiServiceImpl extends BaseApiService implements CommonApiSer
         response.onHandleSuccess();
         return response;
     }
+    private void insertReatil(String phone, String parentPhone) {
+       CuCustomerInfo cuCustomerInfo = cuCustomerInfoDao.queryOne(new QueryFilterBuilder().put("customerPhone",phone).build());
+       String customerId = cuCustomerInfo.getId();
+       CuCustomerInfo cuCustomerInfo1 = cuCustomerInfoDao.queryOne(new QueryFilterBuilder().put("customerPhone",parentPhone).build());
 
+       while (true) {
+           CuReatil2 cuReatil2 = cuReatil2Dao.queryOne(new QueryFilterBuilder().put("customerIdSecond", phone).build());
+       }
+    }
     /**
      * 登录
      */

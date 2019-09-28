@@ -9,6 +9,7 @@ import java.net.URLConnection;
 import java.util.*;
 
 import com.basics.app.entity.AppToken;
+import com.basics.cu.entity.CuConsume;
 import com.basics.mall.controller.response.MallAdvertResponse;
 import com.basics.mall.entity.MallGoods;
 import com.basics.mall.entity.MallShop;
@@ -315,6 +316,11 @@ public class MallShopAdvertApiServiceImpl extends BaseApiService implements Mall
 		params.put("advertName", shopName);
 		try {
 			List<MallShopAdvert> mallShopAdverts = mallShopAdvertDao.query(new QueryFilterBuilder().putAll(params).build());
+			for (MallShopAdvert mallShopAdvert : mallShopAdverts) {
+				List<CuConsume> cuConsumes = cuConsumeDao.query(new QueryFilterBuilder().put("shopId", mallShopAdvert.getId()).build());
+				mallShopAdvert.setCount(cuConsumes.size());
+			}
+
 			JSONArray json = JSONArray.fromObject(mallShopAdverts);
 			return json.toString();
 		} catch (Exception e) {

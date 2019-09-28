@@ -155,4 +155,8 @@ public class MallShopAdvert extends MallShopAdvertBase{
   this.setPerson(person);
   return this;
  }
+ public MallShopAdvert count(Integer count) {
+  this.setCount(count);
+  return this;
+ }
 }

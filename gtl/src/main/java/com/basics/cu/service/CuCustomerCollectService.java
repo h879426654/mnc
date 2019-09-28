@@ -35,4 +35,6 @@ public interface CuCustomerCollectService {
     String insertDiscuss(String token, String shopId, String remark, String id);
 
     String searchDiscuss(String shopId, Integer pageNum, Integer pageSize);
+
+    String getPhone(String personToken);
 }

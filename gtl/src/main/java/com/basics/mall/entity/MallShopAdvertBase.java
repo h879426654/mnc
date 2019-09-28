@@ -27,6 +27,15 @@ public class MallShopAdvertBase extends BaseBean{
     private Integer pageS;
     private String list;
     private String person;
+    private Integer count;
+
+    public Integer getCount() {
+        return count;
+    }
+
+    public void setCount(Integer count) {
+        this.count = count;
+    }
 
     public String getPerson() {
         return person;

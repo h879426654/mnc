@@ -314,6 +314,13 @@ public class CuCustomerCollectMybatisServiceImpl extends BaseApiService implemen
         }
     }
 
+    @Override
+    public String getPhone(String personToken) {
+        String customerId = this.getCuCustomerInfo(personToken);
+        String phone = cuCustomerInfoDao.queryOne(new QueryFilterBuilder().put("id", customerId).build()).getCustomerPhone();
+        return phone;
+    }
+
     /**
      * 返还积分
      * @param id
