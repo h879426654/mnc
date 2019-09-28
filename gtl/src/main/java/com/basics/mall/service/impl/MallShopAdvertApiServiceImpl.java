@@ -1,12 +1,15 @@
 package com.basics.mall.service.impl;
 
+import java.io.BufferedReader;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.io.InputStreamReader;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
+import java.util.*;
 
+import com.basics.app.entity.AppToken;
+import com.basics.mall.controller.response.MallAdvertResponse;
 import com.basics.mall.entity.MallGoods;
 import com.basics.mall.entity.MallShop;
 import net.sf.json.JSONArray;
@@ -294,7 +297,7 @@ public class MallShopAdvertApiServiceImpl extends BaseApiService implements Mall
 	}
 
 	@Override
-	public String searchAdvert(String classifyId, String city, String region, String isNew, String sale, Integer pageNum, Integer pageSize, String shopName, String more) {
+	public String searchAdvert(String classifyId, String city, String region, String isNew, String sale, Integer pageNum, Integer pageSize, String shopName) {
 		if (null == pageNum) {
 			pageNum = 1;
 		}
@@ -309,14 +312,6 @@ public class MallShopAdvertApiServiceImpl extends BaseApiService implements Mall
 		params.put("advertSale", sale);
 		params.put("pageN", (pageNum-1)*10);
 		params.put("pageS", pageSize);
-		if (null != more) {
-			String classifyIds = "";
-			List<MallShopClassify> list = mallShopClassifyDao.query(new QueryFilterBuilder().put("flagDel","2").build());
-			for (MallShopClassify mallShopClassify : list) {
-				classifyIds += ",'" + mallShopClassify +"'";
-			}
-			params.put("classifyIds",classifyIds.substring(1));
-		}
 		params.put("advertName", shopName);
 		try {
 			List<MallShopAdvert> mallShopAdverts = mallShopAdvertDao.query(new QueryFilterBuilder().putAll(params).build());
@@ -375,4 +370,75 @@ public class MallShopAdvertApiServiceImpl extends BaseApiService implements Mall
 		return json.toString();
 	}
 
+	@Override
+	public String insertShopAdvert(MallAdvertResponse mallAdvertResponse) {
+		try {
+			MallShopAdvert mallShopAdvert = new MallShopAdvert();
+			mallShopAdvert.setId(UUID.randomUUID().toString().replace("-",""));
+			mallShopAdvert.setAdvertImage(mallAdvertResponse.getAdvertImage());
+			mallShopAdvert.setAdvertName(mallAdvertResponse.getShopName());
+			mallShopAdvert.setAdvertContext(mallAdvertResponse.getAdvertContext());
+			mallShopAdvert.setPerson(mallAdvertResponse.getPerson());
+			mallShopAdvert.setAdvertPhone(mallAdvertResponse.getAdvertPhone());
+			mallShopAdvert.setAdvertAddress(mallAdvertResponse.getAdvertAddress());
+			mallShopAdvert.setShopLicence(mallAdvertResponse.getShopLicence());
+			mallShopAdvert.setCity(mallAdvertResponse.getCity());
+			mallShopAdvert.setRegion(mallAdvertResponse.getRegion());
+			AppToken appToken = appTokenDao.queryOne(new QueryFilterBuilder().put("id", mallAdvertResponse.getToken()).build());
+			mallShopAdvert.setCustomerId(appToken.getUserId());
+			mallShopAdvert.setAdvertLatitude("112,11");
+			mallShopAdvert.setAdvertLongitude("110");
+			mallShopAdvert.setClassifyId(mallAdvertResponse.getClaasifyId());
+			mallShopAdvertDao.insert(mallShopAdvert);
+			return "成功";
+		} catch (Exception e) {
+			return "失败";
+		}
+	}
+
+	public static Map<String, Double> getLngAndLat(String address) {
+		Map<String, Double> map = new HashMap<String, Double>();
+		String url = "http://api.map.baidu.com/geocoder/v2/?address=" + address + "&output=json&ak=自己的key";
+		String json = loadJSON(url);
+		net.sf.json.JSONObject obj = null;
+		try {
+			obj = net.sf.json.JSONObject.fromObject(json);
+			if (obj.get("status").toString().equals("0")) {
+				double lng = obj.getJSONObject("result").getJSONObject("location").getDouble("lng");
+				double lat = obj.getJSONObject("result").getJSONObject("location").getDouble("lat");
+				map.put("lng", lng);
+				map.put("lat", lat);
+				//System.out.println("经度：" + lng + "---纬度：" + lat);
+			} else {
+
+           /* System.out.println("未找到相匹配的经纬度！");
+            Integer lng[] = {113, 114, 119, 115};
+            Integer lat[] = {34, 38, 26, 28};
+            int random = CreateDataUtil.getGaussianRandom(0, 3);
+            map.put("lng", lng[random].doubleValue());
+            map.put("lat", lat[random].doubleValue());*/
+			}
+		} catch (Exception e) {
+		}
+
+		return map;
+	}
+	public static String loadJSON(String url) {
+		StringBuilder json = new StringBuilder();
+		try {
+			URL oracle = new URL(url);
+			URLConnection yc = oracle.openConnection();
+			BufferedReader in = new BufferedReader(new InputStreamReader(
+					yc.getInputStream()));
+			String inputLine = null;
+			while ((inputLine = in.readLine()) != null) {
+				json.append(inputLine);
+			}
+			in.close();
+		} catch (MalformedURLException e) {
+		} catch (IOException e) {
+		}
+		return json.toString();
+
+	}
 }

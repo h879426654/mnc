@@ -147,12 +147,12 @@ public class MallShopAdvert extends MallShopAdvertBase{
   this.setPageS(pageS);
   return this;
  }
- public MallShopAdvert classifyIds(String classifyIds) {
-  this.setClassifyIds(classifyIds);
-  return this;
- }
  public MallShopAdvert list(String list) {
   this.setList(list);
+  return this;
+ }
+ public MallShopAdvert person(String person) {
+  this.setPerson(person);
   return this;
  }
 }
