@@ -6,7 +6,7 @@ public class MallShopAdvert extends MallShopAdvertBase{
  * 商家ID
  */
  public MallShopAdvert id(String id){
-  this.setId(id);
+  this.id(id);
   return this;
  }
  /**
@@ -14,13 +14,6 @@ public class MallShopAdvert extends MallShopAdvertBase{
   */
  public MallShopAdvert customerId(String customerId){
 	 this.setCustomerId(customerId);
-	 return this;
- }
- /**
-  * 国家ID
-  */
- public MallShopAdvert countryId(String countryId){
-	 this.setCountryId(countryId);
 	 return this;
  }
  /**
@@ -45,7 +38,7 @@ public class MallShopAdvert extends MallShopAdvertBase{
   return this;
  }
  /**
-  * 商家
+  * 商家视频
   */
  public MallShopAdvert shopVideo(String shopVideo){
 	 this.setShopVideo(shopVideo);
@@ -59,38 +52,10 @@ public class MallShopAdvert extends MallShopAdvertBase{
 	 return this;
  }
  /**
- * 商家分类ID
- */
- public MallShopAdvert advertClassifyId(String advertClassifyId){
-  this.setAdvertClassifyId(advertClassifyId);
-  return this;
- }
- /**
  * 联系方式
  */
  public MallShopAdvert advertPhone(String advertPhone){
   this.setAdvertPhone(advertPhone);
-  return this;
- }
- /**
- * 省ID
- */
- public MallShopAdvert addressProvince(String addressProvince){
-  this.setAddressProvince(addressProvince);
-  return this;
- }
- /**
- * 市ID
- */
- public MallShopAdvert addressCity(String addressCity){
-  this.setAddressCity(addressCity);
-  return this;
- }
- /**
- * 区域ID
- */
- public MallShopAdvert addressArea(String addressArea){
-  this.setAddressArea(addressArea);
   return this;
  }
  /**
@@ -117,7 +82,7 @@ public class MallShopAdvert extends MallShopAdvertBase{
  /**
   * 审核
   */
- public MallShopAdvert applyStatus(Integer applyStatus){
+ public MallShopAdvert applyStatus(String applyStatus){
 	 this.setApplyStatus(applyStatus);
 	 return this;
  }
@@ -129,16 +94,9 @@ public class MallShopAdvert extends MallShopAdvertBase{
 	 return this;
  }
  /**
- * 版本号
- */
- public MallShopAdvert versionNum(Integer versionNum){
-  this.setVersionNum(versionNum);
-  return this;
- }
- /**
  * 是否删除（1是 0否）
  */
- public MallShopAdvert flagDel(Integer flagDel){
+ public MallShopAdvert flagDel(String flagDel){
   this.setFlagDel(flagDel);
   return this;
  }
@@ -150,24 +108,51 @@ public class MallShopAdvert extends MallShopAdvertBase{
   return this;
  }
  /**
- * 创建人
- */
- public MallShopAdvert createUser(String createUser){
-  this.setCreateUser(createUser);
+  * 销量
+  */
+ public MallShopAdvert advertSale(int advertSale) {
+  this.setAdvertSale(advertSale);
   return this;
  }
  /**
- * 修改人
- */
- public MallShopAdvert modifyUser(String modifyUser){
-  this.setModifyUser(modifyUser);
+  * 市
+  */
+ public MallShopAdvert city(String city){
+  this.setCity(city);
   return this;
  }
  /**
- * 修改时间
- */
- public MallShopAdvert modifyTime(Date modifyTime){
-  this.setModifyTime(modifyTime);
+  * 区
+  */
+ public MallShopAdvert region(String region){
+  this.setRegion(region);
+  return this;
+ }
+ /**
+  * 销量
+  */
+ public MallShopAdvert customerPhone(String customerPhone) {
+  this.setCustomerPhone(customerPhone);
+  return this;
+ }
+ public MallShopAdvert classifyId(String classifyId) {
+  this.setClassifyId(classifyId);
+  return this;
+ }
+ public MallShopAdvert pageN(Integer pageN) {
+  this.setPageN(pageN);
+  return this;
+ }
+ public MallShopAdvert pageS(Integer pageS) {
+  this.setPageS(pageS);
+  return this;
+ }
+ public MallShopAdvert classifyIds(String classifyIds) {
+  this.setClassifyIds(classifyIds);
+  return this;
+ }
+ public MallShopAdvert list(String list) {
+  this.setList(list);
   return this;
  }
 }

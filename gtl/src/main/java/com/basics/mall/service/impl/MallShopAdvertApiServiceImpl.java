@@ -7,6 +7,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.basics.mall.entity.MallGoods;
+import com.basics.mall.entity.MallShop;
+import net.sf.json.JSONArray;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
@@ -39,6 +42,7 @@ import com.basics.support.MD5Util;
 import com.basics.support.PaginationSupport;
 import com.basics.support.QueryFilterBuilder;
 import com.basics.sys.entity.SysRule;
+import org.web3j.abi.datatypes.Int;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -110,117 +114,8 @@ public class MallShopAdvertApiServiceImpl extends BaseApiService implements Mall
 	 */
 	@Override
 	public DataResponse doPushShopAdvert(PushShopAdvertRequest request, HttpServletRequest req) {
-		DataResponse response = new DataResponse();
-		// 判断token是否存在
-		CuCustomerLogin user = checkToken(request.getToken());
-		if (null == user) {
-			response.onHandleFail(getMessage(req, "impl.doModifyLoginPass.token.invalid"));
-			response.setStatus(2);
-			return response;
-		}
-		if (!checkCustomerStatus(user)) {
-			response.onHandleFail(getMessage(req, "impl.doLogin.user.freeze"));
-			return response;
-		}
-		CuCustomerInfo info = cuCustomerInfoDao.get(user.getId());
-		
-		MallShopAdvert advert = mallShopAdvertDao.queryOne(new QueryFilterBuilder().put("customerId", user.getId()).build());
-		if(null != advert) {
-			if(Constant.APPLY_STATUS_3 != advert.getApplyStatus()) {
-                response.onHandleFail(getMessage(req, "mallShopAdvertApiServiceImpl.doPushShopAdvert.advert.agent"));
-				return response;
-			}
-			mallShopAdvertDao.delete(advert);
-		} 
-		advert = new MallShopAdvert();
-		advert.setId(user.getId());
-		advert.setCustomerId(user.getId());
-		advert.setAdvertName(request.getAdvertName());
-		advert.setAdvertContext(request.getAdvertContext());
-		advert.setAdvertClassifyId(request.getAdvertClassifyId());
-		advert.setAdvertPhone(request.getAdvertPhone());
-		advert.setAdvertAddress(request.getAdvertAddress());
-		advert.setAdvertLongitude(request.getAdvertLongitude());
-		advert.setAdvertLatitude(request.getAdvertLatitude());
-		advert.setAddressProvince(request.getAddressProvince());
-		advert.setAddressCity(request.getAddressCity());
-		advert.setAddressArea(request.getAddressArea());
-		advert.setCountryId(info.getCountryId());
-		advert.setApplyStatus(Constant.APPLY_STATUS_1);
-		advert.setCreateTime(new Date());
-		
-		String path = "advert/";
-		String fileName = "";
-		if (null != request.getAdvertImage() && !request.getAdvertImage().isEmpty()) {
-			fileName = request.getAdvertImage().getOriginalFilename();
-			path += GuidUtils.generateSimpleGuid() + MD5Util.random(6) + fileName.substring(fileName.lastIndexOf("."));
-			try {
-				this.baseFileStoreService.write(path, request.getAdvertImage().getInputStream());
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-			String url = this.baseFileStoreService.getInternetUrl(path);
-			advert.setAdvertImage(url);
-		} 
-		
-		if(null == request.getLicence() || request.getLicence().isEmpty()) {
-			SysRule rule = sysRuleDao.queryOne(new QueryFilterBuilder().build());
-			CommonSupport.checkNotNull(rule, "系统配置不能为空");
-			if(Constant.STATE_YES == rule.getNeedUploadLicence()) {
-                response.onHandleFail(getMessage(req, "mallShopAdvertApiServiceImpl.doPushShopAdvert.licence.empty"));
-				return response;
-			}
-		} else {
-			fileName = request.getLicence().getOriginalFilename();
-			path += GuidUtils.generateSimpleGuid() + MD5Util.random(6) + fileName.substring(fileName.lastIndexOf("."));
-			try {
-				this.baseFileStoreService.write(path, request.getLicence().getInputStream());
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-			String url = this.baseFileStoreService.getInternetUrl(path);
-			advert.setShopLicence(url);
-		}
-		
-		if (null != request.getShopVideo() && !request.getShopVideo().isEmpty()) {
-			fileName = request.getShopVideo().getOriginalFilename();
-			path += GuidUtils.generateSimpleGuid() + MD5Util.random(6) + fileName.substring(fileName.lastIndexOf("."));
-			try {
-				this.baseFileStoreService.write(path, request.getShopVideo().getInputStream());
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-			String url = this.baseFileStoreService.getInternetUrl(path);
-			advert.setShopVideo(url);
-		}
-		
-		if(CollectionUtils.isNotEmpty(request.getImages())) {
-			int sort = 1;
-			for (MultipartFile file : request.getImages()) {
-				AppImage appImage = null;
-				if (!file.isEmpty()) {
-					path = "advert/";
-					fileName = file.getOriginalFilename();
-					path += GuidUtils.generateSimpleGuid() + MD5Util.random(6) + fileName.substring(fileName.lastIndexOf("."));
-					try {
-						this.baseFileStoreService.write(path, file.getInputStream());
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
-					String url = this.baseFileStoreService.getInternetUrl(path);
-					appImage = new AppImage();
-					appImage.setOwnerId(advert.getId());
-					appImage.setOwnerClass("MallShopAdvert");
-					appImage.setUrl(url);
-					appImage.setOrder(sort++);
-					appImageDao.save(appImage);
-				}
-			}
-		}
-		
-		mallShopAdvertDao.save(advert);
-		response.onHandleSuccess();
-		return response;
+
+		return null;
 	}
 	
 	/**
@@ -228,77 +123,7 @@ public class MallShopAdvertApiServiceImpl extends BaseApiService implements Mall
 	 */
 	@Override
 	public DataResponse doPushShopAdvert2(PushShopAdvert2Request request, HttpServletRequest req) {
-		DataResponse response = new DataResponse();
-		// 判断token是否存在
-		CuCustomerLogin user = checkToken(request.getToken());
-		if (null == user) {
-			response.onHandleFail(getMessage(req, "impl.doModifyLoginPass.token.invalid"));
-			response.setStatus(2);
-			return response;
-		}
-		if (!checkCustomerStatus(user)) {
-			response.onHandleFail(getMessage(req, "impl.doLogin.user.freeze"));
-			return response;
-		}
-		CuCustomerInfo info = cuCustomerInfoDao.get(user.getId());
-		
-		MallShopAdvert advert = mallShopAdvertDao.queryOne(new QueryFilterBuilder().put("customerId", user.getId()).build());
-		if(null != advert) {
-			if(Constant.APPLY_STATUS_3 != advert.getApplyStatus()) {
-                response.onHandleFail(getMessage(req, "mallShopAdvertApiServiceImpl.doPushShopAdvert.licence.empty"));
-				return response;
-			}
-			mallShopAdvertDao.delete(advert);
-		} 
-		advert = new MallShopAdvert();
-		advert.setId(user.getId());
-		advert.setCustomerId(user.getId());
-		advert.setAdvertName(request.getAdvertName());
-		advert.setAdvertContext(request.getAdvertContext());
-		advert.setAdvertClassifyId(request.getAdvertClassifyId());
-		advert.setAdvertPhone(request.getAdvertPhone());
-		advert.setAdvertAddress(request.getAdvertAddress());
-		advert.setAdvertLongitude(request.getAdvertLongitude());
-		advert.setAdvertLatitude(request.getAdvertLatitude());
-		advert.setAddressProvince(request.getAddressProvince());
-		advert.setAddressCity(request.getAddressCity());
-		advert.setAddressArea(request.getAddressArea());
-		advert.setCountryId(info.getCountryId());
-		advert.setApplyStatus(Constant.APPLY_STATUS_1);
-		advert.setCreateTime(new Date());
-		
-		advert.setAdvertImage(request.getAdvertImage());
-		
-		if(StringUtils.isEmpty(request.getLicence())) {
-			SysRule rule = sysRuleDao.queryOne(new QueryFilterBuilder().build());
-			CommonSupport.checkNotNull(rule, "系统配置不能为空");
-			if(Constant.STATE_YES == rule.getNeedUploadLicence()) {
-                response.onHandleFail(getMessage(req, "mallShopAdvertApiServiceImpl.doPushShopAdvert.licence.empty"));
-				return response;
-			}
-		} else {
-			advert.setShopLicence(request.getLicence());
-		}
-		
-		if (StringUtils.isNotEmpty(request.getShopVideo())) {
-			advert.setShopVideo(request.getShopVideo());
-		}
-		
-		if(StringUtils.isNotEmpty(request.getImages())) {
-			String[] imgs = request.getImages().split(",");
-			int sort = 1;
-			for (String url : imgs) {
-				AppImage appImage = new AppImage();
-				appImage.setOwnerId(advert.getId());
-				appImage.setOwnerClass("MallShopAdvert");
-				appImage.setUrl(url);
-				appImage.setOrder(sort++);
-				appImageDao.save(appImage);
-			}
-		}
-		mallShopAdvertDao.save(advert);
-		response.onHandleSuccess();
-		return response;
+		return null;
 	}
 	
 	/**
@@ -306,118 +131,7 @@ public class MallShopAdvertApiServiceImpl extends BaseApiService implements Mall
 	 */
 	@Override
 	public DataResponse doUpdateShopAdvert(PushShopAdvertRequest request, HttpServletRequest req) {
-		DataResponse response = new DataResponse();
-		// 判断token是否存在
-		CuCustomerLogin user = checkToken(request.getToken());
-		if (null == user) {
-			response.onHandleFail(getMessage(req, "impl.doModifyLoginPass.token.invalid"));
-			response.setStatus(2);
-			return response;
-		}
-		if (!checkCustomerStatus(user)) {
-			response.onHandleFail(getMessage(req, "impl.doLogin.user.freeze"));
-			return response;
-		}
-		MallShopAdvert advert = mallShopAdvertDao.queryOne(new QueryFilterBuilder().put("customerId", user.getId()).put("applyStatus", Constant.APPLY_STATUS_2).build());
-		if (null == advert) {
-            response.onHandleFail(getMessage(req, "mallShopAdvertApiServiceImpl.doUpdateShopAdvert.info.error"));
-			return response;
-		}
-		
-		advert.setAdvertName(request.getAdvertName());
-		advert.setAdvertContext(request.getAdvertContext());
-		
-		String path = "advert/";
-		String fileName = "";
-		if (null != request.getAdvertImage() && !request.getAdvertImage().isEmpty()) {
-			fileName = request.getAdvertImage().getOriginalFilename();
-			path += GuidUtils.generateSimpleGuid() + MD5Util.random(6) + fileName.substring(fileName.lastIndexOf("."));
-			try {
-				this.baseFileStoreService.write(path, request.getAdvertImage().getInputStream());
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-			String url = this.baseFileStoreService.getInternetUrl(path);
-			advert.setAdvertImage(url);
-		} else {
-			advert.setAdvertImage(null);
-		}
-		
-		if(null == request.getLicence() || request.getLicence().isEmpty()) {
-			SysRule rule = sysRuleDao.queryOne(new QueryFilterBuilder().build());
-			CommonSupport.checkNotNull(rule, "系统配置不能为空");
-			if(Constant.STATE_YES == rule.getNeedUploadLicence()) {
-                response.onHandleFail(getMessage(req, "mallShopAdvertApiServiceImpl.doPushShopAdvert.licence.empty"));
-				return response;
-			}
-			advert.setShopLicence(null);
-		} else {
-			fileName = request.getLicence().getOriginalFilename();
-			path += GuidUtils.generateSimpleGuid() + MD5Util.random(6) + fileName.substring(fileName.lastIndexOf("."));
-			try {
-				this.baseFileStoreService.write(path, request.getLicence().getInputStream());
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-			String url = this.baseFileStoreService.getInternetUrl(path);
-			advert.setShopLicence(url);
-		}
-		
-		if (null != request.getShopVideo() && !request.getShopVideo().isEmpty()) {
-			fileName = request.getShopVideo().getOriginalFilename();
-			path += GuidUtils.generateSimpleGuid() + MD5Util.random(6) + fileName.substring(fileName.lastIndexOf("."));
-			try {
-				this.baseFileStoreService.write(path, request.getShopVideo().getInputStream());
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-			String url = this.baseFileStoreService.getInternetUrl(path);
-			advert.setShopVideo(url);
-		} else {
-			advert.setShopVideo(null);
-		}
-		advert.setAdvertClassifyId(request.getAdvertClassifyId());
-		advert.setAdvertPhone(request.getAdvertPhone());
-		advert.setAdvertAddress(request.getAdvertAddress());
-		advert.setAdvertLongitude(request.getAdvertLongitude());
-		advert.setAdvertLatitude(request.getAdvertLatitude());
-		advert.setAddressProvince(request.getAddressProvince());
-		advert.setAddressCity(request.getAddressCity());
-		advert.setAddressArea(request.getAddressArea());
-		if(CollectionUtils.isNotEmpty(request.getImages())) {
-			Map<String, Object> map = new HashMap<String, Object>();
-			map.put("ownerId", advert.getId());
-			map.put("ownerClass", "MallShopAdvert");
-			appImageDao.deleteAll(map);
-			int sort = 1;
-			for (MultipartFile file : request.getImages()) {
-				AppImage appImage = null;
-				if (!file.isEmpty()) {
-					path = "advert/";
-					fileName = file.getOriginalFilename();
-					path += GuidUtils.generateSimpleGuid() + MD5Util.random(6) + fileName.substring(fileName.lastIndexOf("."));
-					try {
-						this.baseFileStoreService.write(path, file.getInputStream());
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
-					String url = this.baseFileStoreService.getInternetUrl(path);
-					appImage = new AppImage();
-					appImage.setOwnerId(advert.getId());
-					appImage.setOwnerClass("MallShopAdvert");
-					appImage.setUrl(url);
-					appImage.setOrder(sort++);
-					appImageDao.save(appImage);
-				}
-			}
-		}
-		
-		mallShopAdvertDao.updateExtend(advert, "updateAdvert");
-		response.onHandleSuccess();
-		return response;
-		
-		
-		
+		return null;
 	}
 	
 	/**
@@ -425,77 +139,7 @@ public class MallShopAdvertApiServiceImpl extends BaseApiService implements Mall
 	 */
 	@Override
 	public DataResponse doUpdateShopAdvert2(PushShopAdvert2Request request, HttpServletRequest req) {
-		DataResponse response = new DataResponse();
-		// 判断token是否存在
-		CuCustomerLogin user = checkToken(request.getToken());
-		if (null == user) {
-			response.onHandleFail(getMessage(req, "impl.doModifyLoginPass.token.invalid"));
-			response.setStatus(2);
-			return response;
-		}
-		if (!checkCustomerStatus(user)) {
-			response.onHandleFail(getMessage(req, "impl.doLogin.user.freeze"));
-			return response;
-		}
-		MallShopAdvert advert = mallShopAdvertDao.queryOne(new QueryFilterBuilder().put("customerId", user.getId()).put("applyStatus", Constant.APPLY_STATUS_2).build());
-		if (null == advert) {
-            response.onHandleFail(getMessage(req, "mallShopAdvertApiServiceImpl.doUpdateShopAdvert.info.error"));
-			return response;
-		}
-		
-		advert.setAdvertName(request.getAdvertName());
-		advert.setAdvertContext(request.getAdvertContext());
-		
-		advert.setAdvertImage(request.getAdvertImage());
-		
-		if(StringUtils.isEmpty(request.getLicence())) {
-			SysRule rule = sysRuleDao.queryOne(new QueryFilterBuilder().build());
-			CommonSupport.checkNotNull(rule, "系统配置不能为空");
-			if(Constant.STATE_YES == rule.getNeedUploadLicence()) {
-                response.onHandleFail(getMessage(req, "mallShopAdvertApiServiceImpl.doPushShopAdvert.licence.empty"));
-				return response;
-			}
-		} else {
-			advert.setShopLicence(request.getLicence());
-		}
-		
-		if (StringUtils.isNotEmpty(request.getShopVideo())) {
-			advert.setShopVideo(request.getShopVideo());
-		}
-		
-		
-		advert.setAdvertClassifyId(request.getAdvertClassifyId());
-		advert.setAdvertPhone(request.getAdvertPhone());
-		advert.setAdvertAddress(request.getAdvertAddress());
-		advert.setAdvertLongitude(request.getAdvertLongitude());
-		advert.setAdvertLatitude(request.getAdvertLatitude());
-		advert.setAddressProvince(request.getAddressProvince());
-		advert.setAddressCity(request.getAddressCity());
-		advert.setAddressArea(request.getAddressArea());
-		
-		if(StringUtils.isNotBlank(request.getImages())) {
-			Map<String, Object> map = new HashMap<String, Object>();
-			map.put("ownerId", advert.getId());
-			map.put("ownerClass", "MallShopAdvert");
-			appImageDao.deleteAll(map);
-			String[] imgs = request.getImages().split(",");
-			int sort = 1;
-			for (String url : imgs) {
-				AppImage appImage = new AppImage();
-				appImage.setOwnerId(advert.getId());
-				appImage.setOwnerClass("MallShopAdvert");
-				appImage.setUrl(url);
-				appImage.setOrder(sort++);
-				appImageDao.save(appImage);
-			}
-		}
-		
-		mallShopAdvertDao.updateExtend(advert, "updateAdvert");
-		response.onHandleSuccess();
-		return response;
-		
-		
-		
+		return null;
 	}
 	
 	/**
@@ -647,6 +291,88 @@ public class MallShopAdvertApiServiceImpl extends BaseApiService implements Mall
 		response.setItem(data);
 		response.onHandleSuccess();
 		return response;
+	}
+
+	@Override
+	public String searchAdvert(String classifyId, String city, String region, String isNew, String sale, Integer pageNum, Integer pageSize, String shopName, String more) {
+		if (null == pageNum) {
+			pageNum = 1;
+		}
+		if (null == pageSize) {
+			pageSize = 10;
+		}
+		Map params = new HashMap();
+		params.put("classifyId", classifyId);
+		params.put("city", city);
+		params.put("region", region);
+		params.put("createTime", isNew);
+		params.put("advertSale", sale);
+		params.put("pageN", (pageNum-1)*10);
+		params.put("pageS", pageSize);
+		if (null != more) {
+			String classifyIds = "";
+			List<MallShopClassify> list = mallShopClassifyDao.query(new QueryFilterBuilder().put("flagDel","2").build());
+			for (MallShopClassify mallShopClassify : list) {
+				classifyIds += ",'" + mallShopClassify +"'";
+			}
+			params.put("classifyIds",classifyIds.substring(1));
+		}
+		params.put("advertName", shopName);
+		try {
+			List<MallShopAdvert> mallShopAdverts = mallShopAdvertDao.query(new QueryFilterBuilder().putAll(params).build());
+			JSONArray json = JSONArray.fromObject(mallShopAdverts);
+			return json.toString();
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+		return null;
+	}
+
+	@Override
+	public String searchClassify() {
+		List<MallShopClassify> list = mallShopClassifyDao.query(new QueryFilterBuilder().put("userA","123").build());
+		JSONArray json = JSONArray.fromObject(list);
+		return json.toString();
+	}
+
+	@Override
+	public String searchGoodsByShopId(String shopId) {
+		Integer pageN = 0;
+		Integer pageS = 4;
+		MallShopAdvert mallShopAdvert = mallShopAdvertDao.queryOne(new QueryFilterBuilder().put("id", shopId).build());
+		try {
+			Map params = new HashMap();
+			params.put("pageN", pageN);
+			params.put("pageS", pageS);
+			params.put("advertId", shopId);
+			params.put("state", "1");
+			params.put("delFlag",0);
+			List<MallGoods> list = mallGoodsDao.query(new QueryFilterBuilder().putAll(params).build());
+			JSONArray json = JSONArray.fromObject(list);
+			mallShopAdvert.setList(json.toString());
+			JSONObject json1 = (JSONObject) JSONObject.toJSON(mallShopAdvert);
+			return json1.toString();
+		} catch (Exception e) {
+			return "";
+		}
+	}
+
+	@Override
+	public String searchGoodsById(String id, Integer pageNum, Integer pageSize) {
+		Map params = new HashMap();
+		if (pageNum == null){
+			pageNum = 1;
+		}
+		if (pageSize == null){
+			pageSize = 10;
+		}
+		params.put("pageN", (pageNum-1)*10);
+		params.put("pageS", pageSize);
+		params.put("state", "1");
+		params.put("delFlag",0);
+		List<MallGoods> list = mallGoodsDao.query(new QueryFilterBuilder().putAll(params).build());
+		JSONObject json = (JSONObject) JSONObject.toJSON(list);
+		return json.toString();
 	}
 
 }
