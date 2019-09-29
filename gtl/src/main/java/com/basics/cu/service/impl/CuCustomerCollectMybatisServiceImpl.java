@@ -94,11 +94,12 @@ public class CuCustomerCollectMybatisServiceImpl extends BaseApiService implemen
         if (null != customerId) {
             CuCustomerInfo cuCustomerInfo = cuCustomerInfoDao.queryOne(new QueryFilterBuilder().put("id", customerId).build());
             MallShopAdvert mallShopAdvert = mallShopAdvertDao.queryOne(new QueryFilterBuilder().put("customerId", cuCustomerInfo.getId()).put("applyStatus", "2").put("flagDel", "0").build());
+            CuCustomerAccount cuCustomerAccount = cuCustomerAccountDao.queryOne(new QueryFilterBuilder().put("id", customerId).build());
             CuHttpUrl cuHttpUrl = new CuHttpUrl();
             cuHttpUrl.setImage(cuCustomerInfo.getCustomerHead());
             cuHttpUrl.setUserName(cuCustomerInfo.getCustomerName());
-            cuHttpUrl.setMncCoin(cuCustomerInfo.getMncCoin());
-            cuHttpUrl.setMp(cuCustomerInfo.getMp());
+            cuHttpUrl.setMncCoin(cuCustomerAccount.getTotalCoin());
+            cuHttpUrl.setMp(cuCustomerAccount.getCustomerIntegral());
             List<CuHttpUrl> cuHttpUrls = cuHttpUrlDao.query(new QueryFilterBuilder().put("token", token).build());
             List<CuCustomerCollect> cuCustomerCollects = cuCustomerCollectDao.query(new QueryFilterBuilder().put("customerId",cuCustomerInfo.getId()).put("state","1").build());
             cuHttpUrl.setVermicelli(cuCustomerCollects.size());
@@ -157,6 +158,7 @@ public class CuCustomerCollectMybatisServiceImpl extends BaseApiService implemen
         try {
             MallShopAdvert mallShopAdvert = mallShopAdvertDao.queryOne(new QueryFilterBuilder().put("id", request.getShopId()).put("applyStatus", "2").put("flagDel", "0").build());
             CuConsume cuConsume = new CuConsume();
+            cuConsume.setId(UUID.randomUUID().toString().replace("-",""));
             cuConsume.setShopId(request.getShopId());
             cuConsume.setPhone(request.getPhone());
             cuConsume.setShopName(mallShopAdvert.getAdvertName());

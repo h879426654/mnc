@@ -5,7 +5,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 public class CuConsume extends CuConsumeBase {
-	public CuConsume Id(Integer id) {
+	public CuConsume Id(String id) {
 		this.setId(id);
 		return this;
 	}
