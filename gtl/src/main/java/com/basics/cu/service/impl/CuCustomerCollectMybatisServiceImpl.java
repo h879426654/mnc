@@ -346,7 +346,7 @@ public class CuCustomerCollectMybatisServiceImpl extends BaseApiService implemen
         String customerId = null;
         if (!token.isEmpty()) {
             AppToken appToken = appTokenDao.queryOne(new QueryFilterBuilder().put("id", token).build());
-            return cuCustomerInfoDao.queryOne(new QueryFilterBuilder().put("id",appToken.getUserId()).build()).getCustomerPhone() ;
+            return appToken.getUserId();
         }
         return null;
     }
