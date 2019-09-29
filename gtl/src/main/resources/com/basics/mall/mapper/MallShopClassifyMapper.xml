@@ -4,8 +4,8 @@
  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.basics.mall.entity.MallShopClassify">
  <cache type="com.basics.support.mybatis.CacheAdapter"/>
- <select id="query" parameterType="map" resultType="com.basics.mall.entity.MallShopClassify" useCache="false" flushCache="false">
-  <![CDATA[
+
+ <select id="query" resultType="com.basics.mall.entity.MallShopClassify" useCache="false" flushCache="false">
   SELECT
   mallShopClassify.CLASSIFY_ID "id",
   mallShopClassify.COUNTRY_ID "countryId",
@@ -24,48 +24,5 @@
   WHERE FLAG_DEL != '1'
   order by sort
  </select>
- <select id="count" parameterType="map" resultType="long">
-  <![CDATA[ SELECT COUNT(1) FROM mall_shop_classify mallShopClassify]]>
-  <include refid="condition" />
- </select>
- <sql id="conditionDeleteAll">
-  <trim prefix="WHERE" prefixOverrides="AND |OR">
-  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(id)">
-   <![CDATA[ AND CLASSIFY_ID = #{id} ]]>
-  </if>
-  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(countryId)">
-   <![CDATA[ AND COUNTRY_ID = #{countryId} ]]>
-  </if>
-  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(classifyName)">
-   <![CDATA[ AND CLASSIFY_NAME = #{classifyName} ]]>
-  </if>
-  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(classifyImg)">
-   <![CDATA[ AND CLASSIFY_IMG = #{classifyImg} ]]>
-  </if>
-  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(classifyParentId)">
-   <![CDATA[ AND CLASSIFY_PARENT_ID = #{classifyParentId} ]]>
-  </if>
-  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(classifySort)">
-   <![CDATA[ AND CLASSIFY_SORT = #{classifySort} ]]>
-  </if>
-  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(versionNum)">
-   <![CDATA[ AND VERSION_NUM = #{versionNum} ]]>
-  </if>
-  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(flagDel)">
-   <![CDATA[ AND FLAG_DEL = #{flagDel} ]]>
-  </if>
-  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(createTime)">
-   <![CDATA[ AND CREATE_TIME = #{createTime} ]]>
-  </if>
-  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(createUser)">
-   <![CDATA[ AND CREATE_USER = #{createUser} ]]>
-  </if>
-  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(modifyUser)">
-   <![CDATA[ AND MODIFY_USER = #{modifyUser} ]]>
-  </if>
-  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(modifyTime)">
-   <![CDATA[ AND MODIFY_TIME = #{modifyTime} ]]>
-  </if>
-  </trim>
- </sql>
+
 </mapper>
