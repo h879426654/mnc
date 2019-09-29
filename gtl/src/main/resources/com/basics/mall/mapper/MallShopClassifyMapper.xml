@@ -18,8 +18,7 @@
   mallShopClassify.CREATE_TIME "createTime",
   mallShopClassify.CREATE_USER "createUser",
   mallShopClassify.MODIFY_USER "modifyUser",
-  mallShopClassify.MODIFY_TIME "modifyTime",
-  country.COUNTRY_NAME "countryName"
+  mallShopClassify.MODIFY_TIME "modifyTime"
   FROM mall_shop_classify mallShopClassify
   WHERE FLAG_DEL != '1'
   order by sort
