@@ -599,7 +599,8 @@ public class CustomerApiController implements ApplicationContextAware {
 
 	@RequestMapping("getPhone")
 	public String getPhone(@Valid String personToken) {
-		return cuCustomerCollectService.getPhone(personToken);
+		String phone = cuCustomerCollectService.getPhone(personToken);
+		return phone;
 	}
 
 }
