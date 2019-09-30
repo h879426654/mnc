@@ -25,8 +25,25 @@ public class MallShopAdvertBase extends BaseBean{
     private String classifyId;
     private Integer pageN;
     private Integer pageS;
-    private String classifyIds;
     private String list;
+    private String person;
+    private Integer count;
+
+    public Integer getCount() {
+        return count;
+    }
+
+    public void setCount(Integer count) {
+        this.count = count;
+    }
+
+    public String getPerson() {
+        return person;
+    }
+
+    public void setPerson(String person) {
+        this.person = person;
+    }
 
     public String getList() {
         return list;
@@ -34,14 +51,6 @@ public class MallShopAdvertBase extends BaseBean{
 
     public void setList(String list) {
         this.list = list;
-    }
-
-    public String getClassifyIds() {
-        return classifyIds;
-    }
-
-    public void setClassifyIds(String classifyIds) {
-        this.classifyIds = classifyIds;
     }
 
     public Integer getPageN() {
@@ -58,14 +67,6 @@ public class MallShopAdvertBase extends BaseBean{
 
     public void setPageS(Integer pageS) {
         this.pageS = pageS;
-    }
-
-    public String getClassifyId() {
-        return classifyId;
-    }
-
-    public void setClassifyId(String classifyId) {
-        this.classifyId = classifyId;
     }
 
     public String getCustomerPhone() {
@@ -218,5 +219,13 @@ public class MallShopAdvertBase extends BaseBean{
 
     public void setRegion(String region) {
         this.region = region;
+    }
+
+    public String getClassifyId() {
+        return classifyId;
+    }
+
+    public void setClassifyId(String classifyId) {
+        this.classifyId = classifyId;
     }
 }

@@ -11,7 +11,18 @@
          <![CDATA[ AND CUSTOMER_ID = #{customerId} ]]>
      </if>
  </select>
- 
- 
- 
+ <insert id = "insert" parameterType="com.basics.cu.entity.CuReatil2">
+     insert into cu_retail2(id, customer_id, customer_id_second)
+     values (#{id}, #{customerId}, #{customerIdSecond})
+ </insert>
+
+<select id="count" resultType="Map">
+    select (1) from cu_retail2 where 1=1
+    <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(customerId)">
+        <![CDATA[ AND CUSTOMER_ID = #{customerId} ]]>
+    </if>
+    <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(customerIdSecond)">
+        <![CDATA[ AND customer_Id_Second = #{customerIdSecond} ]]>
+    </if>
+</select>
 </mapper>

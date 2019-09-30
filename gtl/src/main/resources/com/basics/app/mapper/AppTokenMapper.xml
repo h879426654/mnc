@@ -50,7 +50,7 @@
   </if>
   </trim>
  </sql>
- <select id="query" parameterType="map" resultType="com.basics.app.entity.AppToken">
+ <select id="query" parameterType="map" resultType="com.basics.app.entity.AppToken" flushCache="false" useCache="false">
   <![CDATA[
   SELECT
   appToken.TOKEN_ID "id",

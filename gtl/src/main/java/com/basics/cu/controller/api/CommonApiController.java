@@ -7,6 +7,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
+import com.aliyun.oss.OSSClient;
 import com.basics.cu.controller.request.*;
 import com.basics.mall.dao.MallAdvertHotDao;
 import com.basics.mall.entity.MallAdvertHot;
@@ -310,16 +311,31 @@ public class CommonApiController implements ApplicationContextAware {
 	 * 上传图片
 	 */
 	@RequestMapping("uploadImage")
-	public DataItemResponse<String> uploadImage(@RequestParam("file") MultipartFile file) {
-		DataItemResponse<String> response = new DataItemResponse<>();
+	public DataItemResponse<List<String>> uploadImage(@RequestParam("file") MultipartFile[] files) {
+		DataItemResponse<List<String>> response = new DataItemResponse<>();
+		String endpoint = "http://oss-cn-beijing.aliyuncs.com";
+// 云账号AccessKey有所有API访问权限，建议遵循阿里云安全最佳实践，创建并使用RAM子账号进行API访问或日常运维，请登录 https://ram.console.aliyun.com 创建。
+		String accessKeyId = "LTAIPy06f50b9tO7";
+		String accessKeySecret = "33jqyaySmZ5v2Tfm0fpotQR9WswlsL";
+// 创建OSSClient实例。
+		OSSClient ossClient = new OSSClient(endpoint, accessKeyId, accessKeySecret);
 		try {
-			if (!file.isEmpty()) {
-				String path = "voucher/";
-				String fileName = file.getOriginalFilename();
-				path += GuidUtils.generateSimpleGuid() + MD5Util.random(6) + fileName.substring(fileName.lastIndexOf("."));
-				ftpFileStoreService.write(path, file.getInputStream());
-				String url = ftpFileStoreService.getInternetUrl(path);
-				response.setItem(url);
+			if (null != files && files.length > 0) {
+				List<String> images = new ArrayList<>();
+				for (MultipartFile file : files) {
+					if (!file.isEmpty()) {
+						String path = "voucher/";
+						String fileName = file.getOriginalFilename();
+						path += GuidUtils.generateSimpleGuid() + MD5Util.random(6) + fileName.substring(fileName.lastIndexOf("."));
+						//this.ftpFileStoreService.write(path, file.getInputStream());
+						ossClient.putObject("mylove2019", path	, file.getInputStream());
+
+						String url = "https://mylove2019.oss-cn-beijing.aliyuncs.com/"+path;
+						images.add(url);
+					}
+				}
+				ossClient.shutdown();
+				response.setItem(images);
 				response.onHandleSuccess();
 				return response;
 			}

@@ -11,6 +11,7 @@ import com.basics.common.TokenRequest;
 import com.basics.mall.controller.request.PushShopAdvert2Request;
 import com.basics.mall.controller.request.PushShopAdvertRequest;
 import com.basics.mall.controller.request.SelectShopAdvertRequest;
+import com.basics.mall.controller.response.MallAdvertResponse;
 import com.basics.mall.controller.response.OwnShopAdvertResponse;
 import com.basics.mall.controller.response.ShopAdvertInfoResponse;
 import com.basics.mall.entity.MallShopAdvert;
@@ -40,11 +41,13 @@ public interface MallShopAdvertApiService {
 
 	DataItemResponse<OwnShopAdvertResponse> doOwnShopAdvert(TokenRequest request, HttpServletRequest req);
 
-	String searchAdvert(String classifyId, String city, String region, String isNew, String sale, Integer pageNum, Integer pageSize, String shopName, String more);
+	String searchAdvert(String classifyId, String city, String region, String isNew, String sale, Integer pageNum, Integer pageSize, String shopName);
 
 	String searchClassify();
 
 	String searchGoodsByShopId(String shopId);
 
 	String searchGoodsById(String id, Integer pageNum, Integer pageSize);
+
+    String insertShopAdvert(MallAdvertResponse mallAdvertResponse);
 }

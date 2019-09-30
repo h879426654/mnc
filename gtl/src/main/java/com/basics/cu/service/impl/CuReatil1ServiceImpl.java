@@ -18,8 +18,6 @@ import java.util.*;
 @Service
 @Transactional
 public class CuReatil1ServiceImpl extends BaseApiService implements CuReatil1Service {
-    @Autowired
-    private CuReatil1Dao cuReatil1Dao;
 
     @Override
     public DataPageComonResponse<CuReatil1> searchReatil(String token, Integer pageNum, Integer pageSize) {

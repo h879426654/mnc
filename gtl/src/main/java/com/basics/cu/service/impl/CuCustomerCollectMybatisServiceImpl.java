@@ -94,11 +94,12 @@ public class CuCustomerCollectMybatisServiceImpl extends BaseApiService implemen
         if (null != customerId) {
             CuCustomerInfo cuCustomerInfo = cuCustomerInfoDao.queryOne(new QueryFilterBuilder().put("id", customerId).build());
             MallShopAdvert mallShopAdvert = mallShopAdvertDao.queryOne(new QueryFilterBuilder().put("customerId", cuCustomerInfo.getId()).put("applyStatus", "2").put("flagDel", "0").build());
+            CuCustomerAccount cuCustomerAccount = cuCustomerAccountDao.queryOne(new QueryFilterBuilder().put("id", customerId).build());
             CuHttpUrl cuHttpUrl = new CuHttpUrl();
             cuHttpUrl.setImage(cuCustomerInfo.getCustomerHead());
             cuHttpUrl.setUserName(cuCustomerInfo.getCustomerName());
-            cuHttpUrl.setMncCoin(cuCustomerInfo.getMncCoin());
-            cuHttpUrl.setMp(cuCustomerInfo.getMp());
+            cuHttpUrl.setMncCoin(cuCustomerAccount.getTotalCoin());
+            cuHttpUrl.setMp(cuCustomerAccount.getCustomerIntegral());
             List<CuHttpUrl> cuHttpUrls = cuHttpUrlDao.query(new QueryFilterBuilder().put("token", token).build());
             List<CuCustomerCollect> cuCustomerCollects = cuCustomerCollectDao.query(new QueryFilterBuilder().put("customerId",cuCustomerInfo.getId()).put("state","1").build());
             cuHttpUrl.setVermicelli(cuCustomerCollects.size());
@@ -115,37 +116,41 @@ public class CuCustomerCollectMybatisServiceImpl extends BaseApiService implemen
 
     @Override
     public String searchConConsume(String state, String token, String type, Integer pageNum, Integer pageSize) {
-        String customerId = this.getCuCustomerInfo(token);
-        if (null != customerId) {
-            MallShopAdvert mallShopAdvert = null;
-            MallShopAdvert mallShopAdvert1 = null;
-            List<CuConsume> cuConsumes = null;
-            if ("1".equals(type)) {
-                cuConsumes = cuConsumeDao.query(new QueryFilterBuilder().put("customerId", customerId).put("state",state).put("pageN", (pageNum-1)*10).put("pageS" ,pageSize).orderBy("createTime desc").build());
-            } else if ("2".equals(type)) {
-                mallShopAdvert = mallShopAdvertDao.queryOne(new QueryFilterBuilder().put("customerId", customerId).put("applyStatus", "2").put("flagDel", "0").build());
-                cuConsumes = cuConsumeDao.query(new QueryFilterBuilder().put("shopId",mallShopAdvert.getId()).put("state",state).put("pageN", pageNum).put("pageS" ,pageSize).orderBy("createTime desc").build());
-            }
-
-            for (CuConsume cuConsume:cuConsumes) {
+        try {
+            String customerId = this.getCuCustomerInfo(token);
+            if (null != customerId) {
+                MallShopAdvert mallShopAdvert = null;
+                MallShopAdvert mallShopAdvert1 = null;
+                List<CuConsume> cuConsumes = null;
                 if ("1".equals(type)) {
-                    mallShopAdvert1 = mallShopAdvertDao.queryOne(new QueryFilterBuilder().put("id", cuConsume.getShopId()).put("applyStatus", "2").put("flagDel", "0").build());
-                    cuConsume.setImage(mallShopAdvert1.getAdvertImage());
+                    cuConsumes = cuConsumeDao.query(new QueryFilterBuilder().put("customerId", customerId).put("state",state).put("pageN", (pageNum-1)*10).put("pageS" ,pageSize).orderBy("createTime desc").build());
                 } else if ("2".equals(type)) {
-                    cuConsume.setImage(mallShopAdvert.getAdvertImage());
+                    mallShopAdvert = mallShopAdvertDao.queryOne(new QueryFilterBuilder().put("customerId", customerId).put("applyStatus", "2").put("flagDel", "0").build());
+                    cuConsumes = cuConsumeDao.query(new QueryFilterBuilder().put("shopId",mallShopAdvert.getId()).put("state",state).put("pageN", pageNum).put("pageS" ,pageSize).orderBy("createTime desc").build());
                 }
-                if ("0".equals(cuConsume.getState())) {
-                    cuConsume.setStateText("待记账");
-                } else if ("1".equals(cuConsume.getState())) {
-                    cuConsume.setStateText("已记账");
-                } else if ("2".equals(cuConsume.getState())) {
-                    cuConsume.setStateText("已取消");
+
+                for (CuConsume cuConsume:cuConsumes) {
+                    if ("1".equals(type)) {
+                        mallShopAdvert1 = mallShopAdvertDao.queryOne(new QueryFilterBuilder().put("id", cuConsume.getShopId()).put("applyStatus", "2").put("flagDel", "0").build());
+                        cuConsume.setImage(mallShopAdvert1.getAdvertImage());
+                    } else if ("2".equals(type)) {
+                        cuConsume.setImage(mallShopAdvert.getAdvertImage());
+                    }
+                    if ("0".equals(cuConsume.getState())) {
+                        cuConsume.setStateText("待记账");
+                    } else if ("1".equals(cuConsume.getState())) {
+                        cuConsume.setStateText("已记账");
+                    } else if ("2".equals(cuConsume.getState())) {
+                        cuConsume.setStateText("已取消");
+                    }
                 }
+                JSONArray jsons = JSONArray.fromObject(cuConsumes);
+                return jsons.toString();
             }
-            JSONArray jsons = JSONArray.fromObject(cuConsumes);
-            return jsons.toString();
+        }catch (Exception e) {
+            return "查询我的消费页面数据失败";
         }
-        return "查询我的消费页面数据失败";
+        return "";
     }
 
     @Override
@@ -153,12 +158,13 @@ public class CuCustomerCollectMybatisServiceImpl extends BaseApiService implemen
         try {
             MallShopAdvert mallShopAdvert = mallShopAdvertDao.queryOne(new QueryFilterBuilder().put("id", request.getShopId()).put("applyStatus", "2").put("flagDel", "0").build());
             CuConsume cuConsume = new CuConsume();
+            cuConsume.setId(UUID.randomUUID().toString().replace("-",""));
             cuConsume.setShopId(request.getShopId());
+            cuConsume.setPhone(request.getPhone());
             cuConsume.setShopName(mallShopAdvert.getAdvertName());
             cuConsume.setCustomerId(request.getCustomerId());
             cuConsume.setImage(mallShopAdvert.getAdvertImage());
             cuConsume.setMoney(new BigDecimal(request.getMoney()));
-            cuConsume.setPhone(request.getPhone());
             cuConsumeDao.insert(cuConsume);
             return "成功";
         } catch (Exception e) {
@@ -251,6 +257,7 @@ public class CuCustomerCollectMybatisServiceImpl extends BaseApiService implemen
                 CuCustomerInfo cuCustomerInfo = cuCustomerInfoDao.queryOne(new QueryFilterBuilder().put("id",customerId).build());
                 MallShopAdvert mallShopAdvert = mallShopAdvertDao.queryOne(new QueryFilterBuilder().put("id", shopId).put("applyStatus", "2").put("flagDel", "0").build());
                 mallShopAdvert.setCustomerPhone(cuCustomerInfo.getCustomerPhone());
+                mallShopAdvert.setCustomerId(customerId);
                 JSONObject json = (JSONObject) JSONObject.toJSON(mallShopAdvert);
                 return json.toString();
             }
@@ -307,6 +314,13 @@ public class CuCustomerCollectMybatisServiceImpl extends BaseApiService implemen
         } catch (Exception e) {
             return "查询异常";
         }
+    }
+
+    @Override
+    public String getPhone(String personToken) {
+        String customerId = this.getCuCustomerInfo(personToken);
+        String phone = cuCustomerInfoDao.queryOne(new QueryFilterBuilder().put("id", customerId).build()).getCustomerPhone();
+        return phone;
     }
 
     /**

@@ -36,6 +36,7 @@ DefaultNameMapper defaultNameMapper = new DefaultNameMapper();
  defaultNameMapper.configFieldColumnName("advertSale","ADVERT_SALE");
  defaultNameMapper.configFieldColumnName("city","CITY");
  defaultNameMapper.configFieldColumnName("region","REGION");
+ defaultNameMapper.configFieldColumnName("person", "PERSON");
 return defaultNameMapper;
 }
 }

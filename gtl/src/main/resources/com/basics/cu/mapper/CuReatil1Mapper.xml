@@ -12,6 +12,8 @@
      </if>
  </select>
  
- 
- 
+ <select id="insert" parameterType="com.basics.cu.entity.CuReatil1" resultType="long">
+     insert into cu_retail1(customer_id, money, indirect_money, create_time)
+     values (#{customer_id}, #{money}, #{indirectMoney}, now())
+ </select>
 </mapper>

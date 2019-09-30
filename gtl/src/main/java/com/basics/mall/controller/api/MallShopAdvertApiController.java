@@ -5,6 +5,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
+import com.basics.mall.controller.response.MallAdvertResponse;
 import jnr.ffi.annotations.In;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -232,8 +233,8 @@ public class MallShopAdvertApiController implements ApplicationContextAware {
 	}
 
 	@RequestMapping("searchAdvert")
-	public String searchAdvert(@Valid String classifyId, String city, String region, String isNew, String sale, Integer pageNum, Integer page, String rows, String more) {
-		return mallshopApiService.searchAdvert(classifyId, city, region, isNew, sale, pageNum, page, rows, more);
+	public String searchAdvert(@Valid String classifyId, String city, String region, String isNew, String sale, Integer page, Integer rows, String shopName) {
+		return mallshopApiService.searchAdvert(classifyId, city, region, isNew, sale, page, rows, shopName);
 	}
 
 	@RequestMapping("searchClassify")
@@ -250,6 +251,10 @@ public class MallShopAdvertApiController implements ApplicationContextAware {
 	public String searchGoodsById(@Valid String shopId , Integer pageNum, Integer pageSize) {
 		return mallshopApiService.searchGoodsById(shopId, pageNum, pageSize);
 	}
-	
+
+	@RequestMapping("insertShopAdvert")
+	public String insertShopAdvert(@Valid MallAdvertResponse mallAdvertResponse) {
+		return mallshopApiService.insertShopAdvert(mallAdvertResponse);
+	}
 
 }

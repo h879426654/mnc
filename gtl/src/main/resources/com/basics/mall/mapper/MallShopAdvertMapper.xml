@@ -23,7 +23,8 @@
     CREATE_TIME as createTime,
     ADVERT_SALE as advertSale,
     CITY,
-    REGION
+    REGION,
+    PERSON
     from mall_shop_advert
     where 1=1
   <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(id)">
@@ -50,9 +51,6 @@
   <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(classifyIds)">
      and CLASSIFY_ID = ${classifyIds}
   </if>
-  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(classifyIds)">
-     and CLASSIFY_ID = ${classifyIds}
-  </if>
   <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(advertName)">
       <![CDATA[and advert_name like '%${advertName}%' ]]>
   </if>
@@ -66,4 +64,8 @@
       limit #{pageN},#{pageS}
   </if>
  </select>
+    <insert id="insert" parameterType="com.basics.mall.entity.MallShopAdvert">
+        insert into mall_shop_advert(advert_id, customer_id, advert_name, advert_context, advert_image, shop_licence, advert_phone, advert_address, advert_longitude, advert_latitude, create_time, city, region, CLASSIFY_ID, person)
+        values (#{id}, #{customerId}, #{advertName}, #{advertContext}, #{advertImage}, #{shopLicence}, #{advertPhone}, #{advertAddress}, #{advertLongitude}, #{advertLatitude}, now(), #{city}, #{region}, #{classifyId}, #{person})
+    </insert>
 </mapper>
