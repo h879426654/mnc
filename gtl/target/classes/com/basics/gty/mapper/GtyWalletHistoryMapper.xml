@@ -13,10 +13,10 @@
    FROM wallet_record wr
  </select>
 
-
  <insert id="insert" parameterType="com.basics.gty.entity.GtyWalletHistory">
  <![CDATA[  INSERT INTO wallet_record (]]>
  <trim prefix="" suffixOverrides=",">
+  <if test="id!=null">ID,</if>
   <if test="userId!=null">USER_ID,</if>
   <if test="recordType!=null">RECORD_TYPE,</if>
   <if test="recordNum!=null">RECORD_NUM,</if>
@@ -24,6 +24,7 @@
  </trim>
   <![CDATA[)VALUES(]]>
   <trim prefix="" suffixOverrides=",">
+   <if test="id!=null">#{id},</if>
    <if test="userId!=null">#{userId},</if>
    <if test="recordType!=null">#{recordType},</if>
    <if test="recordNum!=null">#{recordNum},</if>
@@ -32,4 +33,16 @@
   <![CDATA[)]]>
  </insert>
 
+ <select id="count" parameterType="map" resultType="long">
+  <![CDATA[ SELECT COUNT(1) FROM wallet_record wr]]>
+  <include refid="condition" />
+ </select>
+
+ <sql id="condition">
+  <trim prefix="WHERE" prefixOverrides="AND |OR">
+   <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(id)">
+    <![CDATA[ AND wr.ID = #{id}    ]]>
+   </if>
+  </trim>
+ </sql>
 </mapper>

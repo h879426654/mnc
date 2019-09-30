@@ -11,7 +11,9 @@ import javax.jms.Destination;
 import javax.servlet.http.HttpServletRequest;
 
 import com.basics.cu.dao.*;
+import com.basics.gty.dao.EthDao;
 import com.basics.gty.dao.GtyWalletDao;
+import com.basics.gty.dao.GtyWalletHistoryDao;
 import com.basics.gty.entity.GtyWallet;
 import com.basics.mall.dao.*;
 import com.basics.wallet.dao.WalletEntityDao;
@@ -214,6 +216,12 @@ public class BaseApiService {
 
 	@Autowired
 	public GtyWalletDao gtyWalletDao;
+
+	@Autowired
+	public EthDao ethDao;
+
+	@Autowired
+	public GtyWalletHistoryDao geyWallethistoryDao;
 
 	@Autowired
 	public TrTradeMoneyDao trTradeMoneyDao;

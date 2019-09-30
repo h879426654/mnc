@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.basics.gty.entity.EthBean">
+ <cache type="com.basics.support.mybatis.CacheAdapter"/>
+
+ <select id="query" parameterType="map" resultType="com.basics.gty.entity.EthBean" flushCache="true" useCache="false">
+  SELECT
+  gtyWallet.PRIVATE_KEY "privateKey",
+  gtyWallet.ADDRESS "address"
+  FROM eth_info gtyWallet
+ </select>
+
+
+ <select id="count" parameterType="map" resultType="long">
+  <![CDATA[ SELECT COUNT(1) FROM eth_info wr]]>
+  <include refid="condition" />
+ </select>
+
+ <sql id="condition">
+  <trim prefix="WHERE" prefixOverrides="AND |OR">
+   <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(address)">
+    <![CDATA[ AND wr.ADDRESS = #{address}    ]]>
+   </if>
+  </trim>
+ </sql>
+
+</mapper>

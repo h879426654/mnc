@@ -5,10 +5,11 @@ import com.basics.sys.entity.BaseBean;
 import java.math.BigDecimal;
 import java.util.Date;
 
-public class GtyWallet extends GtyBaseBean {
+public class GtyWallet extends BaseBean {
  private String userId;
  private BigDecimal mncNum;
  private BigDecimal moveNum;
+ private int walletFrozen;
 
  private BigDecimal superNum;
  private BigDecimal recordNum;
@@ -22,6 +23,24 @@ public class GtyWallet extends GtyBaseBean {
  private String point;
 
  private BigDecimal releasedMnc;
+
+ private BigDecimal blockNum;
+
+ public int getWalletFrozen() {
+  return walletFrozen;
+ }
+
+ public void setWalletFrozen(int walletFrozen) {
+  this.walletFrozen = walletFrozen;
+ }
+
+ public BigDecimal getBlockNum() {
+  return blockNum;
+ }
+
+ public void setBlockNum(BigDecimal blockNum) {
+  this.blockNum = blockNum;
+ }
 
  public BigDecimal getReleasedMnc() {
   return releasedMnc;

@@ -185,6 +185,7 @@ com\basics\mall\controller\response\CustomerCarResponse.class
 com\basics\tr\dao\MybatisDao\TrTradeComplaintMybatisDao.class
 com\basics\cu\controller\request\CustomerFeedbackRequest.class
 com\basics\support\ServletUtils.class
+com\basics\gty\service\impl\GtyTransferMybatisService.class
 com\basics\sys\entity\SysTurntableReward.class
 com\basics\support\JuheClient.class
 com\basics\support\GenericMybatisService.class
@@ -209,6 +210,7 @@ com\basics\support\EnumSupport.class
 com\basics\app\dao\impl\AppUserRoleMybatisDao.class
 com\basics\cu\controller\response\IndexViewResponse.class
 com\basics\cu\controller\request\LoginRequest.class
+com\basics\mall\entity\MallGoods.class
 com\basics\sys\controller\backend\BaseBackendController.class
 com\basics\sys\dao\SysMarketValueDao.class
 com\basics\mall\controller\request\MallCustomerAddressRequest.class
@@ -267,6 +269,7 @@ com\basics\app\dao\FormSubmitSupport.class
 com\basics\support\app\MultipleUserSupportService.class
 com\basics\support\log4j\AppLogSupport.class
 com\basics\support\UserAwareSupport.class
+com\basics\gty\support\BackendControllerSupport.class
 com\basics\support\mybatis\JedisCacheAdvisor.class
 com\basics\cu\dao\MybatisDao\CuReatil1MybatisDao.class
 com\basics\support\dlshouwen\PagerSupport.class
@@ -275,6 +278,7 @@ com\basics\app\shiro\UsernamePasswordToken.class
 com\basics\mall\entity\MallCustomerCar.class
 com\basics\tr\support\GenericMybatisDaoSupport.class
 com\basics\mall\controller\backend\BaseBackendController.class
+com\basics\broswer\service\impl\CuConceImplService.class
 com\basics\support\email\EmailUtil$MyAuthenticator.class
 com\basics\cu\controller\backend\CuCustomerCollectionBackendController.class
 com\basics\cu\service\CuCustomerCollectService.class
@@ -302,6 +306,7 @@ com\basics\cu\service\impl\CuCustomerFeedbackMybatisService.class
 com\basics\gty\dao\GtyWalletDao.class
 com\basics\cu\service\CuDrawRewardService.class
 com\basics\mall\service\MallProductService.class
+com\basics\gty\service\impl\GtyTransferMybatisService$1.class
 com\basics\tr\controller\backend\TrTradeConvertBackendController.class
 com\basics\cu\dao\MybatisDao\CuCustomerInfoMybatisDao.class
 com\basics\or\controller\backend\OrOrderDetailsBackendController.class
@@ -354,6 +359,7 @@ com\basics\sys\entity\SysNotice.class
 com\basics\sys\dao\MybatisDao\SysTurntableRewardMybatisDao.class
 com\basics\tr\dao\TrConvertDao.class
 com\basics\support\UserContext.class
+com\basics\gty\service\GtyTransferService.class
 com\basics\cu\entity\CuCustomerSign.class
 com\basics\sys\entity\SysMarketValue.class
 com\basics\mall\controller\response\CustomerCarResponsePlus.class
@@ -434,6 +440,7 @@ com\basics\mall\service\MallIndexTypeService.class
 com\basics\support\ApplicationServletContextListener.class
 com\basics\gty\service\impl\GtyWalletMybatisService.class
 com\basics\tr\controller\request\PushTradeRequest.class
+com\basics\gty\entity\test.class
 com\basics\mall\controller\response\OwnShopAdvertResponse.class
 com\basics\cu\service\impl\CuReatil1ServiceImpl.class
 com\basics\cu\controller\backend\CuCustomerFeedbackBackendController.class
@@ -454,6 +461,7 @@ com\basics\app\support\AppRoleEnum.class
 com\basics\or\dao\OrOrderDao.class
 com\basics\tr\controller\backend\TrTradeCoinBackendController.class
 com\basics\cu\entity\CuReatil3.class
+com\basics\mall\dao\MallGoodsDao.class
 com\basics\cu\dao\MybatisDao\CuConsumeMybatisDao.class
 com\basics\mall\controller\response\MallProductResponsePlus.class
 com\basics\app\shiro\UpdatePasswordResponse.class
@@ -722,6 +730,7 @@ com\basics\support\GenericUtils.class
 com\basics\support\auth\HttpUtils$1.class
 com\basics\cu\dao\CuCustomerCollectionDao.class
 com\basics\support\SerialnumberUtils.class
+com\basics\gty\dao\MybatisDao\EthMybatisDao.class
 com\basics\or\support\GenericMybatisDaoSupport.class
 com\basics\mall\support\BackendControllerSupport.class
 com\basics\wallet\controller\request\TokenBalanceRequest.class
@@ -754,6 +763,7 @@ com\basics\support\dlshouwen\Sort.class
 com\basics\mall\controller\backend\MallProductBackendController.class
 com\basics\mall\entity\MallProductKindContrast.class
 com\basics\support\SameUrlData.class
+com\basics\broswer\service\CuConcerService.class
 com\basics\support\UserAgentUtils.class
 com\basics\app\support\BackendControllerSupport.class
 com\basics\app\ui\AppUserZTreeDataProvider.class
@@ -774,7 +784,6 @@ com\basics\app\dao\AppRolePermissionDao.class
 com\basics\broswer\controller\api\BroswerController.class
 com\basics\mall\dao\MallCustomerCarDao.class
 com\basics\app\service\impl\AppUserRoleMybatisService.class
-com\basics\gty\controller\api\GtyWalletApiController$1.class
 com\basics\app\shiro\ShiroInterceptor$1.class
 com\basics\cu\service\impl\CuReatil3ServiceImpl.class
 com\basics\support\fileupload\BizFileUploadRequest.class
@@ -794,9 +803,11 @@ com\basics\support\activemq\QueueSender.class
 com\basics\support\mybatis\ClassNameCacheFilter.class
 org\springframework\data\redis\connection\jedis\JedisConnectionFactory.class
 com\basics\mall\controller\response\MyCollectionResponse.class
+com\basics\mall\dao\MybatisDao\MallGoodsMybatisDao.class
 com\basics\support\SubmitSupport.class
 com\basics\app\controller\backend\AppOptionBackendController.class
 com\basics\tr\controller\request\MatchIngTradeRequest.class
+com\basics\mall\entity\MallGoodsBase.class
 com\basics\mall\controller\backend\MallCustomerCarBackendController.class
 com\basics\mall\controller\backend\MallProductClassifyBackendController.class
 com\basics\mall\controller\backend\MallShopAdvertBackendController.class
@@ -860,6 +871,7 @@ com\basics\mall\vo\CombinationVo.class
 com\basics\mall\service\MallProductClassifyService.class
 com\basics\mall\vo\CommentInfoVo.class
 com\basics\support\mybatis\CacheAdapter.class
+com\basics\gty\dao\EthDao.class
 com\basics\mall\controller\backend\MallProductKindCombinationBackendController.class
 com\basics\support\FilterOperatorEnum.class
 com\basics\cu\dao\MybatisDao\CuHttpUrlMybatisDao.class
@@ -889,6 +901,7 @@ com\basics\support\DataResultSupport.class
 com\basics\support\PaginationSupport.class
 com\basics\common\JsonSupport.class
 com\basics\support\IDGenerationType.class
+com\basics\gty\support\GenericMybatisDaoSupport.class
 com\basics\app\shiro\FormAuthenticationFilter.class
 com\basics\app\shiro\UserRolePermissionSupport.class
 com\basics\support\auth\SerialNumberUtil.class
@@ -897,6 +910,7 @@ com\basics\support\activemq\TopicSender.class
 com\basics\cu\dao\MybatisDao\CuCustomerProfitAdminMybatisDao.class
 com\basics\cu\service\impl\CuCustomerSignMybatisService.class
 com\basics\tr\entity\TrTradeComplaint.class
+com\basics\gty\entity\EthBean.class
 com\basics\support\AggregateDescriptor.class
 com\basics\support\quartz\SwitchSchedulerFactoryBean.class
 com\basics\sys\service\SysTurntableService.class

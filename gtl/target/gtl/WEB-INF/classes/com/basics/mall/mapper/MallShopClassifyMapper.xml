@@ -98,7 +98,7 @@
   </if>
   </trim>
  </sql>
- <select id="query" parameterType="map" resultType="com.basics.mall.entity.MallShopClassify">
+ <select id="query" parameterType="map" resultType="com.basics.mall.entity.MallShopClassify" useCache="false" flushCache="false">
   <![CDATA[
   SELECT
   mallShopClassify.CLASSIFY_ID "id",

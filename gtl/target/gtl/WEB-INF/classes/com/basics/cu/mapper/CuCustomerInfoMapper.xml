@@ -182,7 +182,7 @@
   </if>
   </trim>
  </sql>
- <select id="query" parameterType="map" resultType="com.basics.cu.entity.CuCustomerInfo" useCache="false" flushCache="false">
+ <select id="query" parameterType="map" resultType="com.basics.cu.entity.CuCustomerInfo" flushCache="false" useCache="false">
   <![CDATA[
   SELECT
   cuCustomerInfo.CUSTOMER_ID "id",

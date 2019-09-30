@@ -4,9 +4,9 @@ import com.basics.gty.dao.GtyWalletDao;
 import com.basics.gty.dao.GtyWalletHistoryDao;
 import com.basics.gty.entity.GtyWallet;
 import com.basics.gty.entity.GtyWalletHistory;
+import com.basics.gty.support.GenericMybatisDaoSupport;
 import com.basics.support.DefaultNameMapper;
 import com.basics.support.INameMapper;
-import com.basics.sys.support.GenericMybatisDaoSupport;
 import org.springframework.stereotype.Repository;
 
 @Repository

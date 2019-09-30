@@ -18,6 +18,7 @@ public class GtyWalletBean extends GtyBaseBean {
  private BigDecimal mTokenRelease;
  private BigDecimal scoreRelease;
 
+
  public BigDecimal getSuperReleaseNum() {
   return superReleaseNum;
  }

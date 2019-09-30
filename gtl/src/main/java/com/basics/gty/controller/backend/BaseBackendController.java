@@ -1,8 +1,9 @@
 package com.basics.gty.controller.backend;
 
+import com.basics.gty.support.BackendControllerSupport;
 import com.basics.support.ModelSupport;
 
-public class BaseBackendController<T extends ModelSupport> extends com.basics.mall.support.BackendControllerSupport<T> {
+public class BaseBackendController<T extends ModelSupport> extends BackendControllerSupport<T> {
 
  @Override
  public String getBaseViewDirName() {
