@@ -98,13 +98,13 @@ public class CuCustomerCollectMybatisServiceImpl extends BaseApiService implemen
         if (null != customerId) {
             CuCustomerInfo cuCustomerInfo = cuCustomerInfoDao.queryOne(new QueryFilterBuilder().put("id", customerId).build());
             MallShopAdvert mallShopAdvert = mallShopAdvertDao.queryOne(new QueryFilterBuilder().put("customerId", cuCustomerInfo.getId()).put("applyStatus", "2").put("flagDel", "0").build());
-            CuCustomerAccount cuCustomerAccount = cuCustomerAccountDao.queryOne(new QueryFilterBuilder().put("id", customerId).build());
             CuHttpUrl cuHttpUrl = new CuHttpUrl();
             cuHttpUrl.setImage(cuCustomerInfo.getCustomerHead());
             cuHttpUrl.setUserName(cuCustomerInfo.getCustomerName());
-            if (cuCustomerAccount != null) {
-                cuHttpUrl.setMncCoin(cuCustomerAccount.getTotalCoin());
-                cuHttpUrl.setMp(cuCustomerAccount.getCustomerIntegral());
+            GtyWallet gtyWallet = gtyWalletDao.queryOne(new QueryFilterBuilder().put("userId", customerId).build());
+            if (gtyWallet != null) {
+                cuHttpUrl.setMncCoin(gtyWallet.getMncNum());
+                cuHttpUrl.setMp(gtyWallet.getmTokenNum());
             }
             cuHttpUrl.setMncCoin(BigDecimal.ZERO);
             cuHttpUrl.setMp(BigDecimal.ZERO);
@@ -181,8 +181,14 @@ public class CuCustomerCollectMybatisServiceImpl extends BaseApiService implemen
     }
 
     @Override
-    public String updateConConsume(String id, String state, String mp) {
+    public String updateConConsume(String token, String id, String state, String mp) {
         try {
+            String customerId = this.getCuCustomerInfo(token);
+            GtyWallet gtyWallet = gtyWalletDao.queryOne(new QueryFilterBuilder().put("userId", customerId).build());
+            BigDecimal scoreNum = gtyWallet.getScoreNum().multiply(new BigDecimal(0.5));
+            if (new BigDecimal(mp).compareTo(scoreNum) > 0 ) {
+                return "返还积分必须是创业积分的一半以下";
+            }
             CuConsume cuConsume = cuConsumeDao.queryOne(new QueryFilterBuilder().put("id",id).build());
             cuConsume.setState(state);
             cuConsumeDao.update(cuConsume);
@@ -354,9 +360,10 @@ public class CuCustomerCollectMybatisServiceImpl extends BaseApiService implemen
      */
     private void returnMp(String id, String mp) {
         CuConsume cuConsume = cuConsumeDao.queryOne(new QueryFilterBuilder().put("id", id).build());
-        CuCustomerAccount cuCustomerAccount = cuCustomerAccountDao.queryOne(new QueryFilterBuilder().put("id", cuConsume.getCustomerId()).build());
-        cuCustomerAccount.setCustomerIntegral(cuCustomerAccount.getCustomerIntegral().add(new BigDecimal(mp)));
-        cuCustomerAccountDao.update(cuCustomerAccount);
+
+        GtyWallet gtyWallet = gtyWalletDao.queryOne(new QueryFilterBuilder().put("userId", cuConsume.getCustomerId()).build());
+        gtyWallet.setmTokenNum(gtyWallet.getmTokenNum().add(new BigDecimal(mp)));
+        gtyWalletDao.update(gtyWallet);
         addMp(cuConsume.getCustomerId(), mp);
         CuLogs cuLogs = new CuLogs();
         cuLogs.setCustomerId(cuConsume.getCustomerId());

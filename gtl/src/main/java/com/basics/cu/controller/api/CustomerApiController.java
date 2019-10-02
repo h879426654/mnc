@@ -535,8 +535,8 @@ public class CustomerApiController implements ApplicationContextAware {
 	 * @return
 	 */
 	@RequestMapping("udpateConConsume")
-	public String udpateConConsume(@Valid String id, String state, String mp) {
-		return cuCustomerCollectService.updateConConsume(id, state, mp);
+	public String udpateConConsume(@Valid String token, String id, String state, String mp) {
+		return cuCustomerCollectService.updateConConsume(token, id, state, mp);
 	}
 	/**
 	 * 添加历史数据

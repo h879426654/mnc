@@ -22,7 +22,7 @@ public interface CuCustomerCollectService {
 
     String insertConConsume(ConsumeRequest request);
 
-    String updateConConsume(String id, String state, String mp);
+    String updateConConsume(String token, String id, String state, String mp);
 
     String insertHistory(HistoryRequest historyRequest);
 
