@@ -339,6 +339,13 @@ public class CuCustomerCollectMybatisServiceImpl extends BaseApiService implemen
         return phone;
     }
 
+    @Override
+    public String searchPicture() {
+        List<CuPicture> list = cuPictureDao.query(new QueryFilterBuilder().put("delFlag", "0").build());
+        JSONArray json = JSONArray.fromObject(list);
+        return json.toString();
+    }
+
     /**
      * 返还积分
      * @param id

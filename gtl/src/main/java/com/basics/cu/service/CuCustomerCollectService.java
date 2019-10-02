@@ -37,4 +37,6 @@ public interface CuCustomerCollectService {
     String searchDiscuss(String shopId, Integer pageNum, Integer pageSize);
 
     String getPhone(String personToken);
+
+    String searchPicture();
 }
