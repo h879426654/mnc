@@ -122,6 +122,7 @@ public class CommonApiController implements ApplicationContextAware {
 		}
 		return response;
 	}
+
 	/**
 	 * 登录
 	 */

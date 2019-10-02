@@ -8,11 +8,13 @@ import com.basics.cu.controller.request.ConsumeRequest;
 import com.basics.cu.controller.request.HistoryRequest;
 import com.basics.cu.entity.*;
 import com.basics.cu.service.CuCustomerCollectService;
+import com.basics.mall.dao.MallShopAdvertDao;
 import com.basics.mall.entity.MallShopAdvert;
 import com.basics.support.PaginationSupport;
 import com.basics.support.QueryFilterBuilder;
 import net.sf.json.JSONArray;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.web3j.abi.datatypes.Int;
 
 import java.math.BigDecimal;
@@ -22,6 +24,7 @@ import java.util.Map;
 import java.util.UUID;
 
 @Service
+@Transactional
 public class CuCustomerCollectMybatisServiceImpl extends BaseApiService implements CuCustomerCollectService {
 
     @Override
@@ -98,8 +101,12 @@ public class CuCustomerCollectMybatisServiceImpl extends BaseApiService implemen
             CuHttpUrl cuHttpUrl = new CuHttpUrl();
             cuHttpUrl.setImage(cuCustomerInfo.getCustomerHead());
             cuHttpUrl.setUserName(cuCustomerInfo.getCustomerName());
-            cuHttpUrl.setMncCoin(cuCustomerAccount.getTotalCoin());
-            cuHttpUrl.setMp(cuCustomerAccount.getCustomerIntegral());
+            if (cuCustomerAccount != null) {
+                cuHttpUrl.setMncCoin(cuCustomerAccount.getTotalCoin());
+                cuHttpUrl.setMp(cuCustomerAccount.getCustomerIntegral());
+            }
+            cuHttpUrl.setMncCoin(BigDecimal.ZERO);
+            cuHttpUrl.setMp(BigDecimal.ZERO);
             List<CuHttpUrl> cuHttpUrls = cuHttpUrlDao.query(new QueryFilterBuilder().put("token", token).build());
             List<CuCustomerCollect> cuCustomerCollects = cuCustomerCollectDao.query(new QueryFilterBuilder().put("customerId",cuCustomerInfo.getId()).put("state","1").build());
             cuHttpUrl.setVermicelli(cuCustomerCollects.size());
@@ -180,6 +187,9 @@ public class CuCustomerCollectMybatisServiceImpl extends BaseApiService implemen
             cuConsumeDao.update(cuConsume);
             if ("1".equals(state)) {
                 this.returnMp(id, mp);
+                MallShopAdvert mallShopAdvert = mallShopAdvertDao.queryOne(new QueryFilterBuilder().put("id", cuConsume.getShopId()).build());
+                mallShopAdvert.setAdvertSale(mallShopAdvert.getAdvertSale()+1);
+                mallShopAdvertDao.update(mallShopAdvert);
             }
             return "成功";
         } catch (Exception e) {
@@ -221,9 +231,13 @@ public class CuCustomerCollectMybatisServiceImpl extends BaseApiService implemen
             String customerId = this.getCuCustomerInfo(token);
             if (null != customerId) {
                 List<CuHistory> list = cuHistoryDao.query(new QueryFilterBuilder().put("customerId", customerId).orderBy("create_time desc").build());
+                Map map = new HashMap();
                 for (CuHistory cuHistory:list) {
-                    List<CuConsume> cuConsumes = cuConsumeDao.query(new QueryFilterBuilder().put("shopId", cuHistory.getShopId()).build());
-                    cuHistory.setCount(cuConsumes.size());
+                    map.put("id", cuHistory.getShopId());
+                    map.put("applyStatus", "2");
+                    map.put("flagDel", "0");
+                    Long count = mallShopAdvertDao.count(map);
+                    cuHistory.setCount(count.intValue());
                 }
                 JSONArray json = JSONArray.fromObject(list);
                 return json.toString();
@@ -329,19 +343,24 @@ public class CuCustomerCollectMybatisServiceImpl extends BaseApiService implemen
      * @param mp
      * @return
      */
-    private String returnMp(String id, String mp) {
-        try {
-            CuConsume cuConsume = cuConsumeDao.queryOne(new QueryFilterBuilder().put("id", id).build());
-            CuCustomerInfo cuCustomerInfo = cuCustomerInfoDao.queryOne(new QueryFilterBuilder().put("id", cuConsume.getCustomerId()).build());
-            cuCustomerInfo.setMp(cuCustomerInfo.getMp().add(new BigDecimal(mp)));
-            cuCustomerInfoDao.update(cuCustomerInfo);
-            return "成功";
-        } catch (Exception e) {
-            return "失败";
-        }
+    private void returnMp(String id, String mp) {
+        CuConsume cuConsume = cuConsumeDao.queryOne(new QueryFilterBuilder().put("id", id).build());
+        CuCustomerAccount cuCustomerAccount = cuCustomerAccountDao.queryOne(new QueryFilterBuilder().put("id", cuConsume.getCustomerId()).build());
+        cuCustomerAccount.setCustomerIntegral(cuCustomerAccount.getCustomerIntegral().add(new BigDecimal(mp)));
+        cuCustomerAccountDao.update(cuCustomerAccount);
+        addMp(cuConsume.getCustomerId());
+        CuLogs cuLogs = new CuLogs();
+        cuLogs.setCustomerId(cuConsume.getCustomerId());
+        cuLogs.setShopId(cuConsume.getShopId());
+        cuLogs.setType("1");
+        cuLogs.setMoney(cuConsume.getMoney());
+        cuLogs.setMp(new BigDecimal(mp));
+        cuLogs.setRemark("记账"+cuConsume.getMoney()+"返还mp"+mp);
+        cuLogsDao.insert(cuLogs);
+    }
+    private void addMp(String customerId) {
 
     }
-
     private String getCuCustomerInfo(String token) {
         String customerId = null;
         if (!token.isEmpty()) {

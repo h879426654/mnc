@@ -41,7 +41,7 @@ public interface MallShopAdvertApiService {
 
 	DataItemResponse<OwnShopAdvertResponse> doOwnShopAdvert(TokenRequest request, HttpServletRequest req);
 
-	String searchAdvert(String classifyId, String city, String region, String isNew, String sale, Integer pageNum, Integer pageSize, String shopName);
+	String searchAdvert(String classifyId, String city, String isNew, String sale, Integer pageNum, Integer pageSize, String shopName);
 
 	String searchClassify();
 

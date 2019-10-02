@@ -20,7 +20,7 @@ public class CuReatil2MybatisDao extends GenericMybatisDaoSupport<CuReatil2> imp
 		defaultNameMapper.configFieldColumnName("id", "ID");
 		defaultNameMapper.configFieldColumnName("customerIdSecond", "CUSTOMER_ID_SECOND");
 		defaultNameMapper.configFieldColumnName("customerIdThird", "CUSTOMER_ID_THIRD");
-		defaultNameMapper.configFieldColumnName("image", "IMAGE");
+		defaultNameMapper.configFieldColumnName("grade", "grade");
 		return defaultNameMapper;
 	}
 }

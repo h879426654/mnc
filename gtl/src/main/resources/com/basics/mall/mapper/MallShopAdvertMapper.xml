@@ -42,14 +42,8 @@
   <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(city)">
     and city = #{city}
   </if>
-  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(region)">
-    and region = #{region}
-  </if>
   <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(classifyId)">
      and CLASSIFY_ID = #{classifyId}
-  </if>
-  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(classifyIds)">
-     and CLASSIFY_ID = ${classifyIds}
   </if>
   <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(advertName)">
       <![CDATA[and advert_name like '%${advertName}%' ]]>
@@ -57,7 +51,7 @@
   <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(createTime)">
      order by CREATE_TIME DESC
   </if>
-  <if test="advertSale != null">
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(advert_sale)">
      order by advert_sale desc
   </if>
   <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(pageN)">
@@ -66,6 +60,71 @@
  </select>
     <insert id="insert" parameterType="com.basics.mall.entity.MallShopAdvert">
         insert into mall_shop_advert(advert_id, customer_id, advert_name, advert_context, advert_image, shop_licence, advert_phone, advert_address, advert_longitude, advert_latitude, create_time, city, region, CLASSIFY_ID, person)
-        values (#{id}, #{customerId}, #{advertName}, #{advertContext}, #{advertImage}, #{shopLicence}, #{advertPhone}, #{advertAddress}, #{advertLongitude}, #{advertLatitude}, now(), #{city}, #{region}, #{classifyId}, #{person})
+        values (#{id}, #{customerId}, #{advertName}, #{advertContext}, #{advertImage}, #{shopLicence}, #{advertPhone}, #{advertAddress}, #{advertLongitude}, #{advertLatitude}, now(), #{city}, #{region}, #{classifyId}, #{person}, #{person)
     </insert>
+    <update id="update" parameterType="com.basics.mall.entity.MallShopAdvert">
+        update mall_shop_advert set
+        <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(advertName)">
+            advert_name = #{advertName},
+        </if>
+        <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(advertContext)">
+            advert_context = #{advertContext},
+        </if>
+        <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(advertImage)">
+            advert_Image = #{advertImage},
+        </if>
+        <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(shopLicence)">
+            shop_licence = #{shopLicence},
+        </if>
+        <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(advertPhone)">
+            advert_phone = #{advertPhone},
+        </if>
+        <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(advertAddress)">
+            advert_address = #{advertAddress},
+        </if>
+        <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(advertLongitude)">
+            advert_longitude = #{advertLongitude},
+        </if>
+        <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(advertLatitude)">
+            advert_latitude = #{advertLatitude},
+        </if>
+        <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(city)">
+            city = #{city},
+        </if>
+        <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(classifyId)">
+            CLASSIFY_ID = #{classifyId},
+        </if>
+        <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(person)">
+            person = #{person},
+        </if>
+        <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(person)">
+            person = #{person},
+        </if>
+        <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(advertSale)">
+            ADVERT_SALE = #{advertSale},
+        </if>
+        <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(id)">
+            id = #{id}
+        </if>
+        where
+        advert_id = #{id}
+    </update>
+    <select id="query" resultType="com.basics.mall.entity.MallShopAdvert" useCache="false" flushCache="false">
+    select
+     count(*)
+    from mall_shop_advert
+    where 1=1
+    <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(id)">
+        and advert_id = #{id}
+    </if>
+    <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(customerId)">
+        and customer_id = #{customerId}
+    </if>
+    <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(applyStatus)">
+        and apply_status = #{applyStatus}
+    </if>
+    <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(flagDel)">
+        and FLAG_DEL = #{flagDel}
+    </if>
+    </select>
 </mapper>

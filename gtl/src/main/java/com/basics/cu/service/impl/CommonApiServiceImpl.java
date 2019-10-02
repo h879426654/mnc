@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import com.basics.cu.controller.request.*;
 import com.basics.cu.entity.*;
+import com.basics.gty.entity.GtyWallet;
 import com.basics.mall.dao.MallAdvertHotDao;
 import com.basics.mall.entity.MallAdvertHot;
 import com.basics.mall.entity.MallShopAdvert;
@@ -32,8 +33,10 @@ import com.basics.support.sms.SmsWhUtil;
 import com.basics.sys.entity.SysCountry;
 import com.basics.sys.entity.SysCustomerLevel;
 import com.basics.sys.entity.SysVersion;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@Transactional
 public class CommonApiServiceImpl extends BaseApiService implements CommonApiService {
 
     /**
@@ -289,53 +292,95 @@ public class CommonApiServiceImpl extends BaseApiService implements CommonApiSer
         cuCustomerRefereeDao.save(referee);
         // 更新团队人数
         doUpdateTeamNum(parent.getId(), true);
+
+        insertReatil(info.getCustomerPhone(), request.getParentPhone());
         response.onHandleSuccess();
         return response;
     }
+
     private void insertReatil(String phone, String parentPhone) {
-        //查询上一级的id
-        CuCustomerInfo cuCustomerInfo = cuCustomerInfoDao.queryOne(new QueryFilterBuilder().put("customerPhone",parentPhone).build());
-        //查询新人id
-        CuCustomerInfo cuCustomerInfo1 = cuCustomerInfoDao.queryOne(new QueryFilterBuilder().put("customerPhone",phone).build());
-        //存入表中
+
+        //查询被邀请人ID
+        CuCustomerInfo newC = cuCustomerInfoDao.queryOne(new QueryFilterBuilder().put("customerPhone", phone).build());
+        //查询邀请人ID
+        CuCustomerInfo ordC = cuCustomerInfoDao.queryOne(new QueryFilterBuilder().put("customerPhone", parentPhone).build());
+
+        //通过邀请人id,查询是不是迁移数据如果是 将用户插入到表中
+        CuReatil1 oldReatil = cuReatil1Dao.queryOne(new QueryFilterBuilder().put("customerId", ordC.getId()).build());
+        if (null == oldReatil) {
+            CuReatil1 oldReatil1 = new CuReatil1();
+            oldReatil1.setId(UUID.randomUUID().toString().replace("-", ""));
+            oldReatil1.setCustomerId(ordC.getId());
+            oldReatil1.setMoney(BigDecimal.ZERO);
+            oldReatil1.setIndirectMoney(BigDecimal.ZERO);
+            cuReatil1Dao.insert(oldReatil1);
+        }
+
+        //将被邀请人存入表中
+        CuReatil1 newReatil = new CuReatil1();
+        newReatil.setId(UUID.randomUUID().toString().replace("-", ""));
+        newReatil.setCustomerId(newC.getId());
+        newReatil.setMoney(BigDecimal.ZERO);
+        newReatil.setIndirectMoney(BigDecimal.ZERO);
+        cuReatil1Dao.insert(newReatil);
+
+        //存入关系表中
         CuReatil2 cuReatil2 = new CuReatil2();
-        cuReatil2.setId(UUID.randomUUID().toString().replace("-",""));
-        cuReatil2.setCustomerId(cuCustomerInfo.getId());
-        cuReatil2.setCustomerIdSecond(cuCustomerInfo1.getId());
+        cuReatil2.setId(UUID.randomUUID().toString().replace("-", ""));
+        cuReatil2.setCustomerId(ordC.getId());
+        cuReatil2.setCustomerIdSecond(newC.getId());
         cuReatil2Dao.insert(cuReatil2);
-        CuReatil1 cuReatil1 = new CuReatil1();
-        cuReatil1.setCustomerId(cuCustomerInfo1.getId());
-        cuReatil1.setMoney(BigDecimal.ZERO);
-        cuReatil1.setIndirectMoney(BigDecimal.ZERO);
-        cuReatil1Dao.insert(cuReatil1);
-        String customerIdSecond = cuCustomerInfo.getId();
-        int i = 1;
-        while (true) {
-            CuReatil2 cu2 = cuReatil2Dao.queryOne(new QueryFilterBuilder().put("customerIdSecond", customerIdSecond).build());
-            if (null == cu2) {
-                break;
-            }
-            customerIdSecond = cu2.getCustomerId();
-            i++;
-        }
-        int k = 0;
-        int l = 0;
-        for (int j=i; j==0; j++) {
-            Map map = new HashMap();
-            if (k == 0) {
-                CuReatil2 cu2 = cuReatil2Dao.queryOne(new QueryFilterBuilder().put("customerId", cuCustomerInfo.getId()).build());
-                //更新直接价格
-            } else {
 
-                CuReatil2 cu2 = cuReatil2Dao.queryOne(new QueryFilterBuilder().put("customerIdSecond", cuCustomerInfo.getId()).build());
-                map.put("customerId", cu2.getCustomerId());
-                Long count = cuReatil2Dao.count(map);
-                if (count >= l) {
+//            String customerIdSecond = ordC.getId();
+//            int i = 1;
+//            while (true) {
+//                CuReatil2 cu2 = cuReatil2Dao.queryOne(new QueryFilterBuilder().put("customerIdSecond", customerIdSecond).build());
+//                if (null == cu2) {
+//                    break;
+//                }
+//                customerIdSecond = cu2.getCustomerId();
+//                i++;
+//                if (i==21) {
+//                    break;
+//                }
+//            }
+//            int k = 0;
+//            int l = 1;
+//            customerIdSecond = ordC.getId();
+//            Map map = new HashMap();
+//            for (int j=i; j>=0; j--) {
+//                CuReatil2 cu2 = null;
+//                if (k == 0) {
+//                    cu2 = cuReatil2Dao.queryOne(new QueryFilterBuilder().put("customerId", customerIdSecond).build());
+//                    //取出得到多少钱,更新直接价格
+//                    CuReatilMoney cuReatilMoney = cuReatilMoneyDao.queryOne(new QueryFilterBuilder().put("id", l).build());
+//                    CuReatil1 cureatil1 = cuReatil1Dao.queryOne(new QueryFilterBuilder().put("customerId",cu2.getCustomerId()).build());
+//                    cureatil1.setMoney(cureatil1.getMoney().add(cuReatilMoney.getMoney()));
+//                    cuReatil1Dao.update(cureatil1);
+//                    k++;
+//                } else {
+//                    cu2 = cuReatil2Dao.queryOne(new QueryFilterBuilder().put("customerIdSecond", customerIdSecond).build());
+//                    if (null == cu2) {
+//                        break;
+//                    }
+//                    map.put("customerId", cu2.getCustomerId());
+//                    Long count = cuReatil2Dao.count(map);
+//                    if (count >= l) {
+//                        CuReatil1 cureatil1 = cuReatil1Dao.queryOne(new QueryFilterBuilder().put("customerId",cu2.getCustomerId()).build());
+//                        CuReatilMoney cuReatilMoney = cuReatilMoneyDao.queryOne(new QueryFilterBuilder().put("id", l).build());
+//                        cureatil1.setIndirectMoney(cureatil1.getIndirectMoney().add(cuReatilMoney.getMoney()));
+//                        cuReatil1Dao.update(cureatil1);
+//                    }
+//                }
+//                customerIdSecond = cu2.getCustomerId();
+//
+//                l++;
+//            }
+//        } catch (Exception e) {
+//            throw new RuntimeException(e.getMessage());
+//        }
 
-                }
-            }
-            l++;
-        }
+
     }
     /**
      * 登录

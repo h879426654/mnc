@@ -7,7 +7,6 @@ class CuReatil2Base extends BaseBean {
 	private String id;
 	private String customerId;
 	private String customerIdSecond;
-	private String image;
 
 	public String getId() {
 		return id;
@@ -31,13 +30,5 @@ class CuReatil2Base extends BaseBean {
 
 	public void setCustomerIdSecond(String customerIdSecond) {
 		this.customerIdSecond = customerIdSecond;
-	}
-
-	public String getImage() {
-		return image;
-	}
-
-	public void setImage(String image) {
-		this.image = image;
 	}
 }
