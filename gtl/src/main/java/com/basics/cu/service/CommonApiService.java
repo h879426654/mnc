@@ -10,6 +10,7 @@ import com.basics.common.DataResponse;
 import com.basics.common.TokenResponse;
 import com.basics.cu.controller.request.*;
 import com.basics.mall.entity.MallAdvertHot;
+import com.basics.mall.entity.MallShopAdvert;
 import com.basics.sys.entity.SysCountry;
 import com.basics.sys.entity.SysVersion;
 
@@ -58,5 +59,5 @@ public interface CommonApiService {
     //新手机号
 	String newPhone(String phone);
 
-	List<MallAdvertHot> getHot();
+	List<MallShopAdvert> getHot();
 }

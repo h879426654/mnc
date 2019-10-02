@@ -28,6 +28,15 @@ public class MallShopAdvertBase extends BaseBean{
     private String list;
     private String person;
     private Integer count;
+    private String hot;
+
+    public String getHot() {
+        return hot;
+    }
+
+    public void setHot(String hot) {
+        this.hot = hot;
+    }
 
     public Integer getCount() {
         return count;

@@ -53,4 +53,8 @@ public class CuConsume extends CuConsumeBase {
 		this.setPageS(pageS);
 		return this;
 	}
+	public CuConsume appraise(String appraise) {
+		this.setAppraise(appraise);
+		return this;
+	}
 }

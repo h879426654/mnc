@@ -5,7 +5,7 @@
 <mapper namespace="com.basics.cu.entity.CuReatil2">
  <cache type="com.basics.support.mybatis.CacheAdapter"/>
  <select id="query" resultType="com.basics.cu.entity.CuReatil2" flushCache="false" useCache="false">
-    select id,customer_id as customerId, customer_id_second as customerIdSecond,grade from cu_retail2
+    select id,customer_id as customerId, customer_id_second as customerIdSecond from cu_retail2
      WHERE 1=1
      <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(customerId)">
          <![CDATA[ AND CUSTOMER_ID = #{customerId} ]]>
@@ -14,13 +14,14 @@
          <![CDATA[ AND customer_Id_Second = #{customerIdSecond} ]]>
      </if>
  </select>
+
  <insert id = "insert" parameterType="com.basics.cu.entity.CuReatil2">
-     insert into cu_retail2(id, customer_id, customer_id_second, grade)
-     values (#{id}, #{customerId}, #{customerIdSecond}, #{grade})
+     insert into cu_retail2(id, customer_id, customer_id_second)
+     values (#{id}, #{customerId}, #{customerIdSecond})
  </insert>
 
 <select id="count" parameterType="map" resultType="long" >
-    select count(*) from cu_retail2 where 1=1
+    select count(1) from cu_retail2 where 1=1
     <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(customerId)">
         <![CDATA[ AND CUSTOMER_ID = #{customerId} ]]>
     </if>

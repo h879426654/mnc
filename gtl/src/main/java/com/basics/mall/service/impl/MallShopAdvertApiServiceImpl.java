@@ -318,9 +318,12 @@ public class MallShopAdvertApiServiceImpl extends BaseApiService implements Mall
 		params.put("advertName", shopName);
 		try {
 			List<MallShopAdvert> mallShopAdverts = mallShopAdvertDao.query(new QueryFilterBuilder().putAll(params).build());
+			Map map = new HashMap();
 			for (MallShopAdvert mallShopAdvert : mallShopAdverts) {
-				List<CuConsume> cuConsumes = cuConsumeDao.query(new QueryFilterBuilder().put("shopId", mallShopAdvert.getId()).build());
-				mallShopAdvert.setCount(cuConsumes.size());
+				map.put("shopId", mallShopAdvert.getId());
+				map.put("state", "1");
+				Long count = cuConsumeDao.count(map);
+				mallShopAdvert.setCount(count.intValue());
 			}
 
 			JSONArray json = JSONArray.fromObject(mallShopAdverts);

@@ -24,7 +24,8 @@
     ADVERT_SALE as advertSale,
     CITY,
     REGION,
-    PERSON
+    PERSON,
+    HOT
     from mall_shop_advert
     where 1=1
   <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(id)">
@@ -44,6 +45,9 @@
   </if>
   <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(classifyId)">
      and CLASSIFY_ID = #{classifyId}
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(hot)">
+     and HOT = #{hot}
   </if>
   <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(advertName)">
       <![CDATA[and advert_name like '%${advertName}%' ]]>
@@ -109,7 +113,7 @@
         where
         advert_id = #{id}
     </update>
-    <select id="query" resultType="com.basics.mall.entity.MallShopAdvert" useCache="false" flushCache="false">
+    <select id="count" resultType="long" parameterType="map" useCache="false" flushCache="false">
     select
      count(*)
     from mall_shop_advert

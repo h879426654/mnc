@@ -275,42 +275,26 @@ public class CommonApiServiceImpl extends BaseApiService implements CommonApiSer
         // 初始化账户表
         CuCustomerAccount account = new CuCustomerAccount();
         account.id(customer.getId()).customerPurse(GuidUtils.generateSimpleGuid().toUpperCase()).customerPayPass(MD5Util.GetMD5Code(null == request.getPayPass() ? "123456" : request.getPayPass()));
-        // 初始化统计表
-        CuCustomerCount count = new CuCustomerCount();
-        SysCustomerLevel level = sysCustomerLevelDao.queryOne(new QueryFilterBuilder().put("tallyWithLevel", Constant.STATE_NO).build());
-        count.teamNum(1).id(customer.getId());
-        if (null != level) {
-            count.setCustomerLevelId(level.getId());
-        }
-        // 推荐人表
-        CuCustomerReferee referee = new CuCustomerReferee();
-        referee.id(customer.getId()).refereeId(parent.getId());
+
         // 保存
         cuCustomerInfoDao.save(info);
         cuCustomerAccountDao.save(account);
-        cuCustomerCountDao.save(count);
-        cuCustomerRefereeDao.save(referee);
-        // 更新团队人数
-        doUpdateTeamNum(parent.getId(), true);
-
-        insertReatil(info.getCustomerPhone(), request.getParentPhone());
+        GtyWallet gtyWallet = new GtyWallet();
+        gtyWallet.setUserId(info.getId());
+        gtyWallet.setWalletAddress(UUID.randomUUID().toString().replace("-",""));
+        gtyWalletDao.insert(gtyWallet);
+        insertReatil(info.getId(), parent.getId());
         response.onHandleSuccess();
         return response;
     }
 
-    private void insertReatil(String phone, String parentPhone) {
-
-        //查询被邀请人ID
-        CuCustomerInfo newC = cuCustomerInfoDao.queryOne(new QueryFilterBuilder().put("customerPhone", phone).build());
-        //查询邀请人ID
-        CuCustomerInfo ordC = cuCustomerInfoDao.queryOne(new QueryFilterBuilder().put("customerPhone", parentPhone).build());
-
+    private void insertReatil(String customerId, String parentCustomerId) {
         //通过邀请人id,查询是不是迁移数据如果是 将用户插入到表中
-        CuReatil1 oldReatil = cuReatil1Dao.queryOne(new QueryFilterBuilder().put("customerId", ordC.getId()).build());
+        CuReatil1 oldReatil = cuReatil1Dao.queryOne(new QueryFilterBuilder().put("customerId", parentCustomerId).build());
         if (null == oldReatil) {
             CuReatil1 oldReatil1 = new CuReatil1();
             oldReatil1.setId(UUID.randomUUID().toString().replace("-", ""));
-            oldReatil1.setCustomerId(ordC.getId());
+            oldReatil1.setCustomerId(parentCustomerId);
             oldReatil1.setMoney(BigDecimal.ZERO);
             oldReatil1.setIndirectMoney(BigDecimal.ZERO);
             cuReatil1Dao.insert(oldReatil1);
@@ -319,7 +303,7 @@ public class CommonApiServiceImpl extends BaseApiService implements CommonApiSer
         //将被邀请人存入表中
         CuReatil1 newReatil = new CuReatil1();
         newReatil.setId(UUID.randomUUID().toString().replace("-", ""));
-        newReatil.setCustomerId(newC.getId());
+        newReatil.setCustomerId(customerId);
         newReatil.setMoney(BigDecimal.ZERO);
         newReatil.setIndirectMoney(BigDecimal.ZERO);
         cuReatil1Dao.insert(newReatil);
@@ -327,58 +311,9 @@ public class CommonApiServiceImpl extends BaseApiService implements CommonApiSer
         //存入关系表中
         CuReatil2 cuReatil2 = new CuReatil2();
         cuReatil2.setId(UUID.randomUUID().toString().replace("-", ""));
-        cuReatil2.setCustomerId(ordC.getId());
-        cuReatil2.setCustomerIdSecond(newC.getId());
+        cuReatil2.setCustomerId(parentCustomerId);
+        cuReatil2.setCustomerIdSecond(customerId);
         cuReatil2Dao.insert(cuReatil2);
-
-//            String customerIdSecond = ordC.getId();
-//            int i = 1;
-//            while (true) {
-//                CuReatil2 cu2 = cuReatil2Dao.queryOne(new QueryFilterBuilder().put("customerIdSecond", customerIdSecond).build());
-//                if (null == cu2) {
-//                    break;
-//                }
-//                customerIdSecond = cu2.getCustomerId();
-//                i++;
-//                if (i==21) {
-//                    break;
-//                }
-//            }
-//            int k = 0;
-//            int l = 1;
-//            customerIdSecond = ordC.getId();
-//            Map map = new HashMap();
-//            for (int j=i; j>=0; j--) {
-//                CuReatil2 cu2 = null;
-//                if (k == 0) {
-//                    cu2 = cuReatil2Dao.queryOne(new QueryFilterBuilder().put("customerId", customerIdSecond).build());
-//                    //取出得到多少钱,更新直接价格
-//                    CuReatilMoney cuReatilMoney = cuReatilMoneyDao.queryOne(new QueryFilterBuilder().put("id", l).build());
-//                    CuReatil1 cureatil1 = cuReatil1Dao.queryOne(new QueryFilterBuilder().put("customerId",cu2.getCustomerId()).build());
-//                    cureatil1.setMoney(cureatil1.getMoney().add(cuReatilMoney.getMoney()));
-//                    cuReatil1Dao.update(cureatil1);
-//                    k++;
-//                } else {
-//                    cu2 = cuReatil2Dao.queryOne(new QueryFilterBuilder().put("customerIdSecond", customerIdSecond).build());
-//                    if (null == cu2) {
-//                        break;
-//                    }
-//                    map.put("customerId", cu2.getCustomerId());
-//                    Long count = cuReatil2Dao.count(map);
-//                    if (count >= l) {
-//                        CuReatil1 cureatil1 = cuReatil1Dao.queryOne(new QueryFilterBuilder().put("customerId",cu2.getCustomerId()).build());
-//                        CuReatilMoney cuReatilMoney = cuReatilMoneyDao.queryOne(new QueryFilterBuilder().put("id", l).build());
-//                        cureatil1.setIndirectMoney(cureatil1.getIndirectMoney().add(cuReatilMoney.getMoney()));
-//                        cuReatil1Dao.update(cureatil1);
-//                    }
-//                }
-//                customerIdSecond = cu2.getCustomerId();
-//
-//                l++;
-//            }
-//        } catch (Exception e) {
-//            throw new RuntimeException(e.getMessage());
-//        }
 
 
     }
@@ -722,15 +657,14 @@ public class CommonApiServiceImpl extends BaseApiService implements CommonApiSer
     }
 
     @Override
-    public List<MallAdvertHot> getHot() {
-        List<MallAdvertHot> list = mallAdvertHotDao.query(new QueryFilterBuilder().put("isHot",1).build());
-        for (MallAdvertHot mallAdvertHot : list) {
-            MallShopAdvert mallShopAdvert = mallShopAdvertDao.queryOne(new QueryFilterBuilder().put("id", mallAdvertHot.getAdvertId()).build());
-            mallAdvertHot.setAdvertAddress(mallShopAdvert.getAdvertAddress());
-            mallAdvertHot.setAdvertLatitude(mallShopAdvert.getAdvertLatitude());
-            mallAdvertHot.setAdvertLongitude(mallShopAdvert.getAdvertLongitude());
-            List<CuConsume> cuConsumes = cuConsumeDao.query(new QueryFilterBuilder().put("shopId", mallAdvertHot.getAdvertId()).build());
-            mallAdvertHot.setCount(String.valueOf(cuConsumes.size()));
+    public List<MallShopAdvert> getHot() {
+        List<MallShopAdvert> list = mallShopAdvertDao.query(new QueryFilterBuilder().put("hot",1).build());
+        for (MallShopAdvert mallShopAdvert : list) {
+            Map map = new HashMap();
+            map.put("shopId", mallShopAdvert.getId());
+            map.put("state", "1");
+            Long count = cuConsumeDao.count(map);
+            mallShopAdvert.setCount(count.intValue());
         }
         return list;
     }

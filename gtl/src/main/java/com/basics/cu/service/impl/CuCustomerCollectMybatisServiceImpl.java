@@ -8,6 +8,7 @@ import com.basics.cu.controller.request.ConsumeRequest;
 import com.basics.cu.controller.request.HistoryRequest;
 import com.basics.cu.entity.*;
 import com.basics.cu.service.CuCustomerCollectService;
+import com.basics.gty.entity.GtyWallet;
 import com.basics.mall.dao.MallShopAdvertDao;
 import com.basics.mall.entity.MallShopAdvert;
 import com.basics.support.PaginationSupport;
@@ -208,7 +209,7 @@ public class CuCustomerCollectMybatisServiceImpl extends BaseApiService implemen
             }
             List<CuHistory> cuHistorys = cuHistoryDao.query(new QueryFilterBuilder().put("customerId", customerId).orderBy("create_time desc").build());
             if (cuHistorys.size() > 20) {
-                cuHistoryDao.delete(cuHistorys.get(0).getId());
+                cuHistoryDao.delete(cuHistorys.get(cuHistorys.size()).getId());
             }
             CuHistory cuHistory = new CuHistory();
             cuHistory.setShopId(historyRequest.getShopId());
@@ -233,10 +234,9 @@ public class CuCustomerCollectMybatisServiceImpl extends BaseApiService implemen
                 List<CuHistory> list = cuHistoryDao.query(new QueryFilterBuilder().put("customerId", customerId).orderBy("create_time desc").build());
                 Map map = new HashMap();
                 for (CuHistory cuHistory:list) {
-                    map.put("id", cuHistory.getShopId());
-                    map.put("applyStatus", "2");
-                    map.put("flagDel", "0");
-                    Long count = mallShopAdvertDao.count(map);
+                    map.put("shopId", cuHistory.getShopId());
+                    map.put("state", "1");
+                    Long count = cuConsumeDao.count(map);
                     cuHistory.setCount(count.intValue());
                 }
                 JSONArray json = JSONArray.fromObject(list);
@@ -291,7 +291,9 @@ public class CuCustomerCollectMybatisServiceImpl extends BaseApiService implemen
                 cuDiscuss.setShopId(shopId);
                 cuDiscuss.setRemark(remark);
                 cuDiscussDao.insert(cuDiscuss);
-                updateConConsume(id, "3","0");
+                CuConsume cuConsume = cuConsumeDao.queryOne(new QueryFilterBuilder().put("id", id).build());
+                cuConsume.setAppraise("1");
+                cuConsumeDao.update(cuConsume);
                 return "成功";
             } catch (Exception e) {
                 return "失败";
@@ -348,7 +350,7 @@ public class CuCustomerCollectMybatisServiceImpl extends BaseApiService implemen
         CuCustomerAccount cuCustomerAccount = cuCustomerAccountDao.queryOne(new QueryFilterBuilder().put("id", cuConsume.getCustomerId()).build());
         cuCustomerAccount.setCustomerIntegral(cuCustomerAccount.getCustomerIntegral().add(new BigDecimal(mp)));
         cuCustomerAccountDao.update(cuCustomerAccount);
-        addMp(cuConsume.getCustomerId());
+        addMp(cuConsume.getCustomerId(), mp);
         CuLogs cuLogs = new CuLogs();
         cuLogs.setCustomerId(cuConsume.getCustomerId());
         cuLogs.setShopId(cuConsume.getShopId());
@@ -358,7 +360,40 @@ public class CuCustomerCollectMybatisServiceImpl extends BaseApiService implemen
         cuLogs.setRemark("记账"+cuConsume.getMoney()+"返还mp"+mp);
         cuLogsDao.insert(cuLogs);
     }
-    private void addMp(String customerId) {
+    private void addMp(String customerId, String mpStr) {
+        BigDecimal zpzo = new BigDecimal(0.01);
+        BigDecimal mp = new BigDecimal(mpStr);
+        int i = 1;
+        //判断一共有多少人吃利息
+        while(true) {
+            CuReatil2 cu2 = cuReatil2Dao.queryOne(new QueryFilterBuilder().put("customerIdSecond", customerId).build());
+            if (null == cu2) {
+                break;
+            }
+            if (i==21) {
+                break;
+            }
+            customerId = cu2.getCustomerIdSecond();
+            i++;
+        }
+        //计算并更新
+        for (int j=i; j>=0; j--) {
+            CuReatil2 cu2 = cuReatil2Dao.queryOne(new QueryFilterBuilder().put("customerId", customerId).build());
+            CuReatilMoney cuReatilMoney = cuReatilMoneyDao.queryOne(new QueryFilterBuilder().put("id", j).build());
+            BigDecimal rate = cuReatilMoney.getMoney().multiply(zpzo);
+            BigDecimal mToken = mp.multiply(rate);
+            CuReatil1 cureatil1 = cuReatil1Dao.queryOne(new QueryFilterBuilder().put("customerId",cu2.getCustomerId()).build());
+            if (j == 1) {
+                cureatil1.setMoney(cureatil1.getMoney().add(mToken));
+            } else {
+                cureatil1.setIndirectMoney(cureatil1.getIndirectMoney().add(mToken));
+            }
+            cuReatil1Dao.update(cureatil1);
+            GtyWallet gtyWallet = gtyWalletDao.queryOne(new QueryFilterBuilder().put("userId", customerId).build());
+            gtyWallet.setmTokenNum(gtyWallet.getmTokenNum().add(mToken));
+            gtyWalletDao.update(gtyWallet);
+            customerId = cu2.getCustomerIdSecond();
+        }
 
     }
     private String getCuCustomerInfo(String token) {
