@@ -482,9 +482,9 @@ public class CommonApiController implements ApplicationContextAware {
 	}
 
 	@RequestMapping(value = "getHot")
-	public JSONArray getHot() {
+	public String getHot() {
 		List<MallShopAdvert> list = commonApiService.getHot();
 		JSONArray json = JSONArray.fromObject(list);
-		return json;
+		return json.toString();
 	}
 }

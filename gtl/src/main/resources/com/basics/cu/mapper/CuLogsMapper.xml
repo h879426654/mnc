@@ -13,7 +13,7 @@
  </select>
  <insert id = "insert" parameterType="com.basics.cu.entity.CuLogs">
     insert into cu_logs(type, customer_id, shop_id, mp, money, remark, create_time)
-    values (#{type},#{customerId},#{shopId},#{mp},{money},#{remark},now())
+    values (#{type},#{customerId},#{shopId},#{mp},#{money},#{remark},now())
  </insert>
  
  

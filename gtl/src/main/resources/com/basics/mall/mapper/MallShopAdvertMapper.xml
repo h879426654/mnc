@@ -108,7 +108,7 @@
             ADVERT_SALE = #{advertSale},
         </if>
         <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(id)">
-            id = #{id}
+            advert_id = #{id}
         </if>
         where
         advert_id = #{id}
