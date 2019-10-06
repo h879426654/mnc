@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import com.basics.cu.controller.request.*;
 import com.basics.cu.entity.*;
+import com.basics.gty.entity.GtyWallet;
 import com.basics.mall.dao.MallAdvertHotDao;
 import com.basics.mall.entity.MallAdvertHot;
 import com.basics.mall.entity.MallShopAdvert;
@@ -32,8 +33,10 @@ import com.basics.support.sms.SmsWhUtil;
 import com.basics.sys.entity.SysCountry;
 import com.basics.sys.entity.SysCustomerLevel;
 import com.basics.sys.entity.SysVersion;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@Transactional
 public class CommonApiServiceImpl extends BaseApiService implements CommonApiService {
 
     /**
@@ -272,70 +275,47 @@ public class CommonApiServiceImpl extends BaseApiService implements CommonApiSer
         // 初始化账户表
         CuCustomerAccount account = new CuCustomerAccount();
         account.id(customer.getId()).customerPurse(GuidUtils.generateSimpleGuid().toUpperCase()).customerPayPass(MD5Util.GetMD5Code(null == request.getPayPass() ? "123456" : request.getPayPass()));
-        // 初始化统计表
-        CuCustomerCount count = new CuCustomerCount();
-        SysCustomerLevel level = sysCustomerLevelDao.queryOne(new QueryFilterBuilder().put("tallyWithLevel", Constant.STATE_NO).build());
-        count.teamNum(1).id(customer.getId());
-        if (null != level) {
-            count.setCustomerLevelId(level.getId());
-        }
-        // 推荐人表
-        CuCustomerReferee referee = new CuCustomerReferee();
-        referee.id(customer.getId()).refereeId(parent.getId());
+
         // 保存
         cuCustomerInfoDao.save(info);
         cuCustomerAccountDao.save(account);
-        cuCustomerCountDao.save(count);
-        cuCustomerRefereeDao.save(referee);
-        // 更新团队人数
-        doUpdateTeamNum(parent.getId(), true);
+        GtyWallet gtyWallet = new GtyWallet();
+        gtyWallet.setUserId(info.getId());
+        gtyWallet.setWalletAddress(UUID.randomUUID().toString().replace("-",""));
+        gtyWalletDao.insert(gtyWallet);
+        insertReatil(info.getId(), parent.getId());
         response.onHandleSuccess();
         return response;
     }
-    private void insertReatil(String phone, String parentPhone) {
-        //查询上一级的id
-        CuCustomerInfo cuCustomerInfo = cuCustomerInfoDao.queryOne(new QueryFilterBuilder().put("customerPhone",parentPhone).build());
-        //查询新人id
-        CuCustomerInfo cuCustomerInfo1 = cuCustomerInfoDao.queryOne(new QueryFilterBuilder().put("customerPhone",phone).build());
-        //存入表中
+
+    private void insertReatil(String customerId, String parentCustomerId) {
+        //通过邀请人id,查询是不是迁移数据如果是 将用户插入到表中
+        CuReatil1 oldReatil = cuReatil1Dao.queryOne(new QueryFilterBuilder().put("customerId", parentCustomerId).build());
+        if (null == oldReatil) {
+            CuReatil1 oldReatil1 = new CuReatil1();
+            oldReatil1.setId(UUID.randomUUID().toString().replace("-", ""));
+            oldReatil1.setCustomerId(parentCustomerId);
+            oldReatil1.setMoney(BigDecimal.ZERO);
+            oldReatil1.setIndirectMoney(BigDecimal.ZERO);
+            cuReatil1Dao.insert(oldReatil1);
+        }
+
+        //将被邀请人存入表中
+        CuReatil1 newReatil = new CuReatil1();
+        newReatil.setId(UUID.randomUUID().toString().replace("-", ""));
+        newReatil.setCustomerId(customerId);
+        newReatil.setMoney(BigDecimal.ZERO);
+        newReatil.setIndirectMoney(BigDecimal.ZERO);
+        cuReatil1Dao.insert(newReatil);
+
+        //存入关系表中
         CuReatil2 cuReatil2 = new CuReatil2();
-        cuReatil2.setId(UUID.randomUUID().toString().replace("-",""));
-        cuReatil2.setCustomerId(cuCustomerInfo.getId());
-        cuReatil2.setCustomerIdSecond(cuCustomerInfo1.getId());
+        cuReatil2.setId(UUID.randomUUID().toString().replace("-", ""));
+        cuReatil2.setCustomerId(parentCustomerId);
+        cuReatil2.setCustomerIdSecond(customerId);
         cuReatil2Dao.insert(cuReatil2);
-        CuReatil1 cuReatil1 = new CuReatil1();
-        cuReatil1.setCustomerId(cuCustomerInfo1.getId());
-        cuReatil1.setMoney(BigDecimal.ZERO);
-        cuReatil1.setIndirectMoney(BigDecimal.ZERO);
-        cuReatil1Dao.insert(cuReatil1);
-        String customerIdSecond = cuCustomerInfo.getId();
-        int i = 1;
-        while (true) {
-            CuReatil2 cu2 = cuReatil2Dao.queryOne(new QueryFilterBuilder().put("customerIdSecond", customerIdSecond).build());
-            if (null == cu2) {
-                break;
-            }
-            customerIdSecond = cu2.getCustomerId();
-            i++;
-        }
-        int k = 0;
-        int l = 0;
-        for (int j=i; j==0; j++) {
-            Map map = new HashMap();
-            if (k == 0) {
-                CuReatil2 cu2 = cuReatil2Dao.queryOne(new QueryFilterBuilder().put("customerId", cuCustomerInfo.getId()).build());
-                //更新直接价格
-            } else {
 
-                CuReatil2 cu2 = cuReatil2Dao.queryOne(new QueryFilterBuilder().put("customerIdSecond", cuCustomerInfo.getId()).build());
-                map.put("customerId", cu2.getCustomerId());
-                Long count = cuReatil2Dao.count(map);
-                if (count >= l) {
 
-                }
-            }
-            l++;
-        }
     }
     /**
      * 登录
@@ -677,15 +657,14 @@ public class CommonApiServiceImpl extends BaseApiService implements CommonApiSer
     }
 
     @Override
-    public List<MallAdvertHot> getHot() {
-        List<MallAdvertHot> list = mallAdvertHotDao.query(new QueryFilterBuilder().put("isHot",1).build());
-        for (MallAdvertHot mallAdvertHot : list) {
-            MallShopAdvert mallShopAdvert = mallShopAdvertDao.queryOne(new QueryFilterBuilder().put("id", mallAdvertHot.getAdvertId()).build());
-            mallAdvertHot.setAdvertAddress(mallShopAdvert.getAdvertAddress());
-            mallAdvertHot.setAdvertLatitude(mallShopAdvert.getAdvertLatitude());
-            mallAdvertHot.setAdvertLongitude(mallShopAdvert.getAdvertLongitude());
-            List<CuConsume> cuConsumes = cuConsumeDao.query(new QueryFilterBuilder().put("shopId", mallAdvertHot.getAdvertId()).build());
-            mallAdvertHot.setCount(String.valueOf(cuConsumes.size()));
+    public List<MallShopAdvert> getHot() {
+        List<MallShopAdvert> list = mallShopAdvertDao.query(new QueryFilterBuilder().put("hot",1).build());
+        for (MallShopAdvert mallShopAdvert : list) {
+            Map map = new HashMap();
+            map.put("shopId", mallShopAdvert.getId());
+            map.put("state", "1");
+            Long count = cuConsumeDao.count(map);
+            mallShopAdvert.setCount(count.intValue());
         }
         return list;
     }

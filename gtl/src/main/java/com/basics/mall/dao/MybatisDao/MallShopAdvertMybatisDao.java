@@ -37,6 +37,7 @@ DefaultNameMapper defaultNameMapper = new DefaultNameMapper();
  defaultNameMapper.configFieldColumnName("city","CITY");
  defaultNameMapper.configFieldColumnName("region","REGION");
  defaultNameMapper.configFieldColumnName("person", "PERSON");
+ defaultNameMapper.configFieldColumnName("hot", "HOT");
 return defaultNameMapper;
 }
 }

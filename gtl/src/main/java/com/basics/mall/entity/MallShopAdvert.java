@@ -159,4 +159,8 @@ public class MallShopAdvert extends MallShopAdvertBase{
   this.setCount(count);
   return this;
  }
+ public MallShopAdvert hot(String hot) {
+  this.setHot(hot);
+  return this;
+ }
 }

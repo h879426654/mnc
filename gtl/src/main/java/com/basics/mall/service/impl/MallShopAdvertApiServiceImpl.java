@@ -298,17 +298,19 @@ public class MallShopAdvertApiServiceImpl extends BaseApiService implements Mall
 	}
 
 	@Override
-	public String searchAdvert(String classifyId, String city, String region, String isNew, String sale, Integer pageNum, Integer pageSize, String shopName) {
+	public String searchAdvert(String classifyId, String city, String isNew, String sale, Integer pageNum, Integer pageSize, String shopName) {
 		if (null == pageNum) {
 			pageNum = 1;
 		}
 		if (null == pageSize) {
 			pageSize = 10;
 		}
+		if ("全国".equals(city)) {
+			city = "";
+		}
 		Map params = new HashMap();
 		params.put("classifyId", classifyId);
 		params.put("city", city);
-		params.put("region", region);
 		params.put("createTime", isNew);
 		params.put("advertSale", sale);
 		params.put("pageN", (pageNum-1)*10);
@@ -316,9 +318,12 @@ public class MallShopAdvertApiServiceImpl extends BaseApiService implements Mall
 		params.put("advertName", shopName);
 		try {
 			List<MallShopAdvert> mallShopAdverts = mallShopAdvertDao.query(new QueryFilterBuilder().putAll(params).build());
+			Map map = new HashMap();
 			for (MallShopAdvert mallShopAdvert : mallShopAdverts) {
-				List<CuConsume> cuConsumes = cuConsumeDao.query(new QueryFilterBuilder().put("shopId", mallShopAdvert.getId()).build());
-				mallShopAdvert.setCount(cuConsumes.size());
+				map.put("shopId", mallShopAdvert.getId());
+				map.put("state", "1");
+				Long count = cuConsumeDao.count(map);
+				mallShopAdvert.setCount(count.intValue());
 			}
 
 			JSONArray json = JSONArray.fromObject(mallShopAdverts);

@@ -16,8 +16,4 @@ public class CuReatil2 extends CuReatil2Base {
 		this.setCustomerIdSecond(customerIdSecond);
 		return this;
 	}
-	public CuReatil2 image(String image) {
-		this.setImage(image);
-		return this;
-	}
 }

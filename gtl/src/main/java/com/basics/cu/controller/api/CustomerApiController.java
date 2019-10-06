@@ -535,8 +535,8 @@ public class CustomerApiController implements ApplicationContextAware {
 	 * @return
 	 */
 	@RequestMapping("udpateConConsume")
-	public String udpateConConsume(@Valid String id, String state, String mp) {
-		return cuCustomerCollectService.updateConConsume(id, state, mp);
+	public String udpateConConsume(@Valid String token, String id, String state, String mp) {
+		return cuCustomerCollectService.updateConConsume(token, id, state, mp);
 	}
 	/**
 	 * 添加历史数据
@@ -597,10 +597,21 @@ public class CustomerApiController implements ApplicationContextAware {
 		return cuCustomerCollectService.searchDiscuss(shopId, pageNum, pageSize);
 	}
 
+	/**
+	 * 获取手机号
+	 * @param personToken
+	 * @return
+	 */
 	@RequestMapping("getPhone")
 	public String getPhone(@Valid String personToken) {
 		String phone = cuCustomerCollectService.getPhone(personToken);
 		return phone;
 	}
-
+	/**
+	 * 轮播图、背景图
+	 */
+	@RequestMapping("searchPicture")
+	public String searchPicture() {
+		return cuCustomerCollectService.searchPicture();
+	}
 }

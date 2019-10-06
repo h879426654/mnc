@@ -25,6 +25,16 @@ public class MallAdvertHotBase {
 
     private String advertAddress;
 
+    private String hot;
+
+    public String getHot() {
+        return hot;
+    }
+
+    public void setHot(String hot) {
+        this.hot = hot;
+    }
+
     public String getAdvertLatitude() {
         return advertLatitude;
     }

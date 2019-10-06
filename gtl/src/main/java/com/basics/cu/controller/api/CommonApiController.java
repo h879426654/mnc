@@ -11,6 +11,7 @@ import com.aliyun.oss.OSSClient;
 import com.basics.cu.controller.request.*;
 import com.basics.mall.dao.MallAdvertHotDao;
 import com.basics.mall.entity.MallAdvertHot;
+import com.basics.mall.entity.MallShopAdvert;
 import net.sf.json.JSONArray;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -122,6 +123,7 @@ public class CommonApiController implements ApplicationContextAware {
 		}
 		return response;
 	}
+
 	/**
 	 * 登录
 	 */
@@ -480,9 +482,9 @@ public class CommonApiController implements ApplicationContextAware {
 	}
 
 	@RequestMapping(value = "getHot")
-	public JSONArray getHot() {
-		List<MallAdvertHot> list = commonApiService.getHot();
+	public String getHot() {
+		List<MallShopAdvert> list = commonApiService.getHot();
 		JSONArray json = JSONArray.fromObject(list);
-		return json;
+		return json.toString();
 	}
 }

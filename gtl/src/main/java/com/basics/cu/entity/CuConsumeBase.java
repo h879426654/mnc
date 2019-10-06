@@ -16,6 +16,15 @@ class CuConsumeBase extends BaseBean {
 	private Date createTime;
 	private String pageN;
 	private String pageS;
+	private String appraise;
+
+	public String getAppraise() {
+		return appraise;
+	}
+
+	public void setAppraise(String appraise) {
+		this.appraise = appraise;
+	}
 
 	public String getPageN() {
 		return pageN;

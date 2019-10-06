@@ -5,7 +5,7 @@
 <mapper namespace="com.basics.cu.entity.CuConsume">
  <cache type="com.basics.support.mybatis.CacheAdapter"/>
  <select id="query" resultType="com.basics.cu.entity.CuConsume"  flushCache="false" useCache="false">
-    select id,shop_id as shopId, customer_id as customerId, shop_name as shopName, money, phone, state, image from cu_consume
+    select id,shop_id as shopId, customer_id as customerId, shop_name as shopName, money, phone, state, image,appraise from cu_consume
      WHERE 1=1
      <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(customerId)">
          <![CDATA[ AND CUSTOMER_ID = #{customerId} ]]>
@@ -24,6 +24,22 @@
          <![CDATA[ limit #{pageN},#{pageS} ]]>
      </if>
  </select>
+<select id="count" parameterType="map" resultType="long"  flushCache="false" useCache="false">
+    select count(*) from cu_consume
+    WHERE 1=1
+    <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(customerId)">
+        <![CDATA[ AND CUSTOMER_ID = #{customerId} ]]>
+    </if>
+    <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(state)">
+        <![CDATA[ AND state = #{state} ]]>
+    </if>
+    <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(shopId)">
+        <![CDATA[ AND shop_id = #{shopId} ]]>
+    </if>
+    <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(id)">
+        <![CDATA[ AND id = #{id} ]]>
+    </if>
+</select>
  <insert id="insert" parameterType="com.basics.cu.entity.CuConsume">
      insert into cu_consume(shop_id, customer_id, shop_name, money, phone, image, create_time)
      values (<if test="shopId!=null">#{shopId},</if>
@@ -44,7 +60,9 @@
             <if test="money!=null">MONEY = #{money},</if>
             <if test="phone!=null">PHONE = #{phone},</if>
             <if test="state!=null">STATE = #{state},</if>
-            <if test="image!=null">IMAGE = #{image}</if>
+            <if test="image!=null">IMAGE = #{image},</if>
+            <if test="appraise!=null">appraise = #{appraise}</if>
+
         </trim>
         <![CDATA[ WHERE  id = #{id}   ]]>
     </update>

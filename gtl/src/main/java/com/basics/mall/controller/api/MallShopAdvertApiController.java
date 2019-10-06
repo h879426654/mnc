@@ -233,8 +233,8 @@ public class MallShopAdvertApiController implements ApplicationContextAware {
 	}
 
 	@RequestMapping("searchAdvert")
-	public String searchAdvert(@Valid String classifyId, String city, String region, String isNew, String sale, Integer page, Integer rows, String shopName) {
-		return mallshopApiService.searchAdvert(classifyId, city, region, isNew, sale, page, rows, shopName);
+	public String searchAdvert(@Valid String classifyId, String city, String isNew, String sale, Integer page, Integer rows, String shopName) {
+		return mallshopApiService.searchAdvert(classifyId, city, isNew, sale, page, rows, shopName);
 	}
 
 	@RequestMapping("searchClassify")
