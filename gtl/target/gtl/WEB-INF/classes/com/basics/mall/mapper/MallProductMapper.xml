@@ -1,0 +1,381 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC
+ "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.basics.mall.entity.MallProduct">
+ <cache type="com.basics.support.mybatis.CacheAdapter"/>
+ <delete id="delete" parameterType="com.basics.mall.entity.MallProduct">
+  <![CDATA[ DELETE FROM mall_product WHERE  PRODUCT_ID = #{id} ]]>
+ </delete>
+ <insert id="insert" parameterType="com.basics.mall.entity.MallProduct">
+  <![CDATA[  INSERT INTO mall_product (]]>
+  <trim prefix="" suffixOverrides=",">
+   <if test="id!=null">PRODUCT_ID,</if>
+   <if test="shopId!=null">SHOP_ID,</if>
+   <if test="countryId!=null">COUNTRY_ID,</if>
+   <if test="productFirstClassify!=null">PRODUCT_FIRST_CLASSIFY,</if>
+   <if test="productSecondClassify!=null">PRODUCT_SECOND_CLASSIFY,</if>
+   <if test="productName!=null">PRODUCT_NAME,</if>
+   <if test="productStatus!=null">PRODUCT_STATUS,</if>
+   <if test="productImg!=null">PRODUCT_IMG,</if>
+   <if test="productPrice!=null">PRODUCT_PRICE,</if>
+   <if test="productCost!=null">PRODUCT_COST,</if>
+   <if test="productFreight!=null">PRODUCT_FREIGHT,</if>
+   <if test="productContext!=null">PRODUCT_CONTEXT,</if>
+   <if test="productSale!=null">PRODUCT_SALE,</if>
+   <if test="productStock!=null">PRODUCT_STOCK,</if>
+   <if test="productCoolection!=null">PRODUCT_COOLECTION,</if>
+   <if test="versionNum!=null">VERSION_NUM,</if>
+   <if test="flagDel!=null">FLAG_DEL,</if>
+   <if test="createTime!=null">CREATE_TIME,</if>
+   <if test="createUser!=null">CREATE_USER,</if>
+   <if test="modifyUser!=null">MODIFY_USER,</if>
+   <if test="modifyDate!=null">MODIFY_DATE,</if>
+  </trim>
+  <![CDATA[)VALUES(]]>
+  <trim prefix="" suffixOverrides=",">
+   <if test="id!=null">#{id},</if>
+   <if test="shopId!=null">#{shopId},</if>
+   <if test="countryId!=null">#{countryId},</if>
+   <if test="productFirstClassify!=null">#{productFirstClassify},</if>
+   <if test="productSecondClassify!=null">#{productSecondClassify},</if>
+   <if test="productName!=null">#{productName},</if>
+   <if test="productStatus!=null">#{productStatus},</if>
+   <if test="productImg!=null">#{productImg},</if>
+   <if test="productPrice!=null">#{productPrice},</if>
+   <if test="productCost!=null">#{productCost},</if>
+   <if test="productFreight!=null">#{productFreight},</if>
+   <if test="productContext!=null">#{productContext},</if>
+   <if test="productSale!=null">#{productSale},</if>
+   <if test="productStock!=null">#{productStock},</if>
+   <if test="productCoolection!=null">#{productCoolection},</if>
+   <if test="versionNum!=null">#{versionNum},</if>
+   <if test="flagDel!=null">#{flagDel},</if>
+   <if test="createTime!=null">#{createTime},</if>
+   <if test="createUser!=null">#{createUser},</if>
+   <if test="modifyUser!=null">#{modifyUser},</if>
+   <if test="modifyDate!=null">#{modifyDate},</if>
+  </trim>
+  <![CDATA[)]]>
+ </insert>
+ <update id="update" parameterType="com.basics.mall.entity.MallProduct">
+  <![CDATA[ UPDATE mall_product ]]>
+  <trim prefix="SET" suffixOverrides=",">
+  <if test="id!=null">PRODUCT_ID = #{id},</if>
+  <if test="shopId!=null">SHOP_ID = #{shopId},</if>
+  <if test="countryId!=null">COUNTRY_ID = #{countryId},</if>
+  <if test="productFirstClassify!=null">PRODUCT_FIRST_CLASSIFY = #{productFirstClassify},</if>
+  <if test="productSecondClassify!=null">PRODUCT_SECOND_CLASSIFY = #{productSecondClassify},</if>
+  <if test="productName!=null">PRODUCT_NAME = #{productName},</if>
+  <if test="productStatus!=null">PRODUCT_STATUS = #{productStatus},</if>
+  <if test="productImg!=null">PRODUCT_IMG = #{productImg},</if>
+  <if test="productPrice!=null">PRODUCT_PRICE = #{productPrice},</if>
+  <if test="productCost!=null">PRODUCT_COST = #{productCost},</if>
+  <if test="productFreight!=null">PRODUCT_FREIGHT = #{productFreight},</if>
+  <if test="productContext!=null">PRODUCT_CONTEXT = #{productContext},</if>
+  <if test="productSale!=null">PRODUCT_SALE = #{productSale},</if>
+  <if test="productStock!=null">PRODUCT_STOCK = #{productStock},</if>
+  <if test="productCoolection!=null">PRODUCT_COOLECTION = #{productCoolection},</if>
+  <if test="versionNum!=null">VERSION_NUM = #{versionNum},</if>
+  <if test="flagDel!=null">FLAG_DEL = #{flagDel},</if>
+  <if test="createTime!=null">CREATE_TIME = #{createTime},</if>
+  <if test="createUser!=null">CREATE_USER = #{createUser},</if>
+  <if test="modifyUser!=null">MODIFY_USER = #{modifyUser},</if>
+  <if test="modifyDate!=null">MODIFY_DATE = #{modifyDate},</if>
+  </trim>
+  <![CDATA[ WHERE  PRODUCT_ID = #{id}   ]]>
+ </update>
+ <sql id="condition">
+  <trim prefix="WHERE" prefixOverrides="AND |OR">
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(id)">
+   <![CDATA[ AND mallProduct.PRODUCT_ID = #{id}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(shopId)">
+   <![CDATA[ AND mallProduct.SHOP_ID = #{shopId}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(countryId)">
+   <![CDATA[ AND mallProduct.COUNTRY_ID = #{countryId}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(productFirstClassify)">
+   <![CDATA[ AND mallProduct.PRODUCT_FIRST_CLASSIFY = #{productFirstClassify}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(productSecondClassify)">
+   <![CDATA[ AND mallProduct.PRODUCT_SECOND_CLASSIFY = #{productSecondClassify}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(productName)">
+   <![CDATA[ AND mallProduct.PRODUCT_NAME = #{productName}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(productStatus)">
+   <![CDATA[ AND mallProduct.PRODUCT_STATUS = #{productStatus}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(productImg)">
+   <![CDATA[ AND mallProduct.PRODUCT_IMG = #{productImg}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(productPrice)">
+   <![CDATA[ AND mallProduct.PRODUCT_PRICE = #{productPrice}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(productCost)">
+   <![CDATA[ AND mallProduct.PRODUCT_COST = #{productCost}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(productFreight)">
+   <![CDATA[ AND mallProduct.PRODUCT_FREIGHT = #{productFreight}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(productContext)">
+   <![CDATA[ AND mallProduct.PRODUCT_CONTEXT = #{productContext}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(productSale)">
+   <![CDATA[ AND mallProduct.PRODUCT_SALE = #{productSale}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(productStock)">
+   <![CDATA[ AND mallProduct.PRODUCT_STOCK = #{productStock}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(productCoolection)">
+   <![CDATA[ AND mallProduct.PRODUCT_COOLECTION = #{productCoolection}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(versionNum)">
+   <![CDATA[ AND mallProduct.VERSION_NUM = #{versionNum}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(flagDel)">
+   <![CDATA[ AND mallProduct.FLAG_DEL = #{flagDel}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(createTime)">
+   <![CDATA[ AND mallProduct.CREATE_TIME = #{createTime}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(createUser)">
+   <![CDATA[ AND mallProduct.CREATE_USER = #{createUser}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(modifyUser)">
+   <![CDATA[ AND mallProduct.MODIFY_USER = #{modifyUser}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(modifyDate)">
+   <![CDATA[ AND mallProduct.MODIFY_DATE = #{modifyDate}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(q)">
+	<![CDATA[ AND ( mallProduct.PRODUCT_NAME LIKE CONCAT('%',#{q}, '%') OR mallShop.SHOP_NAME LIKE CONCAT('%',#{q}, '%') ) ]]>
+   </if>
+  </trim>
+ </sql>
+ <select id="query" parameterType="map" resultType="com.basics.mall.entity.MallProduct">
+  <![CDATA[
+  SELECT
+  mallProduct.PRODUCT_ID "id",
+  mallProduct.SHOP_ID "shopId",
+  mallProduct.COUNTRY_ID "countryId",
+  mallProduct.PRODUCT_FIRST_CLASSIFY "productFirstClassify",
+  a.CLASSIFY_NAME "productFirstClassifyName",
+  mallProduct.PRODUCT_SECOND_CLASSIFY "productSecondClassify",
+  b.CLASSIFY_NAME "productSecondClassifyName",
+  mallProduct.PRODUCT_NAME "productName",
+  mallProduct.PRODUCT_STATUS "productStatus",
+  mallProduct.PRODUCT_IMG "productImg",
+  mallProduct.PRODUCT_PRICE "productPrice",
+  mallProduct.PRODUCT_COST "productCost",
+  mallProduct.PRODUCT_FREIGHT "productFreight",
+  mallProduct.PRODUCT_SALE "productSale",
+  mallProduct.PRODUCT_STOCK "productStock",
+  mallProduct.PRODUCT_CONTEXT "productContext",
+  mallProduct.PRODUCT_COOLECTION "productCoolection",
+  mallProduct.VERSION_NUM "versionNum",
+  mallProduct.FLAG_DEL "flagDel",
+  mallProduct.CREATE_TIME "createTime",
+  mallProduct.CREATE_USER "createUser",
+  mallProduct.MODIFY_USER "modifyUser",
+  mallProduct.MODIFY_DATE "modifyDate",
+  mallShop.SHOP_NAME "shopName"
+  FROM mall_product mallProduct
+  LEFT JOIN mall_product_classify a on a.CLASSIFY_ID =  mallProduct.PRODUCT_FIRST_CLASSIFY
+  LEFT JOIN mall_product_classify b on b.CLASSIFY_ID =  mallProduct.PRODUCT_SECOND_CLASSIFY
+  LEFT JOIN mall_shop mallShop ON mallShop.SHOP_ID = mallProduct.SHOP_ID
+  ]]>
+  <include refid="condition" />
+  <choose>
+   <when test="@org.apache.commons.lang.StringUtils@isNotEmpty(orderBy)"> ORDER BY ${orderBy}
+   </when>
+   <otherwise>
+    <!-- //TODO:ADD DEFAULT ORDER COLUMN OR DONOTHING! -->
+   </otherwise>
+  </choose>
+ </select>
+ <select id="count" parameterType="map" resultType="long">
+  <![CDATA[ 
+  SELECT COUNT(1) FROM mall_product mallProduct
+  LEFT JOIN mall_product_classify a on a.CLASSIFY_ID =  mallProduct.PRODUCT_FIRST_CLASSIFY
+  LEFT JOIN mall_product_classify b on b.CLASSIFY_ID =  mallProduct.PRODUCT_SECOND_CLASSIFY
+  LEFT JOIN mall_shop mallShop ON mallShop.SHOP_ID = mallProduct.SHOP_ID
+  ]]>
+  <include refid="condition" />
+ </select>
+ <sql id="conditionDeleteAll">
+  <trim prefix="WHERE" prefixOverrides="AND |OR">
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(id)">
+   <![CDATA[ AND PRODUCT_ID = #{id} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(shopId)">
+   <![CDATA[ AND SHOP_ID = #{shopId} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(countryId)">
+   <![CDATA[ AND COUNTRY_ID = #{countryId} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(productFirstClassify)">
+   <![CDATA[ AND PRODUCT_FIRST_CLASSIFY = #{productFirstClassify} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(productSecondClassify)">
+   <![CDATA[ AND PRODUCT_SECOND_CLASSIFY = #{productSecondClassify} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(productName)">
+   <![CDATA[ AND PRODUCT_NAME = #{productName} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(productStatus)">
+   <![CDATA[ AND PRODUCT_STATUS = #{productStatus} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(productImg)">
+   <![CDATA[ AND PRODUCT_IMG = #{productImg} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(productPrice)">
+   <![CDATA[ AND PRODUCT_PRICE = #{productPrice} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(productCost)">
+   <![CDATA[ AND PRODUCT_COST = #{productCost} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(productFreight)">
+   <![CDATA[ AND PRODUCT_FREIGHT = #{productFreight} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(productContext)">
+   <![CDATA[ AND PRODUCT_CONTEXT = #{productContext} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(productSale)">
+   <![CDATA[ AND PRODUCT_SALE = #{productSale} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(productStock)">
+   <![CDATA[ AND PRODUCT_STOCK = #{productStock} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(productCoolection)">
+   <![CDATA[ AND PRODUCT_COOLECTION = #{productCoolection} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(versionNum)">
+   <![CDATA[ AND VERSION_NUM = #{versionNum} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(flagDel)">
+   <![CDATA[ AND FLAG_DEL = #{flagDel} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(createTime)">
+   <![CDATA[ AND CREATE_TIME = #{createTime} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(createUser)">
+   <![CDATA[ AND CREATE_USER = #{createUser} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(modifyUser)">
+   <![CDATA[ AND MODIFY_USER = #{modifyUser} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(modifyDate)">
+   <![CDATA[ AND MODIFY_DATE = #{modifyDate} ]]>
+  </if>
+  </trim>
+ </sql>
+ <delete id="deleteAll" parameterType="map">
+  <![CDATA[DELETE FROM mall_product]]>
+  <include refid="conditionDeleteAll" />
+ </delete>
+ 
+ <select id="showProductBusinessById" parameterType="map" resultType="com.basics.mall.entity.MallProduct">
+  <![CDATA[
+ SELECT
+  mallProduct.PRODUCT_ID "id",
+  mallProduct.SHOP_ID "shopId",
+  mallProduct.COUNTRY_ID "countryId",
+  mallProduct.PRODUCT_FIRST_CLASSIFY "productFirstClassify",
+  mallProduct.PRODUCT_SECOND_CLASSIFY "productSecondClassify",
+  mallProduct.PRODUCT_NAME "productName",
+  mallProduct.PRODUCT_STATUS "productStatus",
+  mallProduct.PRODUCT_IMG "productImg",
+  mallProduct.PRODUCT_PRICE "productPrice",
+  mallProduct.PRODUCT_COST "productCost",
+  mallProduct.PRODUCT_FREIGHT "productFreight",
+  mallProduct.PRODUCT_SALE "productSale",
+  mallProduct.PRODUCT_STOCK "productStock",
+  mallProduct.PRODUCT_CONTEXT "productContext",
+  mallProduct.PRODUCT_COOLECTION "productCoolection",
+  a.CLASSIFY_NAME "productFirstClassifyName",
+  b.CLASSIFY_NAME "productSecondClassifyName"
+  FROM mall_product mallProduct
+LEFT JOIN mall_product_classify a on a.CLASSIFY_ID =  mallProduct.PRODUCT_FIRST_CLASSIFY
+LEFT JOIN mall_product_classify b on b.CLASSIFY_ID =  mallProduct.PRODUCT_SECOND_CLASSIFY
+LEFT JOIN mall_shop mallShop on mallShop.SHOP_ID =  mallProduct.PRODUCT_ID
+  ]]>
+  <include refid="condition" />
+  <choose>
+   <when test="@org.apache.commons.lang.StringUtils@isNotEmpty(orderBy)"> ORDER BY ${orderBy}
+   </when>
+   <otherwise>
+    <!-- //TODO:ADD DEFAULT ORDER COLUMN OR DONOTHING! -->
+   </otherwise>
+  </choose>
+ </select>
+ 
+ <select id="countProductBusinessById" parameterType="map" resultType="long">
+  <![CDATA[ SELECT COUNT(1) FROM mall_product mallProduct
+  LEFT JOIN mall_product_classify a on a.CLASSIFY_ID =  mallProduct.PRODUCT_FIRST_CLASSIFY
+  LEFT JOIN mall_product_classify b on b.CLASSIFY_ID =  mallProduct.PRODUCT_SECOND_CLASSIFY
+  LEFT JOIN mall_shop mallShop on mallShop.SHOP_ID  =  mallProduct.PRODUCT_ID
+  ]]>
+  <include refid="condition" />
+ </select>
+ 
+ <select id="selectMallProductList" parameterType="map" resultType="com.basics.mall.controller.response.MallProductResponse">
+  <![CDATA[
+  SELECT
+  mallProduct.PRODUCT_ID "id",
+  mallProduct.SHOP_ID "shopId",
+  mallProduct.COUNTRY_ID "countryId",
+  mallProduct.PRODUCT_NAME "productName",
+  mallProduct.PRODUCT_STATUS "productStatus",
+  mallProduct.PRODUCT_IMG "productImg",
+  mallProduct.PRODUCT_PRICE "productPrice",
+  mallProduct.PRODUCT_SALE "productSale",
+  mallProduct.PRODUCT_STOCK "productStock"
+  FROM mall_product mallProduct
+  LEFT JOIN mall_shop mallShop on mallShop.SHOP_ID  =  mallProduct.PRODUCT_ID
+   ]]>
+  <include refid="condition" />
+  <choose>
+   <when test="@org.apache.commons.lang.StringUtils@isNotEmpty(orderBy)"> ORDER BY ${orderBy}
+   </when>
+   <otherwise>
+    <!-- //TODO:ADD DEFAULT ORDER COLUMN OR DONOTHING! -->
+   </otherwise>
+  </choose>
+ </select>
+ 
+ <select id="selectProductDetail" parameterType="map" resultType="com.basics.mall.controller.response.MallProductDetailResponse">
+  <![CDATA[
+	SELECT
+	  mallProduct.PRODUCT_ID "id",
+	  mallProduct.SHOP_ID "shopId",
+	  mallProduct.COUNTRY_ID "countryId",
+	  mallProduct.PRODUCT_NAME "productName",
+	  mallProduct.PRODUCT_STATUS "productStatus",
+	  mallProduct.PRODUCT_IMG "productImg",
+	  mallProduct.PRODUCT_PRICE "productPrice",
+	  mallProduct.PRODUCT_SALE "productSale",
+	  mallProduct.PRODUCT_STOCK "productStock",
+	  mallProduct.PRODUCT_FREIGHT "productFreight",
+	  mallProduct.PRODUCT_CONTEXT  "productContext",
+	  mallProduct.PRODUCT_COOLECTION "productCoolection",
+	  mallShop.SHOP_NAME "shopName",
+	  mallShop.SHOP_PHONE "shopPhone",
+	  mallShop.SHOP_LOGO "shopLogo"
+	FROM mall_product mallProduct
+	LEFT JOIN mall_shop mallShop on mallProduct.SHOP_ID = mallShop.SHOP_ID
+   ]]>
+  <include refid="condition" />
+  <choose>
+   <when test="@org.apache.commons.lang.StringUtils@isNotEmpty(orderBy)"> ORDER BY ${orderBy}
+   </when>
+   <otherwise>
+    <!-- //TODO:ADD DEFAULT ORDER COLUMN OR DONOTHING! -->
+   </otherwise>
+  </choose>
+ </select>
+ 
+ 
+</mapper>

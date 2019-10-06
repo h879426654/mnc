@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC
+ "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.basics.cu.entity.CuCustomerLogin">
+ <cache type="com.basics.support.mybatis.CacheAdapter"/>
+ <delete id="delete" parameterType="com.basics.cu.entity.CuCustomerLogin">
+  <![CDATA[ DELETE FROM cu_customer_login WHERE  CUSTOMER_ID = #{id} ]]>
+ </delete>
+ <insert id="insert" parameterType="com.basics.cu.entity.CuCustomerLogin">
+  <![CDATA[  INSERT INTO cu_customer_login (]]>
+  <trim prefix="" suffixOverrides=",">
+   <if test="id!=null">CUSTOMER_ID,</if>
+   <if test="customerPassword!=null">CUSTOMER_PASSWORD,</if>
+   <if test="passSalt!=null">PASS_SALT,</if>
+   <if test="customerPhone!=null">CUSTOMER_PHONE,</if>
+   <if test="flagAuth!=null">FLAG_AUTH,</if>
+   <if test="customerStatus!=null">CUSTOMER_STATUS,</if>
+   <if test="loginErrorNum!=null">LOGIN_ERROR_NUM,</if>
+   <if test="lastLoginTime!=null">LAST_LOGIN_TIME,</if>
+   <if test="versionNum!=null">VERSION_NUM,</if>
+   <if test="flagDel!=null">FLAG_DEL,</if>
+   <if test="createTime!=null">CREATE_TIME,</if>
+   <if test="createUser!=null">CREATE_USER,</if>
+   <if test="modifyUser!=null">MODIFY_USER,</if>
+   <if test="modifyTime!=null">MODIFY_TIME,</if>
+  </trim>
+  <![CDATA[)VALUES(]]>
+  <trim prefix="" suffixOverrides=",">
+   <if test="id!=null">#{id},</if>
+   <if test="customerPassword!=null">#{customerPassword},</if>
+   <if test="passSalt!=null">#{passSalt},</if>
+   <if test="customerPhone!=null">#{customerPhone},</if>
+   <if test="flagAuth!=null">#{flagAuth},</if>
+   <if test="customerStatus!=null">#{customerStatus},</if>
+   <if test="loginErrorNum!=null">#{loginErrorNum},</if>
+   <if test="lastLoginTime!=null">#{lastLoginTime},</if>
+   <if test="versionNum!=null">#{versionNum},</if>
+   <if test="flagDel!=null">#{flagDel},</if>
+   <if test="createTime!=null">#{createTime},</if>
+   <if test="createUser!=null">#{createUser},</if>
+   <if test="modifyUser!=null">#{modifyUser},</if>
+   <if test="modifyTime!=null">#{modifyTime},</if>
+  </trim>
+  <![CDATA[)]]>
+ </insert>
+ <update id="update" parameterType="com.basics.cu.entity.CuCustomerLogin">
+  <![CDATA[ UPDATE cu_customer_login ]]>
+  <trim prefix="SET" suffixOverrides=",">
+  <if test="id!=null">CUSTOMER_ID = #{id},</if>
+  <if test="customerPassword!=null">CUSTOMER_PASSWORD = #{customerPassword},</if>
+  <if test="passSalt!=null">PASS_SALT = #{passSalt},</if>
+  <if test="customerPhone!=null">CUSTOMER_PHONE = #{customerPhone},</if>
+  <if test="flagAuth!=null">FLAG_AUTH = #{flagAuth},</if>
+  <if test="customerStatus!=null">CUSTOMER_STATUS = #{customerStatus},</if>
+  <if test="loginErrorNum!=null">LOGIN_ERROR_NUM = #{loginErrorNum},</if>
+  <if test="lastLoginTime!=null">LAST_LOGIN_TIME = #{lastLoginTime},</if>
+  <if test="versionNum!=null">VERSION_NUM = #{versionNum},</if>
+  <if test="flagDel!=null">FLAG_DEL = #{flagDel},</if>
+  <if test="createTime!=null">CREATE_TIME = #{createTime},</if>
+  <if test="createUser!=null">CREATE_USER = #{createUser},</if>
+  <if test="modifyUser!=null">MODIFY_USER = #{modifyUser},</if>
+  <if test="modifyTime!=null">MODIFY_TIME = #{modifyTime},</if>
+  </trim>
+  <![CDATA[ WHERE  CUSTOMER_ID = #{id}   ]]>
+ </update>
+ <sql id="condition">
+  <trim prefix="WHERE" prefixOverrides="AND |OR">
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(id)">
+   <![CDATA[ AND cuCustomerLogin.CUSTOMER_ID = #{id}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(customerPassword)">
+   <![CDATA[ AND cuCustomerLogin.CUSTOMER_PASSWORD = #{customerPassword}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(passSalt)">
+   <![CDATA[ AND cuCustomerLogin.PASS_SALT = #{passSalt}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(customerPhone)">
+   <![CDATA[ AND cuCustomerLogin.CUSTOMER_PHONE = #{customerPhone}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(flagAuth)">
+   <![CDATA[ AND cuCustomerLogin.FLAG_AUTH = #{flagAuth}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(customerStatus)">
+   <![CDATA[ AND cuCustomerLogin.CUSTOMER_STATUS = #{customerStatus}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(loginErrorNum)">
+   <![CDATA[ AND cuCustomerLogin.LOGIN_ERROR_NUM = #{loginErrorNum}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(lastLoginTime)">
+   <![CDATA[ AND cuCustomerLogin.LAST_LOGIN_TIME = #{lastLoginTime}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(versionNum)">
+   <![CDATA[ AND cuCustomerLogin.VERSION_NUM = #{versionNum}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(flagDel)">
+   <![CDATA[ AND cuCustomerLogin.FLAG_DEL = #{flagDel}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(createTime)">
+   <![CDATA[ AND cuCustomerLogin.CREATE_TIME = #{createTime}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(createUser)">
+   <![CDATA[ AND cuCustomerLogin.CREATE_USER = #{createUser}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(modifyUser)">
+   <![CDATA[ AND cuCustomerLogin.MODIFY_USER = #{modifyUser}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(modifyTime)">
+   <![CDATA[ AND cuCustomerLogin.MODIFY_TIME = #{modifyTime}    ]]>
+  </if>
+  </trim>
+ </sql>
+ <select id="query" parameterType="map" resultType="com.basics.cu.entity.CuCustomerLogin" flushCache="false" useCache="false">
+  <![CDATA[
+  SELECT
+  cuCustomerLogin.CUSTOMER_ID "id",
+  cuCustomerLogin.CUSTOMER_PASSWORD "customerPassword",
+  cuCustomerLogin.PASS_SALT "passSalt",
+  cuCustomerLogin.CUSTOMER_PHONE "customerPhone",
+  cuCustomerLogin.FLAG_AUTH "flagAuth",
+  cuCustomerLogin.CUSTOMER_STATUS "customerStatus",
+  cuCustomerLogin.LOGIN_ERROR_NUM "loginErrorNum",
+  cuCustomerLogin.LAST_LOGIN_TIME "lastLoginTime",
+  cuCustomerLogin.VERSION_NUM "versionNum",
+  cuCustomerLogin.FLAG_DEL "flagDel",
+  cuCustomerLogin.CREATE_TIME "createTime",
+  cuCustomerLogin.CREATE_USER "createUser",
+  cuCustomerLogin.MODIFY_USER "modifyUser",
+  cuCustomerLogin.MODIFY_TIME "modifyTime"
+  FROM cu_customer_login cuCustomerLogin
+  ]]>
+  <include refid="condition" />
+  <choose>
+   <when test="@org.apache.commons.lang.StringUtils@isNotEmpty(orderBy)"> ORDER BY ${orderBy}
+   </when>
+   <otherwise>
+    <!-- //TODO:ADD DEFAULT ORDER COLUMN OR DONOTHING! -->
+   </otherwise>
+  </choose>
+ </select>
+ <select id="count" parameterType="map" resultType="long">
+  <![CDATA[ SELECT COUNT(1) FROM cu_customer_login cuCustomerLogin]]>
+  <include refid="condition" />
+ </select>
+ <sql id="conditionDeleteAll">
+  <trim prefix="WHERE" prefixOverrides="AND |OR">
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(id)">
+   <![CDATA[ AND CUSTOMER_ID = #{id} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(customerPassword)">
+   <![CDATA[ AND CUSTOMER_PASSWORD = #{customerPassword} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(passSalt)">
+   <![CDATA[ AND PASS_SALT = #{passSalt} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(customerPhone)">
+   <![CDATA[ AND CUSTOMER_PHONE = #{customerPhone} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(flagAuth)">
+   <![CDATA[ AND FLAG_AUTH = #{flagAuth} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(customerStatus)">
+   <![CDATA[ AND CUSTOMER_STATUS = #{customerStatus} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(loginErrorNum)">
+   <![CDATA[ AND LOGIN_ERROR_NUM = #{loginErrorNum} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(lastLoginTime)">
+   <![CDATA[ AND LAST_LOGIN_TIME = #{lastLoginTime} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(versionNum)">
+   <![CDATA[ AND VERSION_NUM = #{versionNum} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(flagDel)">
+   <![CDATA[ AND FLAG_DEL = #{flagDel} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(createTime)">
+   <![CDATA[ AND CREATE_TIME = #{createTime} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(createUser)">
+   <![CDATA[ AND CREATE_USER = #{createUser} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(modifyUser)">
+   <![CDATA[ AND MODIFY_USER = #{modifyUser} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(modifyTime)">
+   <![CDATA[ AND MODIFY_TIME = #{modifyTime} ]]>
+  </if>
+  </trim>
+ </sql>
+ <delete id="deleteAll" parameterType="map">
+  <![CDATA[DELETE FROM cu_customer_login]]>
+  <include refid="conditionDeleteAll" />
+ </delete>
+</mapper>

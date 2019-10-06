@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC
+ "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.basics.sys.entity.SysNews">
+ <cache type="com.basics.support.mybatis.CacheAdapter"/>
+ <delete id="delete" parameterType="com.basics.sys.entity.SysNews">
+  <![CDATA[ DELETE FROM sys_news WHERE  NEWS_ID = #{id} ]]>
+ </delete>
+ <insert id="insert" parameterType="com.basics.sys.entity.SysNews">
+  <![CDATA[  INSERT INTO sys_news (]]>
+  <trim prefix="" suffixOverrides=",">
+   <if test="id!=null">NEWS_ID,</if>
+   <if test="newsTitle!=null">NEWS_TITLE,</if>
+   <if test="newsImg!=null">NEWS_IMG,</if>
+   <if test="newsContext!=null">NEWS_CONTEXT,</if>
+   <if test="newsSort!=null">NEWS_SORT,</if>
+   <if test="newsStatus!=null">NEWS_STATUS,</if>
+   <if test="newsReadNum!=null">NEWS_READ_NUM,</if>
+   <if test="versionNum!=null">VERSION_NUM,</if>
+   <if test="flagDel!=null">FLAG_DEL,</if>
+   <if test="createTime!=null">CREATE_TIME,</if>
+   <if test="createUser!=null">CREATE_USER,</if>
+   <if test="modifyUser!=null">MODIFY_USER,</if>
+   <if test="modifyTime!=null">MODIFY_TIME,</if>
+  </trim>
+  <![CDATA[)VALUES(]]>
+  <trim prefix="" suffixOverrides=",">
+   <if test="id!=null">#{id},</if>
+   <if test="newsTitle!=null">#{newsTitle},</if>
+   <if test="newsImg!=null">#{newsImg},</if>
+   <if test="newsContext!=null">#{newsContext},</if>
+   <if test="newsSort!=null">#{newsSort},</if>
+   <if test="newsStatus!=null">#{newsStatus},</if>
+   <if test="newsReadNum!=null">#{newsReadNum},</if>
+   <if test="versionNum!=null">#{versionNum},</if>
+   <if test="flagDel!=null">#{flagDel},</if>
+   <if test="createTime!=null">#{createTime},</if>
+   <if test="createUser!=null">#{createUser},</if>
+   <if test="modifyUser!=null">#{modifyUser},</if>
+   <if test="modifyTime!=null">#{modifyTime},</if>
+  </trim>
+  <![CDATA[)]]>
+ </insert>
+ <update id="update" parameterType="com.basics.sys.entity.SysNews">
+  <![CDATA[ UPDATE sys_news ]]>
+  <trim prefix="SET" suffixOverrides=",">
+  <if test="id!=null">NEWS_ID = #{id},</if>
+  <if test="newsTitle!=null">NEWS_TITLE = #{newsTitle},</if>
+  <if test="newsImg!=null">NEWS_IMG = #{newsImg},</if>
+  <if test="newsContext!=null">NEWS_CONTEXT = #{newsContext},</if>
+  <if test="newsSort!=null">NEWS_SORT = #{newsSort},</if>
+  <if test="newsStatus!=null">NEWS_STATUS = #{newsStatus},</if>
+  <if test="newsReadNum!=null">NEWS_READ_NUM = #{newsReadNum},</if>
+  <if test="versionNum!=null">VERSION_NUM = #{versionNum},</if>
+  <if test="flagDel!=null">FLAG_DEL = #{flagDel},</if>
+  <if test="createTime!=null">CREATE_TIME = #{createTime},</if>
+  <if test="createUser!=null">CREATE_USER = #{createUser},</if>
+  <if test="modifyUser!=null">MODIFY_USER = #{modifyUser},</if>
+  <if test="modifyTime!=null">MODIFY_TIME = #{modifyTime},</if>
+  </trim>
+  <![CDATA[ WHERE  NEWS_ID = #{id}   ]]>
+ </update>
+ <sql id="condition">
+  <trim prefix="WHERE" prefixOverrides="AND |OR">
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(id)">
+   <![CDATA[ AND sysNews.NEWS_ID = #{id}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(newsTitle)">
+   <![CDATA[ AND sysNews.NEWS_TITLE = #{newsTitle}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(newsImg)">
+   <![CDATA[ AND sysNews.NEWS_IMG = #{newsImg}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(newsContext)">
+   <![CDATA[ AND sysNews.NEWS_CONTEXT = #{newsContext}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(newsSort)">
+   <![CDATA[ AND sysNews.NEWS_SORT = #{newsSort}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(newsStatus)">
+   <![CDATA[ AND sysNews.NEWS_STATUS = #{newsStatus}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(newsReadNum)">
+   <![CDATA[ AND sysNews.NEWS_READ_NUM = #{newsReadNum}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(versionNum)">
+   <![CDATA[ AND sysNews.VERSION_NUM = #{versionNum}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(flagDel)">
+   <![CDATA[ AND sysNews.FLAG_DEL = #{flagDel}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(createTime)">
+   <![CDATA[ AND sysNews.CREATE_TIME = #{createTime}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(createUser)">
+   <![CDATA[ AND sysNews.CREATE_USER = #{createUser}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(modifyUser)">
+   <![CDATA[ AND sysNews.MODIFY_USER = #{modifyUser}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(modifyTime)">
+   <![CDATA[ AND sysNews.MODIFY_TIME = #{modifyTime}    ]]>
+  </if>
+  </trim>
+ </sql>
+ <select id="query" parameterType="map" resultType="com.basics.sys.entity.SysNews">
+  <![CDATA[
+  SELECT
+  sysNews.NEWS_ID "id",
+  sysNews.NEWS_TITLE "newsTitle",
+  sysNews.NEWS_IMG "newsImg",
+  sysNews.NEWS_CONTEXT "newsContext",
+  sysNews.NEWS_SORT "newsSort",
+  sysNews.NEWS_STATUS "newsStatus",
+  sysNews.NEWS_READ_NUM "newsReadNum",
+  sysNews.VERSION_NUM "versionNum",
+  sysNews.FLAG_DEL "flagDel",
+  sysNews.CREATE_TIME "createTime",
+  sysNews.CREATE_USER "createUser",
+  sysNews.MODIFY_USER "modifyUser",
+  sysNews.MODIFY_TIME "modifyTime"
+  FROM sys_news sysNews
+  ]]>
+  <include refid="condition" />
+  <choose>
+   <when test="@org.apache.commons.lang.StringUtils@isNotEmpty(orderBy)"> ORDER BY ${orderBy}
+   </when>
+   <otherwise>
+    <!-- //TODO:ADD DEFAULT ORDER COLUMN OR DONOTHING! -->
+   </otherwise>
+  </choose>
+ </select>
+ <select id="count" parameterType="map" resultType="long">
+  <![CDATA[ SELECT COUNT(1) FROM sys_news sysNews]]>
+  <include refid="condition" />
+ </select>
+ <sql id="conditionDeleteAll">
+  <trim prefix="WHERE" prefixOverrides="AND |OR">
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(id)">
+   <![CDATA[ AND NEWS_ID = #{id} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(newsTitle)">
+   <![CDATA[ AND NEWS_TITLE = #{newsTitle} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(newsImg)">
+   <![CDATA[ AND NEWS_IMG = #{newsImg} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(newsContext)">
+   <![CDATA[ AND NEWS_CONTEXT = #{newsContext} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(newsSort)">
+   <![CDATA[ AND NEWS_SORT = #{newsSort} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(newsStatus)">
+   <![CDATA[ AND NEWS_STATUS = #{newsStatus} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(newsReadNum)">
+   <![CDATA[ AND NEWS_READ_NUM = #{newsReadNum} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(versionNum)">
+   <![CDATA[ AND VERSION_NUM = #{versionNum} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(flagDel)">
+   <![CDATA[ AND FLAG_DEL = #{flagDel} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(createTime)">
+   <![CDATA[ AND CREATE_TIME = #{createTime} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(createUser)">
+   <![CDATA[ AND CREATE_USER = #{createUser} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(modifyUser)">
+   <![CDATA[ AND MODIFY_USER = #{modifyUser} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(modifyTime)">
+   <![CDATA[ AND MODIFY_TIME = #{modifyTime} ]]>
+  </if>
+  </trim>
+ </sql>
+ <delete id="deleteAll" parameterType="map">
+  <![CDATA[DELETE FROM sys_news]]>
+  <include refid="conditionDeleteAll" />
+ </delete>
+</mapper>

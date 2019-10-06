@@ -94,6 +94,19 @@ public class GtyWalletApiController implements ApplicationContextAware {
         return pendingBlock;
     }
 
+    @RequestMapping("tradeInMoney")
+    public DataResponse transferMoney(AddressRequest request, HttpServletRequest req){
+        DataResponse response = new DataResponse();
+        try {
+            response = gtyTransferMybatisService.transfer(request,req);
+        } catch (Exception e) {
+            response.onException(e);
+        }
+        return response;
+
+    }
+
+
     @RequestMapping("createWallet")
     public DataResponse createWallet(TokenRequest request, HttpServletRequest req){
         DataResponse dataResponse = new DataResponse();

@@ -1,5 +1,6 @@
 package com.basics.gty.service.impl;
 
+import com.basics.common.AddressRequest;
 import com.basics.common.BaseApiService;
 import com.basics.common.DataResponse;
 import com.basics.cu.entity.CuCustomerLogin;
@@ -7,6 +8,7 @@ import com.basics.gty.controller.request.TokenTransferRequest;
 import com.basics.gty.entity.EthBean;
 import com.basics.gty.entity.GtyWallet;
 import com.basics.gty.entity.GtyWalletHistory;
+import com.basics.gty.entity.TradeBean;
 import com.basics.gty.service.GtyTransferService;
 import com.basics.gty.service.GtyWalletService;
 import com.basics.support.GenericMybatisService;
@@ -14,6 +16,7 @@ import com.basics.support.LogUtils;
 import com.basics.support.QueryFilter;
 import com.basics.support.QueryFilterBuilder;
 import com.basics.support.auth.HttpClientUtils;
+import com.basics.support.auth.HttpRequestUtils2;
 import com.basics.wallet.Web3JConfigure;
 import com.basics.wallet.controller.response.TransationResponse;
 import com.basics.wallet.controller.response.TxInfoResponse;
@@ -128,7 +131,21 @@ public class GtyTransferMybatisService extends BaseApiService implements GtyTran
                 gtyWallet1.setUserId(gtyWallet.getUserId());
                 gtyWallet1.setMoveNum(gtyWallet.getMoveNum().subtract(new BigDecimal(request.getNum())));
                 gtyWallet1.setmTokenNum(new BigDecimal(request.getNum()).multiply(new BigDecimal("13.32")).add(gtyWallet1.getmTokenNum()));
-                if(gtyWallet1.getmTokenNum().divide(new BigDecimal("13.32")).divide(new BigDecimal("1.5")).compareTo(new BigDecimal("300"))==1){
+                Map<String,String> maps = new HashMap<>();
+                maps.put("symbol","2");
+                String tradeBean = HttpClientUtils.invokeGet("http://bitin.io:8090/api/v1/ticker",maps);
+                TradeBean tradeBean1= new Gson().fromJson(tradeBean,TradeBean.class);
+                String price;
+                if(!StringUtils.isBlank(tradeBean1.getData().getLast())){
+                    if(tradeBean1.getData().getLast().equals("0")){
+                        price = "1";
+                    }else{
+                        price = tradeBean1.getData().getLast();
+                    }
+                }else{
+                    price = "1";
+                }
+                if(gtyWallet1.getmTokenNum().multiply(new BigDecimal("13.32")).divide(new BigDecimal(price)).compareTo(new BigDecimal("300"))==1){
                     gtyWallet1.setWalletFrozen(1);
                 }
                 gtyWalletDao.update(gtyWallet1);
@@ -203,6 +220,24 @@ public class GtyTransferMybatisService extends BaseApiService implements GtyTran
         response.setMsg("转账成功");
         response.setStatus(0);
         return response;
+    }
+
+    @Override
+    public DataResponse transfer(AddressRequest request, HttpServletRequest req) {
+        DataResponse dataResponse = new DataResponse();
+        QueryFilter filter = new QueryFilter();
+        Map<String, Object> map = new HashMap<>();
+        map.put("WALLET_ADDRESS", request.getAddress());
+        filter.setParams(map);
+        GtyWallet gtyWallet1 = gtyWalletDao.queryOne(filter);
+        if(gtyWallet1==null || StringUtils.isBlank(gtyWallet1.getUserId())){
+            dataResponse.setMsg("未找到对应地址");
+            dataResponse.setStatus(1);
+            return dataResponse;
+        }
+        gtyWallet1.setMncNum(gtyWallet1.getMncNum().add(request.getNum()));
+        gtyWalletDao.update(gtyWallet1);
+        return dataResponse;
     }
 
     /**

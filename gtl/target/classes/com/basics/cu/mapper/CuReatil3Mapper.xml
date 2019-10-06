@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC
+ "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.basics.cu.entity.CuReatil3">
+ <cache type="com.basics.support.mybatis.CacheAdapter"/>
+ <select id="query" resultType="com.basics.cu.entity.CuReatil3"  flushCache="false" useCache="false">
+    select customer_id as customerId, customer_id_second as customerIdSecond, customer_id_third as customerIdThird,image from cu_retail3
+     WHERE 1=1
+     <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(customerId)">
+         <![CDATA[ AND CUSTOMER_ID = #{customerId} ]]>
+     </if>
+ </select>
+ 
+ 
+ 
+</mapper>

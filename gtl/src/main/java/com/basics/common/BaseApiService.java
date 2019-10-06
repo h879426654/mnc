@@ -14,6 +14,7 @@ import com.basics.cu.dao.*;
 import com.basics.gty.dao.EthDao;
 import com.basics.gty.dao.GtyWalletDao;
 import com.basics.gty.dao.GtyWalletHistoryDao;
+import com.basics.gty.dao.GtyWalletLimitDao;
 import com.basics.gty.entity.GtyWallet;
 import com.basics.mall.dao.*;
 import com.basics.wallet.dao.WalletEntityDao;
@@ -216,6 +217,9 @@ public class BaseApiService {
 
 	@Autowired
 	public GtyWalletDao gtyWalletDao;
+
+	@Autowired
+	public GtyWalletLimitDao gtyWalletLimitDao;
 
 	@Autowired
 	public EthDao ethDao;
@@ -1316,13 +1320,13 @@ public class BaseApiService {
 
 	public void createActiveMq2(String customerId, int activemqType, GtyWallet wallet, Object obj) {
 		JSONObject json = new JSONObject();
-		json.put("customerId", customerId);
+		json.put("customerId", "669");
 		json.put("activemqType", activemqType);
 		json.put("sourceId", "121");
 		json.put("obj", JSONObject.toJSONString(obj));
 
-		gtyWalletDao.save(wallet);
-		json.put("activemqId", customerId+System.currentTimeMillis()/1000);
+		gtyWalletDao.update(wallet);
+		json.put("activemqId", wallet.getUserId());
 		queueSender.sendMessage(queueDestination, json.toJSONString());
 	}
 

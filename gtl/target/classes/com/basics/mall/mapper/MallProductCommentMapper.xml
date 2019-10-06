@@ -1,0 +1,319 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC
+ "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.basics.mall.entity.MallProductComment">
+ <cache type="com.basics.support.mybatis.CacheAdapter"/>
+ <delete id="delete" parameterType="com.basics.mall.entity.MallProductComment">
+  <![CDATA[ DELETE FROM mall_product_comment WHERE  COMMENT_ID = #{id} ]]>
+ </delete>
+ <insert id="insert" parameterType="com.basics.mall.entity.MallProductComment">
+  <![CDATA[  INSERT INTO mall_product_comment (]]>
+  <trim prefix="" suffixOverrides=",">
+   <if test="id!=null">COMMENT_ID,</if>
+   <if test="productId!=null">PRODUCT_ID,</if>
+   <if test="customerId!=null">CUSTOMER_ID,</if>
+   <if test="commentContext!=null">COMMENT_CONTEXT,</if>
+   <if test="commentType!=null">COMMENT_TYPE,</if>
+   <if test="commentDescribeSart!=null">COMMENT_DESCRIBE_SART,</if>
+   <if test="commentServiceSart!=null">COMMENT_SERVICE_SART,</if>
+   <if test="commentLogisticsSart!=null">COMMENT_LOGISTICS_SART,</if>
+   <if test="flagAnonymous!=null">FLAG_ANONYMOUS,</if>
+   <if test="replyContext!=null">REPLY_CONTEXT,</if>
+   <if test="replyTime!=null">REPLY_TIME,</if>
+   <if test="versionNum!=null">VERSION_NUM,</if>
+   <if test="flagDel!=null">FLAG_DEL,</if>
+   <if test="createTime!=null">CREATE_TIME,</if>
+   <if test="createUser!=null">CREATE_USER,</if>
+   <if test="modifyUser!=null">MODIFY_USER,</if>
+   <if test="modifyDate!=null">MODIFY_DATE,</if>
+  </trim>
+  <![CDATA[)VALUES(]]>
+  <trim prefix="" suffixOverrides=",">
+   <if test="id!=null">#{id},</if>
+   <if test="productId!=null">#{productId},</if>
+   <if test="customerId!=null">#{customerId},</if>
+   <if test="commentContext!=null">#{commentContext},</if>
+   <if test="commentType!=null">#{commentType},</if>
+   <if test="commentDescribeSart!=null">#{commentDescribeSart},</if>
+   <if test="commentServiceSart!=null">#{commentServiceSart},</if>
+   <if test="commentLogisticsSart!=null">#{commentLogisticsSart},</if>
+   <if test="flagAnonymous!=null">#{flagAnonymous},</if>
+   <if test="replyContext!=null">#{replyContext},</if>
+   <if test="replyTime!=null">#{replyTime},</if>
+   <if test="versionNum!=null">#{versionNum},</if>
+   <if test="flagDel!=null">#{flagDel},</if>
+   <if test="createTime!=null">#{createTime},</if>
+   <if test="createUser!=null">#{createUser},</if>
+   <if test="modifyUser!=null">#{modifyUser},</if>
+   <if test="modifyDate!=null">#{modifyDate},</if>
+  </trim>
+  <![CDATA[)]]>
+ </insert>
+ <update id="update" parameterType="com.basics.mall.entity.MallProductComment">
+  <![CDATA[ UPDATE mall_product_comment ]]>
+  <trim prefix="SET" suffixOverrides=",">
+  <if test="id!=null">COMMENT_ID = #{id},</if>
+  <if test="productId!=null">PRODUCT_ID = #{productId},</if>
+  <if test="customerId!=null">CUSTOMER_ID = #{customerId},</if>
+  <if test="commentContext!=null">COMMENT_CONTEXT = #{commentContext},</if>
+  <if test="commentType!=null">COMMENT_TYPE = #{commentType},</if>
+  <if test="commentDescribeSart!=null">COMMENT_DESCRIBE_SART = #{commentDescribeSart},</if>
+  <if test="commentServiceSart!=null">COMMENT_SERVICE_SART = #{commentServiceSart},</if>
+  <if test="commentLogisticsSart!=null">COMMENT_LOGISTICS_SART = #{commentLogisticsSart},</if>
+  <if test="flagAnonymous!=null">FLAG_ANONYMOUS = #{flagAnonymous},</if>
+  <if test="replyContext!=null">REPLY_CONTEXT = #{replyContext},</if>
+  <if test="replyTime!=null">REPLY_TIME = #{replyTime},</if>
+  <if test="versionNum!=null">VERSION_NUM = #{versionNum},</if>
+  <if test="flagDel!=null">FLAG_DEL = #{flagDel},</if>
+  <if test="createTime!=null">CREATE_TIME = #{createTime},</if>
+  <if test="createUser!=null">CREATE_USER = #{createUser},</if>
+  <if test="modifyUser!=null">MODIFY_USER = #{modifyUser},</if>
+  <if test="modifyDate!=null">MODIFY_DATE = #{modifyDate},</if>
+  </trim>
+  <![CDATA[ WHERE  COMMENT_ID = #{id}   ]]>
+ </update>
+ <sql id="condition">
+  <trim prefix="WHERE" prefixOverrides="AND |OR">
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(id)">
+   <![CDATA[ AND mallProductComment.COMMENT_ID = #{id}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(productId)">
+   <![CDATA[ AND mallProductComment.PRODUCT_ID = #{productId}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(customerId)">
+   <![CDATA[ AND mallProductComment.CUSTOMER_ID = #{customerId}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(commentContext)">
+   <![CDATA[ AND mallProductComment.COMMENT_CONTEXT = #{commentContext}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(commentType)">
+   <![CDATA[ AND mallProductComment.COMMENT_TYPE = #{commentType}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(commentDescribeSart)">
+   <![CDATA[ AND mallProductComment.COMMENT_DESCRIBE_SART = #{commentDescribeSart}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(commentServiceSart)">
+   <![CDATA[ AND mallProductComment.COMMENT_SERVICE_SART = #{commentServiceSart}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(commentLogisticsSart)">
+   <![CDATA[ AND mallProductComment.COMMENT_LOGISTICS_SART = #{commentLogisticsSart}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(flagAnonymous)">
+   <![CDATA[ AND mallProductComment.FLAG_ANONYMOUS = #{flagAnonymous}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(replyContext)">
+   <![CDATA[ AND mallProductComment.REPLY_CONTEXT = #{replyContext}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(replyTime)">
+   <![CDATA[ AND mallProductComment.REPLY_TIME = #{replyTime}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(versionNum)">
+   <![CDATA[ AND mallProductComment.VERSION_NUM = #{versionNum}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(flagDel)">
+   <![CDATA[ AND mallProductComment.FLAG_DEL = #{flagDel}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(createTime)">
+   <![CDATA[ AND mallProductComment.CREATE_TIME = #{createTime}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(createUser)">
+   <![CDATA[ AND mallProductComment.CREATE_USER = #{createUser}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(modifyUser)">
+   <![CDATA[ AND mallProductComment.MODIFY_USER = #{modifyUser}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(modifyDate)">
+   <![CDATA[ AND mallProductComment.MODIFY_DATE = #{modifyDate}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(shopId)">
+   <![CDATA[ AND mallProduct.SHOP_ID = #{shopId}    ]]>
+  </if>
+  
+  </trim>
+ </sql>
+ <select id="query" parameterType="map" resultType="com.basics.mall.entity.MallProductComment">
+  <![CDATA[
+  SELECT
+  mallProductComment.COMMENT_ID "id",
+  mallProductComment.PRODUCT_ID "productId",
+  mallProductComment.CUSTOMER_ID "customerId",
+  mallProductComment.COMMENT_CONTEXT "commentContext",
+  mallProductComment.COMMENT_TYPE "commentType",
+  mallProductComment.COMMENT_DESCRIBE_SART "commentDescribeSart",
+  mallProductComment.COMMENT_SERVICE_SART "commentServiceSart",
+  mallProductComment.COMMENT_LOGISTICS_SART "commentLogisticsSart",
+  mallProductComment.FLAG_ANONYMOUS "flagAnonymous",
+  mallProductComment.REPLY_CONTEXT "replyContext",
+  mallProductComment.REPLY_TIME "replyTime",
+  mallProductComment.VERSION_NUM "versionNum",
+  mallProductComment.FLAG_DEL "flagDel",
+  mallProductComment.CREATE_TIME "createTime",
+  mallProductComment.CREATE_USER "createUser",
+  mallProductComment.MODIFY_USER "modifyUser",
+  mallProductComment.MODIFY_DATE "modifyDate"
+  FROM mall_product_comment mallProductComment
+  ]]>
+  <include refid="condition" />
+  <choose>
+   <when test="@org.apache.commons.lang.StringUtils@isNotEmpty(orderBy)"> ORDER BY ${orderBy}
+   </when>
+   <otherwise>
+    <!-- //TODO:ADD DEFAULT ORDER COLUMN OR DONOTHING! -->
+   </otherwise>
+  </choose>
+ </select>
+ <select id="count" parameterType="map" resultType="long">
+  <![CDATA[ SELECT COUNT(1) FROM mall_product_comment mallProductComment]]>
+  <include refid="condition" />
+ </select>
+ <sql id="conditionDeleteAll">
+  <trim prefix="WHERE" prefixOverrides="AND |OR">
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(id)">
+   <![CDATA[ AND COMMENT_ID = #{id} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(productId)">
+   <![CDATA[ AND PRODUCT_ID = #{productId} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(customerId)">
+   <![CDATA[ AND CUSTOMER_ID = #{customerId} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(commentContext)">
+   <![CDATA[ AND COMMENT_CONTEXT = #{commentContext} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(commentType)">
+   <![CDATA[ AND COMMENT_TYPE = #{commentType} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(commentDescribeSart)">
+   <![CDATA[ AND COMMENT_DESCRIBE_SART = #{commentDescribeSart} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(commentServiceSart)">
+   <![CDATA[ AND COMMENT_SERVICE_SART = #{commentServiceSart} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(commentLogisticsSart)">
+   <![CDATA[ AND COMMENT_LOGISTICS_SART = #{commentLogisticsSart} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(flagAnonymous)">
+   <![CDATA[ AND FLAG_ANONYMOUS = #{flagAnonymous} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(replyContext)">
+   <![CDATA[ AND REPLY_CONTEXT = #{replyContext} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(replyTime)">
+   <![CDATA[ AND REPLY_TIME = #{replyTime} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(versionNum)">
+   <![CDATA[ AND VERSION_NUM = #{versionNum} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(flagDel)">
+   <![CDATA[ AND FLAG_DEL = #{flagDel} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(createTime)">
+   <![CDATA[ AND CREATE_TIME = #{createTime} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(createUser)">
+   <![CDATA[ AND CREATE_USER = #{createUser} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(modifyUser)">
+   <![CDATA[ AND MODIFY_USER = #{modifyUser} ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(modifyDate)">
+   <![CDATA[ AND MODIFY_DATE = #{modifyDate} ]]>
+  </if>
+  </trim>
+ </sql>
+ <delete id="deleteAll" parameterType="map">
+  <![CDATA[DELETE FROM mall_product_comment]]>
+  <include refid="conditionDeleteAll" />
+ </delete>
+ 
+ <!-- 评价平均值 -->
+ <select id="queryProductCommentAvg" parameterType="map" resultType="com.basics.mall.entity.MallProductComment">
+  <![CDATA[
+  SELECT
+	  IFNULL(AVG(mallProductComment.COMMENT_DESCRIBE_SART),0) "commentDescribeSart",
+	  IFNULL(AVG(mallProductComment.COMMENT_SERVICE_SART),0) "commentServiceSart",
+	  IFNULL(AVG(mallProductComment.COMMENT_LOGISTICS_SART),0) "commentLogisticsSart"
+  FROM mall_product_comment mallProductComment
+  ]]>
+  <include refid="condition" />
+ </select>
+ 
+ <!-- 评论详情 -->
+ <select id="selectCommentInfoVo" parameterType="map" resultType="com.basics.mall.vo.CommentInfoVo">
+  <![CDATA[
+	SELECT
+	  mallProductComment.COMMENT_ID "id",
+	  CASE
+	  WHEN mallProductComment.FLAG_ANONYMOUS = 1 THEN ""
+	  WHEN mallProductComment.FLAG_ANONYMOUS = 0 THEN mallProductComment.CUSTOMER_ID
+	  END "customerId",
+	  mallProductComment.COMMENT_CONTEXT "commentContext",
+	  mallProductComment.COMMENT_TYPE "commentType",
+	  mallProductComment.COMMENT_DESCRIBE_SART "commentDescribeSart",
+	  mallProductComment.COMMENT_SERVICE_SART "commentServiceSart",
+	  mallProductComment.COMMENT_LOGISTICS_SART "commentLogisticsSart",
+	  mallProductComment.FLAG_ANONYMOUS "flagAnonymous",
+	  mallProductComment.REPLY_CONTEXT "replyContext",
+	  DATE_FORMAT( mallProductComment.CREATE_TIME,'%Y.%m.%d' ) "createTime",
+	  DATE_FORMAT( mallProductComment.REPLY_TIME,'%Y.%m.%d' ) "replyTime",
+	  CASE
+	  WHEN mallProductComment.FLAG_ANONYMOUS = 1 THEN "https://www.tfcvip.com.cn/upload/base/header_pic.png"
+	  WHEN mallProductComment.FLAG_ANONYMOUS = 0 THEN	customer.customer_head
+	  END "customerHead",
+	  CASE
+	  WHEN mallProductComment.FLAG_ANONYMOUS = 1 THEN "匿名"
+	  WHEN mallProductComment.FLAG_ANONYMOUS = 0 THEN customer.CUSTOMER_NAME
+	  END "customerName"
+	FROM
+      mall_product_comment mallProductComment
+	LEFT OUTER JOIN cu_customer_info customer ON customer.CUSTOMER_ID = mallProductComment.CUSTOMER_ID
+  ]]>
+  <include refid="condition" />
+  <choose>
+   <when test="@org.apache.commons.lang.StringUtils@isNotEmpty(orderBy)"> ORDER BY ${orderBy}
+   </when>
+   <otherwise>
+    <!-- //TODO:ADD DEFAULT ORDER COLUMN OR DONOTHING! -->
+   </otherwise>
+  </choose>
+ </select>
+  <select id="showProductCommentById" parameterType="map" resultType="com.basics.mall.entity.MallProductComment">
+  <![CDATA[
+  SELECT
+  mallProductComment.COMMENT_ID "id",
+  mallProductComment.PRODUCT_ID "productId",
+  mallProductComment.CUSTOMER_ID "customerId",
+  mallProductComment.COMMENT_CONTEXT "commentContext",
+  mallProductComment.COMMENT_TYPE "commentType",
+  mallProductComment.COMMENT_DESCRIBE_SART "commentDescribeSart",
+  mallProductComment.COMMENT_SERVICE_SART "commentServiceSart",
+  mallProductComment.COMMENT_LOGISTICS_SART "commentLogisticsSart",
+  mallProductComment.FLAG_ANONYMOUS "flagAnonymous",
+  mallProductComment.REPLY_CONTEXT "replyContext",
+  mallProductComment.REPLY_TIME "replyTime",
+  mallProduct.PRODUCT_NAME "productName",
+  cuCustomerInfo.CUSTOMER_NAME "customerName"
+  FROM mall_product_comment mallProductComment
+  LEFT JOIN mall_product mallProduct on mallProduct.PRODUCT_ID = mallProductComment.PRODUCT_ID
+  LEFT JOIN cu_customer_info cuCustomerInfo on cuCustomerInfo.CUSTOMER_ID  = mallProductComment.CUSTOMER_ID
+  ]]>
+  <include refid="condition" />
+  <choose>
+   <when test="@org.apache.commons.lang.StringUtils@isNotEmpty(orderBy)"> ORDER BY ${orderBy}
+   </when>
+   <otherwise>
+    <!-- //TODO:ADD DEFAULT ORDER COLUMN OR DONOTHING! -->
+   </otherwise>
+  </choose>
+ </select>
+ <select id="countProductCommentById" parameterType="map" resultType="long">
+  <![CDATA[ SELECT COUNT(1) FROM mall_product_comment mallProductComment
+	LEFT JOIN mall_product mallProduct on mallProduct.PRODUCT_ID = mallProductComment.PRODUCT_ID
+	LEFT JOIN cu_customer_info cuCustomerInfo on cuCustomerInfo.CUSTOMER_ID  = mallProductComment.CUSTOMER_ID
+	]]>
+  <include refid="condition" />
+ </select>
+ 
+ 
+</mapper>
