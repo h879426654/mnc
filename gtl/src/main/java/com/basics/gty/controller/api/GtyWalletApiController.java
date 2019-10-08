@@ -6,11 +6,13 @@ import com.basics.cu.service.CustomerApiService;
 import com.basics.gty.controller.request.TokenTransferRequest;
 import com.basics.gty.entity.GtyWallet;
 import com.basics.gty.entity.GtyWalletHistory;
+import com.basics.gty.entity.TradeTransferBean;
 import com.basics.gty.service.GtyTransferService;
 import com.basics.gty.service.GtyWalletHistory2Service;
 import com.basics.gty.service.GtyWalletService;
 import com.basics.support.QueryFilter;
 import com.basics.support.auth.HttpClientUtils;
+import com.google.gson.Gson;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +20,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
@@ -106,6 +109,28 @@ public class GtyWalletApiController implements ApplicationContextAware {
 
     }
 
+    @RequestMapping("transferInTradeCenter")
+    public DataItemResponse transferInTradeCenter(@RequestParam String wallterKey,@RequestParam String amount){
+        DataItemResponse dataResponse = new DataItemResponse();
+        if(StringUtils.isBlank(wallterKey)){
+            dataResponse.setMsg("地址不能为空");
+            dataResponse.setStatus(1);
+            return dataResponse;
+        }
+        if(StringUtils.isBlank(amount) || amount.equals("0")){
+            dataResponse.setMsg("数量不能为空");
+            dataResponse.setStatus(1);
+            return dataResponse;
+        }
+        Map<String, String> params = new HashMap<>();
+        params.put("wallterKey", wallterKey);
+        params.put("amount", amount);
+        String info = HttpClientUtils.invokeGet("http://47.56.169.214:8085/api/increase", params);
+        TradeTransferBean tradeTransferBean = new Gson().fromJson(info,TradeTransferBean.class);
+        dataResponse.setItem(tradeTransferBean);
+        dataResponse.setStatus(0);
+        return dataResponse;
+    }
 
     @RequestMapping("createWallet")
     public DataResponse createWallet(TokenRequest request, HttpServletRequest req){

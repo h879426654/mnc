@@ -3,7 +3,7 @@
 <mapper namespace="com.basics.gty.entity.GtyWallet">
     <cache type="com.basics.support.mybatis.CacheAdapter"/>
 
-    <select id="query" parameterType="map" resultType="com.basics.gty.entity.GtyWallet" flushCache="true"
+    <select id="query" parameterType="map" resultType="com.basics.gty.entity.GtyWallet" flushCache="false"
             useCache="false">
   SELECT
   gtyWallet.USER_ID "userId",
@@ -19,6 +19,10 @@
     gtyWallet.BLOCK_NUM "blockNum",
       gtyWallet.WALLET_FROZEN "walletFrozen"
   FROM wallet_info gtyWallet
+  where 1 = 1
+    <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(userId)">
+        <![CDATA[ AND gtyWallet.USER_ID = #{userId}    ]]>
+    </if>
  </select>
 
     <update id="update" parameterType="com.basics.gty.entity.GtyWallet">
@@ -52,5 +56,8 @@
             </if>
         </trim>
     </sql>
-
+    <insert id="insert" parameterType="com.basics.gty.entity.GtyWallet">
+        insert into wallet_info(USER_ID)
+        values (#{userId})
+    </insert>
 </mapper>

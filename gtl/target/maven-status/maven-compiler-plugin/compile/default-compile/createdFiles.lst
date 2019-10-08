@@ -39,6 +39,7 @@ com\basics\common\AddressRequest.class
 com\basics\mall\controller\backend\MallIndexTypeBackendController.class
 com\basics\cu\controller\backend\CuCustomerSignBackendController.class
 com\basics\app\AppContext.class
+com\basics\cu\dao\CuLogsDao.class
 com\basics\sys\entity\SysCustomerLevel.class
 com\basics\sys\controller\backend\SysProfitBackendController.class
 com\basics\sys\controller\backend\SysMarketValueBackendController.class
@@ -46,6 +47,7 @@ com\basics\mall\dao\MybatisDao\MallProductMybatisDao.class
 com\basics\support\GenericModelSupportAction.class
 com\basics\mall\controller\backend\MallShopClassifyBackendController.class
 com\basics\cu\entity\CuHttpUrlBase.class
+com\basics\cu\dao\CuReatilMoneyDao.class
 com\basics\mall\service\impl\MallShopApiServiceImpl.class
 com\basics\support\DefaultPasswordCryptor.class
 com\basics\app\entity\AppUserRole.class
@@ -228,6 +230,7 @@ com\basics\mall\dao\MallShopDao.class
 com\basics\support\UserAware.class
 com\basics\sys\service\impl\SysProfitMybatisService.class
 com\basics\tr\dao\TrTradeConvertDao.class
+com\basics\cu\dao\MybatisDao\CuPictureMybatisDao.class
 com\basics\tr\service\impl\TradeMoneyApiServiceImpl.class
 com\basics\app\service\impl\AppOptionMybatisService.class
 com\basics\sys\service\SysRuleService.class
@@ -241,6 +244,7 @@ com\basics\common\TokenTypePageRequest.class
 com\basics\common\DataPageListResponse.class
 com\basics\mall\dao\MallProductKindCombinationDao.class
 com\basics\cu\support\BackendControllerSupport.class
+com\basics\cu\dao\CuPictureDao.class
 com\basics\sys\service\SysActivemqResponseService.class
 com\basics\app\dao\AppLogDao.class
 com\basics\sys\entity\SysNewsBase.class
@@ -264,6 +268,7 @@ com\basics\app\dao\impl\AppUserMybatisDao.class
 com\basics\app\dao\impl\AppPermissionMybatisDao.class
 com\basics\mall\service\MallProductKindDetailService.class
 com\basics\app\entity\AppImage.class
+com\basics\cu\dao\MybatisDao\CuLogsMybatisDao.class
 com\basics\mall\controller\backend\MallProductKindBackendController.class
 com\basics\sys\controller\backend\SysNewsBackendController.class
 com\basics\cu\service\CuCustomerSignService.class
@@ -322,6 +327,7 @@ com\basics\mall\service\MallIndexProductService.class
 com\basics\support\ListResultSupport.class
 com\basics\cu\support\GenericMybatisDaoSupport.class
 com\basics\cu\service\CuCustomerCollectionService.class
+com\basics\cu\entity\CuLogs.class
 com\basics\support\DownloadUtils.class
 com\basics\support\HttpMultipartFile.class
 com\basics\tr\controller\request\MoneyToIntegralRequest.class
@@ -329,6 +335,7 @@ com\basics\sys\dao\SysConfigDao.class
 com\basics\support\UserSession.class
 com\basics\wallet\entity\WalletEntity.class
 com\basics\app\controller\backend\BaseBackendController.class
+com\basics\cu\entity\CuReatilMoneyBase.class
 com\basics\support\FuncSupport.class
 com\basics\cu\controller\backend\CuCustomerLoginBackendController.class
 com\basics\support\CommonSupport.class
@@ -367,6 +374,7 @@ com\basics\cu\entity\CuCustomerSign.class
 com\basics\sys\entity\SysMarketValue.class
 com\basics\mall\controller\response\CustomerCarResponsePlus.class
 com\basics\app\entity\AppLog.class
+com\basics\gty\entity\TradeTransferBean.class
 com\basics\support\app\MultipleUserRolePermissioinSupport.class
 com\basics\cu\controller\request\ForGetPassRequest.class
 com\basics\support\auth\RsaSignature.class
@@ -414,6 +422,7 @@ com\basics\mall\controller\request\CustomerCarRequest.class
 com\basics\mall\controller\api\MallApiController.class
 com\basics\support\log4j\AppLogAppender.class
 com\basics\cu\dao\CuDrawRewardDao.class
+com\basics\cu\entity\CuLogsBase.class
 com\basics\support\auth\SignUtil.class
 com\basics\support\sms\SmsWhUtil.class
 com\basics\support\PathUtils.class
@@ -467,6 +476,7 @@ com\basics\cu\entity\CuReatil3.class
 com\basics\mall\dao\MallGoodsDao.class
 com\basics\cu\dao\MybatisDao\CuConsumeMybatisDao.class
 com\basics\mall\controller\response\MallProductResponsePlus.class
+com\basics\cu\entity\CuPictureBase.class
 com\basics\app\shiro\UpdatePasswordResponse.class
 com\basics\mall\controller\response\BusinessResponse.class
 com\basics\mall\service\MallShopAdvertService.class
@@ -555,6 +565,7 @@ com\basics\wallet\test.class
 com\basics\or\service\impl\MallOrderApiServiceImpl.class
 com\basics\support\RestTemplateSupport$1.class
 com\basics\app\service\AppAreaService.class
+com\basics\cu\dao\MybatisDao\CuReatilMoneyMybatisDao.class
 com\basics\job\EveryMinuteDebugJob.class
 com\basics\mall\entity\MallProductKindBase.class
 com\basics\support\FinanceUtils.class
@@ -797,6 +808,7 @@ com\basics\cu\dao\CuReatil1Dao.class
 com\basics\support\SortedProperties.class
 com\basics\cu\controller\request\ConsumeRequest.class
 com\basics\common\TokenPassRequest.class
+com\basics\cu\entity\CuPicture.class
 com\basics\sys\controller\backend\SysRuleBackendController.class
 com\basics\sys\service\impl\SysRuleMybatisService.class
 com\basics\cu\dao\MybatisDao\CuHistoryMybatisDao.class
@@ -823,6 +835,7 @@ com\basics\cu\service\impl\CuCustomerCountMybatisService.class
 com\basics\cu\entity\CuCustomerAddress.class
 com\basics\mall\dao\MallProductKindDao.class
 com\basics\sys\dao\MybatisDao\SysCountryMybatisDao.class
+com\basics\cu\entity\CuReatilMoney.class
 com\basics\cu\dao\CuCustomerProfitDao.class
 com\basics\cu\dao\MybatisDao\CuDrawRewardMybatisDao.class
 com\basics\app\service\impl\AppPasswordCryptor.class

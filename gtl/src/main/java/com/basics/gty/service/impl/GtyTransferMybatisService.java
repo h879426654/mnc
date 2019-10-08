@@ -5,10 +5,7 @@ import com.basics.common.BaseApiService;
 import com.basics.common.DataResponse;
 import com.basics.cu.entity.CuCustomerLogin;
 import com.basics.gty.controller.request.TokenTransferRequest;
-import com.basics.gty.entity.EthBean;
-import com.basics.gty.entity.GtyWallet;
-import com.basics.gty.entity.GtyWalletHistory;
-import com.basics.gty.entity.TradeBean;
+import com.basics.gty.entity.*;
 import com.basics.gty.service.GtyTransferService;
 import com.basics.gty.service.GtyWalletService;
 import com.basics.support.GenericMybatisService;
@@ -84,15 +81,23 @@ public class GtyTransferMybatisService extends BaseApiService implements GtyTran
                 return response;
             } else {
 
-                response.setStatus(1);
-                response.setMsg("暂未开通");
+                Map<String, String> params = new HashMap<>();
+                params.put("wallterKey", request.getToAddress());
+                params.put("amount", request.getNum());
+                String info = HttpClientUtils.invokeGet("http://47.56.169.214:8085/api/increase", params);
+                TradeTransferBean tradeTransferBean = new Gson().fromJson(info,TradeTransferBean.class);
+                if(tradeTransferBean.isSuccess()){
+                    GtyWallet gtyWallet1 = new GtyWallet();
+                    gtyWallet1.setUserId(gtyWallet.getUserId());
+                    gtyWallet1.setMncNum(gtyWallet.getMncNum().subtract(new BigDecimal(request.getNum())));
+                    gtyWalletDao.update(gtyWallet1);
+                }else{
+                    response.setStatus(0);
+                    response.setMsg("转账失败");
+                    return response;
+                }
 //                transferERC20Token(gtyWallet.getWalletAddress(),);
-//                GtyWallet gtyWallet1 = new GtyWallet();
-//                gtyWallet1.setUserId(gtyWallet.getUserId());
-//                gtyWallet1.setMncNum(gtyWallet.getMncNum().subtract(new BigDecimal(request.getNum())));
-//                gtyWallet1.setMoveNum(gtyWallet.getMoveNum().add((new BigDecimal(request.getNum()))));
-//                gtyWallet1.setUserId(gtyWallet.getUserId());
-//                gtyWalletDao.update(gtyWallet1);
+
             }
         } else if (request.getType() == 2) {// mnc转流通钱包
             if (gtyWallet.getMoveNum().compareTo(new BigDecimal(request.getNum())) == -1) {
@@ -132,7 +137,7 @@ public class GtyTransferMybatisService extends BaseApiService implements GtyTran
                 gtyWallet1.setMoveNum(gtyWallet.getMoveNum().subtract(new BigDecimal(request.getNum())));
                 gtyWallet1.setmTokenNum(new BigDecimal(request.getNum()).multiply(new BigDecimal("13.32")).add(gtyWallet1.getmTokenNum()));
                 Map<String,String> maps = new HashMap<>();
-                maps.put("symbol","2");
+                maps.put("symbol","3");
                 String tradeBean = HttpClientUtils.invokeGet("http://bitin.io:8090/api/v1/ticker",maps);
                 TradeBean tradeBean1= new Gson().fromJson(tradeBean,TradeBean.class);
                 String price;
@@ -145,7 +150,7 @@ public class GtyTransferMybatisService extends BaseApiService implements GtyTran
                 }else{
                     price = "1";
                 }
-                if(gtyWallet1.getmTokenNum().multiply(new BigDecimal("13.32")).divide(new BigDecimal(price)).compareTo(new BigDecimal("300"))==1){
+                if(gtyWallet1.getmTokenNum().compareTo(new BigDecimal("300").divide(new BigDecimal(price)))==1){
                     gtyWallet1.setWalletFrozen(1);
                 }
                 gtyWalletDao.update(gtyWallet1);
@@ -198,13 +203,21 @@ public class GtyTransferMybatisService extends BaseApiService implements GtyTran
                 response.setMsg("数量错误");
                 return response;
             } else {//todo 转账
-                response.setStatus(1);
-                response.setMsg("暂未开通");
-//                GtyWallet gtyWallet1 = new GtyWallet();
-//                gtyWallet1.setUserId(gtyWallet.getUserId());
-//                gtyWallet1.setSuperNum(gtyWallet.getSuperNum().subtract(new BigDecimal(request.getNum())));
-//                gtyWallet1.setMoveNum(gtyWallet.getmTokenNum().add(new BigDecimal(request.getNum())));
-//                gtyWalletDao.update(gtyWallet1);
+                Map<String, String> params = new HashMap<>();
+                params.put("wallterKey", request.getToAddress());
+                params.put("amount", request.getNum());
+                String info = HttpClientUtils.invokeGet("http://47.56.169.214:8085/api/increase", params);
+                TradeTransferBean tradeTransferBean = new Gson().fromJson(info,TradeTransferBean.class);
+                if(tradeTransferBean.isSuccess()){
+                    GtyWallet gtyWallet1 = new GtyWallet();
+                    gtyWallet1.setUserId(gtyWallet.getUserId());
+                    gtyWallet1.setSuperNum(gtyWallet.getSuperNum().subtract(new BigDecimal(request.getNum())));
+                    gtyWalletDao.update(gtyWallet1);
+                }else{
+                    response.setStatus(0);
+                    response.setMsg("转账失败");
+                    return response;
+                }
             }
         }
 

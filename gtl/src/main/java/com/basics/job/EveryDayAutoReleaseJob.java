@@ -37,7 +37,6 @@ public class EveryDayAutoReleaseJob extends BaseApiService implements EveryDayJo
 	@Override
 	public void doJob() {
 		LogUtils.performance.info("{} begin at {}", this.getClass().getName(), new Date());
-
 		String s1 = "0.001";
 		String s2 = "0.005";
 		List<GtyWallet> records = gtyWalletDao.query(new QueryFilterBuilder().build());
@@ -46,8 +45,28 @@ public class EveryDayAutoReleaseJob extends BaseApiService implements EveryDayJo
 		maps.put("ID", "1");
 		filter.setParams(maps);
 		GtyLimitWallet gtyLimitWallet = gtyWalletLimitDao.queryOne(filter);
+
+		Map<String,String> maps1 = new HashMap<>();
+		maps.put("symbol","3");
+		String tradeBean = HttpClientUtils.invokeGet("http://bitin.io:8090/api/v1/ticker",maps1);
+		TradeBean tradeBean1= new Gson().fromJson(tradeBean,TradeBean.class);
+		String price;
+		if(tradeBean1!=null && tradeBean1.getData()!=null && !StringUtils.isNullOrEmpty(tradeBean1.getData().getLast())){
+			if(tradeBean1.getData().getLast().equals("0")){
+				price = "1";
+			}else{
+				price = tradeBean1.getData().getLast();
+			}
+		}else{
+			price = "1";
+		}
+		BigDecimal bigDecimalPrice = new BigDecimal(price);
+
 		if (CollectionUtils.isNotEmpty(records)) {
 			for (GtyWallet record : records) {
+				if(record.getWalletFrozen()==0){// 账号冻结
+					continue;
+				}
 
 				if (!StringUtils.isNullOrEmpty(record.getUserId())) {
 
@@ -59,34 +78,6 @@ public class EveryDayAutoReleaseJob extends BaseApiService implements EveryDayJo
 					Map<String, Object> map = new HashMap<>();
 					map.put("id", record.getUserId());
 					CustomerInfoResponse data = cuCustomerInfoDao.getExtend(map, "queryCustomerInfo");
-
-					//超级钱包（老版mnc）千分之五释放到 （服务器MNC ）
-					if (mSuper.compareTo(BigDecimal.ZERO) == 0) {
-						if (data == null) {
-							mSuper = new BigDecimal("0.00000");
-						} else {
-							BigDecimal oldMnc = data.getUseCoin();// 老mNC
-							if (oldMnc.compareTo(BigDecimal.ZERO) == 0) {
-
-							} else {// 有老mnc
-								mSuper = oldMnc;
-							}
-						}
-					}
-					if (mSuper.compareTo(BigDecimal.ZERO) == 1) {
-						if (gtyLimitWallet.getLimitDownSuperRelease().compareTo(mSuper) == -1) {// 实际金额大于限制的值
-							if (!StringUtils.isNullOrEmpty(gtyLimitWallet.getLimitUpSuperRelease())) {
-								BigDecimal bigDecimal = new BigDecimal(gtyLimitWallet.getLimitUpSuperRelease());
-								if (bigDecimal.compareTo(mSuper) == -1) {
-									mMncRelease = mMncRelease.add(bigDecimal.multiply(new BigDecimal(s2)));
-									mSuper = mSuper.subtract(bigDecimal.multiply(new BigDecimal(s2)));
-								}
-							} else {
-								mMncRelease = mMncRelease.add(mSuper.multiply(new BigDecimal(s2)));
-								mSuper = mSuper.subtract(mSuper.multiply(new BigDecimal(s2)));
-							}
-						}
-					}
 
 					//  创业积分 千分之一（老MP+老MC的和）  释放到超级钱包
 					if (mScore.compareTo(BigDecimal.ZERO) == 0) {// 如果为0可能是数据有异常，做二次判断
@@ -106,15 +97,18 @@ public class EveryDayAutoReleaseJob extends BaseApiService implements EveryDayJo
 							} else {
 								if (!StringUtils.isNullOrEmpty(gtyLimitWallet.getLimitUpScoreRelease())) {// 判断是否大于上限
 									BigDecimal bigDecimal = new BigDecimal(gtyLimitWallet.getLimitUpScoreRelease());
+									if (bigDecimal.compareTo(BigDecimal.ZERO) == 0) {
+										bigDecimal = BigDecimal.ONE;
+									}
 									if (bigDecimal.compareTo(mpMc) == -1) {
-										mSuper = mSuper.add(bigDecimal.multiply(new BigDecimal(s1)));
-										mScore = mScore.subtract(bigDecimal.multiply(new BigDecimal(s1)));
+										mSuper = mSuper.add(mpMc.multiply(new BigDecimal(s1)).divide(bigDecimalPrice));
+										mScore = mScore.subtract(mpMc.multiply(new BigDecimal(s1)).divide(bigDecimalPrice));
 
 									}
 								} else {// 判断是否小于下限
 									if (gtyLimitWallet.getLimitDownScoreRelease().compareTo(mScore) == -1) {// 实际金额大于限制的值
-										mSuper = mSuper.add(mpMc.multiply(new BigDecimal(s1)));
-										mScore = mScore.subtract(mpMc.multiply(new BigDecimal(s1)));
+										mSuper = mSuper.add(mpMc.multiply(new BigDecimal(s1)).divide(bigDecimalPrice));
+										mScore = mScore.subtract(mpMc.multiply(new BigDecimal(s1)).divide(bigDecimalPrice));
 									}
 								}
 							}
@@ -127,17 +121,46 @@ public class EveryDayAutoReleaseJob extends BaseApiService implements EveryDayJo
 								bigDecimal = BigDecimal.ONE;
 							}
 							if (bigDecimal.compareTo(mScore) == -1) {
-								mSuper = mSuper.add(bigDecimal.multiply(new BigDecimal(s1)));
-								mScore = mScore.subtract(bigDecimal.multiply(new BigDecimal(s1)));
+								mSuper = mSuper.add(mScore.multiply(new BigDecimal(s1)).divide(bigDecimalPrice));
+								mScore = mScore.subtract(mScore.multiply(new BigDecimal(s1)).divide(bigDecimalPrice));
 
 							}
 						} else {// 判断是否小于下限
 							if (gtyLimitWallet.getLimitDownScoreRelease().compareTo(mScore) == -1) {// 实际金额大于下限
-								mSuper = mSuper.add(mScore.multiply(new BigDecimal(s1)));
-								mScore = mScore.subtract(mScore.multiply(new BigDecimal(s1)));
+								mSuper = mSuper.add(mScore.multiply(new BigDecimal(s1)).divide(bigDecimalPrice));
+								mScore = mScore.subtract(mScore.multiply(new BigDecimal(s1)).divide(bigDecimalPrice));
 							}
 						}
 					}
+
+					//超级钱包（老版mnc）千分之五释放到 （服务器MNC ）
+					if (mSuper.compareTo(BigDecimal.ZERO) == 0) {
+						if (data == null) {
+							mSuper = new BigDecimal("0.00000");
+						} else {
+							BigDecimal oldMnc = data.getUseCoin();// 老mNC
+							if (oldMnc.compareTo(BigDecimal.ZERO) == 0) {
+
+							} else {// 有老mnc
+								mSuper = oldMnc;
+							}
+						}
+					}
+					if (mSuper.compareTo(BigDecimal.ZERO) == 1) {
+						if (gtyLimitWallet.getLimitDownSuperRelease().compareTo(mSuper) == -1) {// 实际金额大于限制的值
+							if (!StringUtils.isNullOrEmpty(gtyLimitWallet.getLimitUpSuperRelease())) {
+								BigDecimal bigDecimal = new BigDecimal(gtyLimitWallet.getLimitUpSuperRelease());
+								if (bigDecimal.compareTo(mSuper) == -1) {
+									mMncRelease = mMncRelease.add(mSuper.multiply(new BigDecimal(s2)));
+									mSuper = mSuper.subtract(mSuper.multiply(new BigDecimal(s2)));
+								}
+							} else {
+								mMncRelease = mMncRelease.add(mSuper.multiply(new BigDecimal(s2)));
+								mSuper = mSuper.subtract(mSuper.multiply(new BigDecimal(s2)));
+							}
+						}
+					}
+
 
 					//  Mtoken（MP） 千分之一释放到MNC资产（新MNC）
 					if (mToken.compareTo(BigDecimal.ZERO) == 0) {
@@ -150,14 +173,14 @@ public class EveryDayAutoReleaseJob extends BaseApiService implements EveryDayJo
 
 							} else {
 								mToken = oldMp;
-								mMncRelease = mMncRelease.add(mToken.multiply(new BigDecimal(s1)));
-								mToken = mToken.subtract(mToken.multiply(new BigDecimal(s1)));
+								mMncRelease = mMncRelease.add(mToken.multiply(new BigDecimal(s1)).divide(bigDecimalPrice));
+								mToken = mToken.subtract(mToken.multiply(new BigDecimal(s1)).divide(bigDecimalPrice));
 							}
 						}
 
 					} else {
-						mMncRelease = mMncRelease.add(mToken.multiply(new BigDecimal(s1)));
-						mToken = mToken.subtract(mToken.multiply(new BigDecimal(s1)));
+						mMncRelease = mMncRelease.add(mToken.multiply(new BigDecimal(s1)).divide(bigDecimalPrice));
+						mToken = mToken.subtract(mToken.multiply(new BigDecimal(s1)).divide(bigDecimalPrice));
 					}
 
 					GtyWallet gtyWallet = new GtyWallet();
