@@ -10,6 +10,33 @@ public class GtyWalletHistory extends BaseBean {
  private BigDecimal recordNum;
  private String toAccount;
  private String id;
+ private String mark;
+ private String createTime;
+ private String recordName;
+
+ public String getRecordName() {
+  return recordName;
+ }
+
+ public void setRecordName(String recordName) {
+  this.recordName = recordName;
+ }
+
+ public String getCreateTime() {
+  return createTime;
+ }
+
+ public void setCreateTime(String createTime) {
+  this.createTime = createTime;
+ }
+
+ public String getMark() {
+  return mark;
+ }
+
+ public void setMark(String mark) {
+  this.mark = mark;
+ }
 
  public String getId() {
   return id;

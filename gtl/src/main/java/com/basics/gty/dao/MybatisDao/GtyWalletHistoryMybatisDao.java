@@ -24,6 +24,8 @@ public class GtyWalletHistoryMybatisDao extends GenericMybatisDaoSupport<GtyWall
 		defaultNameMapper.configFieldColumnName("recordType", "RECORD_TYPE");
 		defaultNameMapper.configFieldColumnName("recordNum", "RECORD_NUM");
 		defaultNameMapper.configFieldColumnName("toAccount", "RECORD_TO_ACCOUNT");
+		defaultNameMapper.configFieldColumnName("mark", "MARK");
+		defaultNameMapper.configFieldColumnName("recordName", "RECORD_NAME");
 		return defaultNameMapper;
 	}
 }

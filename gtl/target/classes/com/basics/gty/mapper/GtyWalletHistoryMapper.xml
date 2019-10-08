@@ -9,7 +9,11 @@
    wr.USER_ID "userId",
    wr.RECORD_TYPE "recordType",
    wr.RECORD_NUM "recordNum",
+   wr.RECORD_MARK "mark",
+   wr.RECORD_TIME "createTime",
+   wr.RECORD_NAME "recordName",
    wr.RECORD_TO_ACCOUNT "toAccount"
+
    FROM wallet_record wr
  </select>
 
@@ -21,6 +25,9 @@
   <if test="recordType!=null">RECORD_TYPE,</if>
   <if test="recordNum!=null">RECORD_NUM,</if>
   <if test="toAccount!=null">RECORD_TO_ACCOUNT,</if>
+  <if test="mark!=null">RECORD_MARK,</if>
+  <if test="createTime!=null">RECORD_TIME,</if>
+  <if test="recordName!=null">RECORD_NAME,</if>
  </trim>
   <![CDATA[)VALUES(]]>
   <trim prefix="" suffixOverrides=",">
@@ -29,6 +36,9 @@
    <if test="recordType!=null">#{recordType},</if>
    <if test="recordNum!=null">#{recordNum},</if>
    <if test="toAccount!=null">#{toAccount},</if>
+   <if test="mark!=null">#{mark},</if>
+   <if test="createTime!=null">#{createTime},</if>
+   <if test="recordName!=null">#{recordName},</if>
   </trim>
   <![CDATA[)]]>
  </insert>

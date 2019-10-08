@@ -16,6 +16,7 @@ import com.basics.gty.dao.GtyWalletDao;
 import com.basics.gty.dao.GtyWalletHistoryDao;
 import com.basics.gty.dao.GtyWalletLimitDao;
 import com.basics.gty.entity.GtyWallet;
+import com.basics.gty.entity.GtyWalletHistory;
 import com.basics.mall.dao.*;
 import com.basics.wallet.dao.WalletEntityDao;
 import com.basics.wallet.entity.WalletEntity;
@@ -1332,6 +1333,8 @@ public class BaseApiService {
 		json.put("obj", JSONObject.toJSONString(obj));
 
 		gtyWalletDao.update(wallet);
+
+
 		json.put("activemqId", wallet.getUserId());
 		queueSender.sendMessage(queueDestination, json.toJSONString());
 	}

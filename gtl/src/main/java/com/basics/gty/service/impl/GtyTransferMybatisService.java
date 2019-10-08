@@ -221,19 +221,45 @@ public class GtyTransferMybatisService extends BaseApiService implements GtyTran
             }
         }
 
-        GtyWalletHistory gtyWalletHistory = new GtyWalletHistory();
+       if(request.getType() == 1){// mnc转交易所
+           addHistory(gtyWallet,request,"MNC出到转交易所","-");
+        }else if(request.getType() == 2){// mnc转流通钱包
+//           addHistory(gtyWallet,request,"MNC转出到流通钱包","-");
+           addHistory(gtyWallet,request,"MNC转入到流通钱包","+");
+        }else if(request.getType() == 3){// 流通转记账钱包
+//           addHistory(gtyWallet,request,"流通钱包转出到记账钱包","-");
+           addHistory(gtyWallet,request,"流通钱包转入到记账钱包","+");
+        }else if(request.getType() == 4){// 流通转mtoken
+//           addHistory(gtyWallet,request,"流通钱包转出到MTOKEN","-");
+           addHistory(gtyWallet,request,"流通钱包转入到MTOKEN","+");
+        }else if(request.getType() == 5){// 流通点对点
+           addHistory(gtyWallet,request,"流通钱包转账","-");
+        }else if(request.getType() == 6){// 超级钱包转流通钱包
+//           addHistory(gtyWallet,request,"超级钱包转出到流通钱包","-");
+           addHistory(gtyWallet,request,"超级钱包转入到流通钱包","+");
+        }else if(request.getType() == 7){// 超级钱包转交易所；
+           addHistory(gtyWallet,request,"超级钱包转出到交易所","-");
+       }
+        response.setMsg("转账成功");
+        response.setStatus(0);
+        return response;
+    }
+
+    private void addHistory( GtyWallet gtyWallet,TokenTransferRequest request,String recordName ,String mark ){
+
         String uuid = UUID.randomUUID().toString().replace("-", "");
+        GtyWalletHistory gtyWalletHistory = new GtyWalletHistory();
         gtyWalletHistory.setId(uuid);
         gtyWalletHistory.setRecordNum(new BigDecimal(request.getNum()));
         gtyWalletHistory.setRecordType(request.getType());
         gtyWalletHistory.setToAccount(request.getToAddress());
         gtyWalletHistory.setUserId(gtyWallet.getUserId());
+        gtyWalletHistory.setRecordName(recordName);
+        gtyWalletHistory.setMark(mark);
         geyWallethistoryDao.save(gtyWalletHistory);
 
-        response.setMsg("转账成功");
-        response.setStatus(0);
-        return response;
     }
+
 
     @Override
     public DataResponse transfer(AddressRequest request, HttpServletRequest req) {

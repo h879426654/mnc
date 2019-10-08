@@ -358,7 +358,7 @@
       <workItem from="1570355969964" duration="1535000" />
       <workItem from="1570410349102" duration="1359000" />
       <workItem from="1570435718214" duration="3966000" />
-      <workItem from="1570496848254" duration="3619000" />
+      <workItem from="1570496848254" duration="15084000" />
     </task>
     <servers />
   </component>
@@ -563,16 +563,6 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/basics/support/auth/HttpClientUtils.java</url>
-          <line>287</line>
-          <option name="timeStamp" value="261" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/com/basics/support/auth/HttpClientUtils.java</url>
-          <line>403</line>
-          <option name="timeStamp" value="262" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/com/basics/support/auth/HttpClientUtils.java</url>
           <line>408</line>
           <option name="timeStamp" value="263" />
         </line-breakpoint>
@@ -593,7 +583,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/basics/job/EveryDayAutoReleaseJob.java</url>
-          <line>195</line>
+          <line>210</line>
           <option name="timeStamp" value="268" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
@@ -673,11 +663,6 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/basics/gty/service/impl/GtyTransferMybatisService.java</url>
-          <line>230</line>
-          <option name="timeStamp" value="334" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/com/basics/gty/service/impl/GtyTransferMybatisService.java</url>
           <line>112</line>
           <option name="timeStamp" value="336" />
         </line-breakpoint>
@@ -687,28 +672,23 @@
           <option name="timeStamp" value="337" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/com/basics/job/EveryMinuteDebugJob.java</url>
-          <line>169</line>
-          <option name="timeStamp" value="338" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/basics/common/BaseApiService.java</url>
-          <line>1335</line>
+          <line>1338</line>
           <option name="timeStamp" value="344" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/basics/common/BaseApiService.java</url>
-          <line>1333</line>
+          <line>1334</line>
           <option name="timeStamp" value="345" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/basics/common/BaseApiService.java</url>
-          <line>1331</line>
+          <line>1332</line>
           <option name="timeStamp" value="346" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/basics/job/EveryDayAutoReleaseJob.java</url>
-          <line>71</line>
+          <line>70</line>
           <option name="timeStamp" value="361" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
@@ -740,6 +720,71 @@
           <url>file://$PROJECT_DIR$/src/main/java/com/basics/job/EveryMinuteDebugJob.java</url>
           <line>138</line>
           <option name="timeStamp" value="376" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/basics/gty/service/impl/GtyTransferMybatisService.java</url>
+          <line>74</line>
+          <option name="timeStamp" value="377" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/basics/gty/service/impl/GtyTransferMybatisService.java</url>
+          <line>75</line>
+          <option name="timeStamp" value="378" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/basics/gty/service/impl/GtyTransferMybatisService.java</url>
+          <line>77</line>
+          <option name="timeStamp" value="379" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/basics/gty/service/impl/GtyTransferMybatisService.java</url>
+          <line>84</line>
+          <option name="timeStamp" value="380" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/basics/gty/service/impl/GtyTransferMybatisService.java</url>
+          <line>88</line>
+          <option name="timeStamp" value="381" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/basics/gty/service/impl/GtyTransferMybatisService.java</url>
+          <line>86</line>
+          <option name="timeStamp" value="382" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/basics/gty/service/impl/GtyTransferMybatisService.java</url>
+          <line>87</line>
+          <option name="timeStamp" value="383" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/basics/gty/service/impl/GtyTransferMybatisService.java</url>
+          <line>92</line>
+          <option name="timeStamp" value="384" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/basics/gty/controller/api/GtyWalletApiController.java</url>
+          <line>177</line>
+          <option name="timeStamp" value="385" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/basics/gty/controller/api/GtyWalletApiController.java</url>
+          <line>179</line>
+          <option name="timeStamp" value="386" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/basics/gty/service/impl/GtyTransferMybatisService.java</url>
+          <line>258</line>
+          <option name="timeStamp" value="387" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/basics/gty/service/impl/GtyTransferMybatisService.java</url>
+          <line>240</line>
+          <option name="timeStamp" value="388" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/basics/gty/service/impl/GtyTransferMybatisService.java</url>
+          <line>243</line>
+          <option name="timeStamp" value="389" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
