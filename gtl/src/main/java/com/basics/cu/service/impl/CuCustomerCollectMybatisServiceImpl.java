@@ -357,6 +357,15 @@ public class CuCustomerCollectMybatisServiceImpl extends BaseApiService implemen
         return json.toString();
     }
 
+    @Override
+    public String searchToken(String token) {
+        AppToken appToken = appTokenDao.queryOne(new QueryFilterBuilder().put("id", token).build());
+        if (null != token) {
+            return "{state:0}";
+        }
+        return "{state:1}";
+    }
+
     /**
      * 返还积分
      * @param cuConsume

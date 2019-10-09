@@ -39,4 +39,6 @@ public interface CuCustomerCollectService {
     String getPhone(String personToken);
 
     String searchPicture();
+
+    String searchToken(String token);
 }

@@ -1,10 +1,12 @@
 package com.basics.broswer.service.impl;
 
+import com.basics.app.entity.AppToken;
 import com.basics.app.shiro.AppUserUtils;
 import com.basics.app.shiro.UserSupport;
 import com.basics.broswer.service.CuConcerService;
 import com.basics.common.BaseApiService;
 import com.basics.common.Constant;
+import com.basics.cu.dao.CuConsumeDao;
 import com.basics.cu.entity.*;
 import com.basics.cu.service.BaseAccountApiService;
 import com.basics.mall.entity.MallShop;
@@ -17,6 +19,7 @@ import com.basics.tr.entity.TrTradeConvert;
 import com.basics.tr.entity.TrTradeMoney;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.exception.ExceptionUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,10 +32,18 @@ import java.util.*;
 @Transactional
 public class CuConceImplService extends BaseApiService implements CuConcerService {
 
-
-	@Override
-	public List<CuConsume> getConSumeList() {
-		List<CuConsume> cuConsumes = cuConsumeDao.query(new QueryFilterBuilder().build());
-		return cuConsumes;
-	}
+    @Override
+    public List<CuConsume> searchConConsume(String token, Integer page, Integer rows) {
+        if (null == page) {
+            page = 1;
+            rows = 10;
+        }
+        Map map = new HashMap();
+        map.put("pageN", (page-1)*10);
+        map.put("pageS", rows);
+        AppToken appToken = appTokenDao.queryOne(new QueryFilterBuilder().put("id", token).build());
+        map.put("customerId", appToken.getUserId());
+        List<CuConsume> list =  cuConsumeDao.query(new QueryFilterBuilder().putAll(map).build());
+        return list;
+    }
 }
