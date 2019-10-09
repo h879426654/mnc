@@ -175,11 +175,16 @@ public class GtyTransferMybatisService extends BaseApiService implements GtyTran
                 gtyWallet1.setUserId(gtyWallet.getUserId());
                 gtyWallet1.setMoveNum(gtyWallet.getMoveNum().subtract(new BigDecimal(request.getNum())));
 
-                QueryFilter filter1 = new QueryFilter();
-                Map<String, Object> map2 = new HashMap<>();
-                map2.put("WALLET_ADDRESS", request.getToAddress());
-                filter1.setParams(map2);
-                GtyWallet gtyWallet2 = gtyWalletDao.queryOne(filter1);
+//                QueryFilter filter1 = new QueryFilter();
+//                Map<String, Object> map2 = new HashMap<>();
+//                map2.put("walletAddress", request.getToAddress());
+//                filter1.setParams(map2);
+                List<GtyWallet> gtyWallet22 = gtyWalletDao.queryExtend(new QueryFilterBuilder().put("walletAddress", request.getToAddress()).build(),
+                        "queryInfoByAddress");
+                GtyWallet gtyWallet2 = new GtyWallet();
+                if(gtyWallet22.size()!=0){
+                    gtyWallet2 = gtyWallet22.get(0);
+                }
                 if (gtyWallet2 == null || StringUtils.isBlank(gtyWallet2.getWalletAddress())) {
                     gtyWallet2 = new GtyWallet();
                     gtyWallet2.setUserId(request.getToAddress());
@@ -588,6 +593,7 @@ public class GtyTransferMybatisService extends BaseApiService implements GtyTran
 
         return transationResponse;
     }
+
 
     private boolean transferEth(String toAddress,String amount){
 
