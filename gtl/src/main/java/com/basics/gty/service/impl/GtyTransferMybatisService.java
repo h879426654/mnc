@@ -1,13 +1,13 @@
 package com.basics.gty.service.impl;
 
-import com.basics.common.AddressRequest;
-import com.basics.common.BaseApiService;
-import com.basics.common.DataResponse;
+import com.basics.common.*;
+import com.basics.cu.controller.response.CustomerInfoResponse;
 import com.basics.cu.entity.CuCustomerLogin;
 import com.basics.gty.controller.request.TokenTransferRequest;
 import com.basics.gty.entity.*;
 import com.basics.gty.service.GtyTransferService;
 import com.basics.gty.service.GtyWalletService;
+import com.basics.mall.entity.MallShopAdvert;
 import com.basics.support.GenericMybatisService;
 import com.basics.support.LogUtils;
 import com.basics.support.QueryFilter;
@@ -64,12 +64,21 @@ public class GtyTransferMybatisService extends BaseApiService implements GtyTran
         }
          String userId =   user.getId();
 //        String userId = request.getId();
-        QueryFilter filter = new QueryFilter();
-        Map<String, Object> map = new HashMap<>();
-        map.put("USER_ID", userId);
-        filter.setParams(map);
+//        QueryFilter filter = new QueryFilter();
+//        Map<String, Object> map = new HashMap<>();
+//        map.put("USER_ID", userId);
+//        filter.setParams(map);
 
-        GtyWallet gtyWallet = gtyWalletDao.queryOne(filter);
+        List<GtyWallet> gtyWallet111 = gtyWalletDao.queryExtend(new QueryFilterBuilder().put("userId", userId).build(),
+                "queryInfo");
+        if(gtyWallet111==null || gtyWallet111.size()==0){
+            response.setMsg("转账失败");
+            response.setStatus(1);
+            return response;
+        }
+        GtyWallet gtyWallet = gtyWallet111.get(0);
+
+//        GtyWallet gtyWallet = gtyWalletDao.queryOne(filter);
         BigDecimal mncChain = BigDecimal.ZERO;
 
         if (request.getType() == 1) {// mnc转交易所
@@ -260,7 +269,6 @@ public class GtyTransferMybatisService extends BaseApiService implements GtyTran
 
     }
 
-
     @Override
     public DataResponse transfer(AddressRequest request, HttpServletRequest req) {
         DataResponse dataResponse = new DataResponse();
@@ -277,6 +285,228 @@ public class GtyTransferMybatisService extends BaseApiService implements GtyTran
         gtyWallet1.setMncNum(gtyWallet1.getMncNum().add(request.getNum()));
         gtyWalletDao.update(gtyWallet1);
         return dataResponse;
+    }
+
+    @Override
+    public DataItemResponse queryTransation(IdRequest request) {
+        DataItemResponse dataResponse = new DataItemResponse();
+        List<GtyWalletHistory> gtyWallet = geyWallethistoryDao.queryExtend(new QueryFilterBuilder().put("userId", request.getId()).build(),
+                "queryTransation");
+        dataResponse.setItem(gtyWallet);
+        dataResponse.setMsg("成功");
+        dataResponse.setStatus(0);
+        return dataResponse;
+    }
+
+    @Override
+    public DataItemResponse queryWalletInfo(TokenIdRequest request) {
+
+        DataItemResponse dataResponse = new DataItemResponse();
+        if (StringUtils.isBlank(request.getId())) {
+            dataResponse.setMsg("未找到该用户");
+            dataResponse.setStatus(1);
+            return dataResponse;
+        }
+
+//        QueryFilter filter = new QueryFilter();
+//        Map<String, Object> map = new HashMap<>();
+//        map.put("USER_ID", request.getId());
+//        filter.setParams(map);
+//        GtyWallet gtyWallet = gtySer.queryOne(filter);
+//		gtyWallet.setMncNum(new BigDecimal(getTokenBlance(gtyWallet.getWalletAddress())));
+        Map<String, Object> map = new HashMap<>();
+        map.put("id", request.getId());
+        CustomerInfoResponse userData = cuCustomerInfoDao.getExtend(map, "queryCustomerInfo");
+
+        List<GtyWallet> gtyWallet1 = gtyWalletDao.queryExtend(new QueryFilterBuilder().put("userId", request.getId()).build(),
+                "queryInfo");
+
+        QueryFilter filter = new QueryFilter();
+        Map<String, Object> map11 = new HashMap<>();
+        map11.put("customerId", request.getId());
+        filter.setParams(map11);
+        MallShopAdvert advert = mallShopAdvertDao.queryOne(filter);
+
+        GtyWallet gtyWallet = new GtyWallet();
+        if(gtyWallet1.size()!=0) {
+            gtyWallet = gtyWallet1.get(0);
+        }
+        if(advert!=null){
+            gtyWallet.setMerchant(true);
+        }
+
+        Map<String,String> maps1 = new HashMap<>();
+        maps1.put("symbol","3");
+        String tradeBean = HttpClientUtils.invokeGet("http://bitin.io:8090/api/v1/ticker",maps1);
+        TradeBean tradeBean1= new Gson().fromJson(tradeBean,TradeBean.class);
+        if(tradeBean1!=null && tradeBean1.getData()!=null && !StringUtils.isBlank(tradeBean1.getData().getLast())){
+            gtyWallet.setMncPrice(new BigDecimal(tradeBean1.getData().getLast()));
+            double a = Double.parseDouble(tradeBean1.getData().getLast());
+            double b = Double.parseDouble(tradeBean1.getData().getYdayClose());
+            if(tradeBean1.getData().getYdayClose().equals("0")){
+                b=1;
+            }
+            if(a>b){
+                double c = (a-b)/b*100;
+                BigDecimal cc = new BigDecimal(c);
+                gtyWallet.setPoint("+"+cc.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue()+"%");
+            }else{
+                double c = (b-a)/b*100;
+                BigDecimal cc = new BigDecimal(c);
+                gtyWallet.setPoint("-"+cc.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue()+"%");
+            }
+        }else{
+            gtyWallet.setMncPrice(new BigDecimal("1"));
+            gtyWallet.setPoint("+9.1%");
+        }
+
+        if(gtyWallet!=null){
+            BigDecimal price = gtyWallet.getMncPrice();
+
+            if(price.compareTo(BigDecimal.ZERO)==0){
+                price = BigDecimal.ONE;
+            }
+
+            QueryFilter filter1 = new QueryFilter();
+            Map<String, Object> maps = new HashMap<>();
+            maps.put("id", "1");
+            filter.setParams(maps);
+            GtyLimitWallet gtyLimitWallet = gtyWalletLimitDao.queryOne(filter1);
+
+            String sMtokenPoint = gtyLimitWallet.getLimitMtokenReleasePoint()+"";
+            String sSuperPoint = gtyLimitWallet.getLimitMncReleasePoint()+"";
+            String sScorePoint = gtyLimitWallet.getLimitScoreReleasePoint()+"";
+
+            if(gtyLimitWallet.getLimitUpScoreRelease().compareTo(gtyWallet.getScoreNum()) ==1) {// 上限大于当前
+                BigDecimal mScoreRelease = gtyLimitWallet.getLimitUpScoreRelease().multiply(new BigDecimal(sScorePoint)).divide(price);
+                gtyWallet.setReleasedScoreNum(mScoreRelease.setScale(5, BigDecimal.ROUND_HALF_UP));
+            }else{
+                if(gtyLimitWallet.getLimitDownScoreRelease().compareTo(gtyWallet.getScoreNum()) ==-1) {// 下限小于当前
+                    BigDecimal mScoreRelease = gtyWallet.getScoreNum().multiply(new BigDecimal(sScorePoint)).divide(price);
+                    gtyWallet.setReleasedScoreNum(mScoreRelease.setScale(5, BigDecimal.ROUND_HALF_UP));
+                }else{
+                    gtyWallet.setReleasedTokenNum(new BigDecimal("0.0000"));
+                }
+            }
+
+            if(gtyLimitWallet.getLimitUpSuperRelease().compareTo(gtyWallet.getSuperNum()) ==1){// 上限大于当前
+                BigDecimal mSuperRelease = gtyLimitWallet.getLimitUpSuperRelease().multiply(new BigDecimal(sSuperPoint)).divide(price);
+                gtyWallet.setReleasedSuperNum(mSuperRelease.setScale(5, BigDecimal.ROUND_HALF_UP));
+            }else{
+                if(gtyLimitWallet.getLimitDownSuperRelease().compareTo(gtyWallet.getSuperNum()) ==-1){// 下限小于当前
+                    BigDecimal mSuperRelease = gtyWallet.getSuperNum().multiply(new BigDecimal(sSuperPoint)).divide(price);
+                    gtyWallet.setReleasedSuperNum(mSuperRelease.setScale(5, BigDecimal.ROUND_HALF_UP));
+                }else{
+                    gtyWallet.setReleasedTokenNum(new BigDecimal("0.0000"));
+                }
+            }
+
+            if(gtyLimitWallet.getLimitUpMtokenRelease().compareTo(gtyWallet.getmTokenNum()) ==1){// 上限大于当前
+                BigDecimal mTokenRelease = gtyLimitWallet.getLimitUpMtokenRelease().multiply(new BigDecimal(sMtokenPoint)).divide(price);
+                gtyWallet.setReleasedTokenNum(mTokenRelease.setScale(5, BigDecimal.ROUND_HALF_UP));
+            }else{
+                if(gtyLimitWallet.getLimitDownMtokenRelease().compareTo(gtyWallet.getmTokenNum()) ==-1) {// 下限小于当前
+                    BigDecimal mTokenRelease = gtyWallet.getmTokenNum().multiply(new BigDecimal(sMtokenPoint)).divide(price);
+                    gtyWallet.setReleasedTokenNum(mTokenRelease.setScale(5, BigDecimal.ROUND_HALF_UP));
+                }else{
+                    gtyWallet.setReleasedTokenNum(new BigDecimal("0.0000"));
+                }
+            }
+
+        }
+
+        gtyWallet.setNickName(userData.getCustomerName());
+        dataResponse.setItem(gtyWallet);
+        dataResponse.setMsg("成功");
+        dataResponse.setStatus(0);
+        return dataResponse;
+    }
+
+    @Override
+    public DataResponse setLimit(IdNumRequest request) {
+        DataResponse dataResponse = new DataResponse();
+        if (StringUtils.isBlank(request.getId())) {
+            dataResponse.setMsg("未找到该用户");
+            dataResponse.setStatus(1);
+            return dataResponse;
+        }
+        GtyLimitWallet gtyLimitWallet = new GtyLimitWallet();
+        if(request.getType()==1){//1,释放mnc上下线；2，释放mtoken上下限；3，释放积分上下限
+            gtyLimitWallet.setLimitUpSuperRelease(new BigDecimal(request.getUpNum()));
+            gtyLimitWallet.setLimitDownSuperRelease(new BigDecimal(request.getDownNum()));
+        }else if(request.getType()==2){//1,释放mnc上下线；2，释放mtoken上下限；3，释放积分上下限
+            gtyLimitWallet.setLimitDownMtokenRelease(new BigDecimal(request.getDownNum()));
+            gtyLimitWallet.setLimitUpMtokenRelease(new BigDecimal(request.getUpNum()));
+        }else if(request.getType()==3){//1,释放mnc上下线；2，释放mtoken上下限；3，释放积分上下限
+            gtyLimitWallet.setLimitDownScoreRelease(new BigDecimal(request.getDownNum()));
+            gtyLimitWallet.setLimitUpScoreRelease(new BigDecimal(request.getUpNum()));
+        }else if(request.getType()==4){//1,释放mnc上下线；2，释放mtoken上下限；3，释放积分上下限,4设置mnc提现下限
+            gtyLimitWallet.setLimitWithDraw(request.getDownNum());
+        }
+
+        gtyLimitWallet.setId(request.getId());
+        gtyWalletLimitDao.update(gtyLimitWallet);
+        dataResponse.setStatus(0);
+        dataResponse.setMsg("成功");
+        return dataResponse;
+    }
+
+    @Override
+    public DataResponse setPointLimit(IdPointRequest request) {
+        DataResponse dataResponse = new DataResponse();
+        if (StringUtils.isBlank(request.getId())) {
+            dataResponse.setMsg("未找到该用户");
+            dataResponse.setStatus(1);
+            return dataResponse;
+        }
+        GtyLimitWallet gtyLimitWallet = new GtyLimitWallet();
+        if(request.getType()==1){//1,释放mnc比例；2，释放mtoken比例；3，释放积分比例
+            gtyLimitWallet.setLimitMncReleasePoint(new BigDecimal(request.getNum()));
+        }else if(request.getType()==2){
+            gtyLimitWallet.setLimitMtokenReleasePoint(new BigDecimal(request.getNum()));
+        }else if(request.getType()==3){
+            gtyLimitWallet.setLimitScoreReleasePoint(new BigDecimal(request.getNum()));
+        }
+        gtyLimitWallet.setId(request.getId());
+        gtyWalletLimitDao.update(gtyLimitWallet);
+        dataResponse.setStatus(0);
+        dataResponse.setMsg("成功");
+        return dataResponse;
+    }
+
+    @Override
+    public DataResponse modifyMncNum(IdNumsRequest request) {
+        DataResponse dataResponse = new DataResponse();
+        if (StringUtils.isBlank(request.getId())) {
+            dataResponse.setMsg("未找到该用户");
+            dataResponse.setStatus(1);
+            return dataResponse;
+        }
+        List<GtyWallet> gtyWallet1 = gtyWalletDao.queryExtend(new QueryFilterBuilder().put("userId", request.getId()).build(),
+                "queryInfo");
+        if(gtyWallet1.size()!=0){
+            GtyWallet gtyWallet = gtyWallet1.get(0);
+            gtyWallet.setMncNum(new BigDecimal(request.getNum()));
+            gtyWallet.setUserId(request.getId());
+            gtyWalletDao.update(gtyWallet);
+            dataResponse.setMsg("成功");
+            dataResponse.setStatus(0);
+        }
+        return dataResponse;
+    }
+
+    @Override
+    public DataItemResponse getLimitInfo() {
+        DataItemResponse dataItemResponse = new DataItemResponse();
+        QueryFilter filter = new QueryFilter();
+        Map<String, Object> maps = new HashMap<>();
+        maps.put("id", "1");
+        filter.setParams(maps);
+        GtyLimitWallet gtyLimitWallet = gtyWalletLimitDao.queryOne(filter);
+        dataItemResponse.setItem(gtyLimitWallet);
+        dataItemResponse.setStatus(0);
+        dataItemResponse.setMsg("成功");
+        return dataItemResponse;
     }
 
     /**

@@ -272,6 +272,7 @@ D:\code\mnc1\gtl\src\main\java\com\basics\gty\service\GtyWalletService.java
 D:\code\mnc1\gtl\src\main\java\com\basics\support\ListResultSupport.java
 D:\code\mnc1\gtl\src\main\java\com\basics\mall\dao\MybatisDao\MallProductKindContrastMybatisDao.java
 D:\code\mnc1\gtl\src\main\java\com\basics\or\support\GenericMybatisDaoSupport.java
+D:\code\mnc1\gtl\src\main\java\com\basics\common\IdNumsRequest.java
 D:\code\mnc1\gtl\src\main\java\com\basics\app\dao\impl\AppRoleMybatisDao.java
 D:\code\mnc1\gtl\src\main\java\com\basics\cu\service\impl\CuCustomerInfoMybatisService.java
 D:\code\mnc1\gtl\src\main\java\com\basics\cu\service\CuReatil2Service.java
@@ -405,6 +406,7 @@ D:\code\mnc1\gtl\src\main\java\com\basics\app\shiro\DefaultUserAuthorizingRealm.
 D:\code\mnc1\gtl\src\main\java\com\basics\support\ueditor\UEditorGetRequest.java
 D:\code\mnc1\gtl\src\main\java\com\basics\mall\dao\MallShopClassifyDao.java
 D:\code\mnc1\gtl\src\main\java\com\basics\app\service\impl\AppCodeMybatisService.java
+D:\code\mnc1\gtl\src\main\java\com\basics\common\IdPointRequest.java
 D:\code\mnc1\gtl\src\main\java\com\basics\or\service\impl\OrOrderDetailsMybatisService.java
 D:\code\mnc1\gtl\src\main\java\com\basics\sys\service\SysTurntableService.java
 D:\code\mnc1\gtl\src\main\java\com\basics\app\dao\AppPermissionDao.java
@@ -538,6 +540,7 @@ D:\code\mnc1\gtl\src\main\java\com\basics\app\shiro\ShiroUtils.java
 D:\code\mnc1\gtl\src\main\java\com\basics\cu\service\CuCustomerAccountService.java
 D:\code\mnc1\gtl\src\main\java\com\basics\mall\dao\MybatisDao\MallShopClassifyMybatisDao.java
 D:\code\mnc1\gtl\src\main\java\com\basics\sys\dao\SysRuleDao.java
+D:\code\mnc1\gtl\src\main\java\com\basics\common\IdNumRequest.java
 D:\code\mnc1\gtl\src\main\java\com\basics\sys\entity\SysConfigBase.java
 D:\code\mnc1\gtl\src\main\java\com\basics\mall\support\GenericMybatisDaoSupport.java
 D:\code\mnc1\gtl\src\main\java\com\basics\app\dao\impl\AppTokenMybatisDao.java

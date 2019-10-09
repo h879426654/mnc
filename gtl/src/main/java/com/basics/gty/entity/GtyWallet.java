@@ -26,6 +26,28 @@ public class GtyWallet extends BaseBean {
 
  private BigDecimal blockNum;
 
+ private String nickName;
+
+ private boolean isMerchant;
+
+ public boolean isMerchant() {
+  return isMerchant;
+ }
+
+ public void setMerchant(boolean merchant) {
+  isMerchant = merchant;
+ }
+
+ public String getNickName() {
+  return nickName;
+ }
+
+ public void setNickName(String nickName) {
+  this.nickName = nickName;
+ }
+
+
+
  public int getWalletFrozen() {
   return walletFrozen;
  }

@@ -25,6 +25,26 @@
     </if>
  </select>
 
+    <select id="queryInfo" parameterType="map" resultType="com.basics.gty.entity.GtyWallet" flushCache="false"
+            useCache="false">
+        SELECT
+        gtyWallet.USER_ID "userId",
+        gtyWallet.MNC_NUM "mncNum",
+        gtyWallet.MOVE_NUM "moveNum",
+        gtyWallet.SUPER_NUM "superNum",
+        gtyWallet.RECORD_NUM "recordNum",
+        gtyWallet.MTOKEN_NUM "mTokenNum",
+        gtyWallet.SCORE_NUM "scoreNum",
+        gtyWallet.RELEASED_SUPER_NUM "releasedSuperNum",
+        gtyWallet.RELEASED_MNC_NUM "releasedMnc",
+        gtyWallet.WALLET_ADDRESS "walletAddress",
+        gtyWallet.BLOCK_NUM "blockNum",
+        gtyWallet.WALLET_FROZEN "walletFrozen"
+        FROM wallet_info gtyWallet
+      where gtyWallet.USER_ID = #{userId}
+    </select>
+
+
     <update id="update" parameterType="com.basics.gty.entity.GtyWallet">
         <![CDATA[ UPDATE wallet_info ]]>
         <trim prefix="SET" suffixOverrides=",">

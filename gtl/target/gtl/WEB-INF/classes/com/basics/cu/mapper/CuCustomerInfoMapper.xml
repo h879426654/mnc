@@ -188,8 +188,6 @@
   cuCustomerInfo.CUSTOMER_ID "id",
   cuCustomerInfo.COUNTRY_ID "countryId",
   cuCustomerInfo.CUSTOMER_NUMBER "customerNumber",
-  cuCustomerInfo.MNC_COIN "mncCoin",
-  cuCustomerInfo.MP "mp",
   cuCustomerInfo.CUSTOMER_NAME "customerName",
   cuCustomerInfo.CUSTOMER_HEAD "customerHead",
   cuCustomerInfo.CUSTOMER_PHONE "customerPhone",

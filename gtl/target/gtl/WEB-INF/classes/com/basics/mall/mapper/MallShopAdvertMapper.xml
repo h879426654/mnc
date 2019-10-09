@@ -64,7 +64,7 @@
  </select>
     <insert id="insert" parameterType="com.basics.mall.entity.MallShopAdvert">
         insert into mall_shop_advert(advert_id, customer_id, advert_name, advert_context, advert_image, shop_licence, advert_phone, advert_address, advert_longitude, advert_latitude, create_time, city, region, CLASSIFY_ID, person)
-        values (#{id}, #{customerId}, #{advertName}, #{advertContext}, #{advertImage}, #{shopLicence}, #{advertPhone}, #{advertAddress}, #{advertLongitude}, #{advertLatitude}, now(), #{city}, #{region}, #{classifyId}, #{person}, #{person)
+        values (#{id}, #{customerId}, #{advertName}, #{advertContext}, #{advertImage}, #{shopLicence}, #{advertPhone}, #{advertAddress}, #{advertLongitude}, #{advertLatitude}, now(), #{city}, #{region}, #{classifyId}, #{person})
     </insert>
     <update id="update" parameterType="com.basics.mall.entity.MallShopAdvert">
         update mall_shop_advert set

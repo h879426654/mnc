@@ -14,7 +14,22 @@
    wr.RECORD_NAME "recordName",
    wr.RECORD_TO_ACCOUNT "toAccount"
 
-   FROM wallet_record wr
+   FROM wallet_record
+
+ </select>
+
+ <select id="queryTransation" parameterType="map" resultType="com.basics.gty.entity.GtyWalletHistory" flushCache="true" useCache="false">
+  SELECT
+   wr.ID "id",
+   wr.USER_ID "userId",
+   wr.RECORD_TYPE "recordType",
+   wr.RECORD_NUM "recordNum",
+   wr.RECORD_MARK "mark",
+   wr.RECORD_TIME "createTime",
+   wr.RECORD_NAME "recordName",
+   wr.RECORD_TO_ACCOUNT "toAccount"
+
+   FROM wallet_record wr WHERE  wr.USER_ID = #{userId}
  </select>
 
  <insert id="insert" parameterType="com.basics.gty.entity.GtyWalletHistory">
