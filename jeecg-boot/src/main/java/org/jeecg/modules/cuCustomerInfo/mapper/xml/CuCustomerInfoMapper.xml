@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.jeecg.modules.cuCustomerInfo.mapper.CuCustomerInfoMapper">
+
+    <select id="searchCustomerCount" resultType="Integer">
+        select count(*) from cu_customer_info
+    </select>
+
+    <select id="searchCustomerTodayCount" resultType="Integer">
+        select count(*) from cu_customer_info where DATE_FORMAT(create_time,'%Y-%m-%d') = DATE_FORMAT(NOW(), '%Y-%m-%d');
+    </select>
+
+    <select id="searchBookingCount" resultType="Integer">
+        select count(*) from cu_consume where state = '1'
+    </select>
+
+    <select id="searchBookingTodayCount" resultType="Integer">
+        select count(*) from cu_consume where state = '1' and DATE_FORMAT(create_time,'%Y-%m-%d') = DATE_FORMAT(NOW(), '%Y-%m-%d');
+    </select>
+
+    <select id="searchShopCount" resultType="Integer">
+        select count(*) from mall_shop_advert where apply_status = '2' and flag_del = '0'
+    </select>
+
+    <select id="searchShopTodayCount" resultType="Integer">
+        select count(*) from mall_shop_advert where apply_status = '2' and flag_del = '0' and DATE_FORMAT(create_time,'%Y-%m-%d') = DATE_FORMAT(NOW(), '%Y-%m-%d');
+    </select>
+
+    <select id="searchList" resultType="org.jeecg.modules.cuCustomerInfo.entity.CuCustomerInfo2">
+        select CUSTOMER_ID as customerId, CUSTOMER_NUMBER as customerNumber, CUSTOMER_NAME as customerName, CUSTOMER_HEAD as customerHead, CUSTOMER_PHONE as customerPhone,
+        REGISTER_TIME as registerTime from cu_customer_info
+        where 1=1
+        <if test="phone!=null">AND CUSTOMER_PHONE = #{phone}</if>
+        <if test="name!=null">AND CUSTOMER_NAME = #{name}</if>
+        limit #{pageNo},#{pageSize}
+    </select>
+    <select id="searchCount" resultType="Long">
+        select count(*) from cu_customer_info
+    </select>
+</mapper>

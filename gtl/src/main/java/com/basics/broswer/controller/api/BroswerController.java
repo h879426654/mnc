@@ -10,7 +10,9 @@ import com.basics.cu.entity.CuConsume;
 import com.basics.cu.entity.CuCustomerAddress;
 import com.basics.cu.entity.CuCustomerInfo;
 import com.basics.cu.entity.CuCustomerLogin;
+import com.basics.cu.service.CuCustomerCollectService;
 import com.basics.cu.service.CuCustomerInfoService;
+import com.basics.cu.service.CustomerApiService;
 import com.basics.gty.entity.GtyWallet;
 import com.basics.gty.service.GtyWalletService;
 import com.basics.mall.controller.request.*;
@@ -60,7 +62,6 @@ public class BroswerController implements ApplicationContextAware {
 
 	@Autowired
 	CuConcerService cuConcerService;
-
 	@Override
 	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
 		this.applicationContext = applicationContext;
@@ -68,9 +69,11 @@ public class BroswerController implements ApplicationContextAware {
 	}
 
 	@RequestMapping("getTransationRecord")
-	public DataItemResponse<List<CuConsume>> getConsemeList(HttpServletRequest req){
+	public DataItemResponse<List<CuConsume>> getConsemeList(HttpServletRequest req, String token, Integer page, Integer rows){
 		DataItemResponse<List<CuConsume>> response = new DataItemResponse<>();
-		response.setItem(cuConcerService.getConSumeList());
+		List<CuConsume> list = cuConcerService.searchConConsume(token, page, rows);
+
+		response.setItem(list);
 		response.setStatus(0);
 		response.setMsg("成功");
 		return response;

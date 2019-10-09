@@ -5,7 +5,7 @@
 <mapper namespace="com.basics.cu.entity.CuConsume">
  <cache type="com.basics.support.mybatis.CacheAdapter"/>
  <select id="query" resultType="com.basics.cu.entity.CuConsume"  flushCache="false" useCache="false">
-    select id,shop_id as shopId, customer_id as customerId, shop_name as shopName, money, phone, state, image,appraise, create_time from cu_consume
+    select id,shop_id as shopId, customer_id as customerId, shop_name as shopName, money, phone, state, image, CREATE_TIME as createTime,appraise from cu_consume
      WHERE 1=1
      <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(customerId)">
          <![CDATA[ AND CUSTOMER_ID = #{customerId} ]]>

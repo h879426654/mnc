@@ -86,9 +86,9 @@ public class CuCustomerCollectMybatisServiceImpl extends BaseApiService implemen
             CuCustomerCollect cuCustomerCollect = cuCustomerCollectDao.queryOne(new QueryFilterBuilder().put("id",id).build());
             cuCustomerCollect.setState(state);
             cuCustomerCollectDao.update(cuCustomerCollect);
-            return "取消成功";
+            return "成功";
         } catch (Exception e) {
-            return "取消失败";
+            return "失败";
         }
     }
 
@@ -355,6 +355,15 @@ public class CuCustomerCollectMybatisServiceImpl extends BaseApiService implemen
         List<CuPicture> list = cuPictureDao.query(new QueryFilterBuilder().put("delFlag", "0").build());
         JSONArray json = JSONArray.fromObject(list);
         return json.toString();
+    }
+
+    @Override
+    public String searchToken(String token) {
+        AppToken appToken = appTokenDao.queryOne(new QueryFilterBuilder().put("id", token).build());
+        if (null != token) {
+            return "{state:0}";
+        }
+        return "{state:1}";
     }
 
     /**

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.jeecg.modules.mallShopAdvert.mapper.MallShopAdvertMapper">
+    <update id="updateByIdAndApplyStatus">
+        update mall_shop_advert set apply_status = #{applyStatus} where advert_id = #{advertId}
+    </update>
+    <update id="updateByIdAndHot">
+        update mall_shop_advert set hot = #{hot} where advert_id = #{advertId}
+    </update>
+</mapper>

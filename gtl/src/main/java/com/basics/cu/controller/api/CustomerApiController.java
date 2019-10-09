@@ -614,4 +614,13 @@ public class CustomerApiController implements ApplicationContextAware {
 	public String searchPicture() {
 		return cuCustomerCollectService.searchPicture();
 	}
+
+	/**
+	 * 判断Json
+	 * @return
+	 */
+	@RequestMapping("searchToken")
+	public String searchToken(String token) {
+		return cuCustomerCollectService.searchToken(token);
+	}
 }

@@ -401,7 +401,7 @@ public class MallShopAdvertApiServiceImpl extends BaseApiService implements Mall
 			mallShopAdvert.setCity(mallAdvertResponse.getCity());
 			mallShopAdvert.setRegion(mallAdvertResponse.getRegion());
 			mallShopAdvert.setCustomerId(appToken.getUserId());
-			mallShopAdvert.setAdvertLatitude("112,11");
+			mallShopAdvert.setAdvertLatitude("112");
 			mallShopAdvert.setAdvertLongitude("110");
 			mallShopAdvert.setClassifyId(mallAdvertResponse.getClaasifyId());
 			mallShopAdvertDao.insert(mallShopAdvert);

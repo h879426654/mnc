@@ -15,7 +15,5 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 public interface CuConcerService {
-
-	List<CuConsume> getConSumeList();
-
+    List<CuConsume> searchConConsume(String token, Integer page, Integer rows);
 }
