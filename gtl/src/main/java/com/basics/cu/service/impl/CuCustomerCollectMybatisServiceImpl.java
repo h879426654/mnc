@@ -86,9 +86,9 @@ public class CuCustomerCollectMybatisServiceImpl extends BaseApiService implemen
             CuCustomerCollect cuCustomerCollect = cuCustomerCollectDao.queryOne(new QueryFilterBuilder().put("id",id).build());
             cuCustomerCollect.setState(state);
             cuCustomerCollectDao.update(cuCustomerCollect);
-            return "取消成功";
+            return "成功";
         } catch (Exception e) {
-            return "取消失败";
+            return "失败";
         }
     }
 

@@ -41,8 +41,6 @@ public class CuConceImplService extends BaseApiService implements CuConcerServic
         Map map = new HashMap();
         map.put("pageN", (page-1)*10);
         map.put("pageS", rows);
-        AppToken appToken = appTokenDao.queryOne(new QueryFilterBuilder().put("id", token).build());
-        map.put("customerId", appToken.getUserId());
         List<CuConsume> list =  cuConsumeDao.query(new QueryFilterBuilder().putAll(map).build());
         return list;
     }
