@@ -328,20 +328,13 @@ public class GtyTransferMybatisService extends BaseApiService implements GtyTran
         MallShopAdvert advert = mallShopAdvertDao.queryOne(filter);
 
         GtyWallet gtyWallet = new GtyWallet();
+        if(gtyWallet1.size()!=0) {
+            gtyWallet = gtyWallet1.get(0);
+        }
         if(advert!=null){
             gtyWallet.setMerchant(true);
         }
-        if(gtyWallet1.size()!=0){
-            gtyWallet = gtyWallet1.get(0);
-//            BigDecimal mTokenRelease = gtyWallet.getmTokenNum().multiply(new BigDecimal(1 / 1000));
-//            gtyWallet.setReleasedTokenNum(mTokenRelease.setScale(5, BigDecimal.ROUND_HALF_UP));
-//
-//            BigDecimal mSuperRelease = gtyWallet.getSuperNum().multiply(new BigDecimal(5 / 1000));
-//            gtyWallet.setReleasedSuperNum(mSuperRelease.setScale(5, BigDecimal.ROUND_HALF_UP));
-//
-//            BigDecimal mScoreRelease = gtyWallet.getScoreNum().multiply(new BigDecimal(1 / 1000));
-//            gtyWallet.setReleasedScoreNum(mScoreRelease.setScale(5, BigDecimal.ROUND_HALF_UP));
-        }
+
         Map<String,String> maps1 = new HashMap<>();
         maps1.put("symbol","3");
         String tradeBean = HttpClientUtils.invokeGet("http://bitin.io:8090/api/v1/ticker",maps1);
@@ -366,6 +359,23 @@ public class GtyTransferMybatisService extends BaseApiService implements GtyTran
             gtyWallet.setMncPrice(new BigDecimal("1"));
             gtyWallet.setPoint("+9.1%");
         }
+
+        if(gtyWallet!=null){
+            BigDecimal price = gtyWallet.getMncPrice();
+            if(price.compareTo(BigDecimal.ZERO)==0){
+                price = BigDecimal.ONE;
+            }
+
+            BigDecimal mTokenRelease = gtyWallet.getmTokenNum().multiply(new BigDecimal("0.001")).divide(price);
+            gtyWallet.setReleasedTokenNum(mTokenRelease.setScale(5, BigDecimal.ROUND_HALF_UP));
+
+            BigDecimal mSuperRelease = gtyWallet.getSuperNum().multiply(new BigDecimal("0.005")).divide(price);
+            gtyWallet.setReleasedSuperNum(mSuperRelease.setScale(5, BigDecimal.ROUND_HALF_UP));
+
+            BigDecimal mScoreRelease = gtyWallet.getScoreNum().multiply(new BigDecimal("0.001")).divide(price);
+            gtyWallet.setReleasedScoreNum(mScoreRelease.setScale(5, BigDecimal.ROUND_HALF_UP));
+        }
+
         gtyWallet.setNickName(userData.getCustomerName());
         dataResponse.setItem(gtyWallet);
         dataResponse.setMsg("成功");

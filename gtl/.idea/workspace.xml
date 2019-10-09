@@ -74,7 +74,7 @@
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/main/resources/com/basics/gty/mapper" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../guc2/pom.xml" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
@@ -360,7 +360,7 @@
       <workItem from="1570435718214" duration="3966000" />
       <workItem from="1570496848254" duration="21714000" />
       <workItem from="1570580512868" duration="588000" />
-      <workItem from="1570581231809" duration="3261000" />
+      <workItem from="1570581231809" duration="8801000" />
     </task>
     <servers />
   </component>
@@ -755,8 +755,28 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/basics/gty/service/impl/GtyTransferMybatisService.java</url>
-          <line>330</line>
+          <line>333</line>
           <option name="timeStamp" value="390" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/basics/gty/service/impl/GtyTransferMybatisService.java</url>
+          <line>374</line>
+          <option name="timeStamp" value="391" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/basics/gty/service/impl/GtyTransferMybatisService.java</url>
+          <line>362</line>
+          <option name="timeStamp" value="392" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/basics/gty/service/impl/GtyTransferMybatisService.java</url>
+          <line>368</line>
+          <option name="timeStamp" value="393" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/basics/gty/service/impl/GtyTransferMybatisService.java</url>
+          <line>372</line>
+          <option name="timeStamp" value="394" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
@@ -778,6 +798,9 @@
         <watch expression="mSuper.multiply(new BigDecimal(s2)" />
         <watch expression="mSuper.multiply(new BigDecimal(s2))" />
         <watch expression="mSuper.subtract(mSuper.multiply(new BigDecimal(s2)))" />
+        <watch expression="gtyWallet.getSuperNum().multiply(new BigDecimal(5 / 1000).divide(price))" />
+        <watch expression="new BigDecimal(5 / 1000).divide(price)" />
+        <watch expression="gtyWallet.getSuperNum().multiply(new BigDecimal(&quot;0.005&quot;).divide(price))" />
       </configuration>
     </watches-manager>
   </component>
