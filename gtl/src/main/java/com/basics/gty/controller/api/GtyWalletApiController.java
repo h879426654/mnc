@@ -11,6 +11,7 @@ import com.basics.gty.service.GtyTransferService;
 import com.basics.gty.service.GtyWalletHistory2Service;
 import com.basics.gty.service.GtyWalletService;
 import com.basics.support.QueryFilter;
+import com.basics.support.QueryFilterBuilder;
 import com.basics.support.auth.HttpClientUtils;
 import com.google.gson.Gson;
 import org.apache.commons.lang.StringUtils;
@@ -53,36 +54,14 @@ public class GtyWalletApiController implements ApplicationContextAware {
     @RequestMapping("getWalletInfo")
     public DataItemResponse<GtyWallet> query(TokenIdRequest request, HttpServletRequest req) {
 
-        DataItemResponse dataResponse = new DataItemResponse();
-        if (StringUtils.isBlank(request.getId())) {
-            dataResponse.setMsg("未找到该用户");
-            dataResponse.setStatus(1);
-            return dataResponse;
+        DataItemResponse response = new DataItemResponse();
+        try {
+            response = gtyTransferMybatisService.queryWalletInfo(request);
+        } catch (Exception e) {
+            response.onException(e);
+            response.setStatus(1);
         }
-
-        QueryFilter filter = new QueryFilter();
-        Map<String, Object> map = new HashMap<>();
-        map.put("USER_ID", request.getId());
-        filter.setParams(map);
-        GtyWallet gtyWallet = gtySer.queryOne(filter);
-//		gtyWallet.setMncNum(new BigDecimal(getTokenBlance(gtyWallet.getWalletAddress())));
-
-        gtyWallet.setMncNum(BigDecimal.ZERO);
-        BigDecimal mTokenRelease = gtyWallet.getmTokenNum().multiply(new BigDecimal(1 / 1000));
-        gtyWallet.setReleasedTokenNum(mTokenRelease.setScale(5, BigDecimal.ROUND_HALF_UP));
-
-        BigDecimal mSuperRelease = gtyWallet.getSuperNum().multiply(new BigDecimal(5 / 1000));
-        gtyWallet.setReleasedSuperNum(mSuperRelease.setScale(5, BigDecimal.ROUND_HALF_UP));
-
-        BigDecimal mScoreRelease = gtyWallet.getScoreNum().multiply(new BigDecimal(1 / 1000));
-        gtyWallet.setReleasedScoreNum(mScoreRelease.setScale(5, BigDecimal.ROUND_HALF_UP));
-
-        gtyWallet.setMncPrice(new BigDecimal(10.5));
-        gtyWallet.setPoint("+9.1%");
-        dataResponse.setItem(gtyWallet);
-        dataResponse.setMsg("成功");
-        dataResponse.setStatus(0);
-        return dataResponse;
+        return response;
     }
 
     private String getTokenBlance(String address) {//TokenBalanceRequest request,
@@ -189,15 +168,11 @@ public class GtyWalletApiController implements ApplicationContextAware {
             dataItemResponse.setStatus(1);
             return dataItemResponse;
         }
-        QueryFilter filter = new QueryFilter();
-        Map<String, Object> map = new HashMap<>();
-        map.put("USER_ID", request.getId());
-        filter.setParams(map);
-
-        List<GtyWalletHistory> gtyWallet = gtyWalletHistoryService.query(filter);
-        dataItemResponse.setItem(gtyWallet);
-        dataItemResponse.setMsg("成功");
-        dataItemResponse.setStatus(0);
+        try {
+            dataItemResponse = gtyTransferMybatisService.queryTransation(request);
+        } catch (Exception e) {
+            dataItemResponse.onException(e);
+        }
         return dataItemResponse;
     }
 

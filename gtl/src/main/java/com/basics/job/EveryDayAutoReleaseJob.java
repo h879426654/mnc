@@ -46,7 +46,7 @@ public class EveryDayAutoReleaseJob extends BaseApiService implements EveryDayJo
 		GtyLimitWallet gtyLimitWallet = gtyWalletLimitDao.queryOne(filter);
 
 		Map<String,String> maps1 = new HashMap<>();
-		maps.put("symbol","3");
+		maps1.put("symbol","3");
 		String tradeBean = HttpClientUtils.invokeGet("http://bitin.io:8090/api/v1/ticker",maps1);
 		TradeBean tradeBean1= new Gson().fromJson(tradeBean,TradeBean.class);
 		String price;
