@@ -89,8 +89,8 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyClassDialog.RECENTS_KEY">
-      <recent name="com.basics.common" />
       <recent name="com.basics.gty.entity" />
+      <recent name="com.basics.common" />
       <recent name="com.basics.gty.dao.MybatisDao" />
       <recent name="com.basics.gty.dao" />
       <recent name="com.basics.gty.service.impl" />
@@ -360,7 +360,7 @@
       <workItem from="1570435718214" duration="3966000" />
       <workItem from="1570496848254" duration="21714000" />
       <workItem from="1570580512868" duration="588000" />
-      <workItem from="1570581231809" duration="21780000" />
+      <workItem from="1570581231809" duration="23801000" />
     </task>
     <servers />
   </component>
@@ -822,6 +822,16 @@
           <url>file://$PROJECT_DIR$/src/main/java/com/basics/gty/service/impl/GtyTransferMybatisService.java</url>
           <line>409</line>
           <option name="timeStamp" value="409" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/basics/gty/service/impl/GtyTransferMybatisService.java</url>
+          <line>515</line>
+          <option name="timeStamp" value="411" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/basics/gty/service/impl/GtyTransferMybatisService.java</url>
+          <line>526</line>
+          <option name="timeStamp" value="412" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

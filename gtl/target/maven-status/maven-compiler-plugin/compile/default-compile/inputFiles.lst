@@ -263,6 +263,7 @@ D:\code\mnc1\gtl\src\main\java\com\basics\sys\service\impl\SysRuleMybatisService
 D:\code\mnc1\gtl\src\main\java\com\basics\app\shiro\RoleSupport.java
 D:\code\mnc1\gtl\src\main\java\com\basics\sys\dao\SysOperLogDao.java
 D:\code\mnc1\gtl\src\main\java\com\basics\mall\controller\response\CustomerCarData.java
+D:\code\mnc1\gtl\src\main\java\com\basics\gty\entity\GtyId.java
 D:\code\mnc1\gtl\src\main\java\com\basics\sys\service\SysNoticeService.java
 D:\code\mnc1\gtl\src\main\java\com\basics\cu\entity\CuReatil2.java
 D:\code\mnc1\gtl\src\main\java\com\basics\mall\controller\api\MallCustomerCarApiController.java

@@ -23,4 +23,6 @@ public interface GtyTransferService  {
     public DataResponse modifyMncNum(IdNumsRequest request );
 
     public DataItemResponse getLimitInfo();
+
+    public DataItemResponse getUserId(TokenRequest request );
 }

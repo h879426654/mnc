@@ -253,6 +253,17 @@ public class GtyWalletApiController implements ApplicationContextAware {
         return dataItemResponse;
     }
 
+    @RequestMapping("getUserId")
+    public DataResponse getUserId(TokenRequest request ){
+        DataItemResponse dataItemResponse = new DataItemResponse();
+        try {
+            dataItemResponse = gtyTransferMybatisService.getUserId(request);
+        } catch (Exception e) {
+            dataItemResponse.onException(e);
+        }
+        return dataItemResponse;
+    }
+
     private DataResponse transferError(DataResponse dataResponse, String msg) {
         dataResponse.setMsg(msg);
         dataResponse.setStatus(1);

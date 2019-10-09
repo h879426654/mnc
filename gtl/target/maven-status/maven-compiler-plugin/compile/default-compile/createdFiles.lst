@@ -917,6 +917,7 @@ com\basics\mall\controller\response\MallAdvertResponse.class
 com\basics\mall\service\impl\MallIndexProductMybatisService.class
 com\basics\or\entity\OrOrderDetails.class
 com\basics\sys\dao\SysProfitDao.class
+com\basics\gty\entity\GtyId.class
 com\basics\app\dao\AppPermissionDao.class
 com\basics\common\ErrorMessageHelper.class
 com\basics\support\DataResultSupport.class

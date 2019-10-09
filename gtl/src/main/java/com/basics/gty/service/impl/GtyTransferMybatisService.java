@@ -509,6 +509,24 @@ public class GtyTransferMybatisService extends BaseApiService implements GtyTran
         return dataItemResponse;
     }
 
+    @Override
+    public DataItemResponse getUserId(TokenRequest request) {
+        DataItemResponse dataResponse = new DataItemResponse();
+        CuCustomerLogin user = checkToken(request.getToken());
+        if(user!=null){
+            GtyId gtyId = new GtyId();
+            gtyId.setUserId(user.getId());
+            dataResponse.setItem(gtyId);
+            dataResponse.setMsg("成功");
+            dataResponse.setStatus(0);
+        }else{
+            dataResponse.setMsg("失败");
+            dataResponse.setStatus(1);
+        }
+
+        return dataResponse;
+    }
+
     /**
      * ERC-20Token交易
      *
