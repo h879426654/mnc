@@ -385,7 +385,7 @@ public class GtyTransferMybatisService extends BaseApiService implements GtyTran
                     BigDecimal mScoreRelease = gtyWallet.getScoreNum().multiply(new BigDecimal(sScorePoint)).divide(price);
                     gtyWallet.setReleasedScoreNum(mScoreRelease.setScale(5, BigDecimal.ROUND_HALF_UP));
                 }else{
-                    gtyWallet.setReleasedTokenNum(new BigDecimal("0.0000"));
+                    gtyWallet.setReleasedScoreNum(new BigDecimal("0.0000"));
                 }
             }
 
@@ -397,19 +397,19 @@ public class GtyTransferMybatisService extends BaseApiService implements GtyTran
                     BigDecimal mSuperRelease = gtyWallet.getSuperNum().multiply(new BigDecimal(sSuperPoint)).divide(price);
                     gtyWallet.setReleasedSuperNum(mSuperRelease.setScale(5, BigDecimal.ROUND_HALF_UP));
                 }else{
-                    gtyWallet.setReleasedTokenNum(new BigDecimal("0.0000"));
+                    gtyWallet.setReleasedSuperNum(new BigDecimal("0.0000"));
                 }
             }
 
             if(gtyLimitWallet.getLimitUpMtokenRelease().compareTo(gtyWallet.getmTokenNum()) ==1){// 上限大于当前
                 BigDecimal mTokenRelease = gtyLimitWallet.getLimitUpMtokenRelease().multiply(new BigDecimal(sMtokenPoint)).divide(price);
-                gtyWallet.setReleasedTokenNum(mTokenRelease.setScale(5, BigDecimal.ROUND_HALF_UP));
+                gtyWallet.setReleasedMnc(mTokenRelease.setScale(5, BigDecimal.ROUND_HALF_UP));
             }else{
                 if(gtyLimitWallet.getLimitDownMtokenRelease().compareTo(gtyWallet.getmTokenNum()) ==-1) {// 下限小于当前
                     BigDecimal mTokenRelease = gtyWallet.getmTokenNum().multiply(new BigDecimal(sMtokenPoint)).divide(price);
-                    gtyWallet.setReleasedTokenNum(mTokenRelease.setScale(5, BigDecimal.ROUND_HALF_UP));
+                    gtyWallet.setReleasedMnc(mTokenRelease.setScale(5, BigDecimal.ROUND_HALF_UP));
                 }else{
-                    gtyWallet.setReleasedTokenNum(new BigDecimal("0.0000"));
+                    gtyWallet.setReleasedMnc(new BigDecimal("0.0000"));
                 }
             }
 
