@@ -46,6 +46,8 @@ public class GtyWalletApiController implements ApplicationContextAware {
     CustomerApiService cuCustomerInfoService;
     @Autowired
     GtyTransferService gtyTransferMybatisService;
+
+    @Autowired
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
         this.applicationContext = applicationContext;
@@ -176,6 +178,80 @@ public class GtyWalletApiController implements ApplicationContextAware {
         return dataItemResponse;
     }
 
+    @RequestMapping("setReleaseLimit")
+    public DataResponse setReleaseLimit(IdNumRequest request){
+        DataResponse dataItemResponse = new DataResponse();
+        if (StringUtils.isBlank(request.getId())) {
+            dataItemResponse.setMsg("未找到该用户");
+            dataItemResponse.setStatus(1);
+            return dataItemResponse;
+        }
+        try {
+            dataItemResponse = gtyTransferMybatisService.setLimit(request);
+        } catch (Exception e) {
+            dataItemResponse.onException(e);
+        }
+        return dataItemResponse;
+    }
+
+    @RequestMapping("modifyMncNum")
+    public DataResponse modifyMncNum(IdNumsRequest request){
+        DataResponse dataItemResponse = new DataResponse();
+        if (StringUtils.isBlank(request.getId())) {
+            dataItemResponse.setMsg("未找到该用户");
+            dataItemResponse.setStatus(1);
+            return dataItemResponse;
+        }
+        try {
+            dataItemResponse = gtyTransferMybatisService.modifyMncNum(request);
+        } catch (Exception e) {
+            dataItemResponse.onException(e);
+        }
+        return dataItemResponse;
+    }
+
+    @RequestMapping("setWithDrawLimit")
+    public DataResponse setWithDrawLimit(IdNumRequest request){
+        DataResponse dataItemResponse = new DataResponse();
+        if (StringUtils.isBlank(request.getId())) {
+            dataItemResponse.setMsg("未找到该用户");
+            dataItemResponse.setStatus(1);
+            return dataItemResponse;
+        }
+        try {
+            dataItemResponse = gtyTransferMybatisService.setLimit(request);
+        } catch (Exception e) {
+            dataItemResponse.onException(e);
+        }
+        return dataItemResponse;
+    }
+
+    @RequestMapping("setReleasePointLimit")
+    public DataResponse setReleasePointLimit(IdPointRequest request){
+        DataResponse dataItemResponse = new DataResponse();
+        if (StringUtils.isBlank(request.getId())) {
+            dataItemResponse.setMsg("未找到该用户");
+            dataItemResponse.setStatus(1);
+            return dataItemResponse;
+        }
+        try {
+            dataItemResponse = gtyTransferMybatisService.setPointLimit(request);
+        } catch (Exception e) {
+            dataItemResponse.onException(e);
+        }
+        return dataItemResponse;
+    }
+
+    @RequestMapping("getLimitInfo")
+    public DataItemResponse getLimitInfo(){
+        DataItemResponse dataItemResponse = new DataItemResponse();
+        try {
+            dataItemResponse = gtyTransferMybatisService.getLimitInfo();
+        } catch (Exception e) {
+            dataItemResponse.onException(e);
+        }
+        return dataItemResponse;
+    }
 
     private DataResponse transferError(DataResponse dataResponse, String msg) {
         dataResponse.setMsg(msg);

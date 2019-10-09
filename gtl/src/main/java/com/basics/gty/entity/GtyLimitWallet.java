@@ -5,9 +5,66 @@ import java.math.BigDecimal;
 public class GtyLimitWallet {
     private String limitWithDraw;
     private BigDecimal limitDownSuperRelease;
-    private String limitUpSuperRelease;
+    private BigDecimal limitUpSuperRelease;
     private BigDecimal limitDownScoreRelease;
-    private String limitUpScoreRelease;
+    private BigDecimal limitUpScoreRelease;
+
+    private BigDecimal limitDownMtokenRelease;
+    private BigDecimal limitUpMtokenRelease;
+
+    private BigDecimal limitMtokenReleasePoint;
+    private BigDecimal limitMncReleasePoint;
+    private BigDecimal limitScoreReleasePoint;
+
+    private String id;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public BigDecimal getLimitMtokenReleasePoint() {
+        return limitMtokenReleasePoint;
+    }
+
+    public void setLimitMtokenReleasePoint(BigDecimal limitMtokenReleasePoint) {
+        this.limitMtokenReleasePoint = limitMtokenReleasePoint;
+    }
+
+    public BigDecimal getLimitMncReleasePoint() {
+        return limitMncReleasePoint;
+    }
+
+    public void setLimitMncReleasePoint(BigDecimal limitMncReleasePoint) {
+        this.limitMncReleasePoint = limitMncReleasePoint;
+    }
+
+    public BigDecimal getLimitScoreReleasePoint() {
+        return limitScoreReleasePoint;
+    }
+
+    public void setLimitScoreReleasePoint(BigDecimal limitScoreReleasePoint) {
+        this.limitScoreReleasePoint = limitScoreReleasePoint;
+    }
+
+    public BigDecimal getLimitDownMtokenRelease() {
+        return limitDownMtokenRelease;
+    }
+
+    public void setLimitDownMtokenRelease(BigDecimal limitDownMtokenRelease) {
+        this.limitDownMtokenRelease = limitDownMtokenRelease;
+    }
+
+    public BigDecimal getLimitUpMtokenRelease() {
+        return limitUpMtokenRelease;
+    }
+
+    public void setLimitUpMtokenRelease(BigDecimal limitUpMtokenRelease) {
+        this.limitUpMtokenRelease = limitUpMtokenRelease;
+    }
 
     public String getLimitWithDraw() {
         return limitWithDraw;
@@ -25,12 +82,20 @@ public class GtyLimitWallet {
         this.limitDownSuperRelease = limitDownSuperRelease;
     }
 
-    public String getLimitUpSuperRelease() {
+    public BigDecimal getLimitUpSuperRelease() {
         return limitUpSuperRelease;
     }
 
-    public void setLimitUpSuperRelease(String limitUpSuperRelease) {
+    public void setLimitUpSuperRelease(BigDecimal limitUpSuperRelease) {
         this.limitUpSuperRelease = limitUpSuperRelease;
+    }
+
+    public BigDecimal getLimitUpScoreRelease() {
+        return limitUpScoreRelease;
+    }
+
+    public void setLimitUpScoreRelease(BigDecimal limitUpScoreRelease) {
+        this.limitUpScoreRelease = limitUpScoreRelease;
     }
 
     public BigDecimal getLimitDownScoreRelease() {
@@ -41,11 +106,4 @@ public class GtyLimitWallet {
         this.limitDownScoreRelease = limitDownScoreRelease;
     }
 
-    public String getLimitUpScoreRelease() {
-        return limitUpScoreRelease;
-    }
-
-    public void setLimitUpScoreRelease(String limitUpScoreRelease) {
-        this.limitUpScoreRelease = limitUpScoreRelease;
-    }
 }

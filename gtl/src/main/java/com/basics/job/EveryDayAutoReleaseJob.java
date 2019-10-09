@@ -36,15 +36,24 @@ public class EveryDayAutoReleaseJob extends BaseApiService implements EveryDayJo
 	@Override
 	public void doJob() {
 		LogUtils.performance.info("{} begin at {}", this.getClass().getName(), new Date());
-		String s1 = "0.001";
-		String s2 = "0.005";
+		String s1 = "0.001";// 创业积分比率
+		String s2 = "0.005";// mnc比率
+		String s3 = "0.001";// mtoken比率
 		List<GtyWallet> records = gtyWalletDao.query(new QueryFilterBuilder().build());
 		QueryFilter filter = new QueryFilter();
 		Map<String, Object> maps = new HashMap<>();
-		maps.put("ID", "1");
+		maps.put("id", "1");
 		filter.setParams(maps);
 		GtyLimitWallet gtyLimitWallet = gtyWalletLimitDao.queryOne(filter);
-
+		if(gtyLimitWallet.getLimitScoreReleasePoint().compareTo(BigDecimal.ZERO)==1){
+			s1 = gtyLimitWallet.getLimitScoreReleasePoint()+"";
+		}
+		if(gtyLimitWallet.getLimitMncReleasePoint().compareTo(BigDecimal.ZERO)==1){
+			s2 = gtyLimitWallet.getLimitMncReleasePoint()+"";
+		}
+		if(gtyLimitWallet.getLimitMtokenReleasePoint().compareTo(BigDecimal.ZERO)==1){
+			s3 = gtyLimitWallet.getLimitMtokenReleasePoint()+"";
+		}
 		Map<String,String> maps1 = new HashMap<>();
 		maps1.put("symbol","3");
 		String tradeBean = HttpClientUtils.invokeGet("http://bitin.io:8090/api/v1/ticker",maps1);
@@ -72,7 +81,8 @@ public class EveryDayAutoReleaseJob extends BaseApiService implements EveryDayJo
 					BigDecimal mToken = record.getmTokenNum();//
 					BigDecimal mSuper = record.getSuperNum();//
 					BigDecimal mScore = record.getScoreNum();//
-					BigDecimal mMncRelease = record.getReleasedMnc();//
+					BigDecimal mMove = record.getMoveNum();//
+					BigDecimal mMnc = record.getMncNum();//
 
 					Map<String, Object> map = new HashMap<>();
 					map.put("id", record.getUserId());
@@ -94,8 +104,8 @@ public class EveryDayAutoReleaseJob extends BaseApiService implements EveryDayJo
 							if (mpMc.compareTo(BigDecimal.ZERO) == 0) {
 
 							} else {
-								if (!StringUtils.isNullOrEmpty(gtyLimitWallet.getLimitUpScoreRelease())) {// 判断是否大于上限
-									BigDecimal bigDecimal = new BigDecimal(gtyLimitWallet.getLimitUpScoreRelease());
+								if (gtyLimitWallet.getLimitUpScoreRelease().compareTo(mpMc)==1) {// 判断是否大于上限
+									BigDecimal bigDecimal = gtyLimitWallet.getLimitUpScoreRelease();
 									if (bigDecimal.compareTo(BigDecimal.ZERO) == 0) {
 										bigDecimal = BigDecimal.ONE;
 									}
@@ -103,14 +113,12 @@ public class EveryDayAutoReleaseJob extends BaseApiService implements EveryDayJo
 
 										mSuper = mSuper.add(mpMc.multiply(new BigDecimal(s1)).divide(bigDecimalPrice));
 										mScore = mScore.subtract(mpMc.multiply(new BigDecimal(s1)).divide(bigDecimalPrice));
-//										addHistory(record.getUserId(),mpMc.multiply(new BigDecimal(s1)).divide(bigDecimalPrice)+"",8,"创业积分释放到超级钱包","-");
 										addHistory(record.getUserId(),mpMc.multiply(new BigDecimal(s1)).divide(bigDecimalPrice)+"",8,"创业积分释放到超级钱包","+");
 									}
 								} else {// 判断是否小于下限
 									if (gtyLimitWallet.getLimitDownScoreRelease().compareTo(mScore) == -1) {// 实际金额大于限制的值
 										mSuper = mSuper.add(mpMc.multiply(new BigDecimal(s1)).divide(bigDecimalPrice));
 										mScore = mScore.subtract(mpMc.multiply(new BigDecimal(s1)).divide(bigDecimalPrice));
-//										addHistory(record.getUserId(),mpMc.multiply(new BigDecimal(s1)).divide(bigDecimalPrice)+"",8,"创业积分释放到超级钱包","-");
 										addHistory(record.getUserId(),mpMc.multiply(new BigDecimal(s1)).divide(bigDecimalPrice)+"",8,"创业积分释放到超级钱包","+");
 									}
 								}
@@ -118,22 +126,20 @@ public class EveryDayAutoReleaseJob extends BaseApiService implements EveryDayJo
 						}
 
 					} else {// 正常情况
-						if (!StringUtils.isNullOrEmpty(gtyLimitWallet.getLimitUpScoreRelease())) {// 判断是否大于上限
-							BigDecimal bigDecimal = new BigDecimal(gtyLimitWallet.getLimitUpScoreRelease());
+						if (gtyLimitWallet.getLimitUpScoreRelease().compareTo(mScore)==1) {// 判断是否大于上限
+							BigDecimal bigDecimal = gtyLimitWallet.getLimitUpScoreRelease();
 							if (bigDecimal.compareTo(BigDecimal.ZERO) == 0) {
 								bigDecimal = BigDecimal.ONE;
 							}
 							if (bigDecimal.compareTo(mScore) == -1) {
 								mSuper = mSuper.add(mScore.multiply(new BigDecimal(s1)).divide(bigDecimalPrice));
 								mScore = mScore.subtract(mScore.multiply(new BigDecimal(s1)).divide(bigDecimalPrice));
-//								addHistory(record.getUserId(),mScore.multiply(new BigDecimal(s1)).divide(bigDecimalPrice)+"",8,"创业积分释放到超级钱包","-");
 								addHistory(record.getUserId(),mScore.multiply(new BigDecimal(s1)).divide(bigDecimalPrice)+"",8,"创业积分释放到超级钱包","+");
 							}
 						} else {// 判断是否小于下限
 							if (gtyLimitWallet.getLimitDownScoreRelease().compareTo(mScore) == -1) {// 实际金额大于下限
 								mSuper = mSuper.add(mScore.multiply(new BigDecimal(s1)).divide(bigDecimalPrice));
 								mScore = mScore.subtract(mScore.multiply(new BigDecimal(s1)).divide(bigDecimalPrice));
-//								addHistory(record.getUserId(),mScore.multiply(new BigDecimal(s1)).divide(bigDecimalPrice)+"",8,"创业积分释放到超级钱包","-");
 								addHistory(record.getUserId(),mScore.multiply(new BigDecimal(s1)).divide(bigDecimalPrice)+"",8,"创业积分释放到超级钱包","+");
 							}
 						}
@@ -154,25 +160,23 @@ public class EveryDayAutoReleaseJob extends BaseApiService implements EveryDayJo
 					}
 					if (mSuper.compareTo(BigDecimal.ZERO) == 1) {
 						if (gtyLimitWallet.getLimitDownSuperRelease().compareTo(mSuper) == -1) {// 实际金额大于限制的值
-							if (!StringUtils.isNullOrEmpty(gtyLimitWallet.getLimitUpSuperRelease())) {
-								BigDecimal bigDecimal = new BigDecimal(gtyLimitWallet.getLimitUpSuperRelease());
+							if (gtyLimitWallet.getLimitUpSuperRelease().compareTo(BigDecimal.ZERO)==1) {
+								BigDecimal bigDecimal = gtyLimitWallet.getLimitUpSuperRelease();
 								if (bigDecimal.compareTo(mSuper) == -1) {
-									mMncRelease = mMncRelease.add(mSuper.multiply(new BigDecimal(s2)));
+									mMove = mMove.add(mSuper.multiply(new BigDecimal(s2)));
 									mSuper = mSuper.subtract(mSuper.multiply(new BigDecimal(s2)));
-//									addHistory(record.getUserId(),mSuper.multiply(new BigDecimal(s1))+"",9,"超级钱包释放到流通钱包","-");
 									addHistory(record.getUserId(),mSuper.multiply(new BigDecimal(s1))+"",9,"超级钱包释放到流通钱包","+");
 								}
 							} else {
-								mMncRelease = mMncRelease.add(mSuper.multiply(new BigDecimal(s2)));
+								mMove = mMove.add(mSuper.multiply(new BigDecimal(s2)));
 								mSuper = mSuper.subtract(mSuper.multiply(new BigDecimal(s2)));
-//								addHistory(record.getUserId(),mSuper.multiply(new BigDecimal(s1))+"",9,"超级钱包释放到流通钱包","-");
 								addHistory(record.getUserId(),mSuper.multiply(new BigDecimal(s1))+"",9,"超级钱包释放到流通钱包","+");
 							}
 						}
 					}
 
 
-					//  Mtoken（MP） 千分之一释放到MNC资产（新MNC）
+					//  Mtoken（MP） 千分之一释放到MNC资产
 					if (mToken.compareTo(BigDecimal.ZERO) == 0) {
 						BigDecimal oldMp;
 						if (data == null || data.getCustomerIntegral() == null) {
@@ -183,25 +187,34 @@ public class EveryDayAutoReleaseJob extends BaseApiService implements EveryDayJo
 
 							} else {
 								mToken = oldMp;
-								mMncRelease = mMncRelease.add(mToken.multiply(new BigDecimal(s1)).divide(bigDecimalPrice));
-								mToken = mToken.subtract(mToken.multiply(new BigDecimal(s1)).divide(bigDecimalPrice));
-//								addHistory(record.getUserId(),mToken.multiply(new BigDecimal(s1)).divide(bigDecimalPrice)+"",10,"Mtoken释放到流通钱包","-");
-								addHistory(record.getUserId(),mToken.multiply(new BigDecimal(s1)).divide(bigDecimalPrice)+"",10,"Mtoken释放到流通钱包","+");
+								mMnc = mMnc.add(mToken.multiply(new BigDecimal(s3)).divide(bigDecimalPrice));
+								mToken = mToken.subtract(mToken.multiply(new BigDecimal(s3)).divide(bigDecimalPrice));
+								addHistory(record.getUserId(),mToken.multiply(new BigDecimal(s3)).divide(bigDecimalPrice)+"",10,"Mtoken释放到MNC","+");
 							}
 						}
 
 					} else {
-						mMncRelease = mMncRelease.add(mToken.multiply(new BigDecimal(s1)).divide(bigDecimalPrice));
-						mToken = mToken.subtract(mToken.multiply(new BigDecimal(s1)).divide(bigDecimalPrice));
-//						addHistory(record.getUserId(),mToken.multiply(new BigDecimal(s1)).divide(bigDecimalPrice)+"",10,"Mtoken释放到流通钱包","-");
-						addHistory(record.getUserId(),mToken.multiply(new BigDecimal(s1)).divide(bigDecimalPrice)+"",10,"Mtoken释放到流通钱包","+");
+
+						if (gtyLimitWallet.getLimitUpMtokenRelease().compareTo(mToken) == -1) {// 实际金额大于限制的值
+							mMnc = mMnc.add(gtyLimitWallet.getLimitUpMtokenRelease().multiply(new BigDecimal(s3)).divide(bigDecimalPrice));
+							mToken = mToken.subtract(gtyLimitWallet.getLimitUpMtokenRelease().multiply(new BigDecimal(s3)).divide(bigDecimalPrice));
+							addHistory(record.getUserId(),gtyLimitWallet.getLimitUpMtokenRelease().multiply(new BigDecimal(s3)).divide(bigDecimalPrice)+"",10,"Mtoken释放到MNC","+");
+						}else{
+							if(gtyLimitWallet.getLimitDownMtokenRelease().compareTo(mToken) == -1){
+								mMnc = mMnc.add(mToken.multiply(new BigDecimal(s3)).divide(bigDecimalPrice));
+								mToken = mToken.subtract(mToken.multiply(new BigDecimal(s3)).divide(bigDecimalPrice));
+								addHistory(record.getUserId(),mToken.multiply(new BigDecimal(s3)).divide(bigDecimalPrice)+"",10,"Mtoken释放到MNC","+");
+							}
+						}
+
 					}
 
 					GtyWallet gtyWallet = new GtyWallet();
 					gtyWallet.setmTokenNum(mToken.setScale(5, BigDecimal.ROUND_HALF_UP));
-					gtyWallet.setReleasedMnc(mMncRelease.setScale(5, BigDecimal.ROUND_HALF_UP));
 					gtyWallet.setScoreNum(mScore.setScale(5, BigDecimal.ROUND_HALF_UP));
 					gtyWallet.setSuperNum(mSuper.setScale(5, BigDecimal.ROUND_HALF_UP));
+					gtyWallet.setMncNum(mMnc.setScale(5, BigDecimal.ROUND_HALF_UP));
+					gtyWallet.setMoveNum(mMove.setScale(5, BigDecimal.ROUND_HALF_UP));
 					gtyWallet.setUserId(record.getUserId());
 
 					createActiveMq2(record.getUserId(), Constant.ACTIVEMQ_TYPE_42, gtyWallet, null);

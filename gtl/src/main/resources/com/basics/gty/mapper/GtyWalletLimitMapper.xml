@@ -11,6 +11,14 @@
   gtyWallet.LIMIT_DOWN_SUPER_RELEASE "limitDownSuperRelease",
   gtyWallet.LIMIT_UP_SUPER_RELEASE "limitUpSuperRelease",
   gtyWallet.LIMIT_DOWN_SCORE_RELEASE "limitDownScoreRelease",
+
+  gtyWallet.LIMIT_UP_MTOKEN_RELEASE "limitUpMtokenRelease",
+  gtyWallet.LIMIT_DOWN_MTOKEN_RELEASE "limitDownMtokenRelease",
+
+  gtyWallet.LIMIT_MTOKEN_RELEASE_POINT "limitMtokenReleasePoint",
+  gtyWallet.LIMIT_MNC_RELEASE_POINT "limitMncReleasePoint",
+ gtyWallet.LIMIT_SCORE_RELEASE_POINT "limitScoreReleasePoint",
+
   gtyWallet.LIMIT_UP_SCORE_RELEASE "limitUpScoreRelease"
   FROM wallet_operate_limit gtyWallet
  </select>
@@ -25,6 +33,12 @@
             <if test="limitDownScoreRelease!=null">LIMIT_DOWN_SCORE_RELEASE = #{limitDownScoreRelease},</if>
             <if test="limitUpScoreRelease!=null">LIMIT_UP_SCORE_RELEASE = #{limitUpScoreRelease},</if>
 
+            <if test="limitScoreReleasePoint!=null">LIMIT_SCORE_RELEASE_POINT = #{limitScoreReleasePoint},</if>
+            <if test="limitMncReleasePoint!=null">LIMIT_MNC_RELEASE_POINT = #{limitMncReleasePoint},</if>
+            <if test="limitMtokenReleasePoint!=null">LIMIT_MTOKEN_RELEASE_POINT = #{limitMtokenReleasePoint},</if>
+
+            <if test="limitDownMtokenRelease!=null">LIMIT_DOWN_MTOKEN_RELEASE = #{limitDownMtokenRelease},</if>
+            <if test="limitUpMtokenRelease!=null">LIMIT_UP_MTOKEN_RELEASE = #{limitUpMtokenRelease},</if>
         </trim>
         <![CDATA[ WHERE  ID = #{id}   ]]>
     </update>

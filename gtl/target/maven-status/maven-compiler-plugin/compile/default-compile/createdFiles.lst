@@ -202,6 +202,7 @@ com\basics\cu\dao\CuConsumeDao.class
 com\basics\sys\controller\backend\SysTurntableRewardBackendController.class
 com\basics\wallet\dao\myBatisDao\WalletMybatisDao.class
 com\basics\sys\dao\SysNewsDao.class
+com\basics\common\IdNumsRequest.class
 com\basics\cu\service\CuReatil1Service.class
 com\basics\common\DataRequest.class
 com\basics\sys\entity\SysActivemqResponseBase.class
@@ -797,6 +798,7 @@ com\basics\tr\dao\MybatisDao\TrConvertMybatisDao.class
 com\basics\common\TokenTypeRequest.class
 com\basics\or\entity\OrOrderBase.class
 com\basics\app\dao\AppRolePermissionDao.class
+com\basics\common\IdPointRequest.class
 com\basics\broswer\controller\api\BroswerController.class
 com\basics\mall\dao\MallCustomerCarDao.class
 com\basics\gty\entity\TradeBean$DataBean.class
@@ -944,6 +946,7 @@ com\basics\sys\service\SysConfigService.class
 com\basics\support\MessageBuilder.class
 com\basics\cu\dao\MybatisDao\CuCustomerMessageMybatisDao.class
 com\basics\cu\controller\backend\CuCustomerCountBackendController.class
+com\basics\common\IdNumRequest.class
 com\basics\app\controller\backend\AppRoleBackendController.class
 com\basics\app\support\AppSystemAppTypeEnum.class
 com\basics\cu\entity\CuAccountConvertBase.class

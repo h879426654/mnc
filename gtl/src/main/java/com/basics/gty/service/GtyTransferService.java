@@ -15,4 +15,12 @@ public interface GtyTransferService  {
     public DataItemResponse queryTransation(IdRequest request );
 
     public DataItemResponse queryWalletInfo(TokenIdRequest request );
+
+    public DataResponse setLimit(IdNumRequest request );
+
+    public DataResponse setPointLimit(IdPointRequest request );
+
+    public DataResponse modifyMncNum(IdNumsRequest request );
+
+    public DataItemResponse getLimitInfo();
 }
