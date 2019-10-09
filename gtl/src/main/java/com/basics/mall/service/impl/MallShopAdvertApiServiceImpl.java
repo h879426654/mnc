@@ -384,6 +384,11 @@ public class MallShopAdvertApiServiceImpl extends BaseApiService implements Mall
 	@Override
 	public String insertShopAdvert(MallAdvertResponse mallAdvertResponse) {
 		try {
+			AppToken appToken = appTokenDao.queryOne(new QueryFilterBuilder().put("id", mallAdvertResponse.getToken()).build());
+			MallShopAdvert advert = mallShopAdvertDao.queryOne(new QueryFilterBuilder().put("customerId", appToken.getUserId()).build());
+			if (advert != null) {
+				return "该商家已入驻";
+			}
 			MallShopAdvert mallShopAdvert = new MallShopAdvert();
 			mallShopAdvert.setId(UUID.randomUUID().toString().replace("-",""));
 			mallShopAdvert.setAdvertImage(mallAdvertResponse.getAdvertImage());
@@ -395,7 +400,6 @@ public class MallShopAdvertApiServiceImpl extends BaseApiService implements Mall
 			mallShopAdvert.setShopLicence(mallAdvertResponse.getShopLicence());
 			mallShopAdvert.setCity(mallAdvertResponse.getCity());
 			mallShopAdvert.setRegion(mallAdvertResponse.getRegion());
-			AppToken appToken = appTokenDao.queryOne(new QueryFilterBuilder().put("id", mallAdvertResponse.getToken()).build());
 			mallShopAdvert.setCustomerId(appToken.getUserId());
 			mallShopAdvert.setAdvertLatitude("112,11");
 			mallShopAdvert.setAdvertLongitude("110");
