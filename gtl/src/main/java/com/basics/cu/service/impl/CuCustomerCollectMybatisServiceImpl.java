@@ -363,7 +363,7 @@ public class CuCustomerCollectMybatisServiceImpl extends BaseApiService implemen
     @Override
     public String searchToken(String token) {
         AppToken appToken = appTokenDao.queryOne(new QueryFilterBuilder().put("id", token).build());
-        if (null != token) {
+        if (null != appToken) {
             return "{state:0}";
         }
         return "{state:1}";
