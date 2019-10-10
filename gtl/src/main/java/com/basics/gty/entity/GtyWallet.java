@@ -24,11 +24,21 @@ public class GtyWallet extends BaseBean {
 
  private BigDecimal releasedMnc;
 
+ private BigDecimal releasedMncToday;
+
  private BigDecimal blockNum;
 
  private String nickName;
 
  private boolean isMerchant;
+
+ public BigDecimal getReleasedMncToday() {
+  return releasedMncToday;
+ }
+
+ public void setReleasedMncToday(BigDecimal releasedMncToday) {
+  this.releasedMncToday = releasedMncToday;
+ }
 
  public boolean isMerchant() {
   return isMerchant;

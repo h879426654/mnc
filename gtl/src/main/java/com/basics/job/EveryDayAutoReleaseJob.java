@@ -84,6 +84,8 @@ public class EveryDayAutoReleaseJob extends BaseApiService implements EveryDayJo
 					BigDecimal mMove = record.getMoveNum();//
 					BigDecimal mMnc = record.getMncNum();//
 
+					BigDecimal mRelaseMnc = record.getReleasedMnc();//
+
 					Map<String, Object> map = new HashMap<>();
 					map.put("id", record.getUserId());
 					CustomerInfoResponse data = cuCustomerInfoDao.getExtend(map, "queryCustomerInfo");
@@ -163,14 +165,14 @@ public class EveryDayAutoReleaseJob extends BaseApiService implements EveryDayJo
 							if (gtyLimitWallet.getLimitUpSuperRelease().compareTo(BigDecimal.ZERO)==1) {
 								BigDecimal bigDecimal = gtyLimitWallet.getLimitUpSuperRelease();
 								if (bigDecimal.compareTo(mSuper) == -1) {
-									mMove = mMove.add(mSuper.multiply(new BigDecimal(s2)));
+									mRelaseMnc = mRelaseMnc.add(mSuper.multiply(new BigDecimal(s2)));
 									mSuper = mSuper.subtract(mSuper.multiply(new BigDecimal(s2)));
-									addHistory(record.getUserId(),mSuper.multiply(new BigDecimal(s1))+"",9,"超级钱包释放到流通钱包","+");
+									addHistory(record.getUserId(),mSuper.multiply(new BigDecimal(s1))+"",9,"超级钱包释放到可提转","+");
 								}
 							} else {
-								mMove = mMove.add(mSuper.multiply(new BigDecimal(s2)));
+								mRelaseMnc = mRelaseMnc.add(mSuper.multiply(new BigDecimal(s2)));
 								mSuper = mSuper.subtract(mSuper.multiply(new BigDecimal(s2)));
-								addHistory(record.getUserId(),mSuper.multiply(new BigDecimal(s1))+"",9,"超级钱包释放到流通钱包","+");
+								addHistory(record.getUserId(),mSuper.multiply(new BigDecimal(s1))+"",9,"超级钱包释放到可提转","+");
 							}
 						}
 					}
@@ -206,7 +208,6 @@ public class EveryDayAutoReleaseJob extends BaseApiService implements EveryDayJo
 								addHistory(record.getUserId(),mToken.multiply(new BigDecimal(s3)).divide(bigDecimalPrice)+"",10,"Mtoken释放到MNC","+");
 							}
 						}
-
 					}
 
 					GtyWallet gtyWallet = new GtyWallet();
@@ -215,6 +216,7 @@ public class EveryDayAutoReleaseJob extends BaseApiService implements EveryDayJo
 					gtyWallet.setSuperNum(mSuper.setScale(5, BigDecimal.ROUND_HALF_UP));
 					gtyWallet.setMncNum(mMnc.setScale(5, BigDecimal.ROUND_HALF_UP));
 					gtyWallet.setMoveNum(mMove.setScale(5, BigDecimal.ROUND_HALF_UP));
+					gtyWallet.setReleasedMnc(mRelaseMnc);
 					gtyWallet.setUserId(record.getUserId());
 
 					createActiveMq2(record.getUserId(), Constant.ACTIVEMQ_TYPE_42, gtyWallet, null);

@@ -29,7 +29,7 @@
    wr.RECORD_NAME "recordName",
    wr.RECORD_TO_ACCOUNT "toAccount"
 
-   FROM wallet_record wr WHERE  wr.USER_ID = #{userId}
+   FROM wallet_record wr WHERE  wr.USER_ID = #{userId} order by   wr.RECORD_TIME desc
  </select>
 
  <insert id="insert" parameterType="com.basics.gty.entity.GtyWalletHistory">

@@ -144,7 +144,7 @@ public class GtyTransferMybatisService extends BaseApiService implements GtyTran
                 GtyWallet gtyWallet1 = new GtyWallet();
                 gtyWallet1.setUserId(gtyWallet.getUserId());
                 gtyWallet1.setMoveNum(gtyWallet.getMoveNum().subtract(new BigDecimal(request.getNum())));
-                gtyWallet1.setmTokenNum(new BigDecimal(request.getNum()).multiply(new BigDecimal("13.32")).add(gtyWallet1.getmTokenNum()));
+                gtyWallet1.setmTokenNum(new BigDecimal(request.getNum()).multiply(new BigDecimal("13.32")).add(gtyWallet.getmTokenNum()));
                 Map<String,String> maps = new HashMap<>();
                 maps.put("symbol","3");
                 String tradeBean = HttpClientUtils.invokeGet("http://bitin.io:8090/api/v1/ticker",maps);
@@ -198,7 +198,7 @@ public class GtyTransferMybatisService extends BaseApiService implements GtyTran
                 gtyWalletDao.update(gtyWallet1);
             }
         } else if (request.getType() == 6) {// 超级钱包转流通钱包
-            if (gtyWallet.getSuperNum().compareTo(new BigDecimal(request.getNum())) == -1) {
+            if (gtyWallet.getReleasedMnc().compareTo(new BigDecimal(request.getNum())) == -1) {
                 response.onHandleFail(getMessage(req, "impl.doModifyLoginPass.token.invalid"));
                 response.setStatus(1);
                 response.setMsg("数量错误");
@@ -206,12 +206,12 @@ public class GtyTransferMybatisService extends BaseApiService implements GtyTran
             } else {
                 GtyWallet gtyWallet1 = new GtyWallet();
                 gtyWallet1.setUserId(gtyWallet.getUserId());
-                gtyWallet1.setSuperNum(gtyWallet.getSuperNum().subtract(new BigDecimal(request.getNum())));
+                gtyWallet1.setReleasedMnc(gtyWallet.getReleasedMnc().subtract(new BigDecimal(request.getNum())));
                 gtyWallet1.setMoveNum(gtyWallet.getMoveNum().add(new BigDecimal(request.getNum())));
                 gtyWalletDao.update(gtyWallet1);
             }
         } else if (request.getType() == 7) {// 超级钱包转交易所；
-            if (gtyWallet.getSuperNum().compareTo(new BigDecimal(request.getNum())) == -1) {
+            if (gtyWallet.getReleasedMnc().compareTo(new BigDecimal(request.getNum())) == -1) {
                 response.onHandleFail(getMessage(req, "impl.doModifyLoginPass.token.invalid"));
                 response.setStatus(1);
                 response.setMsg("数量错误");
@@ -225,7 +225,7 @@ public class GtyTransferMybatisService extends BaseApiService implements GtyTran
                 if(tradeTransferBean.isSuccess()){
                     GtyWallet gtyWallet1 = new GtyWallet();
                     gtyWallet1.setUserId(gtyWallet.getUserId());
-                    gtyWallet1.setSuperNum(gtyWallet.getSuperNum().subtract(new BigDecimal(request.getNum())));
+                    gtyWallet1.setReleasedMnc(gtyWallet.getReleasedMnc().subtract(new BigDecimal(request.getNum())));
                     gtyWalletDao.update(gtyWallet1);
                 }else{
                     response.setStatus(0);
@@ -250,9 +250,9 @@ public class GtyTransferMybatisService extends BaseApiService implements GtyTran
            addHistory(gtyWallet,request,"流通钱包转账","-");
         }else if(request.getType() == 6){// 超级钱包转流通钱包
 //           addHistory(gtyWallet,request,"超级钱包转出到流通钱包","-");
-           addHistory(gtyWallet,request,"超级钱包转入到流通钱包","+");
+           addHistory(gtyWallet,request,"超级钱包转入到可提转","+");
         }else if(request.getType() == 7){// 超级钱包转交易所；
-           addHistory(gtyWallet,request,"超级钱包转出到交易所","-");
+           addHistory(gtyWallet,request,"超级钱包转入到可提转","-");
        }
         response.setMsg("转账成功");
         response.setStatus(0);
@@ -408,18 +408,18 @@ public class GtyTransferMybatisService extends BaseApiService implements GtyTran
 
             if(gtyLimitWallet.getLimitUpMtokenRelease().compareTo(gtyWallet.getmTokenNum()) ==1){// 上限大于当前
                 BigDecimal mTokenRelease = gtyLimitWallet.getLimitUpMtokenRelease().multiply(new BigDecimal(sMtokenPoint)).divide(price);
-                gtyWallet.setReleasedMnc(mTokenRelease.setScale(5, BigDecimal.ROUND_HALF_UP));
+                gtyWallet.setReleasedTokenNum(mTokenRelease.setScale(5, BigDecimal.ROUND_HALF_UP));
             }else{
                 if(gtyLimitWallet.getLimitDownMtokenRelease().compareTo(gtyWallet.getmTokenNum()) ==-1) {// 下限小于当前
                     BigDecimal mTokenRelease = gtyWallet.getmTokenNum().multiply(new BigDecimal(sMtokenPoint)).divide(price);
-                    gtyWallet.setReleasedMnc(mTokenRelease.setScale(5, BigDecimal.ROUND_HALF_UP));
+                    gtyWallet.setReleasedTokenNum(mTokenRelease.setScale(5, BigDecimal.ROUND_HALF_UP));
                 }else{
-                    gtyWallet.setReleasedMnc(new BigDecimal("0.0000"));
+                    gtyWallet.setReleasedTokenNum(new BigDecimal("0.0000"));
                 }
             }
 
         }
-
+        gtyWallet.setSuperNum(gtyWallet.getSuperNum().add(gtyWallet.getReleasedMnc()));
         gtyWallet.setNickName(userData.getCustomerName());
         dataResponse.setItem(gtyWallet);
         dataResponse.setMsg("成功");
