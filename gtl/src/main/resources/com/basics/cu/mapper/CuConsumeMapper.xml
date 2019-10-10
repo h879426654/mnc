@@ -61,6 +61,7 @@
             <if test="phone!=null">PHONE = #{phone},</if>
             <if test="state!=null">STATE = #{state},</if>
             <if test="image!=null">IMAGE = #{image},</if>
+            <if test="mtoken!=null">mtoken = #{mtoken},</if>
             <if test="appraise!=null">appraise = #{appraise}</if>
 
         </trim>
