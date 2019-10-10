@@ -143,8 +143,6 @@ public class GtyTransferMybatisService extends BaseApiService implements GtyTran
             } else {//todo 获取币价
                 GtyWallet gtyWallet1 = new GtyWallet();
                 gtyWallet1.setUserId(gtyWallet.getUserId());
-                gtyWallet1.setMoveNum(gtyWallet.getMoveNum().subtract(new BigDecimal(request.getNum())));
-                gtyWallet1.setmTokenNum(new BigDecimal(request.getNum()).multiply(new BigDecimal("13.32")).add(gtyWallet.getmTokenNum()));
                 Map<String,String> maps = new HashMap<>();
                 maps.put("symbol","3");
                 String tradeBean = HttpClientUtils.invokeGet("http://bitin.io:8090/api/v1/ticker",maps);
@@ -159,9 +157,14 @@ public class GtyTransferMybatisService extends BaseApiService implements GtyTran
                 }else{
                     price = "1";
                 }
-                if(gtyWallet1.getmTokenNum().compareTo(new BigDecimal("300").divide(new BigDecimal(price)))==1){
+                if(gtyWallet.getMoveNum().compareTo(new BigDecimal("300").divide(new BigDecimal(price)))==0 ||
+                        gtyWallet.getMncNum().compareTo(new BigDecimal("300").divide(new BigDecimal(price)))==1){
                     gtyWallet1.setWalletFrozen(1);
                 }
+
+                gtyWallet1.setMoveNum(gtyWallet.getMoveNum().subtract(new BigDecimal(request.getNum())));
+                gtyWallet1.setmTokenNum(new BigDecimal(request.getNum()).multiply(new BigDecimal("13.32")).add(gtyWallet.getmTokenNum()));
+
                 gtyWalletDao.update(gtyWallet1);
             }
         } else if (request.getType() == 5) {// 流通点对点
