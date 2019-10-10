@@ -374,6 +374,17 @@ public class CuCustomerCollectMybatisServiceImpl extends BaseApiService implemen
         return json.toString();
     }
 
+    @Override
+    public String searchImageAndName(String token) {
+        String customerId = this.getCuCustomerInfo(token);
+        if (null != customerId && !customerId.isEmpty()) {
+            CuCustomerInfo cuCustomerInfo = cuCustomerInfoDao.queryOne(new QueryFilterBuilder().put("id", customerId).build());
+            JSONObject json = (JSONObject) JSONObject.toJSON(cuCustomerInfo);
+            return json.toString();
+        }
+        return null;
+    }
+
     /**
      * 返还积分
      * @param cuConsume
