@@ -26,6 +26,7 @@ DefaultNameMapper defaultNameMapper = new DefaultNameMapper();
  defaultNameMapper.configFieldColumnName("money","money");
  defaultNameMapper.configFieldColumnName("image","image");
  defaultNameMapper.configFieldColumnName("state","state");
+ defaultNameMapper.configFieldColumnName("status","status");
  defaultNameMapper.configFieldColumnName("delFlag","del_flag");
  defaultNameMapper.configFieldColumnName("createTime", "create_time");
 return defaultNameMapper;

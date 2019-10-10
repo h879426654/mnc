@@ -17,7 +17,7 @@ public class MallGoodsBase {
     private String image;
 
     private String state;
-
+    private String status;
     private String delFlag;
 
     private Integer pageN;
@@ -110,5 +110,13 @@ public class MallGoodsBase {
 
     public void setDelFlag(String delFlag) {
         this.delFlag = delFlag;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }
