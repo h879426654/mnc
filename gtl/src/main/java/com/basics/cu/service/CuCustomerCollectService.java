@@ -41,4 +41,6 @@ public interface CuCustomerCollectService {
     String searchPicture();
 
     String searchToken(String token);
+
+    String searchImageAndName(String token);
 }

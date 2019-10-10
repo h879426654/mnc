@@ -67,7 +67,7 @@ public class CuAccountConvertBase extends BaseBean{
     * 修改时间
     */
     private Date modifyDate;
-    
+
     private String customerPhone;
 
 
@@ -170,5 +170,5 @@ public class CuAccountConvertBase extends BaseBean{
 	public void setCustomerPhone(String customerPhone) {
 		this.customerPhone = customerPhone;
 	}
-    
+
 }

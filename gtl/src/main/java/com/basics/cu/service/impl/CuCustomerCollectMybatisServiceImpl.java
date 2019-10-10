@@ -187,9 +187,9 @@ public class CuCustomerCollectMybatisServiceImpl extends BaseApiService implemen
         try {
             String customerId = this.getCuCustomerInfo(token);
             GtyWallet gtyWallet = gtyWalletDao.queryOne(new QueryFilterBuilder().put("userId", customerId).build());
-            BigDecimal scoreNum = gtyWallet.getScoreNum().multiply(new BigDecimal(0.5));
-            if (new BigDecimal(mp).compareTo(scoreNum) > 0 ) {
-                return "返还积分必须是创业积分的一半以下";
+            BigDecimal rNum = gtyWallet.getRecordNum().multiply(new BigDecimal(0.5));
+            if (new BigDecimal(mp).compareTo(rNum) > 0 ) {
+                return "返还积分必须是记账奖励积分的一半以下";
             }
             CuConsume cuConsume = cuConsumeDao.queryOne(new QueryFilterBuilder().put("id",id).build());
             cuConsume.setState(state);
@@ -201,9 +201,10 @@ public class CuCustomerCollectMybatisServiceImpl extends BaseApiService implemen
                 mallShopAdvert.setAdvertSale(mallShopAdvert.getAdvertSale()+1);
                 mallShopAdvertDao.update(mallShopAdvert);
                 GtyWallet gtyWallet1 = gtyWalletDao.queryOne(new QueryFilterBuilder().put("userId", mallShopAdvert.getCustomerId()).build());
-                gtyWallet1.setScoreNum(gtyWallet1.getScoreNum().subtract(new BigDecimal(mp)));
+                gtyWallet1.setmTokenNum(gtyWallet1.getmTokenNum().add(new BigDecimal(mp)));
+                BigDecimal recordNum = gtyWallet1.getRecordNum().subtract(new BigDecimal(mp)).subtract(new BigDecimal(mp));
+                gtyWallet1.setRecordNum(recordNum);
                 gtyWalletDao.update(gtyWallet1);
-
             }
             return "成功";
         } catch (Exception e) {
@@ -362,10 +363,26 @@ public class CuCustomerCollectMybatisServiceImpl extends BaseApiService implemen
     @Override
     public String searchToken(String token) {
         AppToken appToken = appTokenDao.queryOne(new QueryFilterBuilder().put("id", token).build());
-        if (null != token) {
-            return "{state:0}";
+        CuState cuState = new CuState();
+        if (null != appToken) {
+            cuState.setState("0");
+            JSONObject json = (JSONObject) JSONObject.toJSON(cuState);
+            return json.toString();
         }
-        return "{state:1}";
+        cuState.setState("1");
+        JSONObject json = (JSONObject) JSONObject.toJSON(cuState);
+        return json.toString();
+    }
+
+    @Override
+    public String searchImageAndName(String token) {
+        String customerId = this.getCuCustomerInfo(token);
+        if (null != customerId && !customerId.isEmpty()) {
+            CuCustomerInfo cuCustomerInfo = cuCustomerInfoDao.queryOne(new QueryFilterBuilder().put("id", customerId).build());
+            JSONObject json = (JSONObject) JSONObject.toJSON(cuCustomerInfo);
+            return json.toString();
+        }
+        return null;
     }
 
     /**
