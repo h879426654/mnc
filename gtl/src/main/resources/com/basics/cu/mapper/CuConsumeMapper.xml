@@ -42,7 +42,7 @@
 </select>
  <insert id="insert" parameterType="com.basics.cu.entity.CuConsume">
      insert into cu_consume(id,shop_id, customer_id, shop_name, money, phone, image, create_time)
-     values (<if test="shopId!=null">#{id},</if>
+     values (<if test="id!=null">#{id},</if>
      <if test="shopId!=null">#{shopId},</if>
      <if test="customerId!=null">#{customerId},</if>
      <if test="shopName!=null">#{shopName},</if>
