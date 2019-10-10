@@ -41,8 +41,9 @@
     </if>
 </select>
  <insert id="insert" parameterType="com.basics.cu.entity.CuConsume">
-     insert into cu_consume(shop_id, customer_id, shop_name, money, phone, image, create_time)
-     values (<if test="shopId!=null">#{shopId},</if>
+     insert into cu_consume(id,shop_id, customer_id, shop_name, money, phone, image, create_time)
+     values (<if test="id!=null">#{id},</if>
+     <if test="shopId!=null">#{shopId},</if>
      <if test="customerId!=null">#{customerId},</if>
      <if test="shopName!=null">#{shopName},</if>
      <if test="money!=null">#{money},</if>
@@ -61,6 +62,7 @@
             <if test="phone!=null">PHONE = #{phone},</if>
             <if test="state!=null">STATE = #{state},</if>
             <if test="image!=null">IMAGE = #{image},</if>
+            <if test="mtoken!=null">mtoken = #{mtoken},</if>
             <if test="appraise!=null">appraise = #{appraise}</if>
 
         </trim>

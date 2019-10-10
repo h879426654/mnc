@@ -50,5 +50,9 @@ public class MallGoods extends MallGoodsBase{
         this.setCreateTime(createTime);
         return this;
     }
+    public MallGoods status(String status) {
+        this.setStatus(status);
+        return this;
+    }
 
 }

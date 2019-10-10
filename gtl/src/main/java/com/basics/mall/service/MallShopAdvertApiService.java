@@ -50,4 +50,6 @@ public interface MallShopAdvertApiService {
 	String searchGoodsById(String id, Integer pageNum, Integer pageSize);
 
     String insertShopAdvert(MallAdvertResponse mallAdvertResponse);
+
+    String searchGoodsAll(String shopId, Integer page,Integer rows);
 }

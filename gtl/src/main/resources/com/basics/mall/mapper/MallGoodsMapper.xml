@@ -19,6 +19,9 @@
      <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(state)">
          <![CDATA[ AND state = #{state} ]]>
      </if>
+     <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(status)">
+         <![CDATA[ AND status = #{status} ]]>
+     </if>
      <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(id)">
          <![CDATA[ AND id = #{id} ]]>
      </if>

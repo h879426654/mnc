@@ -57,4 +57,8 @@ public class CuConsume extends CuConsumeBase {
 		this.setAppraise(appraise);
 		return this;
 	}
+	public CuConsume mtoken(BigDecimal mtoken) {
+		this.setMtoken(mtoken);
+		return this;
+	}
 }

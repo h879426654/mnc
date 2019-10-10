@@ -257,4 +257,9 @@ public class MallShopAdvertApiController implements ApplicationContextAware {
 		return mallshopApiService.insertShopAdvert(mallAdvertResponse);
 	}
 
+	@RequestMapping("searchGoodsAll")
+	public String searchGoodsAll(@Valid String shopId , Integer pageNum, Integer pageSize) {
+		return mallshopApiService.searchGoodsAll(shopId, pageNum, pageSize);
+	}
+
 }

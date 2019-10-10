@@ -193,6 +193,7 @@ public class CuCustomerCollectMybatisServiceImpl extends BaseApiService implemen
             }
             CuConsume cuConsume = cuConsumeDao.queryOne(new QueryFilterBuilder().put("id",id).build());
             cuConsume.setState(state);
+            cuConsume.setMtoken(new BigDecimal(mp));
             cuConsumeDao.update(cuConsume);
             if ("1".equals(state)) {
                 this.returnMp(mp, cuConsume);
@@ -202,6 +203,7 @@ public class CuCustomerCollectMybatisServiceImpl extends BaseApiService implemen
                 GtyWallet gtyWallet1 = gtyWalletDao.queryOne(new QueryFilterBuilder().put("userId", mallShopAdvert.getCustomerId()).build());
                 gtyWallet1.setScoreNum(gtyWallet1.getScoreNum().subtract(new BigDecimal(mp)));
                 gtyWalletDao.update(gtyWallet1);
+
             }
             return "成功";
         } catch (Exception e) {

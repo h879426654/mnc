@@ -29,6 +29,7 @@ public class CuConsumeMybatisDao extends GenericMybatisDaoSupport<CuConsume> imp
 		defaultNameMapper.configFieldColumnName("image", "IMAGE");
 		defaultNameMapper.configFieldColumnName("createTime", "CREATE_TIME");
 		defaultNameMapper.configFieldColumnName("appraise", "appraise");
+		defaultNameMapper.configFieldColumnName("mtoken", "mtoken");
 		return defaultNameMapper;
 	}
 }

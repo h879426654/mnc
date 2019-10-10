@@ -17,6 +17,15 @@ class CuConsumeBase extends BaseBean {
 	private String pageN;
 	private String pageS;
 	private String appraise;
+	private BigDecimal mtoken;
+
+	public BigDecimal getMtoken() {
+		return mtoken;
+	}
+
+	public void setMtoken(BigDecimal mtoken) {
+		this.mtoken = mtoken;
+	}
 
 	public String getAppraise() {
 		return appraise;

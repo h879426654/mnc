@@ -352,7 +352,8 @@ public class MallShopAdvertApiServiceImpl extends BaseApiService implements Mall
 			params.put("pageS", pageS);
 			params.put("advertId", shopId);
 			params.put("state", "1");
-			params.put("delFlag",0);
+			params.put("delFlag","0");
+			params.put("status", "1");
 			List<MallGoods> list = mallGoodsDao.query(new QueryFilterBuilder().putAll(params).build());
 			JSONArray json = JSONArray.fromObject(list);
 			mallShopAdvert.setList(json.toString());
@@ -374,8 +375,9 @@ public class MallShopAdvertApiServiceImpl extends BaseApiService implements Mall
 		}
 		params.put("pageN", (pageNum-1)*10);
 		params.put("pageS", pageSize);
-		params.put("state", "1");
-		params.put("delFlag",0);
+		params.put("delFlag","0");
+		params.put("status", "1");
+		params.put("id", id);
 		List<MallGoods> list = mallGoodsDao.query(new QueryFilterBuilder().putAll(params).build());
 		JSONObject json = (JSONObject) JSONObject.toJSON(list);
 		return json.toString();
@@ -409,6 +411,26 @@ public class MallShopAdvertApiServiceImpl extends BaseApiService implements Mall
 		} catch (Exception e) {
 			return "失败";
 		}
+	}
+
+	@Override
+	public String searchGoodsAll(String shopId, Integer page, Integer rows) {
+
+		Map params = new HashMap();
+		if (page == null){
+			page = 1;
+		}
+		if (rows == null){
+			rows = 10;
+		}
+		params.put("pageN", (page-1)*10);
+		params.put("pageS", rows);
+		params.put("delFlag","0");
+		params.put("status", "1");
+		params.put("advertId", shopId);
+		List<MallGoods> list = mallGoodsDao.query(new QueryFilterBuilder().putAll(params).build());
+		JSONArray json = JSONArray.fromObject(list);
+		return json.toString();
 	}
 
 	public static Map<String, Double> getLngAndLat(String address) {
