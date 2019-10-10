@@ -356,9 +356,9 @@ public class CommonApiServiceImpl extends BaseApiService implements CommonApiSer
         response.setItem(data);
         response.onHandleSuccess();
         GtyWallet gtyWallet = gtyWalletDao.queryOne(new QueryFilterBuilder().put("userId", user.getId()).build());
-        if (null == gtyWallet.getWalletAddress()){
+        if (null == gtyWallet.getWalletAddress() || gtyWallet.getWalletAddress().isEmpty()){
             gtyWallet.setWalletAddress(UUID.randomUUID().toString().replace("-",""));
-            gtyWalletDao.insert(gtyWallet);
+            gtyWalletDao.update(gtyWallet);
         }
         return response;
     }
