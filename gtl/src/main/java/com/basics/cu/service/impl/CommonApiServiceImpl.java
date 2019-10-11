@@ -663,7 +663,7 @@ public class CommonApiServiceImpl extends BaseApiService implements CommonApiSer
 
     @Override
     public List<MallShopAdvert> getHot() {
-        List<MallShopAdvert> list = mallShopAdvertDao.query(new QueryFilterBuilder().put("hot",1).build());
+        List<MallShopAdvert> list = mallShopAdvertDao.query(new QueryFilterBuilder().put("hot",1).put("applyStatus","2").put("delFlag","0").build());
         for (MallShopAdvert mallShopAdvert : list) {
             Map map = new HashMap();
             map.put("shopId", mallShopAdvert.getId());

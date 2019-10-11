@@ -2,7 +2,8 @@ package com.basics.gty.service.impl;
 
 import com.basics.common.*;
 import com.basics.cu.controller.response.CustomerInfoResponse;
-import com.basics.cu.entity.CuCustomerLogin;
+import com.basics.cu.entity.*;
+import com.basics.cu.service.CuCustomerCollectService;
 import com.basics.gty.controller.request.TokenTransferRequest;
 import com.basics.gty.entity.*;
 import com.basics.gty.service.GtyTransferService;
@@ -20,6 +21,7 @@ import com.basics.wallet.controller.response.TxInfoResponse;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.web3j.abi.FunctionEncoder;
@@ -49,6 +51,9 @@ import java.util.concurrent.ExecutionException;
 
 @Service
 public class GtyTransferMybatisService extends BaseApiService implements GtyTransferService {
+
+    @Autowired
+    private CuCustomerCollectService cuCustomerCollectService;
 
     @Override
     public DataResponse transferMoney(TokenTransferRequest request, HttpServletRequest req) {
@@ -160,7 +165,8 @@ public class GtyTransferMybatisService extends BaseApiService implements GtyTran
 
                 gtyWallet1.setMoveNum(gtyWallet.getMoveNum().subtract(new BigDecimal(request.getNum())));
                 gtyWallet1.setmTokenNum(new BigDecimal(request.getNum()).multiply(new BigDecimal("13.32")).add(gtyWallet.getmTokenNum()));
-
+                cuCustomerCollectService.addMp(new BigDecimal(request.getNum()).multiply(new BigDecimal("13.32")), gtyWallet.getUserId());
+                //gtyWallet.getmTokenNum()
                 gtyWalletDao.update(gtyWallet1);
             }
         } else if (request.getType() == 5) {// 流通点对点

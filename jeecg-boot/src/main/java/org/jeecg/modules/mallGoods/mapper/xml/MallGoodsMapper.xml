@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.jeecg.modules.mallGoods.mapper.MallGoodsMapper">
+    <select id="searchGoods" resultType="org.jeecg.modules.mallGoods.entity.MallGoods">
+        select id, advert_Id as advertId, goods_Name as goodsName, goods_Text as goodsText, money, image, state, del_Flag as delFlag, create_Time as createTime, status from mall_goods
+        where advert_id = #{advertId} and del_Flag = '0' limit #{pageNum},#{pageSize}
+    </select>
+
+    <select id="searchTotal" resultType="long">
+        select count(*) from mall_goods where advert_id = #{advertId} and del_Flag = '0'
+    </select>
+
+</mapper>

@@ -316,6 +316,8 @@ public class MallShopAdvertApiServiceImpl extends BaseApiService implements Mall
 		params.put("pageN", (pageNum-1)*10);
 		params.put("pageS", pageSize);
 		params.put("advertName", shopName);
+		params.put("applyStatus", "2");
+		params.put("delFlag", "0");
 		try {
 			List<MallShopAdvert> mallShopAdverts = mallShopAdvertDao.query(new QueryFilterBuilder().putAll(params).build());
 			Map map = new HashMap();
@@ -387,7 +389,7 @@ public class MallShopAdvertApiServiceImpl extends BaseApiService implements Mall
 	public String insertShopAdvert(MallAdvertResponse mallAdvertResponse) {
 		try {
 			AppToken appToken = appTokenDao.queryOne(new QueryFilterBuilder().put("id", mallAdvertResponse.getToken()).build());
-			MallShopAdvert advert = mallShopAdvertDao.queryOne(new QueryFilterBuilder().put("customerId", appToken.getUserId()).build());
+			MallShopAdvert advert = mallShopAdvertDao.queryOne(new QueryFilterBuilder().put("customerId", appToken.getUserId()).put("applyStatus", "2").put("delFlag", "0").build());
 			if (advert != null) {
 				return "该商家已入驻";
 			}

@@ -1,4 +1,4 @@
-package org.jeecg.modules.cuConsume.controller;
+package org.jeecg.modules.mallGoods.controller;
 
 import java.util.Arrays;
 import java.util.List;
@@ -11,8 +11,9 @@ import javax.servlet.http.HttpServletResponse;
 import org.jeecg.common.api.vo.Result;
 import org.jeecg.common.system.query.QueryGenerator;
 import org.jeecg.common.util.oConvertUtils;
-import org.jeecg.modules.cuConsume.entity.CuConsume;
-import org.jeecg.modules.cuConsume.service.ICuConsumeService;
+import org.jeecg.modules.mallGoods.entity.MallGoods;
+import org.jeecg.modules.mallGoods.mapper.MallGoodsMapper;
+import org.jeecg.modules.mallGoods.service.IMallGoodsService;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -21,7 +22,6 @@ import lombok.extern.slf4j.Slf4j;
 
 import org.jeecg.modules.mallShopAdvert.entity.MallShopAdvert;
 import org.jeecg.modules.mallShopAdvert.mapper.MallShopAdvertMapper;
-import org.jeecg.modules.mallShopAdvert.service.IMallShopAdvertService;
 import org.jeecgframework.poi.excel.ExcelImportUtil;
 import org.jeecgframework.poi.excel.def.NormalExcelConstants;
 import org.jeecgframework.poi.excel.entity.ExportParams;
@@ -37,70 +37,64 @@ import com.alibaba.fastjson.JSON;
 
  /**
  * @Title: Controller
- * @Description: 记账
+ * @Description: 商品
  * @author： jeecg-boot
- * @date：   2019-10-05
+ * @date：   2019-10-10
  * @version： V1.0
  */
 @RestController
-@RequestMapping("/cuConsume/cuConsume")
+@RequestMapping("/mallGoods/mallGoods")
 @Slf4j
-public class CuConsumeController {
+public class MallGoodsController {
 	@Autowired
-	private ICuConsumeService cuConsumeService;
+	private IMallGoodsService mallGoodsService;
+	@Autowired
+	private MallGoodsMapper mallGoodsMapper;
 	@Autowired
 	private MallShopAdvertMapper mallShopAdvertMapper;
 	/**
 	  * 分页列表查询
-	 * @param cuConsume
+	 * @param mallGoods
 	 * @param pageNo
 	 * @param pageSize
 	 * @param req
 	 * @return
 	 */
 	@GetMapping(value = "/list")
-	public Result<IPage<CuConsume>> queryPageList(CuConsume cuConsume, String shopPhone,
+	public Result<IPage<MallGoods>> queryPageList(MallGoods mallGoods,
 									  @RequestParam(name="pageNo", defaultValue="1") Integer pageNo,
 									  @RequestParam(name="pageSize", defaultValue="10") Integer pageSize,
 									  HttpServletRequest req) {
-		Result<IPage<CuConsume>> result = new Result<IPage<CuConsume>>();
-		QueryWrapper<CuConsume> queryWrapper = QueryGenerator.initQueryWrapper(cuConsume, req.getParameterMap());
-		Page<CuConsume> page = new Page<CuConsume>(pageNo, pageSize);
-		IPage<CuConsume> pageList = cuConsumeService.page(page, queryWrapper);
+		Result<IPage<MallGoods>> result = new Result<IPage<MallGoods>>();
+		QueryWrapper<MallGoods> queryWrapper = QueryGenerator.initQueryWrapper(mallGoods, req.getParameterMap());
+		Page<MallGoods> page = new Page<MallGoods>(pageNo, pageSize);
+		IPage<MallGoods> pageList = mallGoodsService.page(page, queryWrapper);
 		result.setSuccess(true);
 		result.setResult(pageList);
 		return result;
 	}
-	 @GetMapping(value = "/searchConsume")
-	 public Result<IPage<CuConsume>> searchConsume(CuConsume cuConsume,
-												   @RequestParam(name="pageNo", defaultValue="1") Integer pageNo,
-												   @RequestParam(name="pageSize", defaultValue="10") Integer pageSize,
-												   HttpServletRequest req) {
-		 Result<IPage<CuConsume>> result = new Result<IPage<CuConsume>>();
-		 if (null == cuConsume.getCustomerId() || cuConsume.getCustomerId().isEmpty()) {
-		 	result.error500("重新登录");
-		 	return result;
-		 }
-		 MallShopAdvert mallShopAdvert = mallShopAdvertMapper.selectOne(new QueryWrapper<MallShopAdvert>().eq("customer_id", cuConsume.getCustomerId()));
-		 cuConsume.setCustomerId(null);
-		 cuConsume.setShopId(mallShopAdvert.getAdvertId());
-		 QueryWrapper<CuConsume> queryWrapper = QueryGenerator.initQueryWrapper(cuConsume, req.getParameterMap());
-		 Page<CuConsume> page = new Page<CuConsume>(pageNo, pageSize);
-		 IPage<CuConsume> pageList = cuConsumeService.page(page, queryWrapper);
-		 result.setSuccess(true);
-		 result.setResult(pageList);
-		 return result;
-	 }
+	
 	/**
 	  *   添加
-	 * @param cuConsume
+	 * @param mallGoods
 	 * @return
 	 */
 	@PostMapping(value = "/add")
-	public Result<CuConsume> add(@RequestBody CuConsume cuConsume) {
-		Result<CuConsume> result = new Result<CuConsume>();
+	public Result<MallGoods> add(@RequestBody MallGoods mallGoods) {
+		Result<MallGoods> result = new Result<MallGoods>();
+		if (null == mallGoods.getCustomerId() || mallGoods.getCustomerId().isEmpty()) {
+			result.error500("清重新登录");
+			return result;
+		}
+		MallShopAdvert mallShopAdvert = mallShopAdvertMapper.selectOne(new QueryWrapper<MallShopAdvert>().eq("customer_id", mallGoods.getCustomerId()).eq("apply_status", "2").eq("del_Flag","0"));
+		if (mallShopAdvert != null) {
+			mallGoods.setAdvertId(mallShopAdvert.getAdvertId());
+		} else {
+			result.error500("您的还没有商家或者已被下架");
+			return result;
+		}
 		try {
-			cuConsumeService.save(cuConsume);
+			mallGoodsService.save(mallGoods);
 			result.success("添加成功！");
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -112,20 +106,24 @@ public class CuConsumeController {
 	
 	/**
 	  *  编辑
-	 * @param cuConsume
+	 * @param mallGoods
 	 * @return
 	 */
 	@PutMapping(value = "/edit")
-	public Result<CuConsume> edit(@RequestBody CuConsume cuConsume) {
-		Result<CuConsume> result = new Result<CuConsume>();
-		CuConsume cuConsumeEntity = cuConsumeService.getById(cuConsume.getId());
-		if(cuConsumeEntity==null) {
+	public Result<MallGoods> edit(@RequestBody MallGoods mallGoods) {
+		Result<MallGoods> result = new Result<MallGoods>();
+		MallGoods mallGoodsEntity = mallGoodsMapper.selectOne(new QueryWrapper<MallGoods>().eq("id", mallGoods.getId()));
+		if(mallGoodsEntity==null) {
 			result.error500("未找到对应实体");
 		}else {
-			boolean ok = cuConsumeService.updateById(cuConsume);
-			//TODO 返回false说明什么？
-			if(ok) {
-				result.success("修改成功!");
+			if (null != mallGoods.getStatus()) {
+				if (!"0".equals(mallGoodsEntity.getStatus())) {
+					result.success("审批过得数据不能再次审批");
+				} else {
+					mallGoodsEntity.setStatus(mallGoods.getStatus());
+					mallGoodsMapper.updateById(mallGoodsEntity);
+					result.success("修改成功!");
+				}
 			}
 		}
 		
@@ -138,13 +136,13 @@ public class CuConsumeController {
 	 * @return
 	 */
 	@DeleteMapping(value = "/delete")
-	public Result<CuConsume> delete(@RequestParam(name="id",required=true) String id) {
-		Result<CuConsume> result = new Result<CuConsume>();
-		CuConsume cuConsume = cuConsumeService.getById(id);
-		if(cuConsume==null) {
+	public Result<MallGoods> delete(@RequestParam(name="id",required=true) String id) {
+		Result<MallGoods> result = new Result<MallGoods>();
+		MallGoods mallGoods = mallGoodsService.getById(id);
+		if(mallGoods==null) {
 			result.error500("未找到对应实体");
 		}else {
-			boolean ok = cuConsumeService.removeById(id);
+			boolean ok = mallGoodsService.removeById(id);
 			if(ok) {
 				result.success("删除成功!");
 			}
@@ -159,12 +157,12 @@ public class CuConsumeController {
 	 * @return
 	 */
 	@DeleteMapping(value = "/deleteBatch")
-	public Result<CuConsume> deleteBatch(@RequestParam(name="ids",required=true) String ids) {
-		Result<CuConsume> result = new Result<CuConsume>();
+	public Result<MallGoods> deleteBatch(@RequestParam(name="ids",required=true) String ids) {
+		Result<MallGoods> result = new Result<MallGoods>();
 		if(ids==null || "".equals(ids.trim())) {
 			result.error500("参数不识别！");
 		}else {
-			this.cuConsumeService.removeByIds(Arrays.asList(ids.split(",")));
+			this.mallGoodsService.removeByIds(Arrays.asList(ids.split(",")));
 			result.success("删除成功!");
 		}
 		return result;
@@ -176,13 +174,13 @@ public class CuConsumeController {
 	 * @return
 	 */
 	@GetMapping(value = "/queryById")
-	public Result<CuConsume> queryById(@RequestParam(name="id",required=true) String id) {
-		Result<CuConsume> result = new Result<CuConsume>();
-		CuConsume cuConsume = cuConsumeService.getById(id);
-		if(cuConsume==null) {
+	public Result<MallGoods> queryById(@RequestParam(name="id",required=true) String id) {
+		Result<MallGoods> result = new Result<MallGoods>();
+		MallGoods mallGoods = mallGoodsService.getById(id);
+		if(mallGoods==null) {
 			result.error500("未找到对应实体");
 		}else {
-			result.setResult(cuConsume);
+			result.setResult(mallGoods);
 			result.setSuccess(true);
 		}
 		return result;
@@ -197,13 +195,13 @@ public class CuConsumeController {
   @RequestMapping(value = "/exportXls")
   public ModelAndView exportXls(HttpServletRequest request, HttpServletResponse response) {
       // Step.1 组装查询条件
-      QueryWrapper<CuConsume> queryWrapper = null;
+      QueryWrapper<MallGoods> queryWrapper = null;
       try {
           String paramsStr = request.getParameter("paramsStr");
           if (oConvertUtils.isNotEmpty(paramsStr)) {
               String deString = URLDecoder.decode(paramsStr, "UTF-8");
-              CuConsume cuConsume = JSON.parseObject(deString, CuConsume.class);
-              queryWrapper = QueryGenerator.initQueryWrapper(cuConsume, request.getParameterMap());
+              MallGoods mallGoods = JSON.parseObject(deString, MallGoods.class);
+              queryWrapper = QueryGenerator.initQueryWrapper(mallGoods, request.getParameterMap());
           }
       } catch (UnsupportedEncodingException e) {
           e.printStackTrace();
@@ -211,11 +209,11 @@ public class CuConsumeController {
 
       //Step.2 AutoPoi 导出Excel
       ModelAndView mv = new ModelAndView(new JeecgEntityExcelView());
-      List<CuConsume> pageList = cuConsumeService.list(queryWrapper);
+      List<MallGoods> pageList = mallGoodsService.list(queryWrapper);
       //导出文件名称
-      mv.addObject(NormalExcelConstants.FILE_NAME, "记账列表");
-      mv.addObject(NormalExcelConstants.CLASS, CuConsume.class);
-      mv.addObject(NormalExcelConstants.PARAMS, new ExportParams("记账列表数据", "导出人:Jeecg", "导出信息"));
+      mv.addObject(NormalExcelConstants.FILE_NAME, "商品列表");
+      mv.addObject(NormalExcelConstants.CLASS, MallGoods.class);
+      mv.addObject(NormalExcelConstants.PARAMS, new ExportParams("商品列表数据", "导出人:Jeecg", "导出信息"));
       mv.addObject(NormalExcelConstants.DATA_LIST, pageList);
       return mv;
   }
@@ -238,11 +236,11 @@ public class CuConsumeController {
           params.setHeadRows(1);
           params.setNeedSave(true);
           try {
-              List<CuConsume> listCuConsumes = ExcelImportUtil.importExcel(file.getInputStream(), CuConsume.class, params);
-              for (CuConsume cuConsumeExcel : listCuConsumes) {
-                  cuConsumeService.save(cuConsumeExcel);
+              List<MallGoods> listMallGoodss = ExcelImportUtil.importExcel(file.getInputStream(), MallGoods.class, params);
+              for (MallGoods mallGoodsExcel : listMallGoodss) {
+                  mallGoodsService.save(mallGoodsExcel);
               }
-              return Result.ok("文件导入成功！数据行数：" + listCuConsumes.size());
+              return Result.ok("文件导入成功！数据行数：" + listMallGoodss.size());
           } catch (Exception e) {
               log.error(e.getMessage());
               return Result.error("文件导入失败！");
@@ -256,5 +254,12 @@ public class CuConsumeController {
       }
       return Result.ok("文件导入失败！");
   }
-
+  @GetMapping(value = "/searchGoods")
+  public String searchGoods(String customerId, @RequestParam(name="pageNo", defaultValue="1") Integer pageNo,
+							@RequestParam(name="pageSize", defaultValue="10") Integer pageSize) {
+  	if (null == customerId || customerId.isEmpty()) {
+  		return "0";
+	}
+  	return mallGoodsService.searchGoods(customerId,pageNo,pageSize);
+  }
 }

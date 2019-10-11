@@ -111,6 +111,11 @@ public class CuCustomerCollectMybatisServiceImpl extends BaseApiService implemen
             cuHttpUrl.setVermicelli(cuCustomerCollects.size());
             if (null != mallShopAdvert) {
                 cuHttpUrl.setShopId(mallShopAdvert.getId());
+            } else {
+                MallShopAdvert mallShopAdvert1 = mallShopAdvertDao.queryOne(new QueryFilterBuilder().put("customerId", cuCustomerInfo.getId()).put("applyStatus", "1").put("flagDel", "0").build());
+                if (null != mallShopAdvert1) {
+                    cuHttpUrl.setShopId(mallShopAdvert1.getId());
+                }
             }
             JSONArray jsons = JSONArray.fromObject(cuHttpUrls);
             cuHttpUrl.setHttpList(jsons.toString());
@@ -167,6 +172,9 @@ public class CuCustomerCollectMybatisServiceImpl extends BaseApiService implemen
     public String insertConConsume(ConsumeRequest request) {
         try {
             MallShopAdvert mallShopAdvert = mallShopAdvertDao.queryOne(new QueryFilterBuilder().put("id", request.getShopId()).put("applyStatus", "2").put("flagDel", "0").build());
+            if (mallShopAdvert.getCustomerId().equals(request.getCustomerId())) {
+                return "自己不能给自己记账";
+            }
             CuConsume cuConsume = new CuConsume();
             cuConsume.setId(UUID.randomUUID().toString().replace("-",""));
             cuConsume.setShopId(request.getShopId());
@@ -216,6 +224,7 @@ public class CuCustomerCollectMybatisServiceImpl extends BaseApiService implemen
     public String insertHistory(HistoryRequest historyRequest) {
         try {
             String customerId = this.getCuCustomerInfo(historyRequest.getToken());
+
             CuHistory cuHistory1 = cuHistoryDao.queryOne(new QueryFilterBuilder().put("customerId", customerId).put("shopId", historyRequest.getShopId()).build());
             if (null != cuHistory1) {
                 cuHistoryDao.update(cuHistory1);
@@ -385,28 +394,9 @@ public class CuCustomerCollectMybatisServiceImpl extends BaseApiService implemen
         return null;
     }
 
-    /**
-     * 返还积分
-     * @param cuConsume
-     * @param mp
-     * @return
-     */
-    private void returnMp(String mp, CuConsume cuConsume) {
-        this.updateWalletInfo(cuConsume.getCustomerId(), new BigDecimal(mp));
-        this.addMp(mp, cuConsume);
-        CuLogs cuLogs = new CuLogs();
-        cuLogs.setCustomerId(cuConsume.getCustomerId());
-        cuLogs.setShopId(cuConsume.getShopId());
-        cuLogs.setType("1");
-        cuLogs.setMoney(cuConsume.getMoney());
-        cuLogs.setMp(new BigDecimal(mp));
-        cuLogs.setRemark("记账:"+cuConsume.getMoney()+"返还mp:"+mp);
-        cuLogsDao.insert(cuLogs);
-    }
-    private void addMp(String mpStr, CuConsume cuConsume) {
-        String customerId = cuConsume.getCustomerId();
+    @Override
+    public void addMp(BigDecimal mp, String customerId) {
         BigDecimal zpzo = new BigDecimal(0.01);
-        BigDecimal mp = new BigDecimal(mpStr);
         int i = 0;
         //判断一共有多少人吃利息
         while(true) {
@@ -446,8 +436,27 @@ public class CuCustomerCollectMybatisServiceImpl extends BaseApiService implemen
             }
             customerId = cu2.getCustomerIdSecond();
         }
-
     }
+
+    /**
+     * 返还积分
+     * @param cuConsume
+     * @param mp
+     * @return
+     */
+    private void returnMp(String mp, CuConsume cuConsume) {
+        this.updateWalletInfo(cuConsume.getCustomerId(), new BigDecimal(mp));
+        this.addMp(new BigDecimal(mp), cuConsume.getCustomerId());
+        CuLogs cuLogs = new CuLogs();
+        cuLogs.setCustomerId(cuConsume.getCustomerId());
+        cuLogs.setShopId(cuConsume.getShopId());
+        cuLogs.setType("1");
+        cuLogs.setMoney(cuConsume.getMoney());
+        cuLogs.setMp(new BigDecimal(mp));
+        cuLogs.setRemark("记账:"+cuConsume.getMoney()+"返还mp:"+mp);
+        cuLogsDao.insert(cuLogs);
+    }
+
     private void updateWalletInfo(String customerId, BigDecimal mToken) {
         GtyWallet gtyWallet = gtyWalletDao.queryOne(new QueryFilterBuilder().put("userId", customerId).build());
         gtyWallet.setmTokenNum(gtyWallet.getmTokenNum().add(mToken));

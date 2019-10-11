@@ -1,5 +1,6 @@
 package org.jeecg.modules.mallShopAdvert.service.impl;
 
+import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import org.jeecg.modules.mallShopAdvert.entity.MallShopAdvert;
 import org.jeecg.modules.mallShopAdvert.mapper.MallShopAdvertMapper;
@@ -8,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+
+import java.util.List;
 
 /**
  * @Description: 商家表
@@ -26,5 +29,15 @@ public class MallShopAdvertServiceImpl extends ServiceImpl<MallShopAdvertMapper,
             return "1";
         }
         return "0";
+    }
+
+    @Override
+    public String searchStore(String customerId) {
+        if (null == customerId || customerId.isEmpty()) {
+            return "0";
+        }
+        MallShopAdvert mallShopAdvert = mallShopAdvertMapper.selectOne(new QueryWrapper<MallShopAdvert>().eq("customer_id", customerId));
+        JSONObject json = (JSONObject) JSONObject.toJSON(mallShopAdvert);
+        return json.toString();
     }
 }

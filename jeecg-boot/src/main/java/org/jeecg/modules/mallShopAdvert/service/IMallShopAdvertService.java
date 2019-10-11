@@ -12,4 +12,6 @@ import com.baomidou.mybatisplus.extension.service.IService;
 public interface IMallShopAdvertService extends IService<MallShopAdvert> {
 
     String searchOperate(String id);
+
+    String searchStore(String customerId);
 }
