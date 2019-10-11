@@ -78,7 +78,7 @@ public class CuCustomerInfoServiceImpl extends ServiceImpl<CuCustomerInfoMapper,
             if (null != walletInfo) {
                 cuCustomerInfo2.setMnc(walletInfo.getMncNum());
                 cuCustomerInfo2.setScore(walletInfo.getScoreNum());
-                cuCustomerInfo2.setSuperNum(walletInfo.getSuperNum());
+                cuCustomerInfo2.setSuperNum(walletInfo.getSuperNum().add(walletInfo.getReleasedMncNum()));
                 cuCustomerInfo2.setMtoken(walletInfo.getMtokenNum());
             }
         }
