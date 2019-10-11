@@ -111,6 +111,11 @@ public class CuCustomerCollectMybatisServiceImpl extends BaseApiService implemen
             cuHttpUrl.setVermicelli(cuCustomerCollects.size());
             if (null != mallShopAdvert) {
                 cuHttpUrl.setShopId(mallShopAdvert.getId());
+            } else {
+                MallShopAdvert mallShopAdvert1 = mallShopAdvertDao.queryOne(new QueryFilterBuilder().put("customerId", cuCustomerInfo.getId()).put("applyStatus", "1").put("flagDel", "0").build());
+                if (null != mallShopAdvert1) {
+                    cuHttpUrl.setShopId(mallShopAdvert.getId());
+                }
             }
             JSONArray jsons = JSONArray.fromObject(cuHttpUrls);
             cuHttpUrl.setHttpList(jsons.toString());
