@@ -172,6 +172,9 @@ public class CuCustomerCollectMybatisServiceImpl extends BaseApiService implemen
     public String insertConConsume(ConsumeRequest request) {
         try {
             MallShopAdvert mallShopAdvert = mallShopAdvertDao.queryOne(new QueryFilterBuilder().put("id", request.getShopId()).put("applyStatus", "2").put("flagDel", "0").build());
+            if (mallShopAdvert.getCustomerId().equals(request.getCustomerId())) {
+                return "自己不能给自己记账";
+            }
             CuConsume cuConsume = new CuConsume();
             cuConsume.setId(UUID.randomUUID().toString().replace("-",""));
             cuConsume.setShopId(request.getShopId());
@@ -221,6 +224,7 @@ public class CuCustomerCollectMybatisServiceImpl extends BaseApiService implemen
     public String insertHistory(HistoryRequest historyRequest) {
         try {
             String customerId = this.getCuCustomerInfo(historyRequest.getToken());
+
             CuHistory cuHistory1 = cuHistoryDao.queryOne(new QueryFilterBuilder().put("customerId", customerId).put("shopId", historyRequest.getShopId()).build());
             if (null != cuHistory1) {
                 cuHistoryDao.update(cuHistory1);

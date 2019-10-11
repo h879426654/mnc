@@ -316,6 +316,8 @@ public class MallShopAdvertApiServiceImpl extends BaseApiService implements Mall
 		params.put("pageN", (pageNum-1)*10);
 		params.put("pageS", pageSize);
 		params.put("advertName", shopName);
+		params.put("applyStatus", "2");
+		params.put("delFlag", "0");
 		try {
 			List<MallShopAdvert> mallShopAdverts = mallShopAdvertDao.query(new QueryFilterBuilder().putAll(params).build());
 			Map map = new HashMap();
