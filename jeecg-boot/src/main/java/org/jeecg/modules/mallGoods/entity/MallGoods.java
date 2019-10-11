@@ -52,5 +52,7 @@ public class MallGoods implements Serializable {
 	private java.util.Date createTime;
 	@Excel(name = "审批状态 0:未审批 1:审批通过 2:驳回", width = 15)
 	private java.lang.String status;
+	@Excel(name = "商家的用户id", width = 15)
+	private java.lang.String customerId;
 
 }

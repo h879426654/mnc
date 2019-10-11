@@ -1,6 +1,7 @@
 package org.jeecg.modules.cuConsume.entity;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
@@ -53,4 +54,7 @@ public class CuConsume implements Serializable {
 	/**0:未评价，1:已评价*/
 	@Excel(name = "0:未评价，1:已评价", width = 15)
 	private java.lang.String appraise;
+	@Excel(name = "返还的mp", width = 15)
+	private BigDecimal mtoken;
+
 }

@@ -1,8 +1,6 @@
 package org.jeecg.modules.mallShopAdvert.controller;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
@@ -11,6 +9,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.jeecg.common.api.vo.Result;
 import org.jeecg.common.system.query.QueryGenerator;
 import org.jeecg.common.util.oConvertUtils;
+import org.jeecg.modules.cuCustomerInfo.entity.CuCustomerInfo;
+import org.jeecg.modules.cuCustomerInfo.mapper.CuCustomerInfoMapper;
 import org.jeecg.modules.mallShopAdvert.entity.MallShopAdvert;
 import org.jeecg.modules.mallShopAdvert.mapper.MallShopAdvertMapper;
 import org.jeecg.modules.mallShopAdvert.service.IMallShopAdvertService;
@@ -20,6 +20,8 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.extern.slf4j.Slf4j;
 
+import org.jeecg.modules.mallUser.entity.MallUser;
+import org.jeecg.modules.mallUser.mapper.MallUserMapper;
 import org.jeecgframework.poi.excel.ExcelImportUtil;
 import org.jeecgframework.poi.excel.def.NormalExcelConstants;
 import org.jeecgframework.poi.excel.entity.ExportParams;
@@ -33,7 +35,8 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 import com.alibaba.fastjson.JSON;
 
- /**
+
+/**
  * @Title: Controller
  * @Description: 商家表
  * @author： jeecg-boot
@@ -48,6 +51,10 @@ public class MallShopAdvertController {
 	private IMallShopAdvertService mallShopAdvertService;
 	@Autowired
 	private MallShopAdvertMapper mallShopAdvertMapper;
+	@Autowired
+	private CuCustomerInfoMapper cuCustomerInfoMapper;
+	@Autowired
+	private MallUserMapper mallUserMapper;
 	/**
 	  * 分页列表查询
 	 * @param mallShopAdvert
@@ -103,6 +110,17 @@ public class MallShopAdvertController {
 		}else {
 			if (null != mallShopAdvert.getApplyStatus()) {
 				mallShopAdvertMapper.updateByIdAndApplyStatus(mallShopAdvert.getAdvertId(), mallShopAdvert.getApplyStatus());
+				if ("2".equals(mallShopAdvert.getApplyStatus())){
+					CuCustomerInfo cuCustomerInfo = cuCustomerInfoMapper.selectOne(new QueryWrapper<CuCustomerInfo>().eq("customer_id", mallShopAdvertEntity.getCustomerId()));
+					MallUser mallUser = new MallUser();
+					mallUser.setUserName(cuCustomerInfo.getCustomerPhone());
+					int random = (int) ((Math.random() * 9 + 1) * 100000);
+					mallUser.setPassWord(String.valueOf(random));
+					mallUser.setCustomerId(cuCustomerInfo.getCustomerId());
+					mallUser.setCreateTime(new Date());
+					mallUser.setId(UUID.randomUUID().toString().replace("-",""));
+					mallUserMapper.insert(mallUser);
+				}
 				result.success("成功");
 			} else if (null != mallShopAdvert.getHot()) {
 				if (!"2".equals(mallShopAdvertEntity.getApplyStatus())) {
@@ -245,5 +263,16 @@ public class MallShopAdvertController {
 	 @GetMapping(value = "/searchOperate")
 	 public String searchOperate(String id) {
 		 return mallShopAdvertService.searchOperate(id);
+	 }
+
+
+	 /**
+	  * 查询自己的商家信息
+	  * @param customerId
+	  * @return
+	  */
+	 @GetMapping(value = "/searchStore")
+	 public String searchStore(String customerId) {
+		 return mallShopAdvertService.searchStore(customerId);
 	 }
 }

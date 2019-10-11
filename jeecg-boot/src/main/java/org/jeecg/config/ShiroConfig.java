@@ -73,6 +73,8 @@ public class ShiroConfig {
 		filterChainDefinitionMap.put("/cuReatilMoney/cuReatilMoney/**", "anon");
 		filterChainDefinitionMap.put("/cuConsume/cuConsume/**", "anon");
 		filterChainDefinitionMap.put("/mallShopAdvert/mallShopAdvert/**", "anon");
+		filterChainDefinitionMap.put("/mallGoods/mallGoods/**", "anon");
+		filterChainDefinitionMap.put("/walletInfo/walletInfo/**", "anon");
 		//性能监控
 		filterChainDefinitionMap.put("/actuator/metrics/**", "anon");
 		filterChainDefinitionMap.put("/actuator/httptrace/**", "anon");
