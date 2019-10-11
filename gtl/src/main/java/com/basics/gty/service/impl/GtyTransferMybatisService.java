@@ -169,7 +169,7 @@ public class GtyTransferMybatisService extends BaseApiService implements GtyTran
 
                 gtyWallet1.setMoveNum(gtyWallet.getMoveNum().subtract(new BigDecimal(request.getNum())));
                 gtyWallet1.setmTokenNum(new BigDecimal(request.getNum()).multiply(new BigDecimal("13.32")).add(gtyWallet.getmTokenNum()));
-                cuCustomerCollectService.addMp(gtyWallet.getmTokenNum(), gtyWallet.getUserId());
+                cuCustomerCollectService.addMp(new BigDecimal(request.getNum()).multiply(new BigDecimal("13.32")), gtyWallet.getUserId());
                 //gtyWallet.getmTokenNum()
                 gtyWalletDao.update(gtyWallet1);
             }
