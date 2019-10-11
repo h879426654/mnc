@@ -6,6 +6,7 @@ import com.basics.gty.entity.GtyWallet;
 import com.basics.support.GenericService;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 public interface GtyTransferService  {
     public DataResponse transferMoney(TokenTransferRequest request, HttpServletRequest req);
@@ -16,7 +17,7 @@ public interface GtyTransferService  {
 
     public DataItemResponse queryWalletInfo(TokenIdRequest request );
 
-    public DataResponse setLimit(IdNumRequest request );
+    public DataResponse setLimit(IdNumRequest request, HttpServletResponse response );
 
     public DataResponse setPointLimit(IdPointRequest request );
 

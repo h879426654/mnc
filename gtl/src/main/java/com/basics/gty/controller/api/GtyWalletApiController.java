@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -179,7 +180,7 @@ public class GtyWalletApiController implements ApplicationContextAware {
     }
 
     @RequestMapping("setReleaseLimit")
-    public DataResponse setReleaseLimit(IdNumRequest request){
+    public DataResponse setReleaseLimit(IdNumRequest request, HttpServletResponse response){
         DataResponse dataItemResponse = new DataResponse();
         if (StringUtils.isBlank(request.getId())) {
             dataItemResponse.setMsg("未找到该用户");
@@ -187,7 +188,7 @@ public class GtyWalletApiController implements ApplicationContextAware {
             return dataItemResponse;
         }
         try {
-            dataItemResponse = gtyTransferMybatisService.setLimit(request);
+            dataItemResponse = gtyTransferMybatisService.setLimit(request,response);
         } catch (Exception e) {
             dataItemResponse.onException(e);
         }
@@ -211,7 +212,7 @@ public class GtyWalletApiController implements ApplicationContextAware {
     }
 
     @RequestMapping("setWithDrawLimit")
-    public DataResponse setWithDrawLimit(IdNumRequest request){
+    public DataResponse setWithDrawLimit(IdNumRequest request, HttpServletResponse response){
         DataResponse dataItemResponse = new DataResponse();
         if (StringUtils.isBlank(request.getId())) {
             dataItemResponse.setMsg("未找到该用户");
@@ -219,7 +220,7 @@ public class GtyWalletApiController implements ApplicationContextAware {
             return dataItemResponse;
         }
         try {
-            dataItemResponse = gtyTransferMybatisService.setLimit(request);
+            dataItemResponse = gtyTransferMybatisService.setLimit(request,response);
         } catch (Exception e) {
             dataItemResponse.onException(e);
         }

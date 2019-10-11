@@ -41,6 +41,7 @@ import org.web3j.utils.Convert;
 import org.web3j.utils.Numeric;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.*;
@@ -63,11 +64,6 @@ public class GtyTransferMybatisService extends BaseApiService implements GtyTran
             return response;
         }
          String userId =   user.getId();
-//        String userId = request.getId();
-//        QueryFilter filter = new QueryFilter();
-//        Map<String, Object> map = new HashMap<>();
-//        map.put("USER_ID", userId);
-//        filter.setParams(map);
 
         List<GtyWallet> gtyWallet111 = gtyWalletDao.queryExtend(new QueryFilterBuilder().put("userId", userId).build(),
                 "queryInfo");
@@ -189,12 +185,10 @@ public class GtyTransferMybatisService extends BaseApiService implements GtyTran
                     gtyWallet2 = gtyWallet22.get(0);
                 }
                 if (gtyWallet2 == null || StringUtils.isBlank(gtyWallet2.getWalletAddress())) {
-                    gtyWallet2 = new GtyWallet();
-                    gtyWallet2.setUserId(request.getToAddress());
-                    gtyWallet2.setMoveNum(new BigDecimal(request.getNum()));
-                    gtyWalletDao.save(gtyWallet2);
+                    response.setStatus(1);
+                    response.setMsg("地址未找到");
+                    return response;
                 } else {
-                    gtyWallet2.setUserId(request.getToAddress());
                     gtyWallet2.setMoveNum(gtyWallet2.getMoveNum().add(new BigDecimal(request.getNum())));
                     gtyWalletDao.update(gtyWallet2);
                 }
@@ -431,7 +425,7 @@ public class GtyTransferMybatisService extends BaseApiService implements GtyTran
     }
 
     @Override
-    public DataResponse setLimit(IdNumRequest request) {
+    public DataResponse setLimit(IdNumRequest request, HttpServletResponse res) {
         DataResponse dataResponse = new DataResponse();
         if (StringUtils.isBlank(request.getId())) {
             dataResponse.setMsg("未找到该用户");
@@ -456,6 +450,13 @@ public class GtyTransferMybatisService extends BaseApiService implements GtyTran
         gtyWalletLimitDao.update(gtyLimitWallet);
         dataResponse.setStatus(0);
         dataResponse.setMsg("成功");
+        res.setHeader("Access-Control-Allow-Origin", "*");
+       res.setContentType("application/json;charset=UTF-8");
+        res.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE");
+       res.setHeader("Access-Control-Max-Age", "3600");
+        res.setHeader("Access-Control-Allow-Headers", "Origin, No-Cache, X-Requested-With, If-Modified-Since, Pragma, Last-Modified, Cache-Control, Expires, Content-Type, X-E4M-With,userId,token");//表明服务器支持的所有头信息字段
+        res.setHeader("Access-Control-Allow-Credentials", "true"); //如果要把Cookie发到服务器，需要指定Access-Control-Allow-Credentials字段为true;
+        res.setHeader("XDomainRequestAllowed","1");
         return dataResponse;
     }
 
@@ -479,6 +480,7 @@ public class GtyTransferMybatisService extends BaseApiService implements GtyTran
         gtyWalletLimitDao.update(gtyLimitWallet);
         dataResponse.setStatus(0);
         dataResponse.setMsg("成功");
+
         return dataResponse;
     }
 
@@ -576,7 +578,6 @@ public class GtyTransferMybatisService extends BaseApiService implements GtyTran
                     gasPrice,
                     gasLimit,
                     contractAddress, encodedFunction);
-
 
             //签名Transaction，这里要对交易做签名
             byte[] signMessage = TransactionEncoder.signMessage(rawTransaction, credentials);
