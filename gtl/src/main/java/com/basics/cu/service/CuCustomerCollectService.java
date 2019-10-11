@@ -7,6 +7,7 @@ import com.basics.cu.entity.CuCustomerCollect;
 import jnr.ffi.annotations.In;
 import org.web3j.abi.datatypes.Int;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 public interface CuCustomerCollectService {
@@ -43,4 +44,6 @@ public interface CuCustomerCollectService {
     String searchToken(String token);
 
     String searchImageAndName(String token);
+
+    void addMp(BigDecimal mp, String customerId);
 }
