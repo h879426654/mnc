@@ -104,7 +104,7 @@ public class CuCustomerCollectMybatisServiceImpl extends BaseApiService implemen
         if (null != customerId) {
             CuHttpUrl cuHttpUrl = new CuHttpUrl();
             CuCustomerInfo cuCustomerInfo = cuCustomerInfoDao.queryOne(new QueryFilterBuilder().put("id", customerId).build());
-            MallShopAdvert mallShopAdvert = mallShopAdvertDao.queryOne(new QueryFilterBuilder().put("customerId", cuCustomerInfo.getId()).put("applyStatus", "2").put("flagDel", "0").build());
+            MallShopAdvert mallShopAdvert = mallShopAdvertDao.queryOne(new QueryFilterBuilder().put("customerId", cuCustomerInfo.getId()).put("flagDel", "0").build());
             if (null == mallShopAdvert) {
                 //用户
                 cuHttpUrl.setIsAdv("3");
@@ -129,8 +129,12 @@ public class CuCustomerCollectMybatisServiceImpl extends BaseApiService implemen
             }
             List<CuHttpUrl> cuHttpUrls = cuHttpUrlDao.query(new QueryFilterBuilder().put("token", token).build());
             if (mallShopAdvert != null) {
-                List<CuCustomerCollect> cuCustomerCollects = cuCustomerCollectDao.query(new QueryFilterBuilder().put("shopId", mallShopAdvert.getId()).put("state","1").build());
-                cuHttpUrl.setVermicelli(cuCustomerCollects.size());
+                if ("2".equals(mallShopAdvert.getApplyStatus())) {
+                    List<CuCustomerCollect> cuCustomerCollects = cuCustomerCollectDao.query(new QueryFilterBuilder().put("shopId", mallShopAdvert.getId()).put("state","1").build());
+                    cuHttpUrl.setVermicelli(cuCustomerCollects.size());
+                } else {
+                    cuHttpUrl.setVermicelli(0);
+                }
             } else {
                 cuHttpUrl.setVermicelli(0);
             }
