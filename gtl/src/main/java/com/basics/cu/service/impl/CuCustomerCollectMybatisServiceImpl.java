@@ -41,8 +41,7 @@ public class CuCustomerCollectMybatisServiceImpl extends BaseApiService implemen
                     cuCustomerCollect.setImage(mallShopAdvert.getAdvertImage());
                     cuCustomerCollect.setAddress(mallShopAdvert.getAdvertAddress());
                     cuCustomerCollect.setShopName(mallShopAdvert.getAdvertName());
-                    List<CuConsume> list1 = cuConsumeDao.query(new QueryFilterBuilder().put("shopId", cuCustomerCollect.getShopId()).build());
-                    cuCustomerCollect.setCount(list1.size());
+                    cuCustomerCollect.setCount(mallShopAdvert.getAdvertSale());
                 }
             }
             return list;
@@ -107,7 +106,7 @@ public class CuCustomerCollectMybatisServiceImpl extends BaseApiService implemen
                 cuHttpUrl.setMp(gtyWallet.getmTokenNum());
             }
             List<CuHttpUrl> cuHttpUrls = cuHttpUrlDao.query(new QueryFilterBuilder().put("token", token).build());
-            List<CuCustomerCollect> cuCustomerCollects = cuCustomerCollectDao.query(new QueryFilterBuilder().put("customerId",cuCustomerInfo.getId()).put("state","1").build());
+            List<CuCustomerCollect> cuCustomerCollects = cuCustomerCollectDao.query(new QueryFilterBuilder().put("shopId", mallShopAdvert.getId()).put("state","1").build());
             cuHttpUrl.setVermicelli(cuCustomerCollects.size());
             if (null != mallShopAdvert) {
                 cuHttpUrl.setShopId(mallShopAdvert.getId());
@@ -214,7 +213,10 @@ public class CuCustomerCollectMybatisServiceImpl extends BaseApiService implemen
                 gtyWallet1.setRecordNum(recordNum);
                 gtyWalletDao.update(gtyWallet1);
             }
-            return "成功";
+            CuState cuState = new CuState();
+            cuState.setState("0");
+            JSONObject json = (JSONObject) JSONObject.toJSON(cuState);
+            return json.toString();
         } catch (Exception e) {
             throw new RuntimeException();
         }
@@ -317,9 +319,15 @@ public class CuCustomerCollectMybatisServiceImpl extends BaseApiService implemen
                 CuConsume cuConsume = cuConsumeDao.queryOne(new QueryFilterBuilder().put("id", id).build());
                 cuConsume.setAppraise("1");
                 cuConsumeDao.update(cuConsume);
-                return "成功";
+                CuState cuState = new CuState();
+                cuState.setState("0");
+                JSONObject json = (JSONObject)JSONObject.toJSON(cuState);
+                return json.toString();
             } catch (Exception e) {
-                return "失败";
+                CuState cuState = new CuState();
+                cuState.setState("1");
+                JSONObject json = (JSONObject)JSONObject.toJSON(cuState);
+                return json.toString();
             }
         }
         return "token有误";
