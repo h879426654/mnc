@@ -96,14 +96,16 @@ public class CuReatilMoneyController {
 	public Result<CuReatilMoney> edit(@RequestBody CuReatilMoney cuReatilMoney) {
 		Result<CuReatilMoney> result = new Result<CuReatilMoney>();
 		CuReatilMoney cuReatilMoneyEntity = cuReatilMoneyService.getById(cuReatilMoney.getId());
+		if (null != cuReatilMoney) {
+			cuReatilMoneyEntity.setId(cuReatilMoney.getId());
+			cuReatilMoneyEntity.setMoney(cuReatilMoney.getMoney());
+		}
 		if(cuReatilMoneyEntity==null) {
 			result.error500("未找到对应实体");
 		}else {
-			boolean ok = cuReatilMoneyService.updateById(cuReatilMoney);
+			cuReatilMoneyService.updateById(cuReatilMoneyEntity);
 			//TODO 返回false说明什么？
-			if(ok) {
-				result.success("修改成功!");
-			}
+			result.success("修改成功!");
 		}
 		
 		return result;
