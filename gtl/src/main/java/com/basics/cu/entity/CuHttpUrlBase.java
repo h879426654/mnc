@@ -13,6 +13,15 @@ class CuHttpUrlBase extends BaseBean {
 	private String httpList;
 	private Integer vermicelli;
 	private String shopId;
+	private String isAdv;
+
+	public String getIsAdv() {
+		return isAdv;
+	}
+
+	public void setIsAdv(String isAdv) {
+		this.isAdv = isAdv;
+	}
 
 	public String getShopId() {
 		return shopId;

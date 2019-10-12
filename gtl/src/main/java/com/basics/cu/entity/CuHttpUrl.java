@@ -44,4 +44,8 @@ public class CuHttpUrl extends CuHttpUrlBase {
 		this.setShopId(shopId);
 		return this;
 	}
+	public CuHttpUrl isAdv(String isAdv) {
+		this.setIsAdv(isAdv);
+		return this;
+	}
 }
