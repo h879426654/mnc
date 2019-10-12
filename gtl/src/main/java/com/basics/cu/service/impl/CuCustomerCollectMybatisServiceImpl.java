@@ -106,8 +106,12 @@ public class CuCustomerCollectMybatisServiceImpl extends BaseApiService implemen
                 cuHttpUrl.setMp(gtyWallet.getmTokenNum());
             }
             List<CuHttpUrl> cuHttpUrls = cuHttpUrlDao.query(new QueryFilterBuilder().put("token", token).build());
-            List<CuCustomerCollect> cuCustomerCollects = cuCustomerCollectDao.query(new QueryFilterBuilder().put("shopId", mallShopAdvert.getId()).put("state","1").build());
-            cuHttpUrl.setVermicelli(cuCustomerCollects.size());
+            if (mallShopAdvert != null) {
+                List<CuCustomerCollect> cuCustomerCollects = cuCustomerCollectDao.query(new QueryFilterBuilder().put("shopId", mallShopAdvert.getId()).put("state","1").build());
+                cuHttpUrl.setVermicelli(cuCustomerCollects.size());
+            } else {
+                cuHttpUrl.setVermicelli(0);
+            }
             if (null != mallShopAdvert) {
                 cuHttpUrl.setShopId(mallShopAdvert.getId());
             } else {
