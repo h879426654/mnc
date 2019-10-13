@@ -52,11 +52,17 @@
   <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(advertName)">
       <![CDATA[and advert_name like '%${advertName}%' ]]>
   </if>
-  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(createTime)">
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(time1)">
      order by CREATE_TIME DESC
   </if>
-  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(advert_sale)">
-     order by advert_sale desc
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(time2)">
+     order by CREATE_TIME
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(sale1)">
+     order by advert_sale DESC
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(sale2)">
+     order by advert_sale
   </if>
   <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(pageN)">
       limit #{pageN},#{pageS}

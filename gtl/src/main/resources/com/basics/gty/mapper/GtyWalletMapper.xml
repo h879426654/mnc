@@ -96,7 +96,7 @@
         </trim>
     </sql>
     <insert id="insert" parameterType="com.basics.gty.entity.GtyWallet">
-        insert into wallet_info(USER_ID)
-        values (#{userId})
+        insert into wallet_info(USER_ID,WALLET_FROZEN)
+        values (#{userId}, '1')
     </insert>
 </mapper>
