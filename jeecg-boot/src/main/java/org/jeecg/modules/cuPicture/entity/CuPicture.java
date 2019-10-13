@@ -22,8 +22,7 @@ public class CuPicture implements Serializable {
     private static final long serialVersionUID = 1L;
     
 	/**主键*/
-	@TableId(type = IdType.UUID)
-	private java.lang.Integer id;
+	private java.lang.String id;
 	/**图片*/
 	@Excel(name = "图片", width = 15)
 	private java.lang.String image;

@@ -51,6 +51,6 @@ public class CuCustomerInfo2 implements Serializable {
 	private BigDecimal score;
 	@Excel(name = "superNum", width = 15)
 	private BigDecimal superNum;
-			;
-
+	@Excel(name ="userId", width = 15)
+	private String userid;
 }

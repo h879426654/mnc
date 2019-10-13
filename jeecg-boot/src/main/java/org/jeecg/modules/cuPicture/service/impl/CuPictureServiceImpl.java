@@ -3,6 +3,7 @@ package org.jeecg.modules.cuPicture.service.impl;
 import org.jeecg.modules.cuPicture.entity.CuPicture;
 import org.jeecg.modules.cuPicture.mapper.CuPictureMapper;
 import org.jeecg.modules.cuPicture.service.ICuPictureService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;

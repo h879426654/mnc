@@ -12,8 +12,10 @@ import javax.servlet.http.HttpServletResponse;
 import org.jeecg.common.api.vo.Result;
 import org.jeecg.common.system.query.QueryGenerator;
 import org.jeecg.common.util.oConvertUtils;
+import org.jeecg.modules.cuCustomerInfo.entity.CuCustomerExport;
 import org.jeecg.modules.cuCustomerInfo.entity.CuCustomerInfo;
 import org.jeecg.modules.cuCustomerInfo.entity.CuCustomerInfo2;
+import org.jeecg.modules.cuCustomerInfo.mapper.CuCustomerInfoMapper;
 import org.jeecg.modules.cuCustomerInfo.service.ICuCustomerInfoService;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -51,6 +53,8 @@ public class CuCustomerInfoController {
 	private ICuCustomerInfoService cuCustomerInfoService;
 	@Autowired
 	private WalletInfoMapper walletInfoMapper;
+	@Autowired
+	private CuCustomerInfoMapper cuCustomerInfoMapper;
 	/**
 	  * 分页列表查询
 	 * @param cuCustomerInfo
@@ -197,33 +201,37 @@ public class CuCustomerInfoController {
 	}
 
   /**
-      * 导出excel
+   * 导出excel
    *
-   * @param request
-   * @param response
    */
   @RequestMapping(value = "/exportXls")
-  public ModelAndView exportXls(HttpServletRequest request, HttpServletResponse response) {
-      // Step.1 组装查询条件
-      QueryWrapper<CuCustomerInfo> queryWrapper = null;
-      try {
-          String paramsStr = request.getParameter("paramsStr");
-          if (oConvertUtils.isNotEmpty(paramsStr)) {
-              String deString = URLDecoder.decode(paramsStr, "UTF-8");
-              CuCustomerInfo cuCustomerInfo = JSON.parseObject(deString, CuCustomerInfo.class);
-              queryWrapper = QueryGenerator.initQueryWrapper(cuCustomerInfo, request.getParameterMap());
-          }
-      } catch (UnsupportedEncodingException e) {
-          e.printStackTrace();
-      }
-
+  public ModelAndView exportXls(CuCustomerExport cuCustomerExport) {
       //Step.2 AutoPoi 导出Excel
       ModelAndView mv = new ModelAndView(new JeecgEntityExcelView());
-      List<CuCustomerInfo> pageList = cuCustomerInfoService.list(queryWrapper);
+	  QueryWrapper<CuCustomerInfo> queryWrapper = new QueryWrapper<CuCustomerInfo>();
+	  if (null != cuCustomerExport.getName() && !cuCustomerExport.getName().isEmpty()) {
+	  	queryWrapper.eq("customer_Name", cuCustomerExport.getName());
+	  }
+	  if (null != cuCustomerExport.getPhone()) {
+		  queryWrapper.eq("customer_Phone", cuCustomerExport.getPhone());
+	  }
+      List<CuCustomerInfo> cuCustomerInfos = cuCustomerInfoMapper.selectList(queryWrapper);
+      List<CuCustomerExport> pageList = new ArrayList<>();
+	  for (CuCustomerInfo cuCustomerInfo : cuCustomerInfos) {
+	  	CuCustomerExport cuCustomerExport1 = new CuCustomerExport();
+	  	WalletInfo walletInfo = walletInfoMapper.selectOne(new QueryWrapper<WalletInfo>().eq("user_Id", cuCustomerInfo.getCustomerId()));
+	  	cuCustomerExport1.setName(cuCustomerInfo.getCustomerName());
+	  	cuCustomerExport1.setPhone(cuCustomerInfo.getCustomerPhone());
+	  	cuCustomerExport1.setMnc(walletInfo.getMncNum());
+	  	cuCustomerExport1.setMtoken(walletInfo.getMtokenNum());
+	  	cuCustomerExport1.setScoreNum(walletInfo.getScoreNum());
+	  	cuCustomerExport1.setSuperNum(walletInfo.getSuperNum().add(walletInfo.getReleasedMncNum()));
+	  	pageList.add(cuCustomerExport1);
+	  }
       //导出文件名称
       mv.addObject(NormalExcelConstants.FILE_NAME, "用户表列表");
-      mv.addObject(NormalExcelConstants.CLASS, CuCustomerInfo.class);
-      mv.addObject(NormalExcelConstants.PARAMS, new ExportParams("用户表列表数据", "导出人:Jeecg", "导出信息"));
+      mv.addObject(NormalExcelConstants.CLASS, CuCustomerExport.class);
+      mv.addObject(NormalExcelConstants.PARAMS, new ExportParams("用户表列表数据", "导出人:admin", "导出信息"));
       mv.addObject(NormalExcelConstants.DATA_LIST, pageList);
       return mv;
   }

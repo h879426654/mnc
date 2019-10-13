@@ -22,7 +22,6 @@ public class MallGoods implements Serializable {
     private static final long serialVersionUID = 1L;
     
 	/**主键*/
-	@TableId(type = IdType.UUID)
 	private java.lang.Integer id;
 	/**商家ID*/
 	@Excel(name = "商家ID", width = 15)
