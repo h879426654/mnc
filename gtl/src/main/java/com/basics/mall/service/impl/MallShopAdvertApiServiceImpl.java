@@ -2,20 +2,29 @@ package com.basics.mall.service.impl;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.*;
 
+import com.alibaba.fastjson.JSON;
 import com.basics.app.entity.AppToken;
 import com.basics.cu.entity.CuConsume;
 import com.basics.mall.controller.response.MallAdvertResponse;
 import com.basics.mall.entity.MallGoods;
 import com.basics.mall.entity.MallShop;
+import com.basics.support.auth.HttpClientUtils;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import jodd.util.StringUtil;
 import net.sf.json.JSONArray;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -405,8 +414,9 @@ public class MallShopAdvertApiServiceImpl extends BaseApiService implements Mall
 			mallShopAdvert.setCity(mallAdvertResponse.getCity());
 			mallShopAdvert.setRegion(mallAdvertResponse.getRegion());
 			mallShopAdvert.setCustomerId(appToken.getUserId());
-			mallShopAdvert.setAdvertLatitude("112");
-			mallShopAdvert.setAdvertLongitude("110");
+			Map<String, Object> map = this.getLngAndLat(mallAdvertResponse.getAdvertAddress());
+			mallShopAdvert.setAdvertLongitude(String.valueOf(map.get("Longitude")));
+			mallShopAdvert.setAdvertLatitude(String.valueOf(map.get("Latitude")));
 			mallShopAdvert.setClassifyId(mallAdvertResponse.getClaasifyId());
 			mallShopAdvertDao.insert(mallShopAdvert);
 			return "成功";
@@ -435,49 +445,40 @@ public class MallShopAdvertApiServiceImpl extends BaseApiService implements Mall
 		return json.toString();
 	}
 
-	public static Map<String, Double> getLngAndLat(String address) {
-		Map<String, Double> map = new HashMap<String, Double>();
-		String url = "http://api.map.baidu.com/geocoder/v2/?address=" + address + "&output=json&ak=自己的key";
-		String json = loadJSON(url);
-		net.sf.json.JSONObject obj = null;
+	public static Map<String, Object> getLngAndLat(String address) {
 		try {
-			obj = net.sf.json.JSONObject.fromObject(json);
-			if (obj.get("status").toString().equals("0")) {
-				double lng = obj.getJSONObject("result").getJSONObject("location").getDouble("lng");
-				double lat = obj.getJSONObject("result").getJSONObject("location").getDouble("lat");
-				map.put("lng", lng);
-				map.put("lat", lat);
-				//System.out.println("经度：" + lng + "---纬度：" + lat);
-			} else {
+			Map<String, Object> param = new HashMap<String, Object>();
+			HttpURLConnection connection = null;
+			InputStream is = null;
 
-           /* System.out.println("未找到相匹配的经纬度！");
-            Integer lng[] = {113, 114, 119, 115};
-            Integer lat[] = {34, 38, 26, 28};
-            int random = CreateDataUtil.getGaussianRandom(0, 3);
-            map.put("lng", lng[random].doubleValue());
-            map.put("lat", lat[random].doubleValue());*/
-			}
+			Map<String, String> map = new HashMap<>();
+			map.put("address", address);
+			map.put("key","18b6949c7f33350e232c2b58430e0159");
+			String result = HttpClientUtils.invokeGet("http://restapi.amap.com/v3/geocode/geo", map);
+			net.sf.json.JSONObject jsonObject = net.sf.json.JSONObject.fromObject(result);
+			JSONArray jsonArray = JSONArray.fromObject(jsonObject.getString("geocodes"));
+			net.sf.json.JSONObject j_2 = net.sf.json.JSONObject.fromObject(jsonArray.get(0));
+			String location = j_2.getString("location");
+			param.put("Longitude", location.split(",")[0]);
+			param.put("Latitude", location.split(",")[1]);
+//			URL url = new URL("http://restapi.amap.com/v3/geocode/geo?address="+address+"&key=18b6949c7f33350e232c2b58430e0159");
+//			connection = (HttpURLConnection) url.openConnection();
+//			connection.setRequestMethod("GET");
+//			connection.setConnectTimeout(15000);
+//			connection.setReadTimeout(60000);
+//			connection.setRequestProperty("contentType", "utf-8");
+//			connection.connect();
+//			is = connection.getInputStream();
+//			JsonNode jsonNode = new ObjectMapper().readTree(is);
+//			if(StringUtil.equals(jsonNode.findValue("status").textValue(),"1") && jsonNode.findValue("geocodes").size()>0){
+//				String[] degree = jsonNode.findValue("geocodes").findValue("location").textValue().split(",");
+//				param.put("longitude", degree[0]);
+//				param.put("dimension", degree[1]);
+//			}
+			return param;
 		} catch (Exception e) {
+			return null;
 		}
-
-		return map;
 	}
-	public static String loadJSON(String url) {
-		StringBuilder json = new StringBuilder();
-		try {
-			URL oracle = new URL(url);
-			URLConnection yc = oracle.openConnection();
-			BufferedReader in = new BufferedReader(new InputStreamReader(
-					yc.getInputStream()));
-			String inputLine = null;
-			while ((inputLine = in.readLine()) != null) {
-				json.append(inputLine);
-			}
-			in.close();
-		} catch (MalformedURLException e) {
-		} catch (IOException e) {
-		}
-		return json.toString();
 
-	}
 }

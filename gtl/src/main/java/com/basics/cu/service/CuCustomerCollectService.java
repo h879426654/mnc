@@ -46,4 +46,6 @@ public interface CuCustomerCollectService {
     String searchImageAndName(String token);
 
     void addMp(BigDecimal mp, String customerId);
+
+    String searchAdvUser(String token);
 }

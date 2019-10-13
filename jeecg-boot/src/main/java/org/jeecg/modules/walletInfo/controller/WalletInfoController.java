@@ -1,13 +1,11 @@
 package org.jeecg.modules.walletInfo.controller;
 
-import java.io.*;
 import java.math.BigDecimal;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -39,7 +37,7 @@ import com.alibaba.fastjson.JSON;
  * @Title: Controller
  * @Description: mnc管理
  * @author： jeecg-boot
- * @date：   2019-10-10
+ * @date：   2019-10-11
  * @version： V1.0
  */
 @RestController
@@ -168,37 +166,37 @@ public class WalletInfoController {
 		return result;
 	}
 
-  /**
-      * 导出excel
-   *
-   * @param request
-   * @param response
-   */
-  @RequestMapping(value = "/exportXls")
-  public ModelAndView exportXls(HttpServletRequest request, HttpServletResponse response) {
-      // Step.1 组装查询条件
-      QueryWrapper<WalletInfo> queryWrapper = null;
-      try {
-          String paramsStr = request.getParameter("paramsStr");
-          if (oConvertUtils.isNotEmpty(paramsStr)) {
-              String deString = URLDecoder.decode(paramsStr, "UTF-8");
-              WalletInfo walletInfo = JSON.parseObject(deString, WalletInfo.class);
-              queryWrapper = QueryGenerator.initQueryWrapper(walletInfo, request.getParameterMap());
-          }
-      } catch (UnsupportedEncodingException e) {
-          e.printStackTrace();
-      }
+	 /**
+	  * 导出excel
+	  *
+	  * @param request
+	  * @param response
+	  */
+	 @RequestMapping(value = "/exportXls")
+	 public ModelAndView exportXls(HttpServletRequest request, HttpServletResponse response) {
+		 // Step.1 组装查询条件
+		 QueryWrapper<WalletInfo> queryWrapper = null;
+		 try {
+			 String paramsStr = request.getParameter("paramsStr");
+			 if (oConvertUtils.isNotEmpty(paramsStr)) {
+				 String deString = URLDecoder.decode(paramsStr, "UTF-8");
+				 WalletInfo walletInfo = JSON.parseObject(deString, WalletInfo.class);
+				 queryWrapper = QueryGenerator.initQueryWrapper(walletInfo, request.getParameterMap());
+			 }
+		 } catch (UnsupportedEncodingException e) {
+			 e.printStackTrace();
+		 }
 
-      //Step.2 AutoPoi 导出Excel
-      ModelAndView mv = new ModelAndView(new JeecgEntityExcelView());
-      List<WalletInfo> pageList = walletInfoService.list(queryWrapper);
-      //导出文件名称
-      mv.addObject(NormalExcelConstants.FILE_NAME, "mnc管理列表");
-      mv.addObject(NormalExcelConstants.CLASS, WalletInfo.class);
-      mv.addObject(NormalExcelConstants.PARAMS, new ExportParams("mnc管理列表数据", "导出人:Jeecg", "导出信息"));
-      mv.addObject(NormalExcelConstants.DATA_LIST, pageList);
-      return mv;
-  }
+		 //Step.2 AutoPoi 导出Excel
+		 ModelAndView mv = new ModelAndView(new JeecgEntityExcelView());
+		 List<WalletInfo> pageList = walletInfoService.list(queryWrapper);
+		 //导出文件名称
+		 mv.addObject(NormalExcelConstants.FILE_NAME, "mnc管理列表");
+		 mv.addObject(NormalExcelConstants.CLASS, WalletInfo.class);
+		 mv.addObject(NormalExcelConstants.PARAMS, new ExportParams("mnc管理列表数据", "导出人:Jeecg", "导出信息"));
+		 mv.addObject(NormalExcelConstants.DATA_LIST, pageList);
+		 return mv;
+	 }
 
   /**
       * 通过excel导入数据
@@ -236,97 +234,19 @@ public class WalletInfoController {
       }
       return Result.ok("文件导入失败！");
   }
-  	@RequestMapping(value = "/httpClient")
-  	public String httpClient() {
-	  try {
-		  HttpURLConnection connection = null;
-		  InputStream is = null;
-		  BufferedReader br = null;
-		  String result = null;//
-		  URL url = new URL("http://47.75.47.121:8080/gtl/api/gty/wallet/getLimitInfo.do");
-		  connection = (HttpURLConnection) url.openConnection();
-		  connection.setRequestMethod("GET");
-		  connection.setConnectTimeout(15000);
-		  connection.setReadTimeout(60000);
-		  connection.connect();
-		  if (connection.getResponseCode() == 200) {
-			  is = connection.getInputStream();
-			  // 封装输入流is，并指定字符集
-			  br = new BufferedReader(new InputStreamReader(is, "UTF-8"));
-			  // 存放数据
-			  StringBuffer sbf = new StringBuffer();
-			  String temp = null;
-			  while ((temp = br.readLine()) != null) {
-				  sbf.append(temp);
-				  sbf.append("\r\n");
-			  }
-			  result = sbf.toString();
-		  }
-		  return result;
-	  } catch (Exception e) {
-		  return "请求失败";
-	  }
-  }
-	 @RequestMapping(value = "/httpClient2")
-	 public String httpClient2(String num, String type, String id) {
-		 try {
-			 HttpURLConnection connection = null;
-			 InputStream is = null;
-			 BufferedReader br = null;
-			 String result = null;//
-			 URL url = new URL("http://47.75.47.121:8080/gtl/api/gty/wallet/setReleasePointLimit.do?num="+new BigDecimal(num)+"&type="+type+"&id="+id);
-			 connection = (HttpURLConnection) url.openConnection();
-			 connection.setRequestMethod("GET");
-			 connection.setConnectTimeout(15000);
-			 connection.setReadTimeout(60000);
-			 connection.connect();
-			 if (connection.getResponseCode() == 200) {
-				 is = connection.getInputStream();
-				 // 封装输入流is，并指定字符集
-				 br = new BufferedReader(new InputStreamReader(is, "UTF-8"));
-				 // 存放数据
-				 StringBuffer sbf = new StringBuffer();
-				 String temp = null;
-				 while ((temp = br.readLine()) != null) {
-					 sbf.append(temp);
-					 sbf.append("\r\n");
-				 }
-				 result = sbf.toString();
-			 }
-			 return result;
-		 } catch (Exception e) {
-			 return "请求失败";
-		 }
+	 @RequestMapping(value = "/searchDate")
+	 public String searchDate() {
+		 String url = "http://47.75.47.121:8080/gtl/api/gty/wallet/getLimitInfo.do";
+		 return walletInfoService.httpClient(url);
 	 }
-	 @RequestMapping(value = "/httpClient3")
-	 public String httpClient3(String type, String upNum, String downNum, String id) {
-		 try {
-			 HttpURLConnection connection = null;
-			 InputStream is = null;
-			 BufferedReader br = null;
-			 String result = null;//
-			 URL url = new URL("http://47.75.47.121:8080/gtl/api/gty/wallet/setReleaseLimit.do?type="+type+"&upNum="+new BigDecimal(upNum)+"&downNum="+new BigDecimal(downNum)+"&id="+id);
-			 connection = (HttpURLConnection) url.openConnection();
-			 connection.setRequestMethod("GET");
-			 connection.setConnectTimeout(15000);
-			 connection.setReadTimeout(60000);
-			 connection.connect();
-			 if (connection.getResponseCode() == 200) {
-				 is = connection.getInputStream();
-				 // 封装输入流is，并指定字符集
-				 br = new BufferedReader(new InputStreamReader(is, "UTF-8"));
-				 // 存放数据
-				 StringBuffer sbf = new StringBuffer();
-				 String temp = null;
-				 while ((temp = br.readLine()) != null) {
-					 sbf.append(temp);
-					 sbf.append("\r\n");
-				 }
-				 result = sbf.toString();
-			 }
-			 return result;
-		 } catch (Exception e) {
-			 return "请求失败";
-		 }
+	 @RequestMapping(value = "/searchDatet")
+	 public String searchDatet(String num, String type, String id) {
+		 String url = "http://47.75.47.121:8080/gtl/api/gty/wallet/setReleasePointLimit.do?num="+new BigDecimal(num)+"&type="+type+"&id="+id;
+		 return walletInfoService.httpClient(url);
+	 }
+	 @RequestMapping(value = "/searchDatets")
+	 public String searchDatets(String type, String upNum, String downNum, String id) {
+		 String url = "http://47.75.47.121:8080/gtl/api/gty/wallet/setReleaseLimit.do?type="+type+"&upNum="+new BigDecimal(upNum)+"&downNum="+new BigDecimal(downNum)+"&id="+id;
+		 return walletInfoService.httpClient(url);
 	 }
 }

@@ -13,7 +13,7 @@ import org.jeecgframework.poi.excel.annotation.Excel;
 /**
  * @Description: mnc管理
  * @author： jeecg-boot
- * @date：   2019-10-10
+ * @date：   2019-10-11
  * @version： V1.0
  */
 @Data

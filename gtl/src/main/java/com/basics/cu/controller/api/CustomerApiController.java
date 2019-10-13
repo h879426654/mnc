@@ -633,4 +633,9 @@ public class CustomerApiController implements ApplicationContextAware {
 	public String searchImageAndName(String token) {
 		return cuCustomerCollectService.searchImageAndName(token);
 	}
+
+	@RequestMapping("searchAdvUser")
+	public String searchAdvUser(String token) {
+		return cuCustomerCollectService.searchAdvUser(token);
+	}
 }

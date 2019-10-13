@@ -233,13 +233,8 @@ public class CommonApiServiceImpl extends BaseApiService implements CommonApiSer
             response.onHandleFail(getMessage(req, "impl.doPushSms.phone.used"));
             return response;
         }
-        SysCountry country = sysCountryDao.queryOne(new QueryFilterBuilder().put("countryId", request.getCountry()).build());
-        if (null == country) {
-            response.onHandleFail(getMessage(req, "impl.doRegisterUser.country.nonexistent"));
-            return response;
-        }
         // 短信验证码
-        String msg = checkSmsCode(request.getPhone(), Constant.SMS_TYPE_1, request.getCode(), country.getCountryId(), req);
+        String msg = checkSmsCode(request.getPhone(), Constant.SMS_TYPE_1, request.getCode(), "e84a151ced294a04b45a8f2086fc7157", req);
         if (StringUtils.isNotBlank(msg)) {
             response.onHandleFail(msg);
             return response;

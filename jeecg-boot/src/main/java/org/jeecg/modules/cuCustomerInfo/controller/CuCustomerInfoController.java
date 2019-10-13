@@ -88,7 +88,7 @@ public class CuCustomerInfoController {
 			if (null != walletInfo) {
 				cuCustomerInfo2.setMnc(walletInfo.getMncNum());
 				cuCustomerInfo2.setScore(walletInfo.getScoreNum());
-				cuCustomerInfo2.setSuperNum(walletInfo.getReleasedSuperNum());
+				cuCustomerInfo2.setSuperNum(walletInfo.getSuperNum().add(walletInfo.getReleasedMncNum()));
 				cuCustomerInfo2.setMtoken(walletInfo.getMtokenNum());
 			}
 			list2.add(cuCustomerInfo2);
