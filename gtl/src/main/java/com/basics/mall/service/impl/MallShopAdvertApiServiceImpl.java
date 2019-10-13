@@ -320,8 +320,16 @@ public class MallShopAdvertApiServiceImpl extends BaseApiService implements Mall
 		Map params = new HashMap();
 		params.put("classifyId", classifyId);
 		params.put("city", city);
-		params.put("createTime", isNew);
-		params.put("advertSale", sale);
+		if ("1".equals(isNew)){
+			params.put("time1", "0");
+		} else if ("0".equals(isNew)){
+			params.put("time2", "0");
+		} else if ("1".equals(sale)){
+			params.put("sale1", "0");
+		} else if ("0".equals(sale)){
+			params.put("sale2", "0");
+		}
+
 		params.put("pageN", (pageNum-1)*10);
 		params.put("pageS", pageSize);
 		params.put("advertName", shopName);
