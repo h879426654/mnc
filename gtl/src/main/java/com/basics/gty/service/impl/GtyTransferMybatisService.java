@@ -101,6 +101,7 @@ public class GtyTransferMybatisService extends BaseApiService implements GtyTran
                     gtyWallet1.setUserId(gtyWallet.getUserId());
                     gtyWallet1.setMncNum(gtyWallet.getMncNum().subtract(new BigDecimal(request.getNum())));
                     gtyWalletDao.update(gtyWallet1);
+
                 }else{
                     response.setStatus(0);
                     response.setMsg("转账失败");
@@ -132,7 +133,9 @@ public class GtyTransferMybatisService extends BaseApiService implements GtyTran
                 GtyWallet gtyWallet1 = new GtyWallet();
                 gtyWallet1.setUserId(gtyWallet.getUserId());
                 gtyWallet1.setMoveNum(gtyWallet.getMoveNum().subtract(new BigDecimal(request.getNum())));
-                gtyWallet1.setRecordNum(gtyWallet.getRecordNum().add(new BigDecimal(request.getNum())));
+               // gtyWallet1.setRecordNum(gtyWallet.getRecordNum().add(new BigDecimal(request.getNum())));
+                gtyWallet1.setRecordNum(new BigDecimal(request.getNum()).multiply(new BigDecimal("13.32")).add(gtyWallet.getRecordNum()));
+
                 gtyWalletDao.update(gtyWallet1);
             }
         } else if (request.getType() == 4) {// 流通转mtoken
@@ -180,10 +183,6 @@ public class GtyTransferMybatisService extends BaseApiService implements GtyTran
                 gtyWallet1.setUserId(gtyWallet.getUserId());
                 gtyWallet1.setMoveNum(gtyWallet.getMoveNum().subtract(new BigDecimal(request.getNum())));
 
-//                QueryFilter filter1 = new QueryFilter();
-//                Map<String, Object> map2 = new HashMap<>();
-//                map2.put("walletAddress", request.getToAddress());
-//                filter1.setParams(map2);
                 List<GtyWallet> gtyWallet22 = gtyWalletDao.queryExtend(new QueryFilterBuilder().put("walletAddress", request.getToAddress()).build(),
                         "queryInfoByAddress");
                 GtyWallet gtyWallet2 = new GtyWallet();
@@ -197,6 +196,12 @@ public class GtyTransferMybatisService extends BaseApiService implements GtyTran
                 } else {
                     gtyWallet2.setMoveNum(gtyWallet2.getMoveNum().add(new BigDecimal(request.getNum())));
                     gtyWalletDao.update(gtyWallet2);
+                    TokenTransferRequest request2 = new TokenTransferRequest();
+                    request2.setNum(request.getNum());
+                    request2.setToAddress(gtyWallet.getWalletAddress());
+                    request2.setType(request.getType());
+
+                    addHistory2(gtyWallet2.getUserId(),request2,"流通钱包点对点转入","+");
                 }
                 gtyWalletDao.update(gtyWallet1);
             }
@@ -276,6 +281,21 @@ public class GtyTransferMybatisService extends BaseApiService implements GtyTran
         geyWallethistoryDao.save(gtyWalletHistory);
 
     }
+    private void addHistory2( String mUid,TokenTransferRequest request,String recordName ,String mark ){
+
+        String uuid = UUID.randomUUID().toString().replace("-", "");
+        GtyWalletHistory gtyWalletHistory = new GtyWalletHistory();
+        gtyWalletHistory.setId(uuid);
+        gtyWalletHistory.setRecordNum(new BigDecimal(request.getNum()));
+        gtyWalletHistory.setRecordType(request.getType());
+        gtyWalletHistory.setToAccount(request.getToAddress());
+        gtyWalletHistory.setUserId(mUid);
+        gtyWalletHistory.setRecordName(recordName);
+        gtyWalletHistory.setMark(mark);
+        geyWallethistoryDao.save(gtyWalletHistory);
+
+    }
+
 
     @Override
     public DataResponse transfer(AddressRequest request, HttpServletRequest req) {
