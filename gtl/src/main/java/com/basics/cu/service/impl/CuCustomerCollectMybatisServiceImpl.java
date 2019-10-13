@@ -219,13 +219,20 @@ public class CuCustomerCollectMybatisServiceImpl extends BaseApiService implemen
         try {
             String customerId = this.getCuCustomerInfo(token);
             GtyWallet gtyWallet = gtyWalletDao.queryOne(new QueryFilterBuilder().put("userId", customerId).build());
-            BigDecimal rNum = gtyWallet.getRecordNum().multiply(new BigDecimal(0.5));
-            if (new BigDecimal(mp).compareTo(rNum) > 0 ) {
-                return "返还积分必须是记账奖励积分的一半以下";
+            if ("1".equals(state)) {
+                BigDecimal rNum = gtyWallet.getRecordNum().multiply(new BigDecimal(0.5));
+                if (new BigDecimal(mp).compareTo(rNum) > 0 ) {
+                    CuState cuState = new CuState();
+                    cuState.setState("2");
+                    JSONObject json = (JSONObject) JSONObject.toJSON(cuState);
+                    return json.toString();
+                }
             }
             CuConsume cuConsume = cuConsumeDao.queryOne(new QueryFilterBuilder().put("id",id).build());
             cuConsume.setState(state);
-            cuConsume.setMtoken(new BigDecimal(mp));
+            if ("1".equals(state)) {
+                cuConsume.setMtoken(new BigDecimal(mp));
+            }
             cuConsumeDao.update(cuConsume);
             if ("1".equals(state)) {
                 this.returnMp(mp, cuConsume);
