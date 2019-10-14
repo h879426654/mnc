@@ -12,6 +12,7 @@ public class LoginRequest extends DataRequest {
 	private String phone;
 	@NotBlank(message = "{registerUserRequest.password}")
 	private String password;
+	private String person;
 	
 //	@NotBlank(message = "国家不能为空！")
 	private String country;
@@ -42,6 +43,12 @@ public class LoginRequest extends DataRequest {
 	public void setCountry(String country) {
 		this.country = country;
 	}
-	
 
+	public String getPerson() {
+		return person;
+	}
+
+	public void setPerson(String person) {
+		this.person = person;
+	}
 }

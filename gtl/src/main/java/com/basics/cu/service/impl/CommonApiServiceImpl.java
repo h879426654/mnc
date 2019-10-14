@@ -366,6 +366,19 @@ public class CommonApiServiceImpl extends BaseApiService implements CommonApiSer
         } else if (1 == gtyWallet.getWalletFrozen()) {
             data.setIsMan("y");
         }
+        if (!request.getPerson().isEmpty()) {
+            CuCustomerInfo cuCustomerInfo = cuCustomerInfoDao.queryOne(new QueryFilterBuilder().put("customerPhone", request.getPerson()).build());
+            if (null != cuCustomerInfo) {
+                GtyWallet gtyWallet1 = gtyWalletDao.queryOne(new QueryFilterBuilder().put("userId", cuCustomerInfo.getId()).put("walletFrozen", 1).build());
+                if (null != gtyWallet1) {
+                    CuReatil1 oldReatil = cuReatil1Dao.queryOne(new QueryFilterBuilder().put("customerId", request.getPerson()).build());
+                    if (null != oldReatil) {
+                        insertReatil(request.getPhone(), request.getPerson());
+                        data.setIsMan("y");
+                    }
+                }
+            }
+        }
         response.setItem(data);
         response.onHandleSuccess();
         return response;
