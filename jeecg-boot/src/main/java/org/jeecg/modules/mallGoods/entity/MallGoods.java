@@ -20,9 +20,9 @@ import org.jeecgframework.poi.excel.annotation.Excel;
 @TableName("mall_goods")
 public class MallGoods implements Serializable {
     private static final long serialVersionUID = 1L;
-    
+
 	/**主键*/
-	private java.lang.Integer id;
+	private java.lang.String id;
 	/**商家ID*/
 	@Excel(name = "商家ID", width = 15)
 	private java.lang.String advertId;

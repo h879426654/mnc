@@ -81,7 +81,7 @@ public class MallGoodsController {
 		if (null != goods && !goods.isEmpty()) {
 			queryWrapper.like("goods_Name", goods);
 		}
-		IPage<MallGoods> pageList = mallGoodsService.page(page, queryWrapper);
+		IPage<MallGoods> pageList = mallGoodsService.page(page, queryWrapper.orderByDesc("create_time"));
 		IPage<MallGood2s> pageList2 = new Page<>();
 		List<MallGoods> mallGoodses = pageList.getRecords();
 		List<MallGood2s> mallGood2sList = new ArrayList<>();
@@ -112,14 +112,15 @@ public class MallGoodsController {
 	 * @param mallGoods
 	 * @return
 	 */
-	@PostMapping(value = "/add")
-	public Result<MallGoods> add(@RequestBody MallGoods mallGoods) {
+	@GetMapping(value = "/add")
+	public Result<MallGoods> add(MallGoods mallGoods) {
 		Result<MallGoods> result = new Result<MallGoods>();
 		if (null == mallGoods.getCustomerId() || mallGoods.getCustomerId().isEmpty()) {
 			result.error500("清重新登录");
 			return result;
 		}
-		MallShopAdvert mallShopAdvert = mallShopAdvertMapper.selectOne(new QueryWrapper<MallShopAdvert>().eq("customer_id", mallGoods.getCustomerId()).eq("apply_status", "2").eq("del_Flag","0"));
+		mallGoods.setId(UUID.randomUUID().toString().replace("-",""));
+		MallShopAdvert mallShopAdvert = mallShopAdvertMapper.selectOne(new QueryWrapper<MallShopAdvert>().eq("customer_id", mallGoods.getCustomerId()).eq("apply_status", "2").eq("Flag_del","0"));
 		if (mallShopAdvert != null) {
 			mallGoods.setAdvertId(mallShopAdvert.getAdvertId());
 		} else {
@@ -152,6 +153,7 @@ public class MallGoodsController {
 			if (null != mallGoods.getStatus()) {
 				if ("3".equals(mallGoods.getStatus())) {
 					mallGoodsEntity.setStatus(mallGoods.getStatus());
+					mallGoodsEntity.setState("0");
 					mallGoodsMapper.updateById(mallGoodsEntity);
 					result.success("修改成功!");
 				} else {
@@ -163,6 +165,10 @@ public class MallGoodsController {
 						result.success("修改成功!");
 					}
 				}
+			} else if (null != mallGoods.getState()) {
+				mallGoodsEntity.setState(mallGoods.getState());
+				mallGoodsMapper.updateById(mallGoodsEntity);
+				result.success("修改成功!");
 			}
 		}
 		
@@ -294,11 +300,12 @@ public class MallGoodsController {
       return Result.ok("文件导入失败！");
   }
   @GetMapping(value = "/searchGoods")
-  public String searchGoods(String customerId, @RequestParam(name="pageNo", defaultValue="1") Integer pageNo,
+  public String searchGoods(String customerId, String name, @RequestParam(name="pageNo", defaultValue="1") Integer pageNo,
 							@RequestParam(name="pageSize", defaultValue="10") Integer pageSize) {
+
   	if (null == customerId || customerId.isEmpty()) {
   		return "0";
 	}
-  	return mallGoodsService.searchGoods(customerId,pageNo,pageSize);
+  	return mallGoodsService.searchGoods(customerId,name,pageNo,pageSize);
   }
 }

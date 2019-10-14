@@ -23,8 +23,7 @@ public class MallGood2s implements Serializable {
     private static final long serialVersionUID = 1L;
 
 	/**主键*/
-	@TableId(type = IdType.UUID)
-	private Integer id;
+	private String id;
 	/**商家ID*/
 	@Excel(name = "商家ID", width = 15)
 	private String advertId;

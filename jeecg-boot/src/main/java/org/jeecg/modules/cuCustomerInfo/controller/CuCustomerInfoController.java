@@ -94,6 +94,12 @@ public class CuCustomerInfoController {
 				cuCustomerInfo2.setScore(walletInfo.getScoreNum());
 				cuCustomerInfo2.setSuperNum(walletInfo.getSuperNum().add(walletInfo.getReleasedMncNum()));
 				cuCustomerInfo2.setMtoken(walletInfo.getMtokenNum());
+				String personCustomerId = walletInfoMapper.searchCustomerId(walletInfo.getUserId());
+				if (null != personCustomerId && !personCustomerId.isEmpty()) {
+					CuCustomerInfo cuCustomerInfo3 = cuCustomerInfoMapper.selectOne(new QueryWrapper<CuCustomerInfo>().eq("customer_id", personCustomerId));
+					cuCustomerInfo2.setPerson(cuCustomerInfo3.getCustomerPhone());
+				}
+
 			}
 			list2.add(cuCustomerInfo2);
 		}
@@ -212,7 +218,7 @@ public class CuCustomerInfoController {
 	  if (null != cuCustomerExport.getName() && !cuCustomerExport.getName().isEmpty()) {
 	  	queryWrapper.eq("customer_Name", cuCustomerExport.getName());
 	  }
-	  if (null != cuCustomerExport.getPhone()) {
+	  if (null != cuCustomerExport.getPhone() && !cuCustomerExport.getPhone().isEmpty()) {
 		  queryWrapper.eq("customer_Phone", cuCustomerExport.getPhone());
 	  }
       List<CuCustomerInfo> cuCustomerInfos = cuCustomerInfoMapper.selectList(queryWrapper);

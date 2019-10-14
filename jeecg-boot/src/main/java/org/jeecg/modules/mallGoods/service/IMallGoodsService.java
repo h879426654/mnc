@@ -11,5 +11,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface IMallGoodsService extends IService<MallGoods> {
 
-    String searchGoods(String customerId, Integer pageNum, Integer pageSize);
+    String searchGoods(String customerId, String name ,Integer pageNum, Integer pageSize);
 }

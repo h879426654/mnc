@@ -283,4 +283,26 @@ public class MallShopAdvertController {
 	 public String searchStore(String customerId) {
 		 return mallShopAdvertService.searchStore(customerId);
 	 }
+
+
+	@PutMapping(value = "/edit1")
+	public String edit1(@RequestBody MallShopAdvert mallShopAdvert) {
+	 	if (null == mallShopAdvert.getCustomerId() || mallShopAdvert.getCustomerId().isEmpty()) {
+	 		return "重新登录";
+		}
+	 	MallShopAdvert mallShopAdvert1 = mallShopAdvertMapper.selectOne(new QueryWrapper<MallShopAdvert>().eq("advert_id", mallShopAdvert.getAdvertId()));
+	 	mallShopAdvert1.setAdvertImage(mallShopAdvert.getAdvertImage());
+	 	mallShopAdvert1.setAdvertName(mallShopAdvert.getAdvertName());
+	 	mallShopAdvert1.setPerson(mallShopAdvert.getPerson());
+	 	mallShopAdvert1.setAdvertPhone(mallShopAdvert.getAdvertPhone());
+	 	mallShopAdvert1.setShopLicence(mallShopAdvert.getShopLicence());
+	 	mallShopAdvert1.setAdvertContext(mallShopAdvert.getAdvertContext());
+	 	mallShopAdvert1.setCreateTime(new Date());
+	 	mallShopAdvert1.setApplyStatus("1");
+	 	mallShopAdvertMapper.update(mallShopAdvert1, new QueryWrapper<MallShopAdvert>().eq("advert_id", mallShopAdvert.getAdvertId()));
+	 	MallUser mallUser = mallUserMapper.selectOne(new QueryWrapper<MallUser>().eq("customer_id", mallShopAdvert.getCustomerId()));
+	 	mallUser.setState("1");
+	 	mallUserMapper.updateById(mallUser);
+	 	return "成功";
+	}
 }
