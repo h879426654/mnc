@@ -14,4 +14,5 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  */
 public interface CuPictureMapper extends BaseMapper<CuPicture> {
 
+    void insertCupicture(@Param("cuPicture")CuPicture cuPicture);
 }

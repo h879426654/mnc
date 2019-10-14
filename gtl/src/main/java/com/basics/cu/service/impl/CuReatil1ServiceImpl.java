@@ -85,13 +85,21 @@ public class CuReatil1ServiceImpl extends BaseApiService implements CuReatil1Ser
             }
         }
         //直接人数
-        String directIds = sbDirectIds.toString().substring(1);
-        Integer directCount = directIds.split(",").length;
-        cuReatil1.setDirectCount(directCount);
+        String directIds = "";
+        if (!sbDirectIds.toString().isEmpty()) {
+            directIds = sbDirectIds.toString().substring(1);
+            Integer directCount = directIds.split(",").length;
+            cuReatil1.setDirectCount(directCount);
+        }
         //间接人数
-        String indirectids = sbIndirectIds.toString().substring(1);
-        Integer indirectidCount = indirectids.split(",").length;
-        cuReatil1.setIndirectidCount(indirectidCount);
+        String indirectids = "";
+        if (!sbIndirectIds.toString().isEmpty()) {
+            indirectids = sbIndirectIds.toString().substring(1);
+            Integer indirectidCount = indirectids.split(",").length;
+            cuReatil1.setIndirectidCount(indirectidCount);
+        } else {
+            indirectids = "'没有查询到数据'";
+        }
 
         try {
             //通过id查询直接的用户

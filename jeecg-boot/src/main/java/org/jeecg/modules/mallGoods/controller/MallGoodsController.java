@@ -1,8 +1,6 @@
 package org.jeecg.modules.mallGoods.controller;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
@@ -11,6 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.jeecg.common.api.vo.Result;
 import org.jeecg.common.system.query.QueryGenerator;
 import org.jeecg.common.util.oConvertUtils;
+import org.jeecg.modules.mallGoods.entity.MallGood2s;
 import org.jeecg.modules.mallGoods.entity.MallGoods;
 import org.jeecg.modules.mallGoods.mapper.MallGoodsMapper;
 import org.jeecg.modules.mallGoods.service.IMallGoodsService;
@@ -54,26 +53,60 @@ public class MallGoodsController {
 	private MallShopAdvertMapper mallShopAdvertMapper;
 	/**
 	  * 分页列表查询
-	 * @param mallGoods
+	 * @param shopName
+	 * @param goods
 	 * @param pageNo
 	 * @param pageSize
 	 * @param req
 	 * @return
 	 */
 	@GetMapping(value = "/list")
-	public Result<IPage<MallGoods>> queryPageList(MallGoods mallGoods,
+	public Result<IPage<MallGood2s>> queryPageList(MallGoods mallGoods, String shopName, String goods,
 									  @RequestParam(name="pageNo", defaultValue="1") Integer pageNo,
 									  @RequestParam(name="pageSize", defaultValue="10") Integer pageSize,
 									  HttpServletRequest req) {
-		Result<IPage<MallGoods>> result = new Result<IPage<MallGoods>>();
+		Result<IPage<MallGood2s>> result = new Result<IPage<MallGood2s>>();
 		QueryWrapper<MallGoods> queryWrapper = QueryGenerator.initQueryWrapper(mallGoods, req.getParameterMap());
 		Page<MallGoods> page = new Page<MallGoods>(pageNo, pageSize);
+		if (null != shopName && !shopName.isEmpty()) {
+			List<MallShopAdvert> list = mallShopAdvertMapper.selectList(new QueryWrapper<MallShopAdvert>().eq("apply_Status",2).eq("flag_del", "0").like("ADVERT_NAME", shopName));
+			Set<String> set = new HashSet<String>();
+			for (MallShopAdvert mallShopAdvert:list) {
+				set.add(mallShopAdvert.getAdvertId());
+			}
+			if (null != set) {
+				queryWrapper.in("advert_id", set);
+			}
+		}
+		if (null != goods && !goods.isEmpty()) {
+			queryWrapper.like("goods_Name", goods);
+		}
 		IPage<MallGoods> pageList = mallGoodsService.page(page, queryWrapper);
+		IPage<MallGood2s> pageList2 = new Page<>();
+		List<MallGoods> mallGoodses = pageList.getRecords();
+		List<MallGood2s> mallGood2sList = new ArrayList<>();
+		for (MallGoods goods1: mallGoodses) {
+			MallShopAdvert mallShopAdvert = mallShopAdvertMapper.selectOne(new QueryWrapper<MallShopAdvert>().eq("advert_id", goods1.getAdvertId()));
+			MallGood2s mallGood2s = new MallGood2s();
+			mallGood2s.setId(goods1.getId());
+			mallGood2s.setGoodsText(goods1.getGoodsText());
+			mallGood2s.setShopName(mallShopAdvert.getAdvertName());
+			mallGood2s.setGoodsName(goods1.getGoodsName());
+			mallGood2s.setMoney(goods1.getMoney());
+			mallGood2s.setImage(goods1.getImage());
+			mallGood2s.setStatus(goods1.getStatus());
+			mallGood2sList.add(mallGood2s);
+		}
+		pageList2.setRecords(mallGood2sList);
+		pageList2.setTotal(pageList.getTotal());
+		pageList2.setCurrent(pageList.getCurrent());
+		pageList2.setPages(pageList.getPages());
+		pageList2.setSize(pageList.getSize());
 		result.setSuccess(true);
-		result.setResult(pageList);
+		result.setResult(pageList2);
 		return result;
 	}
-	
+
 	/**
 	  *   添加
 	 * @param mallGoods
@@ -112,17 +145,23 @@ public class MallGoodsController {
 	@PutMapping(value = "/edit")
 	public Result<MallGoods> edit(@RequestBody MallGoods mallGoods) {
 		Result<MallGoods> result = new Result<MallGoods>();
-		MallGoods mallGoodsEntity = mallGoodsMapper.selectOne(new QueryWrapper<MallGoods>().eq("id", mallGoods.getId()));
+		MallGoods mallGoodsEntity = mallGoodsMapper.selectOne(new QueryWrapper<MallGoods>().eq("id", mallGoods.getId()).eq("del_flag","0"));
 		if(mallGoodsEntity==null) {
 			result.error500("未找到对应实体");
 		}else {
 			if (null != mallGoods.getStatus()) {
-				if (!"0".equals(mallGoodsEntity.getStatus())) {
-					result.success("审批过得数据不能再次审批");
-				} else {
+				if ("3".equals(mallGoods.getStatus())) {
 					mallGoodsEntity.setStatus(mallGoods.getStatus());
 					mallGoodsMapper.updateById(mallGoodsEntity);
 					result.success("修改成功!");
+				} else {
+					if (!"0".equals(mallGoodsEntity.getStatus())) {
+						result.error500("审批过得数据不能再次审批");
+					} else {
+						mallGoodsEntity.setStatus(mallGoods.getStatus());
+						mallGoodsMapper.updateById(mallGoodsEntity);
+						result.success("修改成功!");
+					}
 				}
 			}
 		}

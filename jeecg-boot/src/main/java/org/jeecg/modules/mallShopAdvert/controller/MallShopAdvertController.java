@@ -112,14 +112,22 @@ public class MallShopAdvertController {
 				mallShopAdvertMapper.updateByIdAndApplyStatus(mallShopAdvert.getAdvertId(), mallShopAdvert.getApplyStatus());
 				if ("2".equals(mallShopAdvert.getApplyStatus())){
 					CuCustomerInfo cuCustomerInfo = cuCustomerInfoMapper.selectOne(new QueryWrapper<CuCustomerInfo>().eq("customer_id", mallShopAdvertEntity.getCustomerId()));
-					MallUser mallUser = new MallUser();
-					mallUser.setUserName(cuCustomerInfo.getCustomerPhone());
-					int random = (int) ((Math.random() * 9 + 1) * 100000);
-					mallUser.setPassWord(String.valueOf(random));
-					mallUser.setCustomerId(cuCustomerInfo.getCustomerId());
-					mallUser.setCreateTime(new Date());
-					mallUser.setId(UUID.randomUUID().toString().replace("-",""));
-					mallUserMapper.insert(mallUser);
+					MallUser mu = mallUserMapper.selectOne(new QueryWrapper<MallUser>().eq("user_name", cuCustomerInfo.getCustomerPhone()));
+					if (null != mu) {
+						if ("1".equals(mu.getState())) {
+							mu.setState("0");
+							mallUserMapper.updateById(mu);
+						}
+					} else {
+						MallUser mallUser = new MallUser();
+						mallUser.setUserName(cuCustomerInfo.getCustomerPhone());
+						int random = (int) ((Math.random() * 9 + 1) * 100000);
+						mallUser.setPassWord(String.valueOf(random));
+						mallUser.setCustomerId(cuCustomerInfo.getCustomerId());
+						mallUser.setCreateTime(new Date());
+						mallUser.setId(UUID.randomUUID().toString().replace("-",""));
+						mallUserMapper.insert(mallUser);
+					}
 				}
 				result.success("成功");
 			} else if (null != mallShopAdvert.getHot()) {

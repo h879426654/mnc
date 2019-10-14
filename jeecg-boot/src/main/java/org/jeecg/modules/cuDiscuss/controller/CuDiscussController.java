@@ -1,4 +1,4 @@
-package org.jeecg.modules.cuPicture.controller;
+package org.jeecg.modules.cuDiscuss.controller;
 
 import java.util.*;
 import java.io.IOException;
@@ -6,21 +6,22 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import com.aliyun.oss.OSSClient;
 import org.jeecg.common.api.vo.Result;
 import org.jeecg.common.system.query.QueryGenerator;
-import org.jeecg.common.util.GuidUtils;
-import org.jeecg.common.util.MD5Util1;
 import org.jeecg.common.util.oConvertUtils;
-import org.jeecg.modules.cuPicture.entity.CuPicture;
-import org.jeecg.modules.cuPicture.service.ICuPictureService;
+import org.jeecg.modules.cuCustomerInfo.entity.CuCustomerInfo;
+import org.jeecg.modules.cuCustomerInfo.mapper.CuCustomerInfoMapper;
+import org.jeecg.modules.cuDiscuss.entity.CuDiscuss;
+import org.jeecg.modules.cuDiscuss.service.ICuDiscussService;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.extern.slf4j.Slf4j;
 
+import org.jeecg.modules.mallShopAdvert.entity.MallShopAdvert;
+import org.jeecg.modules.mallShopAdvert.mapper.MallShopAdvertMapper;
+import org.jeecg.modules.mallShopAdvert.service.impl.MallShopAdvertServiceImpl;
 import org.jeecgframework.poi.excel.ExcelImportUtil;
 import org.jeecgframework.poi.excel.def.NormalExcelConstants;
 import org.jeecgframework.poi.excel.entity.ExportParams;
@@ -36,35 +37,69 @@ import com.alibaba.fastjson.JSON;
 
  /**
  * @Title: Controller
- * @Description: 轮播图背景图表
+ * @Description: 评论
  * @author： jeecg-boot
- * @date：   2019-10-03
+ * @date：   2019-10-13
  * @version： V1.0
  */
 @RestController
-@RequestMapping("/cuPicture/cuPicture")
+@RequestMapping("/cuDiscuss/cuDiscuss")
 @Slf4j
-public class CuPictureController {
+public class CuDiscussController {
 	@Autowired
-	private ICuPictureService cuPictureService;
-	
+	private ICuDiscussService cuDiscussService;
+	@Autowired
+	private MallShopAdvertMapper mallShopAdvertMapper;
+	@Autowired
+	private CuCustomerInfoMapper cuCustomerInfoMapper;
 	/**
 	  * 分页列表查询
-	 * @param cuPicture
+	 * @param cuDiscuss
 	 * @param pageNo
 	 * @param pageSize
 	 * @param req
 	 * @return
 	 */
 	@GetMapping(value = "/list")
-	public Result<IPage<CuPicture>> queryPageList(CuPicture cuPicture,
+	public Result<IPage<CuDiscuss>> queryPageList(CuDiscuss cuDiscuss,
 									  @RequestParam(name="pageNo", defaultValue="1") Integer pageNo,
 									  @RequestParam(name="pageSize", defaultValue="10") Integer pageSize,
 									  HttpServletRequest req) {
-		Result<IPage<CuPicture>> result = new Result<IPage<CuPicture>>();
-		QueryWrapper<CuPicture> queryWrapper = QueryGenerator.initQueryWrapper(cuPicture, req.getParameterMap());
-		Page<CuPicture> page = new Page<CuPicture>(pageNo, pageSize);
-		IPage<CuPicture> pageList = cuPictureService.page(page, queryWrapper);
+		Result<IPage<CuDiscuss>> result = new Result<IPage<CuDiscuss>>();
+		QueryWrapper<CuDiscuss> queryWrapper = new QueryWrapper<>();
+		if (null != cuDiscuss.getShopName()) {
+			if (!cuDiscuss.getShopName().isEmpty()) {
+				List<MallShopAdvert> list = mallShopAdvertMapper.selectList(new QueryWrapper<MallShopAdvert>().eq("apply_Status",2).eq("flag_del", "0").like("ADVERT_NAME", cuDiscuss.getShopName()));
+				Set<String> set = new HashSet<String>();
+				for (MallShopAdvert mallShopAdvert:list) {
+					set.add(mallShopAdvert.getAdvertId());
+				}
+				if (null != set) {
+					queryWrapper.in("shop_id", set);
+				}
+			}
+		}
+		if (null != cuDiscuss.getUserName()) {
+			if (!cuDiscuss.getUserName().isEmpty()) {
+				List<CuCustomerInfo> list = cuCustomerInfoMapper.selectList(new QueryWrapper<CuCustomerInfo>().like("customer_name", cuDiscuss.getUserName()));
+				Set<String> set = new HashSet<String>();
+				for (CuCustomerInfo cuCustomerInfo:list) {
+					set.add(cuCustomerInfo.getCustomerId());
+				}
+				if (null != set) {
+					queryWrapper.in("customer_id", set);
+				}
+			}
+		}
+		Page<CuDiscuss> page = new Page<CuDiscuss>(pageNo, pageSize);
+		IPage<CuDiscuss> pageList = cuDiscussService.page(page, queryWrapper);
+		List<CuDiscuss> cuDiscusses = pageList.getRecords();
+		for (CuDiscuss cuDiscuss1:cuDiscusses) {
+			CuCustomerInfo cuCustomerInfo = cuCustomerInfoMapper.selectOne(new QueryWrapper<CuCustomerInfo>().eq("customer_id", cuDiscuss1.getCustomerId()));
+			cuDiscuss1.setUserName(cuCustomerInfo.getCustomerName());
+			MallShopAdvert mallShopAdvert = mallShopAdvertMapper.selectOne(new QueryWrapper<MallShopAdvert>().eq("advert_id", cuDiscuss1.getShopId()));
+			cuDiscuss1.setShopName(mallShopAdvert.getAdvertName());
+		}
 		result.setSuccess(true);
 		result.setResult(pageList);
 		return result;
@@ -72,15 +107,14 @@ public class CuPictureController {
 	
 	/**
 	  *   添加
-	 * @param cuPicture
+	 * @param cuDiscuss
 	 * @return
 	 */
 	@PostMapping(value = "/add")
-	public Result<CuPicture> add(@RequestBody CuPicture cuPicture) {
-		Result<CuPicture> result = new Result<CuPicture>();
+	public Result<CuDiscuss> add(@RequestBody CuDiscuss cuDiscuss) {
+		Result<CuDiscuss> result = new Result<CuDiscuss>();
 		try {
-			cuPicture.setId(UUID.randomUUID().toString().replace("-",""));
-			cuPictureService.save(cuPicture);
+			cuDiscussService.save(cuDiscuss);
 			result.success("添加成功！");
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -92,17 +126,17 @@ public class CuPictureController {
 	
 	/**
 	  *  编辑
-	 * @param cuPicture
+	 * @param cuDiscuss
 	 * @return
 	 */
 	@PutMapping(value = "/edit")
-	public Result<CuPicture> edit(@RequestBody CuPicture cuPicture) {
-		Result<CuPicture> result = new Result<CuPicture>();
-		CuPicture cuPictureEntity = cuPictureService.getById(cuPicture.getId());
-		if(cuPictureEntity==null) {
+	public Result<CuDiscuss> edit(@RequestBody CuDiscuss cuDiscuss) {
+		Result<CuDiscuss> result = new Result<CuDiscuss>();
+		CuDiscuss cuDiscussEntity = cuDiscussService.getById(cuDiscuss.getId());
+		if(cuDiscussEntity==null) {
 			result.error500("未找到对应实体");
 		}else {
-			boolean ok = cuPictureService.updateById(cuPicture);
+			boolean ok = cuDiscussService.updateById(cuDiscuss);
 			//TODO 返回false说明什么？
 			if(ok) {
 				result.success("修改成功!");
@@ -118,13 +152,13 @@ public class CuPictureController {
 	 * @return
 	 */
 	@DeleteMapping(value = "/delete")
-	public Result<CuPicture> delete(@RequestParam(name="id",required=true) String id) {
-		Result<CuPicture> result = new Result<CuPicture>();
-		CuPicture cuPicture = cuPictureService.getById(id);
-		if(cuPicture==null) {
+	public Result<CuDiscuss> delete(@RequestParam(name="id",required=true) String id) {
+		Result<CuDiscuss> result = new Result<CuDiscuss>();
+		CuDiscuss cuDiscuss = cuDiscussService.getById(id);
+		if(cuDiscuss==null) {
 			result.error500("未找到对应实体");
 		}else {
-			boolean ok = cuPictureService.removeById(id);
+			boolean ok = cuDiscussService.removeById(id);
 			if(ok) {
 				result.success("删除成功!");
 			}
@@ -139,12 +173,12 @@ public class CuPictureController {
 	 * @return
 	 */
 	@DeleteMapping(value = "/deleteBatch")
-	public Result<CuPicture> deleteBatch(@RequestParam(name="ids",required=true) String ids) {
-		Result<CuPicture> result = new Result<CuPicture>();
+	public Result<CuDiscuss> deleteBatch(@RequestParam(name="ids",required=true) String ids) {
+		Result<CuDiscuss> result = new Result<CuDiscuss>();
 		if(ids==null || "".equals(ids.trim())) {
 			result.error500("参数不识别！");
 		}else {
-			this.cuPictureService.removeByIds(Arrays.asList(ids.split(",")));
+			this.cuDiscussService.removeByIds(Arrays.asList(ids.split(",")));
 			result.success("删除成功!");
 		}
 		return result;
@@ -156,13 +190,13 @@ public class CuPictureController {
 	 * @return
 	 */
 	@GetMapping(value = "/queryById")
-	public Result<CuPicture> queryById(@RequestParam(name="id",required=true) String id) {
-		Result<CuPicture> result = new Result<CuPicture>();
-		CuPicture cuPicture = cuPictureService.getById(id);
-		if(cuPicture==null) {
+	public Result<CuDiscuss> queryById(@RequestParam(name="id",required=true) String id) {
+		Result<CuDiscuss> result = new Result<CuDiscuss>();
+		CuDiscuss cuDiscuss = cuDiscussService.getById(id);
+		if(cuDiscuss==null) {
 			result.error500("未找到对应实体");
 		}else {
-			result.setResult(cuPicture);
+			result.setResult(cuDiscuss);
 			result.setSuccess(true);
 		}
 		return result;
@@ -177,13 +211,13 @@ public class CuPictureController {
   @RequestMapping(value = "/exportXls")
   public ModelAndView exportXls(HttpServletRequest request, HttpServletResponse response) {
       // Step.1 组装查询条件
-      QueryWrapper<CuPicture> queryWrapper = null;
+      QueryWrapper<CuDiscuss> queryWrapper = null;
       try {
           String paramsStr = request.getParameter("paramsStr");
           if (oConvertUtils.isNotEmpty(paramsStr)) {
               String deString = URLDecoder.decode(paramsStr, "UTF-8");
-              CuPicture cuPicture = JSON.parseObject(deString, CuPicture.class);
-              queryWrapper = QueryGenerator.initQueryWrapper(cuPicture, request.getParameterMap());
+              CuDiscuss cuDiscuss = JSON.parseObject(deString, CuDiscuss.class);
+              queryWrapper = QueryGenerator.initQueryWrapper(cuDiscuss, request.getParameterMap());
           }
       } catch (UnsupportedEncodingException e) {
           e.printStackTrace();
@@ -191,11 +225,11 @@ public class CuPictureController {
 
       //Step.2 AutoPoi 导出Excel
       ModelAndView mv = new ModelAndView(new JeecgEntityExcelView());
-      List<CuPicture> pageList = cuPictureService.list(queryWrapper);
+      List<CuDiscuss> pageList = cuDiscussService.list(queryWrapper);
       //导出文件名称
-      mv.addObject(NormalExcelConstants.FILE_NAME, "轮播图背景图表列表");
-      mv.addObject(NormalExcelConstants.CLASS, CuPicture.class);
-      mv.addObject(NormalExcelConstants.PARAMS, new ExportParams("轮播图背景图表列表数据", "导出人:Jeecg", "导出信息"));
+      mv.addObject(NormalExcelConstants.FILE_NAME, "评论列表");
+      mv.addObject(NormalExcelConstants.CLASS, CuDiscuss.class);
+      mv.addObject(NormalExcelConstants.PARAMS, new ExportParams("评论列表数据", "导出人:Jeecg", "导出信息"));
       mv.addObject(NormalExcelConstants.DATA_LIST, pageList);
       return mv;
   }
@@ -218,11 +252,11 @@ public class CuPictureController {
           params.setHeadRows(1);
           params.setNeedSave(true);
           try {
-              List<CuPicture> listCuPictures = ExcelImportUtil.importExcel(file.getInputStream(), CuPicture.class, params);
-              for (CuPicture cuPictureExcel : listCuPictures) {
-                  cuPictureService.save(cuPictureExcel);
+              List<CuDiscuss> listCuDiscusss = ExcelImportUtil.importExcel(file.getInputStream(), CuDiscuss.class, params);
+              for (CuDiscuss cuDiscussExcel : listCuDiscusss) {
+                  cuDiscussService.save(cuDiscussExcel);
               }
-              return Result.ok("文件导入成功！数据行数：" + listCuPictures.size());
+              return Result.ok("文件导入成功！数据行数：" + listCuDiscusss.size());
           } catch (Exception e) {
               log.error(e.getMessage());
               return Result.error("文件导入失败！");
@@ -236,37 +270,5 @@ public class CuPictureController {
       }
       return Result.ok("文件导入失败！");
   }
-  @PostMapping(value = "/uploadImage")
-  public Result<List<String>> uploadImage(MultipartFile file) {
-		 Result<List<String>> response = new Result<>();
-		 String endpoint = "http://oss-cn-beijing.aliyuncs.com";
-// 云账号AccessKey有所有API访问权限，建议遵循阿里云安全最佳实践，创建并使用RAM子账号进行API访问或日常运维，请登录 https://ram.console.aliyun.com 创建。
-		 String accessKeyId = "LTAIPy06f50b9tO7";
-		 String accessKeySecret = "33jqyaySmZ5v2Tfm0fpotQR9WswlsL";
-// 创建OSSClient实例。
-		 OSSClient ossClient = new OSSClient(endpoint, accessKeyId, accessKeySecret);
-		 try {
-			 if (null != file) {
-				 List<String> images = new ArrayList<>();
-				 if (!file.isEmpty()) {
-					 String path = "voucher/";
-					 String fileName = file.getOriginalFilename();
-					 path += GuidUtils.generateSimpleGuid() + MD5Util1.random(6) + fileName.substring(fileName.lastIndexOf("."));
-					 //this.ftpFileStoreService.write(path, file.getInputStream());
-					 ossClient.putObject("mylove2019", path	, file.getInputStream());
 
-					 String url = "https://mylove2019.oss-cn-beijing.aliyuncs.com/"+path;
-					 images.add(url);
-				 }
-				 ossClient.shutdown();
-				 response.setResult(images);
-				 response.setSuccess(true);
-				 return response;
-			 }
-		 } catch (Exception e) {
-			 response.error500(e.getMessage());
-		 }
-		 response.error500("上传失败");
-		 return response;
-	 }
 }

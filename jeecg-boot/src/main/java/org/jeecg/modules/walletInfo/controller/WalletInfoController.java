@@ -12,7 +12,9 @@ import javax.servlet.http.HttpServletResponse;
 import org.jeecg.common.api.vo.Result;
 import org.jeecg.common.system.query.QueryGenerator;
 import org.jeecg.common.util.oConvertUtils;
+import org.jeecg.modules.walletInfo.entity.MtokenMnc;
 import org.jeecg.modules.walletInfo.entity.WalletInfo;
+import org.jeecg.modules.walletInfo.mapper.WalletInfoMapper;
 import org.jeecg.modules.walletInfo.service.IWalletInfoService;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -46,8 +48,10 @@ import com.alibaba.fastjson.JSON;
 public class WalletInfoController {
 	@Autowired
 	private IWalletInfoService walletInfoService;
-	
-	/**
+	 @Autowired
+	 private WalletInfoMapper walletInfoMapper;
+
+	 /**
 	  * 分页列表查询
 	 * @param walletInfo
 	 * @param pageNo
@@ -248,5 +252,47 @@ public class WalletInfoController {
 	 public String searchDatets(String type, String upNum, String downNum, String id) {
 		 String url = "http://47.75.47.121:8080/gtl/api/gty/wallet/setReleaseLimit.do?type="+type+"&upNum="+new BigDecimal(upNum)+"&downNum="+new BigDecimal(downNum)+"&id="+id;
 		 return walletInfoService.httpClient(url);
+	 }
+
+	 @PutMapping(value = "/updateMTokenAndMnc")
+	 public Result<WalletInfo> edit(@RequestBody MtokenMnc mtokenMnc) {
+		 Result<WalletInfo> result = new Result<WalletInfo>();
+		 WalletInfo walletInfoEntity = walletInfoMapper.selectOne(new QueryWrapper<WalletInfo>().eq("user_id", mtokenMnc.getUserId()));
+		 if(walletInfoEntity==null) {
+			 result.error500("未找到对应实体");
+		 }else {
+		 	 //加
+		 	 if ("0".equals(mtokenMnc.getState())) {
+				if (null != mtokenMnc.getMnc()) {
+					walletInfoEntity.setMncNum(walletInfoEntity.getMncNum().add(mtokenMnc.getMnc()));
+				} else if (null != mtokenMnc.getMToken()) {
+					walletInfoEntity.setMtokenNum(walletInfoEntity.getMtokenNum().add(mtokenMnc.getMToken()));
+				}
+			 }
+		 	 //减
+			 if ("1".equals(mtokenMnc.getState())) {
+				 if (null != mtokenMnc.getMnc()) {
+				 	BigDecimal mnc = walletInfoEntity.getMncNum().subtract(mtokenMnc.getMnc());
+				 	if (mnc.compareTo(BigDecimal.ZERO) >= 0) {
+						walletInfoEntity.setMncNum(mnc);
+					}  else {
+				 		result.error500("扣除的mnc不能大于当前mnc");
+				 		return result;
+					}
+				 } else if (null != mtokenMnc.getMToken()) {
+				 	BigDecimal mtoken = walletInfoEntity.getMtokenNum().subtract(mtokenMnc.getMToken());
+					 if (mtoken.compareTo(BigDecimal.ZERO) >= 0) {
+						 walletInfoEntity.setMtokenNum(mtoken);
+					 }  else {
+						 result.error500("扣除的mtoken不能大于当前mnc");
+						 return result;
+					 }
+				 }
+			 }
+			 walletInfoService.update(walletInfoEntity, new QueryWrapper<WalletInfo>().eq("user_id", mtokenMnc.getUserId()));
+			 result.success("修改成功!");
+		 }
+
+		 return result;
 	 }
 }
