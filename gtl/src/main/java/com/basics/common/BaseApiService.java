@@ -1334,7 +1334,7 @@ public class BaseApiService {
 		json.put("sourceId", "121");
 		json.put("obj", JSONObject.toJSONString(obj));
 
-		gtyWalletDao.update(wallet);
+		int i = gtyWalletDao.update(wallet);
 
 
 		json.put("activemqId", wallet.getUserId());

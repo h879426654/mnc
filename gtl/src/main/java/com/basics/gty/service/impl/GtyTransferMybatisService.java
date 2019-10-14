@@ -107,7 +107,6 @@ public class GtyTransferMybatisService extends BaseApiService implements GtyTran
                     response.setMsg("转账失败");
                     return response;
                 }
-//                transferERC20Token(gtyWallet.getWalletAddress(),);
 
             }
         } else if (request.getType() == 2) {// mnc转流通钱包
