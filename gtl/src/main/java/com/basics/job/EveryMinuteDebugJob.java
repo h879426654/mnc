@@ -64,13 +64,12 @@ public class EveryMinuteDebugJob extends BaseApiService implements EveryMinuteJo
             price = "1";
         }
         BigDecimal bigDecimalPrice = new BigDecimal(price);
-
         if (CollectionUtils.isNotEmpty(records)) {
             for (GtyWallet record : records) {
                 if(record.getWalletFrozen()==0){// 账号冻结
                     continue;
                 }
-                if(!record.getUserId().equals("f091f56c3c944b2e8c298eada10b9902")){
+                if(!record.getUserId().equals("0005efe2451b4cdfa6335ae5a7815be8")){
                     continue;
                 }
                 if (!StringUtils.isNullOrEmpty(record.getUserId())) {
@@ -242,7 +241,7 @@ public class EveryMinuteDebugJob extends BaseApiService implements EveryMinuteJo
                     gtyWallet.setMoveNum(mMove.setScale(5, BigDecimal.ROUND_HALF_UP));
                     gtyWallet.setReleasedMnc(mRelaseMnc.setScale(5, BigDecimal.ROUND_HALF_UP));
                     gtyWallet.setUserId(record.getUserId());
-                    gtyWallet.setWalletFrozen(1);
+//                    gtyWallet.setWalletFrozen(1);
                     createActiveMq2(record.getUserId(), Constant.ACTIVEMQ_TYPE_42, gtyWallet, null);
                 }
 

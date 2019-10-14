@@ -78,7 +78,7 @@
             <if test="releasedMnc!=null">RELEASED_MNC_NUM = #{releasedMnc},</if>
             <if test="walletAddress!=null">WALLET_ADDRESS = #{walletAddress},</if>
             <if test="blockNum!=null">BLOCK_NUM = #{blockNum},</if>
-            <if test="walletFrozen!=null">WALLET_FROZEN = #{walletFrozen},</if>
+            <if test="walletFrozen!=0">WALLET_FROZEN = #{walletFrozen},</if>
         </trim>
         <![CDATA[ WHERE  USER_ID = #{userId}   ]]>
     </update>
