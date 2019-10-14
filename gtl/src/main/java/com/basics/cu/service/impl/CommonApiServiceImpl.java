@@ -348,13 +348,26 @@ public class CommonApiServiceImpl extends BaseApiService implements CommonApiSer
         user.setLastLoginTime(start);
         cuCustomerLoginDao.save(user);
         data.setToken(appToken.getId());
-        response.setItem(data);
-        response.onHandleSuccess();
+        Map map = new HashMap();
+        map.put("customerIdSecond", user.getId());
+        Long count = cuReatil2Dao.count(map);
+        if (count > 0) {
+            data.setAct("y");
+        } else if (count == 0){
+            data.setAct("n");
+        }
         GtyWallet gtyWallet = gtyWalletDao.queryOne(new QueryFilterBuilder().put("userId", user.getId()).build());
         if (null == gtyWallet.getWalletAddress() || gtyWallet.getWalletAddress().isEmpty()){
             gtyWallet.setWalletAddress(UUID.randomUUID().toString().replace("-",""));
             gtyWalletDao.update(gtyWallet);
         }
+        if (0 == gtyWallet.getWalletFrozen()) {
+            data.setIsMan("n");
+        } else if (1 == gtyWallet.getWalletFrozen()) {
+            data.setIsMan("y");
+        }
+        response.setItem(data);
+        response.onHandleSuccess();
         return response;
     }
 

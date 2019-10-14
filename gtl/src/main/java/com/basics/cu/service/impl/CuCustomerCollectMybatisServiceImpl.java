@@ -10,6 +10,7 @@ import com.basics.cu.entity.*;
 import com.basics.cu.service.CuCustomerCollectService;
 import com.basics.gty.entity.GtyWallet;
 import com.basics.mall.dao.MallShopAdvertDao;
+import com.basics.mall.dao.MybatisDao.MallShopAdvertMybatisDao;
 import com.basics.mall.entity.MallShopAdvert;
 import com.basics.mall.entity.MallUser;
 import com.basics.support.PaginationSupport;
@@ -495,6 +496,8 @@ public class CuCustomerCollectMybatisServiceImpl extends BaseApiService implemen
     private void returnMp(String mp, CuConsume cuConsume) {
         this.updateWalletInfo(cuConsume.getCustomerId(), new BigDecimal(mp));
         this.addMp(new BigDecimal(mp), cuConsume.getCustomerId());
+        MallShopAdvert mallShopAdvert = mallShopAdvertDao.queryOne(new QueryFilterBuilder().put("id", cuConsume.getShopId()).build());
+        this.addMp(new BigDecimal(mp), mallShopAdvert.getCustomerId());
         CuLogs cuLogs = new CuLogs();
         cuLogs.setCustomerId(cuConsume.getCustomerId());
         cuLogs.setShopId(cuConsume.getShopId());
