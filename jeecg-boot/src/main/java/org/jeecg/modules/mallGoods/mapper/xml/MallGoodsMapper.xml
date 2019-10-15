@@ -3,11 +3,14 @@
 <mapper namespace="org.jeecg.modules.mallGoods.mapper.MallGoodsMapper">
     <select id="searchGoods" resultType="org.jeecg.modules.mallGoods.entity.MallGoods">
         select id, advert_Id as advertId, goods_Name as goodsName, goods_Text as goodsText, money, image, state, del_Flag as delFlag, create_Time as createTime, status from mall_goods
-        where advert_id = #{advertId} and del_Flag = '0' limit #{pageNum},#{pageSize}
+        where advert_id = #{advertId}
+        <if test="name != null and name != ''">and goods_name = #{name}</if>
+        and del_Flag = '0' order by create_time desc  limit #{pageNum},#{pageSize}
     </select>
 
     <select id="searchTotal" resultType="long">
-        select count(*) from mall_goods where advert_id = #{advertId} and del_Flag = '0'
+        select count(*) from mall_goods where advert_id = #{advertId}
+        <if test="name != null and name != ''">and goods_name = #{name}</if>
+        and del_Flag = '0'
     </select>
-
 </mapper>

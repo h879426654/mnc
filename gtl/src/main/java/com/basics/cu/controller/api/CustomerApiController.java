@@ -638,4 +638,9 @@ public class CustomerApiController implements ApplicationContextAware {
 	public String searchAdvUser(String token) {
 		return cuCustomerCollectService.searchAdvUser(token);
 	}
+
+	@RequestMapping("searchLogs")
+	public String searchLogs(String token, String type, Integer page, Integer rows) {
+		return cuCustomerCollectService.searchCuLog(token, type, page, rows);
+	}
 }

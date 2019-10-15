@@ -3,6 +3,7 @@ package org.jeecg.modules.mallGoods.service.impl;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import net.sf.json.JSONArray;
+import org.jeecg.modules.cuCustomerInfo.entity.CuCustomerInfo;
 import org.jeecg.modules.mallGoods.entity.MallGoods;
 import org.jeecg.modules.mallGoods.entity.MallGoodsLimit;
 import org.jeecg.modules.mallGoods.mapper.MallGoodsMapper;
@@ -30,11 +31,11 @@ public class MallGoodsServiceImpl extends ServiceImpl<MallGoodsMapper, MallGoods
     @Autowired
     private MallShopAdvertMapper mallShopAdvertMapper;
     @Override
-    public String searchGoods(String customerId, Integer pageNum, Integer pageSize) {
+    public String searchGoods(String customerId, String name, Integer pageNum, Integer pageSize) {
         String advertId = mallShopAdvertMapper.selectOne(new QueryWrapper<MallShopAdvert>().eq("customer_id", customerId)).getAdvertId();
-        List<MallGoods> list = mallGoodsMapper.searchGoods(advertId, pageNum, pageSize);
+        List<MallGoods> list = mallGoodsMapper.searchGoods(advertId, name, (pageNum-1)*10, pageSize);
         JSONArray jsons = JSONArray.fromObject(list);
-        long total = mallGoodsMapper.searchTotal(advertId);
+        long total = mallGoodsMapper.searchTotal(advertId, name);
         long pages = total / pageSize;
         if (total % pageSize != 0L) {
             ++pages;

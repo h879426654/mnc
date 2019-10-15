@@ -9,21 +9,19 @@ import com.basics.cu.controller.request.HistoryRequest;
 import com.basics.cu.entity.*;
 import com.basics.cu.service.CuCustomerCollectService;
 import com.basics.gty.entity.GtyWallet;
-import com.basics.mall.dao.MallShopAdvertDao;
+import com.basics.gty.entity.GtyWalletHistory;
 import com.basics.mall.entity.MallShopAdvert;
 import com.basics.mall.entity.MallUser;
-import com.basics.support.PaginationSupport;
 import com.basics.support.QueryFilterBuilder;
 import net.sf.json.JSONArray;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.web3j.abi.datatypes.Int;
 
 import java.math.BigDecimal;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 @Service
 @Transactional
@@ -440,30 +438,31 @@ public class CuCustomerCollectMybatisServiceImpl extends BaseApiService implemen
         int i = 0;
         //判断一共有多少人吃利息
         while(true) {
-            CuReatil2 cu2 = cuReatil2Dao.queryOne(new QueryFilterBuilder().put("customerIdSecond", customerId).build());
+            String customerId2 = customerId;
+            CuReatil2 cu2 = cuReatil2Dao.queryOne(new QueryFilterBuilder().put("customerIdSecond", customerId2).build());
             if (null == cu2) {
                 break;
             }
             if (i==21) {
                 break;
             }
-            customerId = cu2.getCustomerId();
+            customerId2 = cu2.getCustomerId();
             i++;
         }
         CuLogs cuLogs = new CuLogs();
         //计算并更新
         for (int j=i; j>0; j--) {
-            CuReatil2 cu2 = cuReatil2Dao.queryOne(new QueryFilterBuilder().put("customerId", customerId).build());
+            CuReatil2 cu2 = cuReatil2Dao.queryOne(new QueryFilterBuilder().put("customerIdSecond", customerId).build());
             CuReatilMoney cuReatilMoney = cuReatilMoneyDao.queryOne(new QueryFilterBuilder().put("id", j).build());
             BigDecimal rate = cuReatilMoney.getMoney().multiply(zpzo);
             BigDecimal mToken = mp.multiply(rate).setScale(2, BigDecimal.ROUND_HALF_UP);
             CuReatil1 cureatil1 = cuReatil1Dao.queryOne(new QueryFilterBuilder().put("customerId", customerId).build());
-            if (j == 1) {
+            if (j == i) {
                 cureatil1.setMoney(cureatil1.getMoney().add(mToken));
-                cuLogs.setRemark("您的某下级记账直接得到mp:"+mToken);
+                cuLogs.setRemark("您的某下级记账间接得到mToken:"+mToken);
             } else {
                 cureatil1.setIndirectMoney(cureatil1.getIndirectMoney().add(mToken));
-                cuLogs.setRemark("您的某下级记账间接得到mp:"+mToken);
+                cuLogs.setRemark("您的某下级记账间接得到mToken:"+mToken);
             }
             cuLogs.setCustomerId(customerId);
             cuLogs.setType("1");
@@ -486,6 +485,57 @@ public class CuCustomerCollectMybatisServiceImpl extends BaseApiService implemen
         return json.toString();
     }
 
+    @Override
+    public String searchCuLog(String token, String type, Integer page, Integer rows)  {
+        if ("1".equals(type) || "2".equals(type)) {
+            String customerId = this.getCuCustomerInfo(token);
+            if (null == page) {
+                page = 1;
+            }
+            if (null == rows) {
+                rows = 10;
+            }
+            Map map = new HashMap();
+            map.put("type", type);
+            map.put("customerId", customerId);
+            map.put("pageN", (page-1)*10);
+            map.put("pageS",rows);
+            List<CuLogs> list = cuLogsDao.query(new QueryFilterBuilder().putAll(map).build());
+            JSONArray json = JSONArray.fromObject(list);
+            return json.toString();
+        } else if ("3".equals(type)){
+            try {
+                String customerId = this.getCuCustomerInfo(token);
+                if (null == page) {
+                    page = 1;
+                }
+                if (null == rows) {
+                    rows = 10;
+                }
+                Map map = new HashMap();
+                map.put("userId", customerId);
+                map.put("pageN", (page-1)*10);
+                map.put("pageS",rows);
+                List<GtyWalletHistory> gtyWalletHistorys = geyWallethistoryDao.query(new QueryFilterBuilder().putAll(map).build());
+                List<CuLogs> list = new ArrayList<>();
+                for (GtyWalletHistory gtyWalletHistory : gtyWalletHistorys) {
+                    CuLogs cuLogs = new CuLogs();
+                    cuLogs.setRemark(gtyWalletHistory.getRecordName()+gtyWalletHistory.getRecordType());
+                    cuLogs.setType("3");
+                    DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                    Date date = format.parse(gtyWalletHistory.getCreateTime());
+                    cuLogs.setCreateTime(date);
+                    list.add(cuLogs);
+                }
+                JSONArray json = JSONArray.fromObject(list);
+                return json.toString();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return "";
+    }
+
     /**
      * 返还积分
      * @param cuConsume
@@ -495,13 +545,22 @@ public class CuCustomerCollectMybatisServiceImpl extends BaseApiService implemen
     private void returnMp(String mp, CuConsume cuConsume) {
         this.updateWalletInfo(cuConsume.getCustomerId(), new BigDecimal(mp));
         this.addMp(new BigDecimal(mp), cuConsume.getCustomerId());
+        MallShopAdvert mallShopAdvert = mallShopAdvertDao.queryOne(new QueryFilterBuilder().put("id", cuConsume.getShopId()).build());
+        this.addMp(new BigDecimal(mp), mallShopAdvert.getCustomerId());
+        this.insertLogs("记账:"+cuConsume.getMoney()+"返还mp:"+mp, mp, cuConsume, "0");
+        this.insertLogs("确认收货得到mp:"+mp, mp, cuConsume, "1");
+    }
+
+    private void insertLogs(String remark, String mp, CuConsume cuConsume, String type) {
         CuLogs cuLogs = new CuLogs();
         cuLogs.setCustomerId(cuConsume.getCustomerId());
-        cuLogs.setShopId(cuConsume.getShopId());
+        if ("0".equals(type)) {
+            cuLogs.setShopId(cuConsume.getShopId());
+        }
         cuLogs.setType("1");
         cuLogs.setMoney(cuConsume.getMoney());
         cuLogs.setMp(new BigDecimal(mp));
-        cuLogs.setRemark("记账:"+cuConsume.getMoney()+"返还mp:"+mp);
+        cuLogs.setRemark(remark);
         cuLogsDao.insert(cuLogs);
     }
 

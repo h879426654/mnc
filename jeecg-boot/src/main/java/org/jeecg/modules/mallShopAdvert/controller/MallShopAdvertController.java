@@ -69,9 +69,17 @@ public class MallShopAdvertController {
 									  @RequestParam(name="pageSize", defaultValue="10") Integer pageSize,
 									  HttpServletRequest req) {
 		Result<IPage<MallShopAdvert>> result = new Result<IPage<MallShopAdvert>>();
-		QueryWrapper<MallShopAdvert> queryWrapper = QueryGenerator.initQueryWrapper(mallShopAdvert, req.getParameterMap()).orderByAsc("apply_Status");
+		String advertName = "";
+		if (null != mallShopAdvert.getAdvertName() && !mallShopAdvert.getAdvertName().isEmpty()) {
+			advertName = mallShopAdvert.getAdvertName();
+			mallShopAdvert.setAdvertName(null);
+		}
+		QueryWrapper<MallShopAdvert> queryWrapper = QueryGenerator.initQueryWrapper(mallShopAdvert, req.getParameterMap());
+		if (!advertName.isEmpty()) {
+			queryWrapper.like("advert_name", advertName);
+		}
 		Page<MallShopAdvert> page = new Page<MallShopAdvert>(pageNo, pageSize);
-		IPage<MallShopAdvert> pageList = mallShopAdvertService.page(page, queryWrapper);
+		IPage<MallShopAdvert> pageList = mallShopAdvertService.page(page, queryWrapper.orderByAsc("apply_Status"));
 		result.setSuccess(true);
 		result.setResult(pageList);
 		return result;
@@ -283,4 +291,26 @@ public class MallShopAdvertController {
 	 public String searchStore(String customerId) {
 		 return mallShopAdvertService.searchStore(customerId);
 	 }
+
+
+	@PutMapping(value = "/edit1")
+	public String edit1(@RequestBody MallShopAdvert mallShopAdvert) {
+	 	if (null == mallShopAdvert.getCustomerId() || mallShopAdvert.getCustomerId().isEmpty()) {
+	 		return "重新登录";
+		}
+	 	MallShopAdvert mallShopAdvert1 = mallShopAdvertMapper.selectOne(new QueryWrapper<MallShopAdvert>().eq("advert_id", mallShopAdvert.getAdvertId()));
+	 	mallShopAdvert1.setAdvertImage(mallShopAdvert.getAdvertImage());
+	 	mallShopAdvert1.setAdvertName(mallShopAdvert.getAdvertName());
+	 	mallShopAdvert1.setPerson(mallShopAdvert.getPerson());
+	 	mallShopAdvert1.setAdvertPhone(mallShopAdvert.getAdvertPhone());
+	 	mallShopAdvert1.setShopLicence(mallShopAdvert.getShopLicence());
+	 	mallShopAdvert1.setAdvertContext(mallShopAdvert.getAdvertContext());
+	 	mallShopAdvert1.setCreateTime(new Date());
+	 	mallShopAdvert1.setApplyStatus("1");
+	 	mallShopAdvertMapper.update(mallShopAdvert1, new QueryWrapper<MallShopAdvert>().eq("advert_id", mallShopAdvert.getAdvertId()));
+	 	MallUser mallUser = mallUserMapper.selectOne(new QueryWrapper<MallUser>().eq("customer_id", mallShopAdvert.getCustomerId()));
+	 	mallUser.setState("1");
+	 	mallUserMapper.updateById(mallUser);
+	 	return "成功";
+	}
 }

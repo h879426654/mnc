@@ -13,7 +13,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  * @version： V1.0
  */
 public interface MallGoodsMapper extends BaseMapper<MallGoods> {
-    List<MallGoods> searchGoods(@Param("advertId")String advertId, @Param("pageNum") Integer pageNum, @Param("pageSize") Integer pageSize);
+    List<MallGoods> searchGoods(@Param("advertId")String advertId, @Param("name")String name, @Param("pageNum") Integer pageNum, @Param("pageSize") Integer pageSize);
 
-    long searchTotal(@Param("advertId")String advertId);
+    long searchTotal(@Param("advertId")String advertId, @Param("name")String name);
 }

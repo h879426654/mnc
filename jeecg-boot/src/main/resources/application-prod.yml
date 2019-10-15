@@ -85,7 +85,7 @@ spring:
       datasource:
         master:
           url: jdbc:mysql://127.0.0.1:3306/mnc_new?useUnicode=true&characterEncoding=utf8&allowMultiQueries=true&useSSL=false
-#          url: jdbc:mysql://47.75.47.121:3306/mnc_new?useUnicode=true&characterEncoding=utf8&allowMultiQueries=true&useSSL=false
+          #url: jdbc:mysql://47.75.47.121:3306/mnc_new?useUnicode=true&characterEncoding=utf8&allowMultiQueries=true&useSSL=false
           username: mnc_new
           password: CmK2FEsYcrBfx8Ae
           driver-class-name: com.mysql.jdbc.Driver

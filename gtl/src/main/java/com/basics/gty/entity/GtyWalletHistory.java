@@ -13,6 +13,24 @@ public class GtyWalletHistory extends BaseBean {
  private String mark;
  private String createTime;
  private String recordName;
+ private Integer pageN;
+ private Integer pageS;
+
+ public Integer getPageN() {
+  return pageN;
+ }
+
+ public void setPageN(Integer pageN) {
+  this.pageN = pageN;
+ }
+
+ public Integer getPageS() {
+  return pageS;
+ }
+
+ public void setPageS(Integer pageS) {
+  this.pageS = pageS;
+ }
 
  public String getRecordName() {
   return recordName;

@@ -1,6 +1,8 @@
 package com.basics.cu.entity;
 
 
+import jnr.ffi.annotations.In;
+
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -35,6 +37,14 @@ public class CuLogs extends CuLogsBase {
 	}
 	public CuLogs createTime(Date createTime) {
 		this.setCreateTime(createTime);
+		return this;
+	}
+	public CuLogs pageS(Integer pageS) {
+		this.setPageS(pageS);
+		return this;
+	}
+	public CuLogs pageN(Integer pageN) {
+		this.setPageN(pageN);
 		return this;
 	}
 }

@@ -238,16 +238,15 @@ public class MallUserController {
 
 	 /**
 	  * 登录
-	  * @param userName
-	  * @param passWord
+	  * @param mallUser
 	  * @return
 	  */
   @PostMapping(value = "/login")
-  public String login(String userName, String passWord) {
-	 if (null != userName && null != passWord) {
-		 MallUser mallUser = mallUserMapper.selectOne(new QueryWrapper<MallUser>().eq("user_name", userName).eq("pass_word", passWord));
-		 if (null != mallUser) {
-			return mallUser.getCustomerId();
+  public String login(@RequestBody MallUser mallUser) {
+	 if (null != mallUser.getUserName() && null != mallUser.getPassWord()) {
+		 MallUser mallUser1 = mallUserMapper.selectOne(new QueryWrapper<MallUser>().eq("user_name", mallUser.getUserName()).eq("pass_word", mallUser.getPassWord()).eq("state",0));
+		 if (null != mallUser1) {
+			return mallUser1.getCustomerId();
 		 }
 	 }
 	 return "0";

@@ -90,6 +90,8 @@ public class CuReatil1ServiceImpl extends BaseApiService implements CuReatil1Ser
             directIds = sbDirectIds.toString().substring(1);
             Integer directCount = directIds.split(",").length;
             cuReatil1.setDirectCount(directCount);
+        } else {
+            directIds = "'没有查询到改数据'";
         }
         //间接人数
         String indirectids = "";

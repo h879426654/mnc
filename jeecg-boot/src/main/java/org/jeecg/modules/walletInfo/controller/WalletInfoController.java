@@ -65,9 +65,17 @@ public class WalletInfoController {
 									  @RequestParam(name="pageSize", defaultValue="10") Integer pageSize,
 									  HttpServletRequest req) {
 		Result<IPage<WalletInfo>> result = new Result<IPage<WalletInfo>>();
+		if (null == walletInfo.getUserId() || walletInfo.getUserId().isEmpty()) {
+			result.error500("重新登陆");
+			return result;
+		}
 		QueryWrapper<WalletInfo> queryWrapper = QueryGenerator.initQueryWrapper(walletInfo, req.getParameterMap());
 		Page<WalletInfo> page = new Page<WalletInfo>(pageNo, pageSize);
 		IPage<WalletInfo> pageList = walletInfoService.page(page, queryWrapper);
+		List<WalletInfo> list = pageList.getRecords();
+		for (WalletInfo walletInfo1 : list) {
+			walletInfo.setSuperNum(walletInfo1.getSuperNum().add(walletInfo1.getReleasedMncNum()));
+		}
 		result.setSuccess(true);
 		result.setResult(pageList);
 		return result;

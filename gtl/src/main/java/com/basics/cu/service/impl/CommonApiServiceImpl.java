@@ -278,12 +278,12 @@ public class CommonApiServiceImpl extends BaseApiService implements CommonApiSer
         gtyWallet.setUserId(info.getId());
         gtyWallet.setWalletAddress(UUID.randomUUID().toString().replace("-",""));
         gtyWalletDao.insert(gtyWallet);
-        insertReatil(info.getId(), parent.getId());
+        insertReatil(info.getId(), parent.getId(),request.getPhone(), request.getParentPhone());
         response.onHandleSuccess();
         return response;
     }
 
-    private void insertReatil(String customerId, String parentCustomerId) {
+    private void insertReatil(String customerId, String parentCustomerId, String phone, String phone2) {
         //通过邀请人id,查询是不是迁移数据如果是 将用户插入到表中
         CuReatil1 oldReatil = cuReatil1Dao.queryOne(new QueryFilterBuilder().put("customerId", parentCustomerId).build());
         if (null == oldReatil) {
@@ -310,7 +310,17 @@ public class CommonApiServiceImpl extends BaseApiService implements CommonApiSer
         cuReatil2.setCustomerIdSecond(customerId);
         cuReatil2Dao.insert(cuReatil2);
 
+        this.insertCuLogs(customerId, "您已成为"+phone2+"的下级");
+        this.insertCuLogs(parentCustomerId, phone+"成为您的下级");
+    }
 
+    private void insertCuLogs(String customerId ,String remark) {
+
+        CuLogs cuLogs = new CuLogs();
+        cuLogs.setType("2");
+        cuLogs.setCustomerId(customerId);
+        cuLogs.setRemark(remark);
+        cuLogsDao.insert(cuLogs);
     }
     /**
      * 登录
@@ -348,13 +358,39 @@ public class CommonApiServiceImpl extends BaseApiService implements CommonApiSer
         user.setLastLoginTime(start);
         cuCustomerLoginDao.save(user);
         data.setToken(appToken.getId());
-        response.setItem(data);
-        response.onHandleSuccess();
+        Map map = new HashMap();
+        map.put("customerIdSecond", user.getId());
+        Long count = cuReatil2Dao.count(map);
+        if (count > 0) {
+            data.setIsMan("y");
+        } else if (count == 0){
+            data.setIsMan("n");
+        }
         GtyWallet gtyWallet = gtyWalletDao.queryOne(new QueryFilterBuilder().put("userId", user.getId()).build());
         if (null == gtyWallet.getWalletAddress() || gtyWallet.getWalletAddress().isEmpty()){
             gtyWallet.setWalletAddress(UUID.randomUUID().toString().replace("-",""));
             gtyWalletDao.update(gtyWallet);
         }
+        if (0 == gtyWallet.getWalletFrozen()) {
+            data.setAct("n");
+        } else if (1 == gtyWallet.getWalletFrozen()) {
+            data.setAct("y");
+        }
+        if (!request.getPerson().isEmpty()) {
+            CuCustomerInfo cuCustomerInfo = cuCustomerInfoDao.queryOne(new QueryFilterBuilder().put("customerPhone", request.getPerson()).build());
+            if (null != cuCustomerInfo) {
+                GtyWallet gtyWallet1 = gtyWalletDao.queryOne(new QueryFilterBuilder().put("userId", cuCustomerInfo.getId()).put("walletFrozen", 1).build());
+                if (null != gtyWallet1) {
+                    CuReatil1 oldReatil = cuReatil1Dao.queryOne(new QueryFilterBuilder().put("customerId", request.getPerson()).build());
+                    if (null != oldReatil) {
+                        insertReatil(request.getPhone(), request.getPerson(),request.getPhone(),request.getPerson());
+                        data.setIsMan("y");
+                    }
+                }
+            }
+        }
+        response.setItem(data);
+        response.onHandleSuccess();
         return response;
     }
 

@@ -8,6 +8,7 @@ import jnr.ffi.annotations.In;
 import org.web3j.abi.datatypes.Int;
 
 import java.math.BigDecimal;
+import java.text.ParseException;
 import java.util.List;
 
 public interface CuCustomerCollectService {
@@ -48,4 +49,6 @@ public interface CuCustomerCollectService {
     void addMp(BigDecimal mp, String customerId);
 
     String searchAdvUser(String token);
+
+    String searchCuLog(String token, String type, Integer page, Integer rows) ;
 }

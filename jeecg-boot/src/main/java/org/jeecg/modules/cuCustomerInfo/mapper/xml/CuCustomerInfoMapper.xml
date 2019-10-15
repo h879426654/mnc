@@ -7,7 +7,7 @@
     </select>
 
     <select id="searchCustomerTodayCount" resultType="Integer">
-        select count(*) from cu_customer_info where DATE_FORMAT(create_time,'%Y-%m-%d') = DATE_FORMAT(NOW(), '%Y-%m-%d');
+        select * from cu_customer_info where DATE_FORMAT(register_time,'%Y-%m-%d') = DATE_FORMAT(NOW(), '%Y-%m-%d')
     </select>
 
     <select id="searchBookingCount" resultType="Integer">

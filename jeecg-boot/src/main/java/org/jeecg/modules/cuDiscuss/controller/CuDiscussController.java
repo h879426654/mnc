@@ -104,7 +104,43 @@ public class CuDiscussController {
 		result.setResult(pageList);
 		return result;
 	}
-	
+
+	 @GetMapping(value = "/seachDiscuss")
+	 public Result<IPage<CuDiscuss>> seachDiscuss(CuDiscuss cuDiscuss,
+												   @RequestParam(name="pageNo", defaultValue="1") Integer pageNo,
+												   @RequestParam(name="pageSize", defaultValue="10") Integer pageSize,
+												   HttpServletRequest req) {
+		 Result<IPage<CuDiscuss>> result = new Result<IPage<CuDiscuss>>();
+		 if (null==cuDiscuss.getCustomerId() || cuDiscuss.getCustomerId().isEmpty()) {
+		 	result.error500("重新登陆");
+			return result;
+		 }
+		 QueryWrapper<CuDiscuss> queryWrapper = new QueryWrapper<>();
+		 if (null != cuDiscuss.getUserName()) {
+			 if (!cuDiscuss.getUserName().isEmpty()) {
+				 List<CuCustomerInfo> list = cuCustomerInfoMapper.selectList(new QueryWrapper<CuCustomerInfo>().like("customer_name", cuDiscuss.getUserName()));
+				 Set<String> set = new HashSet<String>();
+				 for (CuCustomerInfo cuCustomerInfo:list) {
+					 set.add(cuCustomerInfo.getCustomerId());
+				 }
+				 if (null != set) {
+					 queryWrapper.in("customer_id", set);
+				 }
+			 }
+		 }
+		 MallShopAdvert mallShopAdvert = mallShopAdvertMapper.selectOne(new QueryWrapper<MallShopAdvert>().eq("customer_Id", cuDiscuss.getCustomerId()));
+		 queryWrapper.eq("shop_id", mallShopAdvert.getAdvertId());
+		 Page<CuDiscuss> page = new Page<CuDiscuss>(pageNo, pageSize);
+		 IPage<CuDiscuss> pageList = cuDiscussService.page(page, queryWrapper);
+		 List<CuDiscuss> cuDiscusses = pageList.getRecords();
+		 for (CuDiscuss cuDiscuss1:cuDiscusses) {
+			 CuCustomerInfo cuCustomerInfo = cuCustomerInfoMapper.selectOne(new QueryWrapper<CuCustomerInfo>().eq("customer_id", cuDiscuss1.getCustomerId()));
+			 cuDiscuss1.setUserName(cuCustomerInfo.getCustomerName());
+		 }
+		 result.setSuccess(true);
+		 result.setResult(pageList);
+		 return result;
+	 }
 	/**
 	  *   添加
 	 * @param cuDiscuss
@@ -270,5 +306,20 @@ public class CuDiscussController {
       }
       return Result.ok("文件导入失败！");
   }
+	 @GetMapping(value = "/delete1")
+	 public Result<CuDiscuss> delete1(String id) {
+		 Result<CuDiscuss> result = new Result<CuDiscuss>();
+		 CuDiscuss cuDiscuss = cuDiscussService.getById(id);
+		 if(cuDiscuss==null) {
+			 result.error500("未找到对应实体");
+		 }else {
+			 boolean ok = cuDiscussService.removeById(id);
+			 if(ok) {
+				 result.success("删除成功!");
+			 }
+		 }
+
+		 return result;
+	 }
 
 }

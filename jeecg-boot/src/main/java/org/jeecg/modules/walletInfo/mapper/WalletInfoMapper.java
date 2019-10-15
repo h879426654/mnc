@@ -14,4 +14,5 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  */
 public interface WalletInfoMapper extends BaseMapper<WalletInfo> {
 
+    String searchCustomerId(String userId);
 }
