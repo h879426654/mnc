@@ -452,12 +452,13 @@ public class CuCustomerCollectMybatisServiceImpl extends BaseApiService implemen
         CuLogs cuLogs = new CuLogs();
         //计算并更新
         BigDecimal mm = BigDecimal.ZERO;
+        int g = 1;
         for (int j=i; j>0; j--) {
             CuReatil2 cu2 = cuReatil2Dao.queryOne(new QueryFilterBuilder().put("customerIdSecond", customerId).build());
             if (null == cu2) {
                 break;
             }
-            CuReatilMoney cuReatilMoney = cuReatilMoneyDao.queryOne(new QueryFilterBuilder().put("id", j).build());
+            CuReatilMoney cuReatilMoney = cuReatilMoneyDao.queryOne(new QueryFilterBuilder().put("id", g).build());
             BigDecimal rate = cuReatilMoney.getMoney().multiply(zpzo);
             BigDecimal mToken = mp.multiply(rate).setScale(2, BigDecimal.ROUND_HALF_UP);
             CuReatil1 cureatil1 = cuReatil1Dao.queryOne(new QueryFilterBuilder().put("customerId", cu2.getCustomerId()).build());
@@ -478,6 +479,7 @@ public class CuCustomerCollectMybatisServiceImpl extends BaseApiService implemen
                 break;
             }
             customerId = cu2.getCustomerId();
+            g++;
         }
     }
 
