@@ -14,8 +14,14 @@
    wr.RECORD_NAME "recordName",
    wr.RECORD_TO_ACCOUNT "toAccount"
 
-   FROM wallet_record
-
+   FROM wallet_record wr
+   where 1=1
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(userId)">
+   <![CDATA[ and user_id = #{userId}    ]]>
+  </if>
+  <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(pageN)">
+   <![CDATA[ limit #{pageN},#{pageS}    ]]>
+  </if>
  </select>
 
  <select id="queryTransation" parameterType="map" resultType="com.basics.gty.entity.GtyWalletHistory" flushCache="true" useCache="false">

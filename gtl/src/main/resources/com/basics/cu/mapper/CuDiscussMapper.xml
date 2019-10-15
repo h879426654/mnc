@@ -20,7 +20,7 @@
     insert into cu_discuss(shop_id, customer_id, create_time, remark) values (#{shopId}, #{customerId}, now(), #{remark})
 </insert>
 
-<select id = "count" parameterType="map" resultType="long">
+<select id = "count" parameterType="map" resultType="long" flushCache="false" useCache="false">
 <![CDATA[
     select count(1)
     from  cu_discuss
