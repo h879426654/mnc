@@ -77,6 +77,20 @@ public class GtyTransferMybatisService extends BaseApiService implements GtyTran
             response.setStatus(1);
             return response;
         }
+        try {
+            BigDecimal toMone = new BigDecimal(request.getNum());
+            if(toMone.compareTo(BigDecimal.ZERO)<=0){
+               response.setStatus(1);
+               response.setMsg("数量错误");
+                return response;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            response.setStatus(1);
+            response.setMsg("数量错误");
+            return response;
+        }
+        
         GtyWallet gtyWallet = gtyWallet111.get(0);
 
 //        GtyWallet gtyWallet = gtyWalletDao.queryOne(filter);
