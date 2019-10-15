@@ -99,7 +99,9 @@ public class CuCustomerInfoController {
 					CuCustomerInfo cuCustomerInfo3 = cuCustomerInfoMapper.selectOne(new QueryWrapper<CuCustomerInfo>().eq("customer_id", personCustomerId));
 					cuCustomerInfo2.setPerson(cuCustomerInfo3.getCustomerPhone());
 				}
-
+				cuCustomerInfo2.setMtoken(walletInfo.getMtokenNum());
+				cuCustomerInfo2.setRecordNum(walletInfo.getRecordNum());
+				cuCustomerInfo2.setMoveNum(walletInfo.getMoveNum());
 			}
 			list2.add(cuCustomerInfo2);
 		}

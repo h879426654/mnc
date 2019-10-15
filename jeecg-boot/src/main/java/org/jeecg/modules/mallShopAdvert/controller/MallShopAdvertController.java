@@ -69,9 +69,17 @@ public class MallShopAdvertController {
 									  @RequestParam(name="pageSize", defaultValue="10") Integer pageSize,
 									  HttpServletRequest req) {
 		Result<IPage<MallShopAdvert>> result = new Result<IPage<MallShopAdvert>>();
-		QueryWrapper<MallShopAdvert> queryWrapper = QueryGenerator.initQueryWrapper(mallShopAdvert, req.getParameterMap()).orderByAsc("apply_Status");
+		String advertName = "";
+		if (null != mallShopAdvert.getAdvertName() && !mallShopAdvert.getAdvertName().isEmpty()) {
+			advertName = mallShopAdvert.getAdvertName();
+			mallShopAdvert.setAdvertName(null);
+		}
+		QueryWrapper<MallShopAdvert> queryWrapper = QueryGenerator.initQueryWrapper(mallShopAdvert, req.getParameterMap());
+		if (!advertName.isEmpty()) {
+			queryWrapper.like("advert_name", advertName);
+		}
 		Page<MallShopAdvert> page = new Page<MallShopAdvert>(pageNo, pageSize);
-		IPage<MallShopAdvert> pageList = mallShopAdvertService.page(page, queryWrapper);
+		IPage<MallShopAdvert> pageList = mallShopAdvertService.page(page, queryWrapper.orderByAsc("apply_Status"));
 		result.setSuccess(true);
 		result.setResult(pageList);
 		return result;

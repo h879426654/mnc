@@ -54,4 +54,6 @@ public class CuCustomerInfo2 implements Serializable {
 	@Excel(name ="userId", width = 15)
 	private String userid;
 	private String person;
+	private BigDecimal recordNum;
+	private BigDecimal moveNum;
 }

@@ -64,7 +64,16 @@ public class CuConsumeController {
 									  @RequestParam(name="pageSize", defaultValue="10") Integer pageSize,
 									  HttpServletRequest req) {
 		Result<IPage<CuConsume>> result = new Result<IPage<CuConsume>>();
+		String shopName = "";
+		if (null != cuConsume.getShopName() && !cuConsume.getShopName().isEmpty()){
+			 shopName = cuConsume.getShopName();
+			cuConsume.setShopName(null);
+		}
+
 		QueryWrapper<CuConsume> queryWrapper = QueryGenerator.initQueryWrapper(cuConsume, req.getParameterMap());
+		if (!shopName.isEmpty()) {
+			queryWrapper.like("shop_name", shopName);
+		}
 		Page<CuConsume> page = new Page<CuConsume>(pageNo, pageSize);
 		IPage<CuConsume> pageList = cuConsumeService.page(page, queryWrapper);
 		result.setSuccess(true);
