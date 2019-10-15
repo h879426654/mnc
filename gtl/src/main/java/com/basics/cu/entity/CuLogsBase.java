@@ -12,6 +12,24 @@ class CuLogsBase extends BaseBean {
 	private BigDecimal money;
 	private String remark;
 	private Date createTime;
+	private Integer pageN;
+	private Integer pageS;
+
+	public Integer getPageN() {
+		return pageN;
+	}
+
+	public void setPageN(Integer pageN) {
+		this.pageN = pageN;
+	}
+
+	public Integer getPageS() {
+		return pageS;
+	}
+
+	public void setPageS(Integer pageS) {
+		this.pageS = pageS;
+	}
 
 	public Integer getId() {
 		return id;

@@ -5,11 +5,16 @@
 <mapper namespace="com.basics.cu.entity.CuLogs">
  <cache type="com.basics.support.mybatis.CacheAdapter"/>
  <select id="query" resultType="com.basics.cu.entity.CuLogs"  flushCache="false" useCache="false">
-    select id, type, customer_id, shop_id, mp, money, remark, create_time from cu_logs
+    select id, type, customer_id, shop_id, mp, money, remark, create_time as createTime from cu_logs
      WHERE 1=1
-     <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(delFlag)">
+     <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(type)">
          <![CDATA[ and type = #{type} ]]>
      </if>
+     <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(customerId)">
+         <![CDATA[ and customer_id = #{customerId} ]]>
+     </if>
+      order by create_time desc
+      limit #{pageN},#{pageS}
  </select>
  <insert id = "insert" parameterType="com.basics.cu.entity.CuLogs">
     insert into cu_logs(type, customer_id, shop_id, mp, money, remark, create_time)

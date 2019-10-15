@@ -405,10 +405,14 @@ public class MallShopAdvertApiServiceImpl extends BaseApiService implements Mall
 	@Override
 	public String insertShopAdvert(MallAdvertResponse mallAdvertResponse) {
 		try {
+			if (null == mallAdvertResponse.getToken() || mallAdvertResponse.getToken().isEmpty()) {
+				return "入驻失败";
+			}
 			AppToken appToken = appTokenDao.queryOne(new QueryFilterBuilder().put("id", mallAdvertResponse.getToken()).build());
-			MallShopAdvert advert = mallShopAdvertDao.queryOne(new QueryFilterBuilder().put("customerId", appToken.getUserId()).put("applyStatus", "2").put("delFlag", "0").build());
+
+			MallShopAdvert advert = mallShopAdvertDao.queryOne(new QueryFilterBuilder().put("customerId", appToken.getUserId()).build());
 			if (advert != null) {
-				return "该商家已入驻";
+				return "入驻失败";
 			}
 			MallShopAdvert mallShopAdvert = new MallShopAdvert();
 			mallShopAdvert.setId(UUID.randomUUID().toString().replace("-",""));

@@ -48,4 +48,6 @@ public interface CuCustomerCollectService {
     void addMp(BigDecimal mp, String customerId);
 
     String searchAdvUser(String token);
+
+    String searchCuLog(String token, String type, Integer page, Integer rows);
 }
