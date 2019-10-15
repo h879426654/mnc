@@ -437,8 +437,8 @@ public class CuCustomerCollectMybatisServiceImpl extends BaseApiService implemen
         BigDecimal zpzo = new BigDecimal(0.01);
         int i = 0;
         //判断一共有多少人吃利息
+        String customerId2 = customerId;
         while(true) {
-            String customerId2 = customerId;
             CuReatil2 cu2 = cuReatil2Dao.queryOne(new QueryFilterBuilder().put("customerIdSecond", customerId2).build());
             if (null == cu2) {
                 break;
@@ -451,12 +451,16 @@ public class CuCustomerCollectMybatisServiceImpl extends BaseApiService implemen
         }
         CuLogs cuLogs = new CuLogs();
         //计算并更新
+        BigDecimal mm = BigDecimal.ZERO;
         for (int j=i; j>0; j--) {
             CuReatil2 cu2 = cuReatil2Dao.queryOne(new QueryFilterBuilder().put("customerIdSecond", customerId).build());
+            if (null == cu2) {
+                break;
+            }
             CuReatilMoney cuReatilMoney = cuReatilMoneyDao.queryOne(new QueryFilterBuilder().put("id", j).build());
             BigDecimal rate = cuReatilMoney.getMoney().multiply(zpzo);
             BigDecimal mToken = mp.multiply(rate).setScale(2, BigDecimal.ROUND_HALF_UP);
-            CuReatil1 cureatil1 = cuReatil1Dao.queryOne(new QueryFilterBuilder().put("customerId", customerId).build());
+            CuReatil1 cureatil1 = cuReatil1Dao.queryOne(new QueryFilterBuilder().put("customerId", cu2.getCustomerId()).build());
             if (j == i) {
                 cureatil1.setMoney(cureatil1.getMoney().add(mToken));
                 cuLogs.setRemark("您的某下级记账间接得到mToken:"+mToken);
@@ -469,11 +473,11 @@ public class CuCustomerCollectMybatisServiceImpl extends BaseApiService implemen
             cuLogs.setMp(mToken);
             cuLogsDao.insert(cuLogs);
             cuReatil1Dao.update(cureatil1);
-            this.updateWalletInfo(customerId, mToken);
+            this.updateWalletInfo(cu2.getCustomerId(), mToken);
             if (cu2 == null) {
                 break;
             }
-            customerId = cu2.getCustomerIdSecond();
+            customerId = cu2.getCustomerId();
         }
     }
 

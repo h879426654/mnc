@@ -272,12 +272,24 @@ public class CommonApiServiceImpl extends BaseApiService implements CommonApiSer
         account.id(customer.getId()).customerPurse(GuidUtils.generateSimpleGuid().toUpperCase()).customerPayPass(MD5Util.GetMD5Code(null == request.getPayPass() ? "123456" : request.getPayPass()));
 
         // 保存
+        CuCustomerInfo cuCustomerInfo = cuCustomerInfoDao.queryOne(new QueryFilterBuilder().put("customerPhone", request.getParentPhone()).build());
+        GtyWallet gtyWallet1 = gtyWalletDao.queryOne(new QueryFilterBuilder().put("userId", cuCustomerInfo.getId()).put("walletFrozen", 1).build());
+        if (null != gtyWallet1) {
+            CuReatil1 oldReatil = cuReatil1Dao.queryOne(new QueryFilterBuilder().put("customerId", gtyWallet1.getUserId()).build());
+            if (null != oldReatil) {
+                insertReatil(info.getId(), parent.getId(),request.getPhone(), request.getParentPhone());
+            } else {
+                response.onHandleFail(getMessage(req, "负责人有误"));
+                return response;
+            }
+        }
         cuCustomerInfoDao.save(info);
         cuCustomerAccountDao.save(account);
         GtyWallet gtyWallet = new GtyWallet();
         gtyWallet.setUserId(info.getId());
         gtyWallet.setWalletAddress(UUID.randomUUID().toString().replace("-",""));
         gtyWalletDao.insert(gtyWallet);
+
         insertReatil(info.getId(), parent.getId(),request.getPhone(), request.getParentPhone());
         response.onHandleSuccess();
         return response;
@@ -381,7 +393,7 @@ public class CommonApiServiceImpl extends BaseApiService implements CommonApiSer
             if (null != cuCustomerInfo) {
                 GtyWallet gtyWallet1 = gtyWalletDao.queryOne(new QueryFilterBuilder().put("userId", cuCustomerInfo.getId()).put("walletFrozen", 1).build());
                 if (null != gtyWallet1) {
-                    CuReatil1 oldReatil = cuReatil1Dao.queryOne(new QueryFilterBuilder().put("customerId", request.getPerson()).build());
+                    CuReatil1 oldReatil = cuReatil1Dao.queryOne(new QueryFilterBuilder().put("customerId", gtyWallet1.getUserId()).build());
                     if (null != oldReatil) {
                         insertReatil(request.getPhone(), request.getPerson(),request.getPhone(),request.getPerson());
                         data.setIsMan("y");
