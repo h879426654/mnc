@@ -90,7 +90,7 @@ public class GtyTransferMybatisService extends BaseApiService implements GtyTran
             response.setMsg("数量错误");
             return response;
         }
-        
+
         GtyWallet gtyWallet = gtyWallet111.get(0);
 
 //        GtyWallet gtyWallet = gtyWalletDao.queryOne(filter);
