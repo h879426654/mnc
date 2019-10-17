@@ -130,8 +130,8 @@ public class GtyTransferMybatisService extends BaseApiService implements GtyTran
                     gtyWallet1.setMncNum(gtyWallet.getMncNum().subtract(new BigDecimal(request.getNum())));
                     gtyWalletDao.update(gtyWallet1);
                 } else {
-                    response.setStatus(0);
-                    response.setMsg("转账失败");
+                    response.setStatus(1);
+                    response.setMsg("转账失败,请验证交易所地址");
                     return response;
                 }
 
@@ -295,7 +295,6 @@ public class GtyTransferMybatisService extends BaseApiService implements GtyTran
                     return response;
                 }
             }
-
 
         }
 
