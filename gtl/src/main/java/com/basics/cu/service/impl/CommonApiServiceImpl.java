@@ -250,6 +250,23 @@ public class CommonApiServiceImpl extends BaseApiService implements CommonApiSer
             response.onHandleFail(getMessage(req, "impl.doRegisterUser.referee.nonexistent"));
             return response;
         }
+        CuCustomerInfo cuCustomerInfo1 = cuCustomerInfoDao.queryOne(new QueryFilterBuilder().put("customerPhone", request.getParentPhone()).build());
+        CuReatil1 cr = cuReatil1Dao.queryOne(new QueryFilterBuilder().put("customerId", cuCustomerInfo1.getId()).build());
+        if (null == cr) {
+            response.onHandleFail("请输入正确的邀请人手机号");
+            return response;
+        } else if (null != cr) {
+            GtyWallet gtyWallet1 = gtyWalletDao.queryOne(new QueryFilterBuilder().put("userId", cuCustomerInfo1.getId()).put("walletFrozen", 1).build());
+            if (null == gtyWallet1) {
+                response.onHandleFail("请输入正确的邀请人手机号");
+                return response;
+            } else  {
+                if (gtyWallet1.getWalletFrozen() == 0) {
+                    response.onHandleFail("请输入正确的邀请人手机号");
+                    return response;
+                }
+            }
+        }
         String[] strarr = PasswordEncoder.getEncPasswordAndSalt(request.getPassword());
         // 用户登陆信息表
         customer = new CuCustomerLogin();
@@ -270,23 +287,7 @@ public class CommonApiServiceImpl extends BaseApiService implements CommonApiSer
         // 初始化账户表
         CuCustomerAccount account = new CuCustomerAccount();
         account.id(customer.getId()).customerPurse(GuidUtils.generateSimpleGuid().toUpperCase()).customerPayPass(MD5Util.GetMD5Code(null == request.getPayPass() ? "123456" : request.getPayPass()));
-        CuCustomerInfo cuCustomerInfo1 = cuCustomerInfoDao.queryOne(new QueryFilterBuilder().put("customerPhone", request.getParentPhone()).build());
-        CuReatil1 cr = cuReatil1Dao.queryOne(new QueryFilterBuilder().put("customerId", cuCustomerInfo1.getId()).build());
-        if (null == cr) {
-            response.onHandleFail();
-            return response;
-        } else if (null != cr) {
-            GtyWallet gtyWallet1 = gtyWalletDao.queryOne(new QueryFilterBuilder().put("userId", cuCustomerInfo1.getId()).put("walletFrozen", 1).build());
-            if (null == gtyWallet1) {
-                response.onHandleFail();
-                return response;
-            } else  {
-                if (gtyWallet1.getWalletFrozen() == 0) {
-                    response.onHandleFail();
-                    return response;
-                }
-            }
-        }
+
         cuCustomerInfoDao.save(info);
         cuCustomerAccountDao.save(account);
         GtyWallet gtyWallet = new GtyWallet();
@@ -400,7 +401,7 @@ public class CommonApiServiceImpl extends BaseApiService implements CommonApiSer
                 if (null != gtyWallet1) {
                     CuReatil1 oldReatil = cuReatil1Dao.queryOne(new QueryFilterBuilder().put("customerId", gtyWallet1.getUserId()).build());
                     if (null != oldReatil) {
-                        insertReatil(request.getPhone(), request.getPerson(),request.getPhone(),request.getPerson());
+                        insertReatil(user.getId(), cuCustomerInfo.getId(),request.getPhone(),request.getPerson());
                         data.setIsMan("y");
                     }
                 }

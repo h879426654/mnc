@@ -51,4 +51,10 @@ public interface CuCustomerCollectService {
     String searchAdvUser(String token);
 
     String searchCuLog(String token, String type, Integer page, Integer rows) ;
+
+    String updateInfo(String token, String url, String name, String alipay, String bankCard);
+
+    String sendCode(String phone);
+
+    String updateWalletAddress(String phone, String token, String code, String adress);
 }

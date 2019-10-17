@@ -1,8 +1,11 @@
 package com.basics.cu.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
+import com.aliyuncs.exceptions.ClientException;
+import com.basics.app.entity.AppCode;
 import com.basics.app.entity.AppToken;
 import com.basics.common.BaseApiService;
+import com.basics.cu.controller.api.DySmsHelper;
 import com.basics.cu.controller.request.CollectRequest;
 import com.basics.cu.controller.request.ConsumeRequest;
 import com.basics.cu.controller.request.HistoryRequest;
@@ -12,7 +15,10 @@ import com.basics.gty.entity.GtyWallet;
 import com.basics.gty.entity.GtyWalletHistory;
 import com.basics.mall.entity.MallShopAdvert;
 import com.basics.mall.entity.MallUser;
+import com.basics.support.QueryFilter;
 import com.basics.support.QueryFilterBuilder;
+import com.basics.wallet.entity.WalletEntity;
+import jdk.nashorn.internal.parser.Token;
 import net.sf.json.JSONArray;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -118,6 +124,14 @@ public class CuCustomerCollectMybatisServiceImpl extends BaseApiService implemen
                     cuHttpUrl.setIsAdv("2");
                 }
             }
+            cuHttpUrl.setBankCard("");
+            cuHttpUrl.setAlipay("");
+            if (null != cuCustomerInfo.getBankCard()) {
+                cuHttpUrl.setBankCard(cuCustomerInfo.getBankCard());
+            }
+            if (null != cuCustomerInfo.getCustomerAlipay()) {
+                cuHttpUrl.setAlipay(cuCustomerInfo.getCustomerAlipay());
+            }
             cuHttpUrl.setImage(cuCustomerInfo.getCustomerHead());
             cuHttpUrl.setUserName(cuCustomerInfo.getCustomerName());
             GtyWallet gtyWallet = gtyWalletDao.queryOne(new QueryFilterBuilder().put("userId", customerId).build());
@@ -126,15 +140,12 @@ public class CuCustomerCollectMybatisServiceImpl extends BaseApiService implemen
                 cuHttpUrl.setMp(gtyWallet.getmTokenNum());
             }
             List<CuHttpUrl> cuHttpUrls = cuHttpUrlDao.query(new QueryFilterBuilder().put("token", token).build());
+            cuHttpUrl.setVermicelli(0);
             if (mallShopAdvert != null) {
                 if ("2".equals(mallShopAdvert.getApplyStatus())) {
                     List<CuCustomerCollect> cuCustomerCollects = cuCustomerCollectDao.query(new QueryFilterBuilder().put("shopId", mallShopAdvert.getId()).put("state","1").build());
                     cuHttpUrl.setVermicelli(cuCustomerCollects.size());
-                } else {
-                    cuHttpUrl.setVermicelli(0);
                 }
-            } else {
-                cuHttpUrl.setVermicelli(0);
             }
             if (null != mallShopAdvert) {
                 cuHttpUrl.setShopId(mallShopAdvert.getId());
@@ -540,6 +551,102 @@ public class CuCustomerCollectMybatisServiceImpl extends BaseApiService implemen
             }
         }
         return "";
+    }
+
+    @Override
+    public String updateInfo(String token, String url, String name, String alipay, String bankCard) {
+        String customerId = getCuCustomerInfo(token);
+        CuState cuState = new CuState();
+        if (null == customerId) {
+            cuState.setState("2");
+            JSONObject json = (JSONObject) JSONObject.toJSON(cuState);
+            return json.toString();
+        }
+        try {
+            CuCustomerInfo cuCustomerInfo = cuCustomerInfoDao.queryOne(new QueryFilterBuilder().put("customerId", customerId).build());
+            cuCustomerInfo.setCustomerHead(url);
+            cuCustomerInfo.setCustomerName(name);
+            cuCustomerInfo.setCustomerAlipay(alipay);
+            cuCustomerInfo.setBankCard(bankCard);
+            cuCustomerInfoDao.update(cuCustomerInfo);
+            cuState.setState("0");
+            JSONObject json = (JSONObject) JSONObject.toJSON(cuState);
+            return json.toString();
+        } catch (Exception e) {
+            cuState.setState("1");
+            JSONObject json = (JSONObject) JSONObject.toJSON(cuState);
+            return json.toString();
+        }
+    }
+
+    @Override
+    public String sendCode(String phone) {
+        CuState cuState = new CuState();
+        String str="0123456789";
+        StringBuilder code=new StringBuilder(6);
+        for(int i=0;i<6;i++) {
+            char ch=str.charAt(new Random().nextInt(str.length()));
+            code.append(ch);
+        }
+        try {
+            Boolean flag = DySmsHelper.sendSms(phone, code.toString(), "SMS_175121604");
+            if (flag) {
+                AppCode appCode = new AppCode();
+                appCode.setId(UUID.randomUUID().toString().replace("-",""));
+                appCode.setCodeType(4);
+                appCode.setCodeMobile(phone);
+                appCode.setCodeCode(code.toString());
+                appCode.setCodeState(0);
+                appCode.setCodeCreateTime(new Date());
+                appCodeDao.insert(appCode);
+                cuState.setState("0");
+                JSONObject json = (JSONObject) JSONObject.toJSON(cuState);
+                return json.toString();
+            }
+        } catch (Exception e) {
+            cuState.setState("1");
+            JSONObject json = (JSONObject) JSONObject.toJSON(cuState);
+            return json.toString();
+        }
+        return null;
+    }
+
+    @Override
+    public String updateWalletAddress(String phone, String token, String code, String adress) {
+        try {
+            String userId = appTokenDao.queryOne(new QueryFilterBuilder().put("id", token).build()).getUserId();
+            CuState cuState = new CuState();
+            if (userId == null) {
+                cuState.setState("2");
+                JSONObject json = (JSONObject) JSONObject.toJSON(cuState);
+                return json.toString();
+            }
+            AppCode appCode = appCodeDao.queryOne(new QueryFilterBuilder().put("codeMobile", phone).put("codeType", "4").orderBy("code_create_Time desc").build());
+            if (null != appCode) {
+                if (code.equals(appCode.getCodeCode())) {
+                    Date afterDate = new Date(appCode.getCodeCreateTime() .getTime() + 300000);
+                    if (afterDate.compareTo(new Date()) < 0) {
+                        cuState.setState("3");
+                        JSONObject json = (JSONObject) JSONObject.toJSON(cuState);
+                        return json.toString();
+                    }
+                    GtyWallet gtyWallet = gtyWalletDao.queryOne(new QueryFilterBuilder().put("UserId", userId).build());
+                    gtyWallet.setWalletAddress(adress);
+                    gtyWalletDao.update(gtyWallet);
+                    cuState.setState("0");
+                    JSONObject json = (JSONObject) JSONObject.toJSON(cuState);
+                    return json.toString();
+                }
+            }
+            cuState.setState("1");
+            JSONObject json = (JSONObject) JSONObject.toJSON(cuState);
+            return json.toString();
+        } catch (Exception e) {
+            CuState cuState = new CuState();
+            cuState.setState("1");
+            JSONObject json = (JSONObject) JSONObject.toJSON(cuState);
+            return json.toString();
+        }
     }
 
     /**

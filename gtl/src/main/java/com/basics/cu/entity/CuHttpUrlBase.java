@@ -14,7 +14,8 @@ class CuHttpUrlBase extends BaseBean {
 	private Integer vermicelli;
 	private String shopId;
 	private String isAdv;
-
+	private String alipay;
+	private String bankCard;
 	public String getIsAdv() {
 		return isAdv;
 	}
@@ -103,4 +104,19 @@ class CuHttpUrlBase extends BaseBean {
 		this.mp = mp;
 	}
 
+	public String getBankCard() {
+		return bankCard;
+	}
+
+	public void setBankCard(String bankCard) {
+		this.bankCard = bankCard;
+	}
+
+	public String getAlipay() {
+		return alipay;
+	}
+
+	public void setAlipay(String alipay) {
+		this.alipay = alipay;
+	}
 }

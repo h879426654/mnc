@@ -48,4 +48,12 @@ public class CuHttpUrl extends CuHttpUrlBase {
 		this.setIsAdv(isAdv);
 		return this;
 	}
+	public CuHttpUrl alipay(String alipay) {
+		this.setAlipay(alipay);
+		return this;
+	}
+	public CuHttpUrl bankCard(String bankCard) {
+		this.setBankCard(bankCard);
+		return this;
+	}
 }

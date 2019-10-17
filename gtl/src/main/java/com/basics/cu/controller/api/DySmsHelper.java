@@ -33,19 +33,15 @@ public class DySmsHelper {
     // TODO 此处需要替换成开发者自己的AK(在阿里云访问控制台寻找)
 //    static final String accessKeyId = "LTAIPy06f50b9tO7";
 //    static final String accessKeySecret = "33jqyaySmZ5v2Tfm0fpotQR9WswlsL";
-    static final String accessKeyId = "LTAIPy06f50b9tO7";
-    static final String accessKeySecret = "33jqyaySmZ5v2Tfm0fpotQR9WswlsL";
+    static final String accessKeyId = "LTAI4FgqZxMfA4U8dcRMWTRk";
+    static final String accessKeySecret = "ZETEYBMY9WLTetbQPB0iEEpqcrZCfG";
 
 
-    /**
-     * 忘记密码时采用的短信发送模板编码
-     */
-    public static final String FORGET_PASSWORD_TEMPLATE_CODE="SMS_175121604";
 
     /**
      * 必填:短信签名-可在短信控制台中找到
      */
-    public static final String signName="MyLove";
+    public static final String signName="mnc";
 
 
     public static boolean sendSms(String phone,String code,String templateCode) throws ClientException {
@@ -85,13 +81,6 @@ public class DySmsHelper {
             result = true;
         }
         return result;
-
-    }
-
-
-    public static void main(String[] args) throws ClientException, InterruptedException {
-
-    	sendSms("", "123456", FORGET_PASSWORD_TEMPLATE_CODE);
 
     }
 }
