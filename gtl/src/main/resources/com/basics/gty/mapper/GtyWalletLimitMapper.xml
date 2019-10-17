@@ -18,6 +18,9 @@
   gtyWallet.LIMIT_MTOKEN_RELEASE_POINT "limitMtokenReleasePoint",
   gtyWallet.LIMIT_MNC_RELEASE_POINT "limitMncReleasePoint",
  gtyWallet.LIMIT_SCORE_RELEASE_POINT "limitScoreReleasePoint",
+ gtyWallet.MNC_TRADE_POINT "mncTradePoint",
+
+ gtyWallet.P2P_POINT "p2pPoint",
 
   gtyWallet.LIMIT_UP_SCORE_RELEASE "limitUpScoreRelease"
   FROM wallet_operate_limit gtyWallet
@@ -39,6 +42,8 @@
 
             <if test="limitDownMtokenRelease!=null">LIMIT_DOWN_MTOKEN_RELEASE = #{limitDownMtokenRelease},</if>
             <if test="limitUpMtokenRelease!=null">LIMIT_UP_MTOKEN_RELEASE = #{limitUpMtokenRelease},</if>
+            <if test="p2pPoint!=null">P2P_POINT = #{p2pPoint},</if>
+            <if test="mncTradePoint!=null">MNC_TRADE_POINT = #{mncTradePoint},</if>
         </trim>
         <![CDATA[ WHERE  ID = #{id}   ]]>
     </update>

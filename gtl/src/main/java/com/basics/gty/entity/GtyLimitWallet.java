@@ -15,6 +15,16 @@ public class GtyLimitWallet {
     private BigDecimal limitMtokenReleasePoint;
     private BigDecimal limitMncReleasePoint;
     private BigDecimal limitScoreReleasePoint;
+    private BigDecimal p2pPoint;
+    private BigDecimal mncTradePoint;
+
+    public BigDecimal getMncTradePoint() {
+        return mncTradePoint;
+    }
+
+    public void setMncTradePoint(BigDecimal mncTradePoint) {
+        this.mncTradePoint = mncTradePoint;
+    }
 
     private String id;
 
@@ -24,6 +34,14 @@ public class GtyLimitWallet {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public BigDecimal getP2pPoint() {
+        return p2pPoint;
+    }
+
+    public void setP2pPoint(BigDecimal p2pPoint) {
+        this.p2pPoint = p2pPoint;
     }
 
     public BigDecimal getLimitMtokenReleasePoint() {

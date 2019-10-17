@@ -79,9 +79,9 @@ public class GtyTransferMybatisService extends BaseApiService implements GtyTran
         }
         try {
             BigDecimal toMone = new BigDecimal(request.getNum());
-            if(toMone.compareTo(BigDecimal.ZERO)<=0){
-               response.setStatus(1);
-               response.setMsg("数量错误");
+            if (toMone.compareTo(BigDecimal.ZERO) <= 0) {
+                response.setStatus(1);
+                response.setMsg("数量错误");
                 return response;
             }
         } catch (Exception e) {
@@ -107,15 +107,28 @@ public class GtyTransferMybatisService extends BaseApiService implements GtyTran
 
                 Map<String, String> params = new HashMap<>();
                 params.put("wallterKey", request.getToAddress());
-                params.put("amount", request.getNum());
+                QueryFilter filter = new QueryFilter();
+                Map<String, Object> maps = new HashMap<>();
+                maps.put("id", "1");
+                filter.setParams(maps);
+                GtyLimitWallet gtyLimitWallet = gtyWalletLimitDao.queryOne(filter);
+                BigDecimal realm = BigDecimal.ZERO;
+                BigDecimal fee = BigDecimal.ZERO;
+                if (gtyLimitWallet != null && gtyLimitWallet.getMncTradePoint() != null) {
+                    fee = new BigDecimal(request.getNum()).multiply(gtyLimitWallet.getMncTradePoint());
+                    realm = new BigDecimal(request.getNum()).subtract(fee);
+                } else {
+                    realm = new BigDecimal(request.getNum());
+                }
+                params.put("amount", realm + "");
                 String info = HttpClientUtils.invokeGet("http://47.56.169.214:8085/api/increase", params);
                 TradeTransferBean tradeTransferBean = new Gson().fromJson(info, TradeTransferBean.class);
                 if (tradeTransferBean.isSuccess()) {
                     GtyWallet gtyWallet1 = new GtyWallet();
                     gtyWallet1.setUserId(gtyWallet.getUserId());
+                    addFee(fee);
                     gtyWallet1.setMncNum(gtyWallet.getMncNum().subtract(new BigDecimal(request.getNum())));
                     gtyWalletDao.update(gtyWallet1);
-
                 } else {
                     response.setStatus(0);
                     response.setMsg("转账失败");
@@ -207,10 +220,24 @@ public class GtyTransferMybatisService extends BaseApiService implements GtyTran
                     response.setMsg("地址未找到");
                     return response;
                 } else {
-                    gtyWallet2.setMoveNum(gtyWallet2.getMoveNum().add(new BigDecimal(request.getNum())));
+                    QueryFilter filter = new QueryFilter();
+                    Map<String, Object> maps = new HashMap<>();
+                    maps.put("id", "1");
+                    filter.setParams(maps);
+                    GtyLimitWallet gtyLimitWallet = gtyWalletLimitDao.queryOne(filter);
+                    BigDecimal realm = BigDecimal.ZERO;
+                    BigDecimal fee = BigDecimal.ZERO;
+                    if (gtyLimitWallet != null && gtyLimitWallet.getP2pPoint() != null) {
+                        fee = new BigDecimal(request.getNum()).multiply(gtyLimitWallet.getP2pPoint());
+                        realm = new BigDecimal(request.getNum()).subtract(fee);
+                        addFee(fee);
+                    } else {
+                        realm = new BigDecimal(request.getNum());
+                    }
+                    gtyWallet2.setMoveNum(gtyWallet2.getMoveNum().add(realm));
                     gtyWalletDao.update(gtyWallet2);
                     TokenTransferRequest request2 = new TokenTransferRequest();
-                    request2.setNum(request.getNum());
+                    request2.setNum(realm+"");
                     request2.setToAddress(gtyWallet.getWalletAddress());
                     request2.setType(request.getType());
 
@@ -237,15 +264,29 @@ public class GtyTransferMybatisService extends BaseApiService implements GtyTran
                 response.setStatus(1);
                 response.setMsg("数量错误");
                 return response;
-            } else {//todo 转账
+            } else {
                 Map<String, String> params = new HashMap<>();
                 params.put("wallterKey", request.getToAddress());
-                params.put("amount", request.getNum());
+                QueryFilter filter = new QueryFilter();
+                Map<String, Object> maps = new HashMap<>();
+                maps.put("id", "1");
+                filter.setParams(maps);
+                GtyLimitWallet gtyLimitWallet = gtyWalletLimitDao.queryOne(filter);
+                BigDecimal realm = BigDecimal.ZERO;
+                BigDecimal fee = BigDecimal.ZERO;
+                if (gtyLimitWallet != null && gtyLimitWallet.getMncTradePoint() != null) {
+                    fee = new BigDecimal(request.getNum()).multiply(gtyLimitWallet.getMncTradePoint());
+                    realm = new BigDecimal(request.getNum()).subtract(fee);
+                } else {
+                    realm = new BigDecimal(request.getNum());
+                }
+                params.put("amount", realm + "");
                 String info = HttpClientUtils.invokeGet("http://47.56.169.214:8085/api/increase", params);
                 TradeTransferBean tradeTransferBean = new Gson().fromJson(info, TradeTransferBean.class);
                 if (tradeTransferBean.isSuccess()) {
                     GtyWallet gtyWallet1 = new GtyWallet();
                     gtyWallet1.setUserId(gtyWallet.getUserId());
+                    addFee(fee);
                     gtyWallet1.setReleasedMnc(gtyWallet.getReleasedMnc().subtract(new BigDecimal(request.getNum())));
                     gtyWalletDao.update(gtyWallet1);
                 } else {
@@ -254,6 +295,8 @@ public class GtyTransferMybatisService extends BaseApiService implements GtyTran
                     return response;
                 }
             }
+
+
         }
 
         if (request.getType() == 1) {// mnc转交易所
@@ -278,6 +321,19 @@ public class GtyTransferMybatisService extends BaseApiService implements GtyTran
         response.setMsg("转账成功");
         response.setStatus(0);
         return response;
+    }
+
+
+    private void addFee(BigDecimal fee){
+        try {
+            List<GtyWallet> gtyWallet_fee_list = gtyWalletDao.queryExtend(new QueryFilterBuilder().put("userId", "4710e04c34b84c058efae67256d8cedc").build(),
+                    "queryInfo");
+            GtyWallet gtyWallet_fee =  gtyWallet_fee_list.get(0);
+            gtyWallet_fee.setMncNum(fee.add(gtyWallet_fee.getMncNum()));
+            gtyWalletDao.update(gtyWallet_fee);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void addHistory(GtyWallet gtyWallet, TokenTransferRequest request, String recordName, String mark) {
@@ -569,13 +625,30 @@ public class GtyTransferMybatisService extends BaseApiService implements GtyTran
             dataResponse.setStatus(1);
             return dataResponse;
         }
+        try {
+            BigDecimal toMone = new BigDecimal(request.getNum());
+            if (toMone.compareTo(BigDecimal.ZERO) <= 0) {
+                dataResponse.setStatus(1);
+                dataResponse.setMsg("数量错误");
+                return dataResponse;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            dataResponse.setStatus(1);
+            dataResponse.setMsg("数量错误");
+            return dataResponse;
+        }
         GtyLimitWallet gtyLimitWallet = new GtyLimitWallet();
-        if (request.getType() == 1) {//1,释放mnc比例；2，释放mtoken比例；3，释放积分比例
+        if (request.getType() == 1) {//1,释放mnc比例；2，释放mtoken比例；3，释放积分比例;4,点对点手续费比例;5,mnc转交易所手续费
             gtyLimitWallet.setLimitMncReleasePoint(new BigDecimal(request.getNum()));
         } else if (request.getType() == 2) {
             gtyLimitWallet.setLimitMtokenReleasePoint(new BigDecimal(request.getNum()));
         } else if (request.getType() == 3) {
             gtyLimitWallet.setLimitScoreReleasePoint(new BigDecimal(request.getNum()));
+        } else if (request.getType() == 4) {
+            gtyLimitWallet.setP2pPoint(new BigDecimal(request.getNum()));
+        } else if (request.getType() == 5) {
+            gtyLimitWallet.setMncTradePoint(new BigDecimal(request.getNum()));
         }
         gtyLimitWallet.setId(request.getId());
         gtyWalletLimitDao.update(gtyLimitWallet);

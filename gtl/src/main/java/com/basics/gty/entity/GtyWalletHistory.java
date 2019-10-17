@@ -13,8 +13,17 @@ public class GtyWalletHistory extends BaseBean {
  private String mark;
  private String createTime;
  private String recordName;
+ private BigDecimal recordFee;
  private Integer pageN;
  private Integer pageS;
+
+ public BigDecimal getRecordFee() {
+  return recordFee;
+ }
+
+ public void setRecordFee(BigDecimal recordFee) {
+  this.recordFee = recordFee;
+ }
 
  public Integer getPageN() {
   return pageN;
