@@ -118,6 +118,9 @@ public class MallShopAdvertController {
 		}else {
 			if (null != mallShopAdvert.getApplyStatus()) {
 				mallShopAdvertMapper.updateByIdAndApplyStatus(mallShopAdvert.getAdvertId(), mallShopAdvert.getApplyStatus());
+				if ("3".equals(mallShopAdvert.getApplyStatus())) {
+					mallShopAdvertMapper.deleteByAdvertId(mallShopAdvert.getAdvertId());
+				}
 				if ("2".equals(mallShopAdvert.getApplyStatus())){
 					CuCustomerInfo cuCustomerInfo = cuCustomerInfoMapper.selectOne(new QueryWrapper<CuCustomerInfo>().eq("customer_id", mallShopAdvertEntity.getCustomerId()));
 					MallUser mu = mallUserMapper.selectOne(new QueryWrapper<MallUser>().eq("user_name", cuCustomerInfo.getCustomerPhone()));

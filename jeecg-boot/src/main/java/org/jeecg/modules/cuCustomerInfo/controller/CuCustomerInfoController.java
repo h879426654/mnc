@@ -9,6 +9,8 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import org.apache.ibatis.jdbc.Null;
 import org.jeecg.common.api.vo.Result;
 import org.jeecg.common.system.query.QueryGenerator;
 import org.jeecg.common.util.oConvertUtils;
@@ -69,8 +71,13 @@ public class CuCustomerInfoController {
 									  @RequestParam(name="pageSize", defaultValue="10") Integer pageSize,
 									  HttpServletRequest req) {
 		Result<IPage<CuCustomerInfo2>> result = new Result<>();
-		QueryWrapper<CuCustomerInfo> queryWrapper = QueryGenerator.initQueryWrapper(cuCustomerInfo, req.getParameterMap());
+		QueryWrapper<CuCustomerInfo> queryWrapper = new QueryWrapper<>();
 		Page<CuCustomerInfo> page = new Page<CuCustomerInfo>(pageNo, pageSize);
+		if (null != cuCustomerInfo.getCustomerName()) {
+			queryWrapper.like("customer_Name", cuCustomerInfo.getCustomerName());
+		} else if (null != cuCustomerInfo.getCustomerPhone()) {
+			queryWrapper.eq("customer_Phone", cuCustomerInfo.getCustomerPhone());
+		}
 		IPage<CuCustomerInfo> pageList = cuCustomerInfoService.page(page, queryWrapper);
 		List<CuCustomerInfo> list = pageList.getRecords();
 		IPage<CuCustomerInfo2> pageList2 = new Page<>();
@@ -99,7 +106,6 @@ public class CuCustomerInfoController {
 					CuCustomerInfo cuCustomerInfo3 = cuCustomerInfoMapper.selectOne(new QueryWrapper<CuCustomerInfo>().eq("customer_id", personCustomerId));
 					cuCustomerInfo2.setPerson(cuCustomerInfo3.getCustomerPhone());
 				}
-				cuCustomerInfo2.setMtoken(walletInfo.getMtokenNum());
 				cuCustomerInfo2.setRecordNum(walletInfo.getRecordNum());
 				cuCustomerInfo2.setMoveNum(walletInfo.getMoveNum());
 			}
