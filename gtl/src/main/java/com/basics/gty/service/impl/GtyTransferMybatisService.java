@@ -481,7 +481,7 @@ public class GtyTransferMybatisService extends BaseApiService implements GtyTran
                 String sScorePoint = gtyLimitWallet.getLimitScoreReleasePoint() + "";
 
                 if (gtyWallet.getScoreNum().compareTo(BigDecimal.ZERO) == 1) {// 等于0不处理
-                    if (gtyLimitWallet.getLimitUpScoreRelease().compareTo(gtyWallet.getScoreNum()) == 1) {// 上限大于score
+                    if (gtyLimitWallet.getLimitUpScoreRelease().compareTo(gtyWallet.getScoreNum()) <=0) {// 上限大于score
                         BigDecimal bigDecimal = gtyLimitWallet.getLimitUpScoreRelease();
                         if (bigDecimal.compareTo(BigDecimal.ZERO) == 1) {// 有上限
                             if (gtyWallet.getScoreNum().compareTo(bigDecimal) >= 0) {//大于上限
@@ -492,8 +492,12 @@ public class GtyTransferMybatisService extends BaseApiService implements GtyTran
                                 gtyWallet.setReleasedScoreNum(mScoreRelease.setScale(5, BigDecimal.ROUND_HALF_UP));
                             }
                         } else {// 上限为0则无限制
-                            BigDecimal mScoreRelease = gtyWallet.getScoreNum().multiply(new BigDecimal(sScorePoint)).divide(price);
-                            gtyWallet.setReleasedScoreNum(mScoreRelease.setScale(5, BigDecimal.ROUND_HALF_UP));
+                            if (gtyWallet.getScoreNum().compareTo(gtyLimitWallet.getLimitDownScoreRelease()) >= 0) {// 实际金额大于下限
+                                BigDecimal mScoreRelease = gtyWallet.getScoreNum().multiply(new BigDecimal(sScorePoint)).divide(price);
+                                gtyWallet.setReleasedScoreNum(mScoreRelease.setScale(5, BigDecimal.ROUND_HALF_UP));
+                            } else {
+                                gtyWallet.setReleasedScoreNum(new BigDecimal("0.0000"));
+                            }
                         }
 
                     } else {// 判断是否小于下限
@@ -510,19 +514,24 @@ public class GtyTransferMybatisService extends BaseApiService implements GtyTran
 
 
                 if (gtyWallet.getSuperNum().compareTo(BigDecimal.ZERO) == 1) {// 等于0不处理
-                    if (gtyLimitWallet.getLimitUpSuperRelease().compareTo(gtyWallet.getSuperNum()) == 1) {// 上限大于score
-                        BigDecimal bigDecimal = gtyLimitWallet.getLimitUpSuperRelease();
-                        if (bigDecimal.compareTo(BigDecimal.ZERO) == 1) {// 有上限
-                            if (gtyWallet.getSuperNum().compareTo(bigDecimal) >= 0) {//大于上限
-                                BigDecimal mScoreRelease = bigDecimal.multiply(new BigDecimal(sSuperPoint)).divide(price);
+                    if (gtyLimitWallet.getLimitUpSuperRelease().compareTo(gtyWallet.getSuperNum()) <=0) {// 上限大于score
+                        BigDecimal upLimit = gtyLimitWallet.getLimitUpSuperRelease();
+                        if (upLimit.compareTo(BigDecimal.ZERO) == 1) {// 有上限
+                            if (gtyWallet.getSuperNum().compareTo(upLimit) >= 0) {//大于上限
+                                BigDecimal mScoreRelease = upLimit.multiply(new BigDecimal(sSuperPoint)).divide(price);
                                 gtyWallet.setReleasedSuperNum(mScoreRelease.setScale(5, BigDecimal.ROUND_HALF_UP));
                             } else {
                                 BigDecimal mScoreRelease = gtyWallet.getSuperNum().multiply(new BigDecimal(sSuperPoint)).divide(price);
                                 gtyWallet.setReleasedSuperNum(mScoreRelease.setScale(5, BigDecimal.ROUND_HALF_UP));
                             }
-                        } else {// 上限为0则无限制
-                            BigDecimal mScoreRelease = gtyWallet.getSuperNum().multiply(new BigDecimal(sSuperPoint)).divide(price);
-                            gtyWallet.setReleasedSuperNum(mScoreRelease.setScale(5, BigDecimal.ROUND_HALF_UP));
+                        } else {// 上限为0则无限制,判断下线
+
+                            if (gtyWallet.getSuperNum().compareTo(gtyLimitWallet.getLimitDownScoreRelease()) >= 0) {// 实际金额大于下限
+                                BigDecimal mScoreRelease = gtyWallet.getSuperNum().multiply(new BigDecimal(sSuperPoint)).divide(price);
+                                gtyWallet.setReleasedSuperNum(mScoreRelease.setScale(5, BigDecimal.ROUND_HALF_UP));
+                            } else {
+                                gtyWallet.setReleasedSuperNum(new BigDecimal("0.0000"));
+                            }
                         }
 
                     } else {// 判断是否小于下限
@@ -539,7 +548,7 @@ public class GtyTransferMybatisService extends BaseApiService implements GtyTran
 
 
                 if (gtyWallet.getmTokenNum().compareTo(BigDecimal.ZERO) == 1) {// 等于0不处理
-                    if (gtyLimitWallet.getLimitUpMtokenRelease().compareTo(gtyWallet.getmTokenNum()) == 1) {// 上限大于score
+                    if (gtyLimitWallet.getLimitUpMtokenRelease().compareTo(gtyWallet.getmTokenNum()) <=0) {// 上限大于score
                         BigDecimal bigDecimal = gtyLimitWallet.getLimitUpMtokenRelease();
                         if (bigDecimal.compareTo(BigDecimal.ZERO) == 1) {// 有上限
                             if (gtyWallet.getmTokenNum().compareTo(bigDecimal) >= 0) {//大于上限
@@ -550,8 +559,12 @@ public class GtyTransferMybatisService extends BaseApiService implements GtyTran
                                 gtyWallet.setReleasedTokenNum(mScoreRelease.setScale(5, BigDecimal.ROUND_HALF_UP));
                             }
                         } else {// 上限为0则无限制
-                            BigDecimal mScoreRelease = gtyWallet.getmTokenNum().multiply(new BigDecimal(sMtokenPoint)).divide(price);
-                            gtyWallet.setReleasedTokenNum(mScoreRelease.setScale(5, BigDecimal.ROUND_HALF_UP));
+                            if (gtyWallet.getmTokenNum().compareTo(gtyLimitWallet.getLimitDownScoreRelease()) >= 0) {// 实际金额大于下限
+                                BigDecimal mScoreRelease = gtyWallet.getmTokenNum().multiply(new BigDecimal(sMtokenPoint)).divide(price);
+                                gtyWallet.setReleasedTokenNum(mScoreRelease.setScale(5, BigDecimal.ROUND_HALF_UP));
+                            } else {
+                                gtyWallet.setReleasedTokenNum(new BigDecimal("0.0000"));
+                            }
                         }
 
                     } else {// 判断是否小于下限

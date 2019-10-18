@@ -93,7 +93,7 @@ public class EveryDayAutoReleaseJob extends BaseApiService implements EveryDayJo
 
 					//  创业积分 千分之一（老MP+老MC的和）  释放到超级钱包
 					if(mScore.compareTo(BigDecimal.ZERO)==1){// 等于0不处理
-						if (gtyLimitWallet.getLimitUpScoreRelease().compareTo(mScore)==1) {// 上限大于score
+						if (gtyLimitWallet.getLimitUpScoreRelease().compareTo(mScore)<=0) {// 上限小于score
 							BigDecimal bigDecimal = gtyLimitWallet.getLimitUpScoreRelease();
 							if (bigDecimal.compareTo(BigDecimal.ZERO) == 1) {// 有上限
 								if (mScore.compareTo(bigDecimal) >=0) {//大于上限
@@ -106,9 +106,11 @@ public class EveryDayAutoReleaseJob extends BaseApiService implements EveryDayJo
 									addHistory(record.getUserId(),mScore.multiply(new BigDecimal(s1)).divide(bigDecimalPrice)+"",8,"创业积分释放到超级钱包","+");
 								}
 							}else{// 上限为0则无限制
-								mSuper = mSuper.add(mScore.multiply(new BigDecimal(s1)).divide(bigDecimalPrice));
-								mScore = mScore.subtract(mScore.multiply(new BigDecimal(s1)).divide(bigDecimalPrice));
-								addHistory(record.getUserId(),mScore.multiply(new BigDecimal(s1)).divide(bigDecimalPrice)+"",8,"创业积分释放到超级钱包","+");
+								if (mScore.compareTo(gtyLimitWallet.getLimitDownScoreRelease()) >=0 ){// 实际金额大于下限
+									mSuper = mSuper.add(mScore.multiply(new BigDecimal(s1)).divide(bigDecimalPrice));
+									mScore = mScore.subtract(mScore.multiply(new BigDecimal(s1)).divide(bigDecimalPrice));
+									addHistory(record.getUserId(),mScore.multiply(new BigDecimal(s1)).divide(bigDecimalPrice)+"",8,"创业积分释放到超级钱包","+");
+								}
 							}
 
 						} else {// 判断是否小于下限
@@ -122,7 +124,7 @@ public class EveryDayAutoReleaseJob extends BaseApiService implements EveryDayJo
 
 
 					if(mSuper.compareTo(BigDecimal.ZERO)==1){// 等于0不处理
-						if (gtyLimitWallet.getLimitUpSuperRelease().compareTo(mSuper)==1) {// 上限大于super
+						if (gtyLimitWallet.getLimitUpSuperRelease().compareTo(mSuper)<=0) {// 上限大于super
 							BigDecimal bigDecimal = gtyLimitWallet.getLimitUpSuperRelease();
 							if (bigDecimal.compareTo(BigDecimal.ZERO) == 1) {// 有上限
 								if (mSuper.compareTo(bigDecimal) >=0) {//大于上限
@@ -135,9 +137,11 @@ public class EveryDayAutoReleaseJob extends BaseApiService implements EveryDayJo
 									addHistory(record.getUserId(),mSuper.multiply(new BigDecimal(s1))+"",9,"超级钱包释放到可提转","+");
 								}
 							}else{// 上限为0则无限制
-								mRelaseMnc = mRelaseMnc.add(mSuper.multiply(new BigDecimal(s2)));
-								mSuper = mSuper.subtract(mSuper.multiply(new BigDecimal(s2)));
-								addHistory(record.getUserId(),mSuper.multiply(new BigDecimal(s1))+"",9,"超级钱包释放到可提转","+");
+								if (mSuper.compareTo(gtyLimitWallet.getLimitDownSuperRelease()) >=0 ){// 实际金额大于下限
+									mRelaseMnc = mRelaseMnc.add(mSuper.multiply(new BigDecimal(s2)));
+									mSuper = mSuper.subtract(mSuper.multiply(new BigDecimal(s2)));
+									addHistory(record.getUserId(),mSuper.multiply(new BigDecimal(s1))+"",9,"超级钱包释放到可提转","+");
+								}
 							}
 
 						} else {// 判断是否小于下限
@@ -150,7 +154,7 @@ public class EveryDayAutoReleaseJob extends BaseApiService implements EveryDayJo
 					}
 
 					if(mToken.compareTo(BigDecimal.ZERO)==1){// 等于0不处理
-						if (gtyLimitWallet.getLimitUpMtokenRelease().compareTo(mToken)==1) {// 上限大于super
+						if (gtyLimitWallet.getLimitUpMtokenRelease().compareTo(mToken)<=0) {// 上限大于super
 							BigDecimal bigDecimal = gtyLimitWallet.getLimitUpMtokenRelease();
 							if (bigDecimal.compareTo(BigDecimal.ZERO) == 1) {// 有上限
 								if (mToken.compareTo(bigDecimal) >=0) {//大于上限
@@ -163,9 +167,11 @@ public class EveryDayAutoReleaseJob extends BaseApiService implements EveryDayJo
 									addHistory(record.getUserId(),mToken.multiply(new BigDecimal(s3)).divide(bigDecimalPrice)+"",10,"Mtoken释放到MNC","+");
 								}
 							}else{// 上限为0则无限制
-								mMnc = mMnc.add(mToken.multiply(new BigDecimal(s3)).divide(bigDecimalPrice));
-								mToken = mToken.subtract(mToken.multiply(new BigDecimal(s3)).divide(bigDecimalPrice));
-								addHistory(record.getUserId(),mToken.multiply(new BigDecimal(s3)).divide(bigDecimalPrice)+"",10,"Mtoken释放到MNC","+");
+								if (mToken.compareTo(gtyLimitWallet.getLimitDownMtokenRelease()) >=0 ){// 实际金额大于下限
+									mMnc = mMnc.add(mToken.multiply(new BigDecimal(s3)).divide(bigDecimalPrice));
+									mToken = mToken.subtract(mToken.multiply(new BigDecimal(s3)).divide(bigDecimalPrice));
+									addHistory(record.getUserId(),mToken.multiply(new BigDecimal(s3)).divide(bigDecimalPrice)+"",10,"Mtoken释放到MNC","+");
+								}
 							}
 
 						} else {// 判断是否小于下限

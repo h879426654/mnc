@@ -2,6 +2,8 @@ package com.basics.gty.entity;
 
 import com.basics.cu.entity.BaseBean;
 
+import java.math.BigDecimal;
+
 public class EthBean extends BaseBean {
     private String address;
     private String privateKey;
@@ -21,4 +23,6 @@ public class EthBean extends BaseBean {
     public void setPrivateKey(String privateKey) {
         this.privateKey = privateKey;
     }
+
+    
 }
