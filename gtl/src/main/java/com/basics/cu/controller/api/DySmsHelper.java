@@ -44,7 +44,7 @@ public class DySmsHelper {
     public static final String signName="mnc";
 
 
-    public static boolean sendSms(String phone,String code,String templateCode) throws ClientException {
+    public static boolean sendSms(String phone,String code) throws ClientException {
     	//可自助调整超时时间
         System.setProperty("sun.net.client.defaultConnectTimeout", "10000");
         System.setProperty("sun.net.client.defaultReadTimeout", "10000");
@@ -61,7 +61,7 @@ public class DySmsHelper {
         //必填:短信签名-可在短信控制台中找到
         request.setSignName(signName);
         //必填:短信模板-可在短信控制台中找到
-        request.setTemplateCode(templateCode);
+        request.setTemplateCode("SMS_175121604");
         //可选:模板中的变量替换JSON串,如模板内容为"亲爱的${name},您的验证码为${code}"时,此处的值为
         request.setTemplateParam("{\"code\":\""+code+"\"}");
 
@@ -74,6 +74,7 @@ public class DySmsHelper {
         boolean result = false;
 
         //hint 此处可能会抛出异常，注意catch
+        logger.info(request+"==============");
         SendSmsResponse sendSmsResponse = acsClient.getAcsResponse(request);
         logger.info("短信接口返回的数据----------------");
         logger.info("{Code:" + sendSmsResponse.getCode()+",Message:" + sendSmsResponse.getMessage()+",RequestId:"+ sendSmsResponse.getRequestId()+",BizId:"+sendSmsResponse.getBizId()+"}");
