@@ -91,7 +91,8 @@
   <if test="versionNum!=null">VERSION_NUM = #{versionNum},</if>
   <if test="flagDel!=null">FLAG_DEL = #{flagDel},</if>
   <if test="createTime!=null">CREATE_TIME = #{createTime},</if>
-  <if test="createUser!=null">CREATE_USER = #{createUser},</if>
+   <if test="address!=null">ADDRESS = #{address},</if>
+   <if test="createUser!=null">CREATE_USER = #{createUser},</if>
   <if test="modifyUser!=null">MODIFY_USER = #{modifyUser},</if>
   <if test="modifyTime!=null">MODIFY_TIME = #{modifyTime},</if>
   </trim>
@@ -209,6 +210,7 @@
   cuCustomerInfo.CREATE_TIME "createTime",
   cuCustomerInfo.CREATE_USER "createUser",
   cuCustomerInfo.MODIFY_USER "modifyUser",
+  cuCustomerInfo.ADDRESS "address",
   cuCustomerInfo.MODIFY_TIME "modifyTime"
   FROM cu_customer_info cuCustomerInfo
   ]]>
