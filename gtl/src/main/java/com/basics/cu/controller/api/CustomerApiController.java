@@ -637,8 +637,8 @@ public class CustomerApiController implements ApplicationContextAware {
 	}
 
 	@RequestMapping("updateInfo")
-	public String updateInfo(String token, String url, String name, String alipay, String bankCard) {
-		return cuCustomerCollectService.updateInfo(token, url, name, alipay, bankCard);
+	public String updateInfo(String token, String url, String name, String alipay, String bankCard, String address) {
+		return cuCustomerCollectService.updateInfo(token, url, name, alipay, bankCard, address);
 	}
 
 	@RequestMapping("sendCode")

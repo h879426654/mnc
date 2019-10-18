@@ -558,7 +558,7 @@ public class CuCustomerCollectMybatisServiceImpl extends BaseApiService implemen
     }
 
     @Override
-    public String updateInfo(String token, String url, String name, String alipay, String bankCard) {
+    public String updateInfo(String token, String url, String name, String alipay, String bankCard, String address) {
         String customerId = getCuCustomerInfo(token);
         CuState cuState = new CuState();
         if (null == customerId) {
@@ -572,6 +572,7 @@ public class CuCustomerCollectMybatisServiceImpl extends BaseApiService implemen
             cuCustomerInfo.setCustomerName(name);
             cuCustomerInfo.setCustomerAlipay(alipay);
             cuCustomerInfo.setBankCard(bankCard);
+            cuCustomerInfo.setAddress(address);
             cuCustomerInfoDao.update(cuCustomerInfo);
             cuState.setState("0");
             JSONObject json = (JSONObject) JSONObject.toJSON(cuState);

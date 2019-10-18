@@ -52,7 +52,7 @@ public interface CuCustomerCollectService {
 
     String searchCuLog(String token, String type, Integer page, Integer rows) ;
 
-    String updateInfo(String token, String url, String name, String alipay, String bankCard);
+    String updateInfo(String token, String url, String name, String alipay, String bankCard, String address);
 
     String sendCode(String phone);
 
