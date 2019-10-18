@@ -594,7 +594,7 @@ public class CuCustomerCollectMybatisServiceImpl extends BaseApiService implemen
             code.append(ch);
         }
         try {
-            Boolean flag = DySmsHelper.sendSms(phone, code.toString(), "SMS_175121604");
+            Boolean flag = DySmsHelper.sendSms(phone, code.toString());
             if (flag) {
                 AppCode appCode = new AppCode();
                 appCode.setId(UUID.randomUUID().toString().replace("-",""));
@@ -607,13 +607,17 @@ public class CuCustomerCollectMybatisServiceImpl extends BaseApiService implemen
                 cuState.setState("0");
                 JSONObject json = (JSONObject) JSONObject.toJSON(cuState);
                 return json.toString();
+            } else {
+                cuState.setState("1");
+                JSONObject json = (JSONObject) JSONObject.toJSON(cuState);
+                return json.toString();
             }
         } catch (Exception e) {
+            System.out.println(e.getMessage());
             cuState.setState("1");
             JSONObject json = (JSONObject) JSONObject.toJSON(cuState);
             return json.toString();
         }
-        return null;
     }
 
     @Override
