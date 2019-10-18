@@ -17,4 +17,6 @@ public interface MallShopAdvertMapper extends BaseMapper<MallShopAdvert> {
     void updateByIdAndApplyStatus(@Param("advertId")String advertId, @Param("applyStatus")String applyStatus);
 
     void updateByIdAndHot(@Param("advertId")String advertId, @Param("hot")String hot);
+
+    void deleteByAdvertId(@Param("advertId")String advertId);
 }

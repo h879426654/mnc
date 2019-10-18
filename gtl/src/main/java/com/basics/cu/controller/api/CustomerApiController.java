@@ -7,6 +7,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
+import com.basics.common.*;
 import com.basics.cu.controller.request.*;
 import com.basics.cu.dao.CuCustomerCollectDao;
 import com.basics.cu.entity.*;
@@ -24,15 +25,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.alibaba.fastjson.JSONObject;
 import com.basics.app.entity.AppOption;
-import com.basics.common.DataItemResponse;
-import com.basics.common.DataPageComonResponse;
-import com.basics.common.DataResponse;
-import com.basics.common.TokenIdRequest;
-import com.basics.common.TokenIdsRequest;
-import com.basics.common.TokenPageRequest;
-import com.basics.common.TokenRequest;
-import com.basics.common.TokenTypePageRequest;
-import com.basics.common.TokenTypeRequest;
 import com.basics.cu.controller.response.BaseImgResponse;
 import com.basics.cu.controller.response.CustomerInfoResponse;
 import com.basics.cu.controller.response.DirectCustomerResponse;
@@ -642,5 +634,20 @@ public class CustomerApiController implements ApplicationContextAware {
 	@RequestMapping("searchLogs")
 	public String searchLogs(String token, String type, Integer page, Integer rows) {
 		return cuCustomerCollectService.searchCuLog(token, type, page, rows);
+	}
+
+	@RequestMapping("updateInfo")
+	public String updateInfo(String token, String url, String name, String alipay, String bankCard, String address) {
+		return cuCustomerCollectService.updateInfo(token, url, name, alipay, bankCard, address);
+	}
+
+	@RequestMapping("sendCode")
+	public String sendCode(String phone) {
+		return cuCustomerCollectService.sendCode(phone);
+	}
+
+	@RequestMapping("updateWalletAddress")
+	public String updateWalletAddress(String phone, String token, String code, String  adress) {
+		return cuCustomerCollectService.updateWalletAddress(phone, token, code, adress);
 	}
 }

@@ -7,4 +7,7 @@
     <update id="updateByIdAndHot">
         update mall_shop_advert set hot = #{hot} where advert_id = #{advertId}
     </update>
+    <delete id="deleteByAdvertId">
+        delete from cu_customer_collect where shop_id = #{advertId}
+    </delete>
 </mapper>

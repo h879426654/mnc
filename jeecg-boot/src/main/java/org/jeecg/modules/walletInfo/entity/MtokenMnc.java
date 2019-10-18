@@ -5,6 +5,7 @@ import lombok.Data;
 import org.jeecgframework.poi.excel.annotation.Excel;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 /**
  * @Description: mnc管理
@@ -20,10 +21,13 @@ public class MtokenMnc implements Serializable {
 
 	@Excel(name = "userId", width = 15)
 	private String userId;
-	@Excel(name = "新MNC", width = 15)
 	private java.math.BigDecimal mnc;
-	@Excel(name = "新MNC", width = 15)
 	private java.math.BigDecimal mToken;
-	@Excel(name = "新MNC", width = 15)
-	private String state;
+	private BigDecimal recordNum;//记账钱包
+	private BigDecimal score;//创业积分
+	private BigDecimal rSuperNum;//超级钱包释放
+	private BigDecimal moveNum;//流通钱包
+	private String state;//增加还是减少
+	private String type;//增加减少谁(1:mnc,2:mtoken,3:recordNum,4:score,5:moveNum,6:rSuperNum)
+	private BigDecimal money;
 }

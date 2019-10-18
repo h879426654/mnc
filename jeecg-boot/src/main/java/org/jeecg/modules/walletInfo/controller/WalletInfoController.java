@@ -1,17 +1,19 @@
 package org.jeecg.modules.walletInfo.controller;
 
 import java.math.BigDecimal;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import org.aspectj.lang.ProceedingJoinPoint;
 import org.jeecg.common.api.vo.Result;
 import org.jeecg.common.system.query.QueryGenerator;
 import org.jeecg.common.util.oConvertUtils;
+import org.jeecg.modules.adminLogs.entity.AdminLogs;
+import org.jeecg.modules.adminLogs.mapper.AdminLogsMapper;
 import org.jeecg.modules.walletInfo.entity.MtokenMnc;
 import org.jeecg.modules.walletInfo.entity.WalletInfo;
 import org.jeecg.modules.walletInfo.mapper.WalletInfoMapper;
@@ -50,7 +52,8 @@ public class WalletInfoController {
 	private IWalletInfoService walletInfoService;
 	 @Autowired
 	 private WalletInfoMapper walletInfoMapper;
-
+	@Autowired
+	private AdminLogsMapper adminLogsMapper;
 	 /**
 	  * 分页列表查询
 	 * @param walletInfo
@@ -261,9 +264,10 @@ public class WalletInfoController {
 		 String url = "http://47.75.47.121:8080/gtl/api/gty/wallet/setReleaseLimit.do?type="+type+"&upNum="+new BigDecimal(upNum)+"&downNum="+new BigDecimal(downNum)+"&id="+id;
 		 return walletInfoService.httpClient(url);
 	 }
-
 	 @PutMapping(value = "/updateMTokenAndMnc")
-	 public Result<WalletInfo> edit(@RequestBody MtokenMnc mtokenMnc) {
+	 public Result<WalletInfo> edit(@RequestBody MtokenMnc mtokenMnc, ProceedingJoinPoint joinPoint) {
+		 String className = "admin";
+
 		 Result<WalletInfo> result = new Result<WalletInfo>();
 		 WalletInfo walletInfoEntity = walletInfoMapper.selectOne(new QueryWrapper<WalletInfo>().eq("user_id", mtokenMnc.getUserId()));
 		 if(walletInfoEntity==null) {
@@ -271,28 +275,80 @@ public class WalletInfoController {
 		 }else {
 		 	 //加
 		 	 if ("0".equals(mtokenMnc.getState())) {
-				if (null != mtokenMnc.getMnc()) {
-					walletInfoEntity.setMncNum(walletInfoEntity.getMncNum().add(mtokenMnc.getMnc()));
-				} else if (null != mtokenMnc.getMToken()) {
-					walletInfoEntity.setMtokenNum(walletInfoEntity.getMtokenNum().add(mtokenMnc.getMToken()));
+				if ("1".equals(mtokenMnc.getType())) {
+					walletInfoEntity.setMncNum(walletInfoEntity.getMncNum().add(mtokenMnc.getMoney()));
+					insertAdminLogs(className, "1", "增加mnc:"+mtokenMnc.getMoney(), mtokenMnc.getUserId());
+				} else if ("2".equals(mtokenMnc.getType())) {
+					walletInfoEntity.setMtokenNum(walletInfoEntity.getMtokenNum().add(mtokenMnc.getMoney()));
+					insertAdminLogs(className, "2", "增加mtoken:"+mtokenMnc.getMoney(), mtokenMnc.getUserId());
+				} else if ("3".equals(mtokenMnc.getType())) {
+					walletInfoEntity.setRecordNum(walletInfoEntity.getRecordNum().add(mtokenMnc.getMoney()));
+					insertAdminLogs(className, "3", "增加记账钱包:"+mtokenMnc.getMoney(), mtokenMnc.getUserId());
+				} else if ("4".equals(mtokenMnc.getType())) {
+					walletInfoEntity.setScoreNum(walletInfoEntity.getScoreNum().add(mtokenMnc.getMoney()));
+					insertAdminLogs(className, "4", "增加创业积分:"+mtokenMnc.getMoney(), mtokenMnc.getUserId());
+				} else if ("5".equals(mtokenMnc.getType())) {
+					walletInfoEntity.setMoveNum(walletInfoEntity.getMoveNum().add(mtokenMnc.getMoney()));
+					insertAdminLogs(className, "5", "增加流通钱包:"+mtokenMnc.getMoney(), mtokenMnc.getUserId());
+				} else if ("6".equals(mtokenMnc.getType())) {
+					walletInfoEntity.setReleasedMncNum(walletInfoEntity.getReleasedMncNum().add(mtokenMnc.getMoney()));
+					insertAdminLogs(className, "6", "增加超级钱包:"+mtokenMnc.getMoney(), mtokenMnc.getUserId());
 				}
 			 }
 		 	 //减
 			 if ("1".equals(mtokenMnc.getState())) {
-				 if (null != mtokenMnc.getMnc()) {
-				 	BigDecimal mnc = walletInfoEntity.getMncNum().subtract(mtokenMnc.getMnc());
+				 if ("1".equals(mtokenMnc.getType())) {
+				 	BigDecimal mnc = walletInfoEntity.getMncNum().subtract(mtokenMnc.getMoney());
 				 	if (mnc.compareTo(BigDecimal.ZERO) >= 0) {
 						walletInfoEntity.setMncNum(mnc);
+						insertAdminLogs(className, "1", "减少mnc:"+mtokenMnc.getMoney(), mtokenMnc.getUserId());
 					}  else {
 				 		result.error500("扣除的mnc不能大于当前mnc");
 				 		return result;
 					}
-				 } else if (null != mtokenMnc.getMToken()) {
-				 	BigDecimal mtoken = walletInfoEntity.getMtokenNum().subtract(mtokenMnc.getMToken());
+				 } else if ("2".equals(mtokenMnc.getType())) {
+				 	BigDecimal mtoken = walletInfoEntity.getMtokenNum().subtract(mtokenMnc.getMoney());
 					 if (mtoken.compareTo(BigDecimal.ZERO) >= 0) {
 						 walletInfoEntity.setMtokenNum(mtoken);
+						 insertAdminLogs(className, "2", "减少mtoken:"+mtokenMnc.getMoney(), mtokenMnc.getUserId());
 					 }  else {
-						 result.error500("扣除的mtoken不能大于当前mnc");
+						 result.error500("扣除的mtoken不能大于当前mtoen");
+						 return result;
+					 }
+				 } else if ("3".equals(mtokenMnc.getType())) {
+					 BigDecimal recordNum = walletInfoEntity.getRecordNum().subtract(mtokenMnc.getMoney());
+					 if (recordNum.compareTo(BigDecimal.ZERO) >= 0) {
+						 walletInfoEntity.setRecordNum(recordNum);
+						 insertAdminLogs(className, "3", "减少记账钱包:"+mtokenMnc.getMoney(), mtokenMnc.getUserId());
+					 }  else {
+						 result.error500("扣除的记账钱包不能大于当前记账钱包");
+						 return result;
+					 }
+				 } else if ("4".equals(mtokenMnc.getType())) {
+					 BigDecimal score = walletInfoEntity.getScoreNum().subtract(mtokenMnc.getMoney());
+					 if (score.compareTo(BigDecimal.ZERO) >= 0) {
+						 walletInfoEntity.setScoreNum(score);
+						 insertAdminLogs(className, "4", "减少创业积分:"+mtokenMnc.getMoney(), mtokenMnc.getUserId());
+					 }  else {
+						 result.error500("扣除的创业积分不能大于当前创业积分");
+						 return result;
+					 }
+				 } else if ("5".equals(mtokenMnc.getType())) {
+					 BigDecimal move = walletInfoEntity.getMoveNum().subtract(mtokenMnc.getMoney());
+					 if (move.compareTo(BigDecimal.ZERO) >= 0) {
+						 walletInfoEntity.setMoveNum(move);
+						 insertAdminLogs(className, "5", "减少流通钱包:"+mtokenMnc.getMoney(), mtokenMnc.getUserId());
+					 }  else {
+						 result.error500("扣除的流通钱包不能大于当前流通钱包");
+						 return result;
+					 }
+				 } else if ("6".equals(mtokenMnc.getType())) {
+					 BigDecimal rSuper = walletInfoEntity.getReleasedMncNum().subtract(mtokenMnc.getMoney());
+					 if (rSuper.compareTo(BigDecimal.ZERO) >= 0) {
+						 walletInfoEntity.setReleasedMncNum(rSuper);
+						 insertAdminLogs(className, "6", "减少超级钱包:"+mtokenMnc.getMoney(), mtokenMnc.getUserId());
+					 }  else {
+						 result.error500("扣除的超级钱包不能大于当前超级钱包");
 						 return result;
 					 }
 				 }
@@ -302,5 +358,16 @@ public class WalletInfoController {
 		 }
 
 		 return result;
+	 }
+
+	 private void insertAdminLogs(String className, String type, String remark, String customerId) {
+		 AdminLogs adminLogs = new AdminLogs();
+		 adminLogs.setId(UUID.randomUUID().toString().replace("-",""));
+		 adminLogs.setCreateTime(new Date());
+		 adminLogs.setCustomerId(customerId);
+		 adminLogs.setMan(className);
+		 adminLogs.setType(type);
+		 adminLogs.setRemark(remark);
+		 adminLogsMapper.insert(adminLogs);
 	 }
 }

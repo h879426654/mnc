@@ -44,16 +44,17 @@ public class CuCustomerInfo2 implements Serializable {
     @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
 	private Date registerTime;
 	@Excel(name = "mnc", width = 15)
-	private BigDecimal mnc;
+	private BigDecimal mnc;//mnc
 	@Excel(name = "mtoken", width = 15)
-	private BigDecimal mtoken;
+	private BigDecimal mtoken;//mtoken
 	@Excel(name = "score", width = 15)
-	private BigDecimal score;
+	private BigDecimal score;//创业积分
 	@Excel(name = "superNum", width = 15)
 	private BigDecimal superNum;
 	@Excel(name ="userId", width = 15)
 	private String userid;
 	private String person;
-	private BigDecimal recordNum;
-	private BigDecimal moveNum;
+	private BigDecimal recordNum;//记账钱包
+	private BigDecimal moveNum;//流通钱包
+	private BigDecimal rSuperNum;//带加速
 }

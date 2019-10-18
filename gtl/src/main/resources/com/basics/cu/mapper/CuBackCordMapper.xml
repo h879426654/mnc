@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC
+ "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.basics.cu.entity.CuBackCord">
+ <select id="query" resultType="com.basics.cu.entity.CuBackCord"  flushCache="false" useCache="false">
+    select id,customer_id as customerId, cord_number as cordNumber , create_time as createTime, del_flag as delFlag from cu_back_cord
+     WHERE 1=1
+     <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(customerId)">
+         <![CDATA[ AND CUSTOMER_ID = #{customerId} ]]>
+     </if>
+     <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(delFlag)">
+         <![CDATA[ AND del_flag = #{delFlag} ]]>
+     </if>
+      order by create_time desc
+ </select>
+ 
+ 
+ 
+</mapper>

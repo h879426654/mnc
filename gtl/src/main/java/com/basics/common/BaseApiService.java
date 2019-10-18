@@ -274,6 +274,8 @@ public class BaseApiService {
 	public CuPictureDao cuPictureDao;
 	@Autowired
 	public MallUserDao mallUserDao;
+	@Autowired
+	public CuBackCordDao cuBackCordDao;
 	// 计算产量（根据毫秒秒）
 	public BigDecimal calculationRate(long date, BigDecimal yidldNum) {
 		return keepFiveNum(yidldNum.multiply(new BigDecimal(date)).divide(new BigDecimal(1000 * 60 * 60), 5, RoundingMode.FLOOR));

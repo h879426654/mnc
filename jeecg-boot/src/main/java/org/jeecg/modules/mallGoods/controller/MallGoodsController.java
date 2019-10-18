@@ -68,14 +68,16 @@ public class MallGoodsController {
 		Result<IPage<MallGood2s>> result = new Result<IPage<MallGood2s>>();
 		QueryWrapper<MallGoods> queryWrapper = QueryGenerator.initQueryWrapper(mallGoods, req.getParameterMap());
 		Page<MallGoods> page = new Page<MallGoods>(pageNo, pageSize);
-		if (null != shopName && !shopName.isEmpty()) {
-			List<MallShopAdvert> list = mallShopAdvertMapper.selectList(new QueryWrapper<MallShopAdvert>().eq("apply_Status",2).eq("flag_del", "0").like("ADVERT_NAME", shopName));
-			Set<String> set = new HashSet<String>();
-			for (MallShopAdvert mallShopAdvert:list) {
-				set.add(mallShopAdvert.getAdvertId());
-			}
-			if (null != set) {
-				queryWrapper.in("advert_id", set);
+		if (null != shopName) {
+			if (!shopName.isEmpty()) {
+				List<MallShopAdvert> list = mallShopAdvertMapper.selectList(new QueryWrapper<MallShopAdvert>().eq("apply_Status",2).eq("flag_del", "0").like("ADVERT_NAME", shopName));
+				Set<String> set = new HashSet<String>();
+				for (MallShopAdvert mallShopAdvert:list) {
+					set.add(mallShopAdvert.getAdvertId());
+				}
+				if (null != set) {
+					queryWrapper.in("advert_id", set);
+				}
 			}
 		}
 		if (null != goods && !goods.isEmpty()) {
