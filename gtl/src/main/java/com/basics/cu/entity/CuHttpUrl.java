@@ -56,4 +56,8 @@ public class CuHttpUrl extends CuHttpUrlBase {
 		this.setBankCard(bankCard);
 		return this;
 	}
+	public CuHttpUrl address(String address) {
+		this.setAddress(address);
+		return this;
+	}
 }

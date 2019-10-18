@@ -179,4 +179,8 @@ public class CuCustomerInfo extends CuCustomerInfoBase{
   this.setMp(mp);
   return this;
  }
+ public CuCustomerInfo address(String address){
+  this.setAddress(address);
+  return this;
+ }
 }

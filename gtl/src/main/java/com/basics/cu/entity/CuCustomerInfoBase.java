@@ -132,6 +132,16 @@ public class CuCustomerInfoBase extends BaseBean {
 
 	private BigDecimal mp;
 
+	private String address;
+
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
 	public BigDecimal getMncCoin() {
 		return mncCoin;
 	}

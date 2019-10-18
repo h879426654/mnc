@@ -126,11 +126,15 @@ public class CuCustomerCollectMybatisServiceImpl extends BaseApiService implemen
             }
             cuHttpUrl.setBankCard("");
             cuHttpUrl.setAlipay("");
+            cuHttpUrl.setAddress("");
             if (null != cuCustomerInfo.getBankCard()) {
                 cuHttpUrl.setBankCard(cuCustomerInfo.getBankCard());
             }
             if (null != cuCustomerInfo.getCustomerAlipay()) {
                 cuHttpUrl.setAlipay(cuCustomerInfo.getCustomerAlipay());
+            }
+            if (null != cuCustomerInfo.getAddress()) {
+                cuHttpUrl.setAddress(cuCustomerInfo.getAddress());
             }
             cuHttpUrl.setImage(cuCustomerInfo.getCustomerHead());
             cuHttpUrl.setUserName(cuCustomerInfo.getCustomerName());
@@ -563,7 +567,7 @@ public class CuCustomerCollectMybatisServiceImpl extends BaseApiService implemen
             return json.toString();
         }
         try {
-            CuCustomerInfo cuCustomerInfo = cuCustomerInfoDao.queryOne(new QueryFilterBuilder().put("customerId", customerId).build());
+            CuCustomerInfo cuCustomerInfo = cuCustomerInfoDao.queryOne(new QueryFilterBuilder().put("id", customerId).build());
             cuCustomerInfo.setCustomerHead(url);
             cuCustomerInfo.setCustomerName(name);
             cuCustomerInfo.setCustomerAlipay(alipay);
@@ -630,9 +634,9 @@ public class CuCustomerCollectMybatisServiceImpl extends BaseApiService implemen
                         JSONObject json = (JSONObject) JSONObject.toJSON(cuState);
                         return json.toString();
                     }
-                    GtyWallet gtyWallet = gtyWalletDao.queryOne(new QueryFilterBuilder().put("UserId", userId).build());
-                    gtyWallet.setWalletAddress(adress);
-                    gtyWalletDao.update(gtyWallet);
+                    CuCustomerInfo cuCustomerInfo = cuCustomerInfoDao.queryOne(new QueryFilterBuilder().put("id", userId).build());
+                    cuCustomerInfo.setAddress(adress);
+                    cuCustomerInfoDao.update(cuCustomerInfo);
                     cuState.setState("0");
                     JSONObject json = (JSONObject) JSONObject.toJSON(cuState);
                     return json.toString();
