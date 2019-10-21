@@ -26,4 +26,6 @@ public interface GtyTransferService  {
     public DataItemResponse getLimitInfo();
 
     public DataItemResponse getUserId(TokenRequest request );
+
+    public DataItemResponse testRelease();
 }

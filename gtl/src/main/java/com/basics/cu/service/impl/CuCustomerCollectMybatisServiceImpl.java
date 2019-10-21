@@ -449,52 +449,56 @@ public class CuCustomerCollectMybatisServiceImpl extends BaseApiService implemen
 
     @Override
     public void addMp(BigDecimal mp, String customerId) {
-        BigDecimal zpzo = new BigDecimal(0.01);
-        int i = 0;
-        //判断一共有多少人吃利息
-        String customerId2 = customerId;
-        while(true) {
-            CuReatil2 cu2 = cuReatil2Dao.queryOne(new QueryFilterBuilder().put("customerIdSecond", customerId2).build());
-            if (null == cu2) {
-                break;
+        try {
+            BigDecimal zpzo = new BigDecimal(0.01);
+            int i = 0;
+            //判断一共有多少人吃利息
+            String customerId2 = customerId;
+            while(true) {
+                CuReatil2 cu2 = cuReatil2Dao.queryOne(new QueryFilterBuilder().put("customerIdSecond", customerId2).build());
+                if (null == cu2) {
+                    break;
+                }
+                if (i==21) {
+                    break;
+                }
+                customerId2 = cu2.getCustomerId();
+                i++;
             }
-            if (i==21) {
-                break;
+            CuLogs cuLogs = new CuLogs();
+            //计算并更新
+            BigDecimal mm = BigDecimal.ZERO;
+            int g = 1;
+            for (int j=i; j>0; j--) {
+                CuReatil2 cu2 = cuReatil2Dao.queryOne(new QueryFilterBuilder().put("customerIdSecond", customerId).build());
+                if (null == cu2) {
+                    break;
+                }
+                CuReatilMoney cuReatilMoney = cuReatilMoneyDao.queryOne(new QueryFilterBuilder().put("id", g).build());
+                BigDecimal rate = cuReatilMoney.getMoney().multiply(zpzo);
+                BigDecimal mToken = mp.multiply(rate).setScale(2, BigDecimal.ROUND_HALF_UP);
+                CuReatil1 cureatil1 = cuReatil1Dao.queryOne(new QueryFilterBuilder().put("customerId", cu2.getCustomerId()).build());
+                if (j == i) {
+                    cureatil1.setMoney(cureatil1.getMoney().add(mToken));
+                    cuLogs.setRemark("您的某下级记账间接得到mToken:"+mToken);
+                } else {
+                    cureatil1.setIndirectMoney(cureatil1.getIndirectMoney().add(mToken));
+                    cuLogs.setRemark("您的某下级记账间接得到mToken:"+mToken);
+                }
+                cuLogs.setCustomerId(customerId);
+                cuLogs.setType("1");
+                cuLogs.setMp(mToken);
+                cuLogsDao.insert(cuLogs);
+                cuReatil1Dao.update(cureatil1);
+                this.updateWalletInfo(cu2.getCustomerId(), mToken);
+                if (cu2 == null) {
+                    break;
+                }
+                customerId = cu2.getCustomerId();
+                g++;
             }
-            customerId2 = cu2.getCustomerId();
-            i++;
-        }
-        CuLogs cuLogs = new CuLogs();
-        //计算并更新
-        BigDecimal mm = BigDecimal.ZERO;
-        int g = 1;
-        for (int j=i; j>0; j--) {
-            CuReatil2 cu2 = cuReatil2Dao.queryOne(new QueryFilterBuilder().put("customerIdSecond", customerId).build());
-            if (null == cu2) {
-                break;
-            }
-            CuReatilMoney cuReatilMoney = cuReatilMoneyDao.queryOne(new QueryFilterBuilder().put("id", g).build());
-            BigDecimal rate = cuReatilMoney.getMoney().multiply(zpzo);
-            BigDecimal mToken = mp.multiply(rate).setScale(2, BigDecimal.ROUND_HALF_UP);
-            CuReatil1 cureatil1 = cuReatil1Dao.queryOne(new QueryFilterBuilder().put("customerId", cu2.getCustomerId()).build());
-            if (j == i) {
-                cureatil1.setMoney(cureatil1.getMoney().add(mToken));
-                cuLogs.setRemark("您的某下级记账间接得到mToken:"+mToken);
-            } else {
-                cureatil1.setIndirectMoney(cureatil1.getIndirectMoney().add(mToken));
-                cuLogs.setRemark("您的某下级记账间接得到mToken:"+mToken);
-            }
-            cuLogs.setCustomerId(customerId);
-            cuLogs.setType("1");
-            cuLogs.setMp(mToken);
-            cuLogsDao.insert(cuLogs);
-            cuReatil1Dao.update(cureatil1);
-            this.updateWalletInfo(cu2.getCustomerId(), mToken);
-            if (cu2 == null) {
-                break;
-            }
-            customerId = cu2.getCustomerId();
-            g++;
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 

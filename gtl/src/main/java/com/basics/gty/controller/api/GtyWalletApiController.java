@@ -54,6 +54,12 @@ public class GtyWalletApiController implements ApplicationContextAware {
         this.applicationContext = applicationContext;
     }
 
+    /**
+     * 钱包信息
+     * @param request
+     * @param req
+     * @return
+     */
     @RequestMapping("getWalletInfo")
     public DataItemResponse<GtyWallet> query(TokenIdRequest request, HttpServletRequest req) {
 
@@ -65,6 +71,18 @@ public class GtyWalletApiController implements ApplicationContextAware {
             response.setStatus(1);
         }
         return response;
+    }
+
+    @RequestMapping("testRelease")
+    public DataResponse testRelease(){
+        DataResponse dataResponse = new DataResponse();
+        try {
+            dataResponse = gtyTransferMybatisService.testRelease();
+        } catch (Exception e) {
+            dataResponse.onException(e);
+            dataResponse.setStatus(1);
+        }
+        return dataResponse;
     }
 
     private String getTokenBlance(String address) {//TokenBalanceRequest request,
@@ -91,6 +109,12 @@ public class GtyWalletApiController implements ApplicationContextAware {
 
     }
 
+    /**
+     * 暂时没用
+     * @param wallterKey
+     * @param amount
+     * @return
+     */
     @RequestMapping("transferInTradeCenter")
     public DataItemResponse transferInTradeCenter(@RequestParam String wallterKey,@RequestParam String amount){
         DataItemResponse dataResponse = new DataItemResponse();
@@ -150,6 +174,12 @@ public class GtyWalletApiController implements ApplicationContextAware {
         return dataResponse;
     }
 
+    /**
+     * 转账
+     * @param request
+     * @param req
+     * @return
+     */
     @PostMapping("transferMoney")
     public DataResponse transfer(TokenTransferRequest request, HttpServletRequest req) {
 
@@ -163,6 +193,11 @@ public class GtyWalletApiController implements ApplicationContextAware {
 
     }
 
+    /**
+     * 获取资产转移记录
+     * @param request
+     * @return
+     */
     @RequestMapping("transferTokenHistory")
     public DataItemResponse<List<GtyWalletHistory>> getWalletTransferHistory(IdRequest request){
         DataItemResponse dataItemResponse = new DataItemResponse();
@@ -179,6 +214,12 @@ public class GtyWalletApiController implements ApplicationContextAware {
         return dataItemResponse;
     }
 
+    /**
+     * 设置释放上下限
+     * @param request
+     * @param response
+     * @return
+     */
     @RequestMapping("setReleaseLimit")
     public DataResponse setReleaseLimit(IdNumRequest request, HttpServletResponse response){
         DataResponse dataItemResponse = new DataResponse();
@@ -195,6 +236,11 @@ public class GtyWalletApiController implements ApplicationContextAware {
         return dataItemResponse;
     }
 
+    /**
+     * 修改相关资产数量
+     * @param request
+     * @return
+     */
     @RequestMapping("modifyMncNum")
     public DataResponse modifyMncNum(IdNumsRequest request){
         DataResponse dataItemResponse = new DataResponse();
@@ -227,6 +273,11 @@ public class GtyWalletApiController implements ApplicationContextAware {
         return dataItemResponse;
     }
 
+    /**
+     * 设置释放百分比
+     * @param request
+     * @return
+     */
     @RequestMapping("setReleasePointLimit")
     public DataResponse setReleasePointLimit(IdPointRequest request){
         DataResponse dataItemResponse = new DataResponse();
@@ -243,6 +294,10 @@ public class GtyWalletApiController implements ApplicationContextAware {
         return dataItemResponse;
     }
 
+    /**
+     * 获取释放限制的信息
+     * @return
+     */
     @RequestMapping("getLimitInfo")
     public DataItemResponse getLimitInfo(){
         DataItemResponse dataItemResponse = new DataItemResponse();

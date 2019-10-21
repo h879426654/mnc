@@ -1338,7 +1338,6 @@ public class BaseApiService {
 
 		int i = gtyWalletDao.update(wallet);
 
-
 		json.put("activemqId", wallet.getUserId());
 		queueSender.sendMessage(queueDestination, json.toJSONString());
 	}

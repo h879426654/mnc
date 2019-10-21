@@ -24,5 +24,5 @@ public class EthBean extends BaseBean {
         this.privateKey = privateKey;
     }
 
-    
+
 }
